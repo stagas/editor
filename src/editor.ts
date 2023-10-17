@@ -8,7 +8,10 @@ export class Editor extends RenderScene {
     $.untrack()
     return $(new Context(this.world))
   }
-  get text() { return $(new TextScene(this.ctx)) }
+  get text() {
+    $.untrack()
+    return $(new TextScene(this.ctx))
+  }
   get scenes(): RenderScene[] {
     const { text } = $.of(this)
     return [text]
