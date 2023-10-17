@@ -171,6 +171,7 @@ export class Dims {
     }
 
     innerSize.h = lineBottoms.at(-1) || 0
+    log('height', innerSize.h)
   }
 
   get longestLine() {
