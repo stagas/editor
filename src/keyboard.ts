@@ -12,10 +12,7 @@ export interface Key {
 }
 
 export class Keyboard {
-  constructor(
-    public ctx: Context,
-    public onKeyDown: (e: Key) => boolean,
-  ) { }
+  constructor(public ctx: Context) { }
 
   shiftKey = false
 
@@ -26,13 +23,13 @@ export class Keyboard {
   }
 
   handleKey(event: Key) {
-    const { ctx, onKeyDown, specialKeys } = $.of(this)
+    const { ctx, /* onKeyDown,  */specialKeys } = $.of(this)
     const { misc, history, buffer: b, dims, scroll, selection } = $.of(ctx)
     const { rect } = $.of(dims)
     const { hasSelection } = $.of(selection)
     let { code, lines } = $.of(b)
 
-    if (onKeyDown(event)) return true
+    // if (onKeyDown(event)) return true
 
     const { key, ctrlKey = false, metaKey = false, shiftKey = false, altKey = false } = event
 
@@ -649,7 +646,8 @@ export class Keyboard {
     const { misc } = $.of(this.ctx)
     misc.isTyping = true
 
-    if (this.handleKey(e)) return
+    // if (this.handleKey(e)) return
+    this.handleKey(e)
 
     e.preventDefault()
   }

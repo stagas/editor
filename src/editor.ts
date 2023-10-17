@@ -5,7 +5,6 @@ import { TextScene } from './text.ts'
 
 export class Editor extends RenderScene {
   ctx?: Context
-
   text?: TextScene
 
   get scenes(): RenderScene[] {

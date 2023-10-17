@@ -8,7 +8,7 @@ import { findMatchingBrackets } from './util.ts'
 const tempPoint = $(new Point)
 
 export class Buffer {
-  constructor(public ctx: Context, public Token: any) { }
+  constructor(public ctx: Context, public Token: { Type: Record<string, string> }) { }
 
   source?: $<Source>
 

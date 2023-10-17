@@ -17,14 +17,14 @@ interface Skin {
 }
 
 export class Context extends Scene {
-  misc?: Misc
+  misc = $(new Misc)
   skin?: Skin
   colors?: any
-  history?: History
-  buffer?: Buffer
-  dims?: Dims
-  scroll?: Scroll
-  input?: Input
-  selection?: Selection
+  history = $(new History(this))
+  buffer = $(new Buffer(this, { Type: {} }))
+  dims = $(new Dims(this))
+  scroll = $(new Scroll(this))
+  input = $(new Input(this))
+  selection = $(new Selection(this))
 }
 
