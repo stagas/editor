@@ -68,7 +68,6 @@ export class Dims {
   viewSpan = $(new Point)
   @fx update_viewSpan() {
     const { scroll, rect, lineHeight, viewSpan } = $.of(this)
-    //!: update_viewSpan
     const top = -scroll.y
     const bottom = top + rect.h + lineHeight
     $.untrack()
@@ -131,8 +130,9 @@ export class Dims {
     })
   }
 
-  @fx updateLineDims() {
+  @fx update_lineDims() {
     const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
+    //!: update_lineDims
     const lineTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseBottoms = Array.from<number>({ length: lastVisibleLine }).fill(0)
