@@ -30,7 +30,7 @@ function tokenize({ code }: { code: string }) {
 
 const world = $(new World)
 world.canvas.appendTo(dom.body)
-const scene = $(new Editor(world))
+// const scene = $(new Editor(world))
 // const source = $(new Source(tokenize))
 // source.code = 'hello world'
 // scene.ctx.buffer.source = source
