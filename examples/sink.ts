@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $, fx } from 'signal'
 import { World } from 'std'
 import { dom } from 'utils'
 import { Editor } from '../src/editor.ts'
@@ -28,10 +28,13 @@ function tokenize({ code }: { code: string }) {
     })
 }
 
-const world = $(new World)
-world.canvas.appendTo(dom.body)
-const editor = $(new Editor(world))
-const source = $(new Source(tokenize))
-source.code = 'hello world'
-editor.ctx.buffer.source = source
-editor.draw()
+fx(() => {
+  $.untrack()
+  const world = $(new World)
+  world.canvas.appendTo(dom.body)
+  const editor = $(new Editor(world))
+  const source = $(new Source(tokenize))
+  source.code = 'hello world'
+  editor.ctx.buffer.source = source
+  editor.draw()
+})
