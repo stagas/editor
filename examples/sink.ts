@@ -33,5 +33,5 @@ world.canvas.appendTo(dom.body)
 const scene = $(new Editor(world))
 const source = $(new Source(tokenize))
 source.code = 'hello world'
-scene.ctx!.buffer.source = source
+scene.ctx.buffer.source = source
 scene.draw()
