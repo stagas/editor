@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $, init } from 'signal'
 import { Context } from './context.ts'
 import { RenderScene } from './render-scene.ts'
 import { TextScene } from './text.ts'
@@ -13,10 +13,15 @@ export class Editor extends RenderScene {
     return [text]
   }
 
+  @init initResizeToWindow() {
+    const { rect } = $.of(this)
+    rect.resizeToWindow()
+  }
+
   draw() {
     const { rect, canvas } = $.of(this)
     const { c } = canvas
-    console.log(rect.text)
+
     rect.fill(c, '#39a')
   }
 }
