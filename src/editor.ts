@@ -21,7 +21,7 @@ export class Editor extends RenderScene {
     rect.resizeToWindow()
   }
   draw() {
-    const { rect, world } = $.of(this)
+    const { rect, world, scenes } = $.of(this)
     const { canvas } = $.of(world)
     const { c } = canvas
     rect.fill(c, '#224')
