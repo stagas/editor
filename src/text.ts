@@ -84,7 +84,7 @@ export class TextScene extends RenderScene {
           = c.strokeStyle
           = '#fff'
           // = skin.colors[color] ?? '#fff'
-
+        console.log(t.text)
         c.fillText(t.text, x, y)
         c.strokeText(t.text, x, y)
       }
