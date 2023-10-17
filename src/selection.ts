@@ -227,7 +227,7 @@ export class Selection {
   @fx update_selectionText() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
-    const { source, code } = $.of(buffer)
+    const { code } = $.of(buffer)
     $.untrack()
     const { top, bottom } = this.getSelectionSorted()
     const a = buffer.getIndexFromCoords(top)
