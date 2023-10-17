@@ -50,8 +50,8 @@ export class TextScene extends RenderScene {
     //!: render
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)
-    //!: here
     const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
+    //!: here
     const { tokens, Token } = $.of(buffer)
 
     const c = oc ?? canvas.c
