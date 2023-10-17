@@ -26,7 +26,7 @@ export class Dims {
   dimRect = $(new Rect, { w: 1, h: 1 })
   scrollbarSize = $(new Point, { x: 13, y: 7 })
   get scroll() {
-    // return $.of(this.ctx).scroll.pos
+    return $.of(this.ctx).scroll.pos
   }
   get overscrollX() { return this.charWidth * 2 }
 
