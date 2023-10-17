@@ -60,8 +60,7 @@ export class TextScene extends RenderScene {
     log('tokens', tokens)
     const c = oc ?? canvas.c
     if (!oc) {
-      console.log('OCCCC')
-      rect.clear(c)
+      // rect.clear(c)
     }
 
     c.save()
