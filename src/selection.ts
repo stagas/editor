@@ -216,7 +216,7 @@ export class Selection {
     $.untrack()
     selection.end.set({ x: col, y: line })
   }
-  @fn updateTextareaText() {
+  updateTextareaText() {
     const { ctx, selectionText } = $.of(this)
     const { input } = $.of(ctx)
     input.textarea.value = selectionText
