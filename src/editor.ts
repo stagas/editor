@@ -23,6 +23,7 @@ export class Editor extends RenderScene {
   }
 
   draw() {
+    console.log('draw?')
     const { rect, world } = $.of(this)
     const { canvas } = $.of(world)
     const { c } = canvas
