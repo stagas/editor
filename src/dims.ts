@@ -62,8 +62,8 @@ export class Dims {
 
   viewSpan = $(new Point)
   @fx update_viewSpan() {
-    //!: update_viewSpan
     const { scroll, rect, lineHeight, viewSpan } = $.of(this)
+    //!: update_viewSpan
     const top = -scroll.y
     const bottom = top + rect.h + lineHeight
     $.untrack()
