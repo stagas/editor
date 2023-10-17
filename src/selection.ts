@@ -222,7 +222,7 @@ export class Selection {
     input.textarea.value = selectionText
     input.textarea.select()
   }
-  @fn updateTextareaTextDebounced = debounce(250, () => this.updateTextareaText())
+  updateTextareaTextDebounced = debounce(250, () => this.updateTextareaText())
 
   @fx update_selectionText() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
