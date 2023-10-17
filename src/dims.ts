@@ -61,6 +61,7 @@ export class Dims {
     const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
     const w = longestLine * charWidth + scrollbarSize.w
     $.untrack()
+    //!: update_innerSize_width
     innerSize.w = w
   }
 
@@ -71,6 +72,7 @@ export class Dims {
     const top = -scroll.y
     const bottom = top + rect.h + lineHeight
     $.untrack()
+    //!: update_viewSpan
     viewSpan.top = top
     viewSpan.bottom = bottom
   }
