@@ -74,7 +74,7 @@ export class TextScene extends RenderScene {
       console.log(y, viewSpan.top, viewSpan.bottom)
       if (y > viewSpan.top && y < viewSpan.bottom) {
         x = t.col * charWidth + 1
-
+        console.log('yay', t.text)
         const color = (
           colors[t.text]
           ?? colors[Token.Type[t.type]]
