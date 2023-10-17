@@ -40,7 +40,7 @@ export class TextScene extends RenderScene {
       innerSize: { wh },
       scroll: { xy },
     } = $.of(dims)
-    const { tokens, Token } = $.of(buffer)
+    const { source, tokens, Token } = $.of(buffer)
     $.untrack()
     this.viewRect.setSize(wh)
     this.needRender = true
