@@ -7,6 +7,6 @@ export abstract class RenderScene extends Scene {
   rect = $(new Rect)
   needRender?: boolean
   needDraw?: boolean
-  abstract render(c: CanvasRenderingContext2D): void
+  abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
 }

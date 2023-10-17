@@ -18,8 +18,8 @@ interface Skin {
 
 export class Context extends Scene {
   misc = $(new Misc)
-  skin?: Skin
-  colors?: any
+  skin: Skin = { colors: {}, fonts: { mono: 'monospace' } }
+  colors: Record<string, string> = {}
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
   dims = $(new Dims(this))
