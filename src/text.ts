@@ -46,7 +46,7 @@ export class TextScene extends RenderScene {
     this.needRender = true
   }
 
-  @fn render(oc?: CanvasRenderingContext2D) {
+  render(oc?: CanvasRenderingContext2D) {
     //!: render
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)
@@ -54,7 +54,7 @@ export class TextScene extends RenderScene {
     const { tokens, Token } = $.of(buffer)
 
     const c = oc ?? canvas.c
-
+//!: here
     if (!oc) {
       rect.clear(c)
     }
