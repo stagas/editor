@@ -25,5 +25,8 @@ export class Editor extends RenderScene {
     const { canvas } = $.of(world)
     const { c } = canvas
     rect.fill(c, '#224')
+    for (const scene of scenes) {
+      scene.draw(c)
+    }
   }
 }
