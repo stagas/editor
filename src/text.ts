@@ -42,6 +42,7 @@ export class TextScene extends RenderScene {
     } = $.of(dims)
     const { tokens, Token } = $.of(buffer)
     $.untrack()
+    //!: triggerRender
     this.viewRect.setSize(wh)
     this.needRender = true
   }
