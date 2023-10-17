@@ -12,7 +12,7 @@ export class Dims {
   get rect() { return $.of(this.ctx).rect }
   lines?: string[]
   @fx update_lines() {
-    const { lines } = $.of($.of(this.ctx).buffer)
+    const { lines } = $.of($.of($.of(this.ctx).buffer).source)
     $.untrack()
     this.lines = lines
   }
