@@ -22,7 +22,7 @@ function tokenize({ code }: { code: string }) {
       return {
         type: 'text',
         text: m[0],
-        line: code.slice(0, m.index).split('\n').length,
+        line: code.slice(0, m.index).split('\n').length - 1,
         col: m.index! - code.slice(0, m.index).split('\n').slice(0, -1).join('\n').length,
       }
     })
