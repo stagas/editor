@@ -10,7 +10,12 @@ interface PointerItem { }
 export class Dims {
   constructor(public ctx: Context) { }
   get rect() { return $.of(this.ctx).rect }
-  get lines() { return $.of($.of(this.ctx).buffer).lines }
+  lines?: string[]
+  @fx update_lines() {
+    const { lines } = $.of($.of(this.ctx).buffer)
+    $.untrack()
+    this.lines = lines
+  }
   sub?: (WidgetLike | (WidgetLike & PointerItem))[]
   deco?: WidgetLike[]
 
