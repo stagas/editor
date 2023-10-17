@@ -5,6 +5,9 @@ import { Dims } from './dims.ts'
 import { Buffer } from './buffer.ts'
 import { Scroll } from './scroll.ts'
 import { Misc } from './misc.ts'
+import { History } from './history.ts'
+import { Input } from './input.ts'
+import { Selection } from './selection.ts'
 
 interface Skin {
   colors: Record<string, string>
@@ -15,10 +18,13 @@ interface Skin {
 
 export class Context extends Scene {
   misc?: Misc
+  skin?: Skin
+  colors?: any
+  history?: History
   buffer?: Buffer
   dims?: Dims
-  skin?: Skin
   scroll?: Scroll
-  colors?: any
+  input?: Input
+  selection?: Selection
 }
 
