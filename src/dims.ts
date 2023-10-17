@@ -65,6 +65,7 @@ export class Dims {
     $.untrack()
     //!: update_innerSize_width
     innerSize.w = w
+    log('innerSize.w', w)
   }
 
   viewSpan = $(new Point)
