@@ -9,7 +9,12 @@ interface PointerItem { }
 
 export class Dims {
   constructor(public ctx: Context) { }
-  get rect() { return $.of(this.ctx).rect }
+  rect?: Rect
+  @fx update_rect() {
+    const { rect } = $.of(this.ctx)
+    $.untrack()
+    this.rect = rect
+  }
   lines?: string[]
   @fx update_lines() {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
