@@ -4,7 +4,10 @@ import { RenderScene } from './render-scene.ts'
 import { TextScene } from './text.ts'
 
 export class Editor extends RenderScene {
-  get ctx() { return $(new Context(this.world)) }
+  get ctx() {
+    $.untrack()
+    return $(new Context(this.world))
+  }
   get text() { return $(new TextScene(this.ctx)) }
   get scenes(): RenderScene[] {
     const { text } = $.of(this)
