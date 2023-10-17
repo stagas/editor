@@ -1,8 +1,9 @@
 import { $, fn, fx, init } from 'signal'
-import { Point, PointLike } from 'std'
+import { Line, Point, PointLike, Rect } from 'std'
 import { Source } from './source.ts'
 import { Context } from './context.ts'
-import { clamp } from 'utils'
+import { clamp, poolArrayGet } from 'utils'
+import { findMatchingBrackets } from './util.ts'
 
 const tempPoint = $(new Point)
 
@@ -35,6 +36,8 @@ export class Buffer {
     close: $(new Point)
   }
   hasBrackets = false
+
+  fillRects: Rect[] = []
 
   @fx clampLineCol() {
     const { lines, line, coli } = $.of(this)
@@ -122,16 +125,114 @@ export class Buffer {
   }
   @fx update_brackets() {
     const { lineCol, line, col, code, bracketsPair: { open, close } } = this
+    $.untrack()
     const index = this.getIndexFromCoords(lineCol)
     const brackets = findMatchingBrackets(code, index)
 
     if (brackets) {
-      $.hasBrackets = true
-      $.getLineColFromIndex(brackets[0], open)
-      $.getLineColFromIndex(brackets[1], close)
+      this.hasBrackets = true
+      this.getLineColFromIndex(brackets[0], open)
+      this.getLineColFromIndex(brackets[1], close)
     }
     else {
-      $.hasBrackets = false
+      this.hasBrackets = false
     }
+  }
+  fillTextRange(
+    c: CanvasRenderingContext2D,
+    range: Line,
+    color: string,
+    full: boolean = false,
+    padBottom: number = 0,
+    strokeLight?: string,
+    strokeDark?: string,
+  ) {
+    const { fillRects, ctx } = $.of(this)
+    const { dims } = $.of(ctx)
+    const {
+      lineHeight,
+      charWidth,
+      lines,
+      lineTops,
+      lineBaseTops,
+      lineHeights,
+      viewSpan,
+    } = $.of(dims)
+
+    const { top, bottom } = range
+    let i = 0
+    let r: Rect
+
+    const manyLines = top.line !== bottom.line
+
+    for (let line = top.line; line <= bottom.line; line++) {
+      const x = line === top.y
+        ? top.x * charWidth
+        : 0
+
+      const y = full
+        ? lineTops[line] + 3
+        : lineBaseTops[line] + 2
+
+      const w = (line === top.line ?
+        line === bottom.line
+          ? (bottom.col - top.col) * charWidth
+          : ((lines[line]?.length ?? 0) - top.col) * charWidth + 2
+        : line === bottom.line
+          ? bottom.col * charWidth
+          : ((lines[line]?.length ?? 0) * charWidth + 2))
+
+      const h = full
+        ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
+        : lineHeight + 0.5
+
+      if (y + h < viewSpan.top || y > viewSpan.bottom) continue
+
+      r = poolArrayGet(fillRects, i++, () => $(new Rect))
+
+      r.x = x
+      r.y = y
+      r.w = w  // + avoids flicker rounding
+      r.h = h
+      // r.floorCeil()
+
+      // TODO: aesthetics
+      if (top.line !== bottom.line) {
+        if (line === bottom.y) {
+          // r.w += 2
+          // r.h += 1
+        }
+        else if (line === top.y) {
+          // r.h += 1
+          // r.w += 2
+          // r.x -= 2
+        }
+      }
+    }
+
+    if (!i) return
+
+    c.beginPath()
+    Rect.pathAround(c, fillRects, i)
+    c.fillStyle = color
+    c.fill()
+
+    c.save()
+    c.lineCap = 'square'
+    c.translate(.5, .5)
+    if (strokeDark) {
+      c.beginPath()
+      Rect.pathAroundRight(c, fillRects, i)
+      c.strokeStyle = strokeDark
+      c.stroke()
+    }
+
+    if (strokeLight) {
+      c.beginPath()
+      Rect.pathAroundLeft(c, fillRects, i)
+      c.strokeStyle = strokeLight
+      c.stroke()
+    }
+    c.restore()
   }
 }
