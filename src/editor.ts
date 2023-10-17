@@ -16,12 +16,10 @@ export class Editor extends RenderScene {
     const { text } = $.of(this)
     return [text]
   }
-
   @init initResizeToWindow() {
     const { rect } = $.of(this)
     rect.resizeToWindow()
   }
-
   draw() {
     const { rect, world } = $.of(this)
     const { canvas } = $.of(world)
