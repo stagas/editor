@@ -36,5 +36,5 @@ source.code = 'hello world'
 fx(() => {
   $.untrack()
   editor.ctx.buffer.source = source
-  editor.draw()
+  // editor.draw()
 })
