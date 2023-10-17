@@ -46,7 +46,7 @@ export class TextScene extends RenderScene {
     this.needRender = true
   }
 
-  @fn render(oc?: CanvasRenderingContext2D) {
+  render(oc?: CanvasRenderingContext2D) {
     //!: render
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)
