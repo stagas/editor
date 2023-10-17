@@ -29,7 +29,7 @@ function tokenize({ code }: { code: string }) {
 }
 
 fx(() => {
-  $.untrack()
+  // $.untrack()
   const world = $(new World)
   world.canvas.appendTo(dom.body)
   const editor = $(new Editor(world))
