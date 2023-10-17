@@ -16,6 +16,7 @@ export class Editor extends RenderScene {
   draw() {
     const { rect, canvas } = $.of(this)
     const { c } = canvas
+    console.log(rect.text)
     rect.fill(c, '#39a')
   }
 }
