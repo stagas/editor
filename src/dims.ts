@@ -1,3 +1,4 @@
+log.active
 import { $, fn, fx, init } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
@@ -55,6 +56,7 @@ export class Dims {
     const top = -scroll.y
     const bottom = top + rect.h + lineHeight
     $.untrack()
+    //!: update_viewSpan
     viewSpan.top = top
     viewSpan.bottom = bottom
   }
