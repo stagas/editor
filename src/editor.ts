@@ -8,7 +8,7 @@ import { World } from 'std'
 export class Editor extends RenderScene {
   constructor(public world: World) {
     super(world)
-    this.ctx = $(new Context(world, rect))
+    this.ctx = $(new Context(world, this.rect))
     this.text = $(new TextScene(this.ctx))
   }
   ctx: Context
