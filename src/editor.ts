@@ -1,4 +1,4 @@
-import { $, init } from 'signal'
+import { $, fn, init } from 'signal'
 import { Context } from './context.ts'
 import { RenderScene } from './render-scene.ts'
 import { TextScene } from './text.ts'
@@ -21,7 +21,7 @@ export class Editor extends RenderScene {
     rect.resizeToWindow()
   }
   render() { }
-  draw() {
+  @fn draw() {
     const { rect, world, scenes } = $.of(this)
     const { canvas } = $.of(world)
     const { c } = canvas
