@@ -40,14 +40,14 @@ export class Buffer {
   fillRects: Rect[] = []
 
   @fx clampLineCol() {
-    const { lines, line, coli } = $.of(this)
+    const { source, lines, line, coli } = $.of(this)
     $.untrack()
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
   }
 
   @fx trimLines() {
-    const { lines, line } = $.of(this)
+    const { source, lines, line } = $.of(this)
     for (let i = 0; i < lines.length; i++) {
       if (i === line) continue
       lines[i] = lines[i].trimEnd()
