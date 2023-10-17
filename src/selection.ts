@@ -95,7 +95,7 @@ export class Selection {
 
   @fn getSelectionSorted = () => {
     const { selection, selectionSorted } = this
-    // Line & foreward
+    // Line & forward
     let top: Point
     let bottom: Point
     let forward = false
