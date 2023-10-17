@@ -76,6 +76,7 @@ export class Dims {
     //!: update_viewSpan
     viewSpan.top = top
     viewSpan.bottom = bottom
+    console.log(top, bottom)
   }
 
   get lastVisibleLine() {
