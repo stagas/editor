@@ -35,6 +35,6 @@ const source = $(new Source(tokenize))
 source.code = 'hello world'
 fx(() => {
   $.untrack()
-  // editor.ctx.buffer.source = source
-  editor.draw()
+  editor.ctx.buffer.source = source
+  // editor.draw()
 })
