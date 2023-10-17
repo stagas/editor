@@ -2,10 +2,12 @@ import { $, fn, fx, init } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
 import { WidgetLike } from './widgets.ts'
+import { Context } from './context.ts'
 
 interface PointerItem { }
 
 export class Dims {
+  constructor(public ctx: Context) { }
   rect?: Rect
   lines?: string[]
   sub?: (WidgetLike | (WidgetLike & PointerItem))[]
@@ -22,8 +24,8 @@ export class Dims {
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
-  scroll?: Point
   scrollbarSize = $(new Point, { x: 13, y: 7 })
+  get scroll() { return $.of(this.ctx).scroll.pos }
   get overscrollX() { return this.charWidth * 2 }
 
   /** Top of the line, above decorations. */
@@ -38,7 +40,7 @@ export class Dims {
   lineHeights: number[] = [0]
 
   innerSize = $(new Point)
-  @fx updateInnerSizeWidth() {
+  @fx update_innerSize_width() {
     const { innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
     const w = longestLine * charWidth + scrollbarSize.w
     $.untrack()
@@ -46,7 +48,7 @@ export class Dims {
   }
 
   viewSpan = $(new Point)
-  @fx updateViewSpan() {
+  @fx update_viewSpan() {
     const { scroll, rect, lineHeight, viewSpan } = $.of(this)
     const top = -scroll.y
     const bottom = top + rect.h + lineHeight
