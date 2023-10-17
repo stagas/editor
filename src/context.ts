@@ -17,6 +17,8 @@ interface Skin {
 }
 
 export class Context extends Scene {
+  constructor(public world: World, public rect: Rect) { super(world) }
+
   misc = $(new Misc)
   skin: Skin = { colors: {}, fonts: { mono: 'monospace' } }
   colors: Record<string, string> = {}

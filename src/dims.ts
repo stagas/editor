@@ -9,7 +9,7 @@ interface PointerItem { }
 
 export class Dims {
   constructor(public ctx: Context) { }
-  rect = $(new Rect)
+  get rect() { return $.of(this.ctx).rect }
   get lines() { return $.of($.of(this.ctx).buffer).lines }
   sub?: (WidgetLike | (WidgetLike & PointerItem))[]
   deco?: WidgetLike[]
