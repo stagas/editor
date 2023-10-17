@@ -24,7 +24,7 @@ export class Context extends Scene {
   colors: Record<string, string> = {}
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
-  get scroll() { $.untrack(); return $(new Scroll(this)) }
+  scroll = $(new Scroll(this))
   get dims() { return $.untracked(() => $(new Dims(this))) }
   input = $(new Input(this))
   selection = $(new Selection(this))
