@@ -1,5 +1,9 @@
 import { $, fn, fx, init } from 'signal'
 
+export type Tokenize = (
+  source: { code: string }
+) => (Generator<SourceToken, void, unknown> | SourceToken[])
+
 export interface SourceToken {
   type: any // TODO Token.Type
   text: string
@@ -8,10 +12,7 @@ export interface SourceToken {
 }
 
 export class Source {
-  constructor(
-    public tokenize: (
-      source: { code: string }
-    ) => (Generator<SourceToken, void, unknown> | SourceToken[])) { }
+  constructor(public tokenize: Tokenize) { }
 
   code?: string
 

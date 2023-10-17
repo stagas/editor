@@ -4,6 +4,7 @@ import { arraysEqual } from 'utils'
 import { Dims } from './dims.ts'
 import { Buffer } from './buffer.ts'
 import { Scroll } from './scroll.ts'
+import { Misc } from './misc.ts'
 
 interface Skin {
   colors: Record<string, string>
@@ -13,6 +14,7 @@ interface Skin {
 }
 
 export class Context extends Scene {
+  misc?: Misc
   buffer?: Buffer
   dims?: Dims
   skin?: Skin
