@@ -21,8 +21,8 @@ export class Dims {
     $.untrack()
     this.lines = lines
   }
-  sub?: (WidgetLike | (WidgetLike & PointerItem))[]
-  deco?: WidgetLike[]
+  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
+  deco: WidgetLike[] = []
 
   blinkDelay = 270 // TODO: sync to beat
   fontSize = 12
