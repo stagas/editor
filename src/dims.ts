@@ -42,6 +42,7 @@ export class Dims {
     const { pos } = $.of(scroll)
     $.untrack()
     this.scroll = pos
+    //!: update scroll
   }
   get overscrollX() { return this.charWidth * 2 }
 
