@@ -1,5 +1,5 @@
-import { $, alias, fn, fx, init } from 'signal'
-import { Point, Matrix } from 'std'
+import { $ } from 'signal'
+import { Matrix } from 'std'
 
 export class Misc {
   innerMatrix = $(new Matrix)
