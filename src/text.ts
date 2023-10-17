@@ -71,7 +71,7 @@ export class TextScene extends RenderScene {
       if (!t.type || !t.text) continue
 
       y = lineBaseBottoms[t.line]
-      console.log(y, viewSpan.text)
+      console.log(y, viewSpan.top, viewSpan.bottom)
       if (y > viewSpan.top && y < viewSpan.bottom) {
         x = t.col * charWidth + 1
 
