@@ -2,16 +2,17 @@ import { $, fn, init } from 'signal'
 import { Context } from './context.ts'
 import { RenderScene } from './render-scene.ts'
 import { TextScene } from './text.ts'
+import { World } from 'std'
 
 export class Editor extends RenderScene {
-  get ctx() {
-    $.untrack()
-    return $(new Context(this.world))
+  constructor(public world: World) {
+    super(world)
+    this.ctx = $(new Context(world))
+    this.text = $(new TextScene(this.ctx))
   }
-  get text() {
-    $.untrack()
-    return $(new TextScene(this.ctx))
-  }
+  ctx: Context
+  text: TextScene
+
   get scenes(): RenderScene[] {
     const { text } = $.of(this)
     return [text]
