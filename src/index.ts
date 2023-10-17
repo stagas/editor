@@ -1,6 +1,7 @@
 export * from './buffer.ts'
 export * from './context.ts'
 export * from './dims.ts'
+export * from './misc.ts'
 export * from './mod.ts'
 export * from './render-scene.ts'
 export * from './scroll.ts'
