@@ -1,5 +1,5 @@
 log.active
-import { $, fn, init } from 'signal'
+import { $, fn, fx, init } from 'signal'
 import { Context } from './context.ts'
 import { RenderScene } from './render-scene.ts'
 import { TextScene } from './text.ts'
@@ -21,6 +21,17 @@ export class Editor extends RenderScene {
   @init initResizeToWindow() {
     const { rect } = $.of(this)
     rect.resizeToWindow()
+  }
+  @fx triggerRenderDraw() {
+    const { scenes } = $.of(this)
+    let d = false
+    for (const scene of scenes) {
+      const { needRender, needDraw } = scene
+      d ||= needRender || needDraw || false
+    }
+    if (d) {
+      this.draw()
+    }
   }
   @fn render() { }
   @fn draw() {
