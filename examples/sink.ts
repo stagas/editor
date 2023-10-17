@@ -35,5 +35,5 @@ $.batch(() => {
   const source = $(new Source(tokenize))
   source.code = 'hello world'
   editor.ctx.buffer.source = source
-  editor.draw()
 })
+// editor.draw()
