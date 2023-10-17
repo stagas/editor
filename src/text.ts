@@ -67,7 +67,7 @@ export class TextScene extends RenderScene {
     c.translate(scroll.x, scroll.y)
     for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
       t = tokens![i]
-      console.log(t.text)
+      console.log(t.type)
       if (!t.type || !t.text) continue
 
       y = lineBaseBottoms[t.line]
