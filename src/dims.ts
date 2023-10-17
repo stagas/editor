@@ -36,8 +36,12 @@ export class Dims {
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
   scrollbarSize = $(new Point, { x: 13, y: 7 })
-  get scroll() {
-    return $.of(this.ctx).scroll.pos
+  scroll?: Point
+  @fx update_scroll() {
+    const { scroll } = $.of(this.ctx)
+    const { pos } = $.of(scroll)
+    $.untrack()
+    this.scroll = pos
   }
   get overscrollX() { return this.charWidth * 2 }
 
