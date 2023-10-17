@@ -1,3 +1,4 @@
+log.active
 import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
 import { Context } from './context.ts'
