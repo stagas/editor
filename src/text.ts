@@ -67,11 +67,11 @@ export class TextScene extends RenderScene {
     c.translate(scroll.x, scroll.y)
     for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
       t = tokens![i]
-      console.log(t.type)
+
       if (!t.type || !t.text) continue
 
       y = lineBaseBottoms[t.line]
-
+      console.log(y, viewSpan.text)
       if (y > viewSpan.top && y < viewSpan.bottom) {
         x = t.col * charWidth + 1
 
