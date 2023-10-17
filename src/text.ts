@@ -82,7 +82,8 @@ export class TextScene extends RenderScene {
 
         c.fillStyle
           = c.strokeStyle
-          = skin.colors[color] ?? '#fff'
+          = '#fff'
+          // = skin.colors[color] ?? '#fff'
 
         c.fillText(t.text, x, y)
         c.strokeText(t.text, x, y)
