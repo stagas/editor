@@ -60,6 +60,7 @@ export class TextScene extends RenderScene {
     log('tokens', tokens)
     const c = oc ?? canvas.c
     if (!oc) {
+      console.log('OCCCC')
       rect.clear(c)
     }
 
@@ -85,7 +86,6 @@ export class TextScene extends RenderScene {
           = '#fff'
           // = skin.colors[color] ?? '#fff'
 
-        console.log(x, y)
         c.fillText(t.text, x, y)
         c.strokeText(t.text, x, y)
       }
