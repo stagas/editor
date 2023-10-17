@@ -54,9 +54,9 @@ export class TextScene extends RenderScene {
     const { charWidth } = $.of(dims)
     const { viewSpan } = $.of(dims)
     const { scroll } = $.of(dims)
-    //!: pass
     // const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
     const { tokens, Token } = $.of(buffer)
+    //!: pass
 
     const c = oc ?? canvas.c
     if (!oc) {
