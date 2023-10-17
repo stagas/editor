@@ -26,6 +26,6 @@ export class Editor extends RenderScene {
     const { rect, world } = $.of(this)
     const { canvas } = $.of(world)
     const { c } = canvas
-    rect.fill(c, '#225')
+    rect.fill(c, '#223')
   }
 }
