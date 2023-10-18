@@ -76,13 +76,13 @@ export class Editor extends Render {
   }
   @fx when_needDraw_trigger_draw() {
     $.when(this).needDraw
-    this.draw()
-    // requestAnimationFrame(() => this.draw())
+    // this.draw()
+    requestAnimationFrame(() => this.draw())
   }
   @fx when_needUpdate_trigger_update() {
     $.when(this).needUpdate
-    this.update()
-    // requestAnimationFrame(() => this.draw())
+    // this.update()
+    requestAnimationFrame(() => this.update())
   }
   @fx trigger_update_when_scroll() {
     const { scroll } = $.of(this)
