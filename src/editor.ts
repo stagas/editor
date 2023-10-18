@@ -10,6 +10,7 @@ import { Buffer } from './buffer.ts'
 import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
+import { World } from 'std'
 
 interface PointerItem { }
 
@@ -23,6 +24,9 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Render {
+  constructor(public world: World) {
+    super({ world } as any)
+  }
   misc = $(new Misc)
   skin = {
     colors: {
