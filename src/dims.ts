@@ -19,7 +19,7 @@ export class Dims {
   lines?: string[]
   @fx update_lines() {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
-    // $.untrack()
+    $.untrack()
     this.lines = lines
   }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
@@ -41,7 +41,7 @@ export class Dims {
   @fx update_scroll() {
     const { scroll } = $.of(this.ctx)
     const { pos } = $.of(scroll)
-    // $.untrack()
+    $.untrack()
     this.scroll = pos
   }
   get overscrollX() { return this.charWidth * 2 }
