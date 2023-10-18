@@ -1,10 +1,9 @@
 log.active
 import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
-import { Context } from './context.ts'
-import { SourceToken } from './source.ts'
-import { Render } from './render.ts'
 import { Editor } from './editor.ts'
+import { Render } from './render.ts'
+import { SourceToken } from './source.ts'
 
 export class Text extends Render {
   constructor(public ctx: Editor) {
