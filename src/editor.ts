@@ -20,7 +20,7 @@ export class Editor extends Render {
     const { text } = $.of(this)
     return [text]
   }
-  // fx resize_editor_to_world() {
+  // @fx resize_editor_to_world() {
   //   const { rect, canvas } = $.of(this)
   //   const { size } = $.of(canvas)
   //   rect.setSize(size)
