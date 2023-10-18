@@ -85,7 +85,8 @@ export class Editor extends Render {
     // requestAnimationFrame(() => this.draw())
   }
   @fx trigger_update_when_scroll() {
-    const { pos: scrollPos, targetScroll } = $.of(this.scroll)
+    const { scroll } = $.of(this)
+    const { pos: scrollPos, targetScroll } = $.of(scroll)
     const needAnim =
       Math.round(scrollPos.top) !== targetScroll.top ||
       Math.round(scrollPos.left) !== targetScroll.left
