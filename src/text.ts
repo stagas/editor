@@ -32,6 +32,7 @@ export class TextScene extends RenderScene {
     const { rect } = $.of(this.ctx)
     const { hasSize, size: { wh } } = $.when(rect)
     this.rect.setSize(wh)
+    $.untrack()
     this.needRender = true
   }
 
