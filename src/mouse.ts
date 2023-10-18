@@ -23,8 +23,8 @@ export class Mouse extends Comp {
     const e = pointer.event
     const { deltaTimeStamp, deltaX, deltaY } = $.of(e)
     $.untrack()
-    scroll.targetScroll.y -= e.deltaY * 0.2
-    scroll.targetScroll.x -= e.deltaX * 0.2
+    scroll.targetScroll.y -= deltaY * 0.2
+    scroll.targetScroll.x -= deltaX * 0.2
     scroll.animScrollStrategy = AnimScrollStrategy.Medium
   }
   @fn onPointerUp(){
