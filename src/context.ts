@@ -9,6 +9,7 @@ import { History } from './history.ts'
 import { Input } from './input.ts'
 import { Selection } from './selection.ts'
 import { WidgetLike } from './widgets.ts'
+import { Text } from './text.ts'
 
 interface PointerItem { }
 
@@ -38,6 +39,7 @@ export class Context extends Scene {
   dims!: $<Dims>
   input!: $<Input>
   selection!: $<Selection>
+  text!: $<Text>
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
@@ -54,5 +56,6 @@ export class Context extends Scene {
     this.dims = $(new Dims(this))
     this.input = $(new Input(this))
     this.selection = $(new Selection(this))
+    this.text = $(new Text(this))
   }
 }
