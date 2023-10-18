@@ -28,21 +28,41 @@ const code = String.raw`{ x:=
 `.repeat(10)
 
 function tokenize({ code }: { code: string }) {
-  return [...code.matchAll(/(?<word>[^\s]+)|(?<space>[\s\n]+)/g)]
-    .map(m => {
-      return {
-        type: 'text',
-        text: m[0],
-        line: code.slice(0, m.index).split('\n').length - 1,
-        col: Math.max(0,
-          m.index!
-          - code.slice(0, m.index)
-            .split('\n')
-            .slice(0, -1)
-            .join('\n').length - 1
-        ),
-      }
-    })
+  const regex = /(?<word>[^\s]+)|(?<space>[\s]+)/g;
+  let line = 0; // Initialize line and col as 0
+  let col = 0;
+
+  return [...code.matchAll(regex)].map(match => {
+    const { word, space } = match.groups as any;
+
+    if (word) {
+      col += word.length;
+      return { type: 'text', text: word, line, col: col - word.length };
+    } else if (space) {
+      const newlineCount = (space.match(/\n/g) || []).length;
+      line += newlineCount;
+      col = newlineCount === 0 ? col + space.length : 0; // Reset col to 0 when a newline is encountered
+      return { type: 'text', text: space, line, col: col - space.length };
+    }
+
+    return null;
+  }).filter(Boolean);
+
+  // return [...code.matchAll(/(?<word>[^\s]+)|(?<space>[\s]+)/g)]
+  //   .map(m => {
+  //     return {
+  //       type: 'text',
+  //       text: m[0],
+  //       line: code.slice(0, m.index).split('\n').length - 1,
+  //       col: Math.max(0,
+  //         m.index!
+  //         - code.slice(0, m.index)
+  //           .split('\n')
+  //           .slice(0, -1)
+  //           .join('\n').length - 1
+  //       ),
+  //     }
+  //   })
 }
 
 const world = $(new World)
