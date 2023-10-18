@@ -2,7 +2,7 @@ import { $, alias, fn, fx, init } from 'signal'
 import { Point, Line, Rect, World } from 'std'
 import { debounce } from 'utils'
 import { Context } from './context.ts'
-import { RenderScene } from './render-scene.ts'
+import { RenderScene } from './render.ts'
 import { Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 
 const tempPoint = $(new Point)

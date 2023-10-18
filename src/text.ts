@@ -3,7 +3,7 @@ import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
 import { Context } from './context.ts'
 import { SourceToken } from './source.ts'
-import { RenderScene } from './render-scene.ts'
+import { RenderScene } from './render.ts'
 
 export class TextScene extends RenderScene {
   constructor(public ctx: Context) { super(ctx.world) }
@@ -30,7 +30,7 @@ export class TextScene extends RenderScene {
     this.needInit = false
   }
 
-  @fx set_rect_size_to_context_rect_size() {
+  @fx set_rect_size_to_editor_rect_size() {
     const { rect } = $.of(this.ctx)
     const { hasSize, size: { wh } } = $.when(rect)
     this.rect.setSize(wh)

@@ -1,7 +1,7 @@
 log.active
 import { $, fn, fx, init } from 'signal'
 import { Context } from './context.ts'
-import { RenderScene } from './render-scene.ts'
+import { RenderScene } from './render.ts'
 import { TextScene } from './text.ts'
 import { World } from 'std'
 
