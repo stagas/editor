@@ -90,6 +90,7 @@ export class Editor extends Render {
       Math.round(scrollPos.top) !== targetScroll.top ||
       Math.round(scrollPos.left) !== targetScroll.left
     $.untrack()
+    console.log(needAnim)
     if (needAnim) {
       this.needUpdate = true
     }
