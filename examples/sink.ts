@@ -44,9 +44,9 @@ $.batch(() => {
   editor.canvas.appendTo(dom.body)
   const source = $(new Source(tokenize))
   source.code = code //'[hello world]'
-  $.flush()
 
   editor.buffer.source = source
+  $.flush()
   editor.buffer.coli = 3
   editor.selection.start.set({ x: 3, y: 0 })
   editor.selection.end.set({ x: 7, y: 0 })
