@@ -15,7 +15,7 @@ export class Buffer {
   get code() { return $.of(this).source.code ?? '' }
   set code(v: string) { $.of(this).source.code = v }
 
-  @nulls get tokens() {
+  get tokens() {
     return $.of(this).source.tokens
   }
   get lines() {
