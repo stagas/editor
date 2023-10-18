@@ -11,7 +11,6 @@ export class Dims {
   constructor(
     public ctx: Context,
     public rect = ctx.rect
-
   ) { }
 
   // rect?: Rect
@@ -24,7 +23,7 @@ export class Dims {
   @fx update_lines() {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
     // $.untrack()
-    this.lines = lines
+    // this.lines = lines
   }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
