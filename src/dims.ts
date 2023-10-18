@@ -2,13 +2,10 @@ log.active
 import { $, fx, nu } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
-import { Editor } from './editor.ts'
+import { Comp } from './comp.ts'
 
-export class Dims {
-  constructor(
-    public ctx: Editor,
-    public rect = ctx.rect
-  ) { }
+export class Dims extends Comp {
+  rect = this.ctx.rect
 
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
