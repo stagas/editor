@@ -6,10 +6,8 @@ import { Keyboard } from './keyboard.ts'
 import { Mouse } from './mouse.ts'
 
 export class Input extends Comp {
-  get keyboard() {
-    return $(new Keyboard(this.ctx))
-  }
-  mouse?: Mouse
+  keyboard = $(new Keyboard(this.ctx))
+  mouse = $(new Mouse(this.ctx))
 
   textareaRect = $(new Rect, { w: 50, h: 50 })
   textarea: HTMLTextAreaElement = dom.el('textarea', {
