@@ -13,7 +13,6 @@ export abstract class RenderScene extends Scene {
   abstract draw(c: CanvasRenderingContext2D): void
 
   @fx update_initCanvas() {
-    console.log('what')
     const { c, size: { xy } } = $.of(this.canvas)
     this.initCanvas?.(c)
   }
