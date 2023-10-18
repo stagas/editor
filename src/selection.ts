@@ -27,7 +27,7 @@ export class Selection extends Render {
     return !this.start.equals(this.end)
   }
 
-  @fn getSelectionSorted = () => {
+  @fn getSelectionSorted () {
     const { selection, selectionSorted } = this
     // Line & forward
     let top: Point
