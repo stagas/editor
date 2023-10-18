@@ -11,6 +11,7 @@ import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
 import { World } from 'std'
+import { Caret } from './caret.ts'
 
 interface PointerItem { }
 
@@ -41,6 +42,7 @@ export class Editor extends Render {
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
+  caret = $(new Caret(this))
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
