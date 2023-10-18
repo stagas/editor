@@ -23,10 +23,6 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Render {
-  @init init_editor() {
-    this.canvas.fullWindow = true
-  }
-
   misc = $(new Misc)
   skin = {
     colors: {
@@ -44,6 +40,9 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
+  @init init_editor() {
+    this.canvas.fullWindow = true
+  }
   get scenes(): Render[] {
     const t = $.of(this)
     return [
