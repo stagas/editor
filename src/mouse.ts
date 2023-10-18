@@ -25,7 +25,6 @@ export class Mouse extends Comp {
     $.untrack()
     scroll.targetScroll.y -= deltaY * 0.2
     scroll.targetScroll.x -= deltaX * 0.2
-    console.log(scroll.targetScroll.text)
     scroll.animScrollStrategy = AnimScrollStrategy.Medium
   }
   @fn onPointerUp(){

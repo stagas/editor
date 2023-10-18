@@ -136,6 +136,7 @@ export class Scroll extends Comp {
 
     minScroll.top = top
     minScroll.left = left
+    console.log('MIN', top ,left)
   }
 
   @fx clamp_targetScroll_top() {
