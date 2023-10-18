@@ -1,8 +1,7 @@
 import { $ } from 'signal'
-import { Context } from './context.ts'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
 import { AnimScrollStrategy } from './scroll.ts'
-import { Editor } from './editor.ts'
+import { Comp } from './comp.ts'
 
 export interface Key {
   key: string
@@ -12,9 +11,7 @@ export interface Key {
   altKey?: boolean
 }
 
-export class Keyboard {
-  constructor(public ctx: Editor) { }
-
+export class Keyboard extends Comp {
   shiftKey = false
 
   specialKeys: any = {
