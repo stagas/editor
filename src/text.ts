@@ -5,7 +5,7 @@ import { Context } from './context.ts'
 import { SourceToken } from './source.ts'
 import { Render } from './render.ts'
 
-export class TextScene extends Render {
+export class Text extends Render {
   constructor(public ctx: Context) { super(ctx.world) }
 
   // TODO: where is this used??
