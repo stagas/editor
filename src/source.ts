@@ -14,7 +14,7 @@ export interface SourceToken {
 export class Source {
   constructor(public tokenize: Tokenize) { }
 
-  code?: string
+  code: string = ''
 
   get tokens() {
     const { code, tokenize } = $.of(this)
