@@ -31,7 +31,7 @@ export class Editor extends Render {
   misc = $(new Misc)
   skin = {
     colors: {
-      bgBright2: '#555'
+      bgBright2: '#333'
     }, fonts: { mono: 'monospace' }
   }
   colors: Colors = {}
