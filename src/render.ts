@@ -1,5 +1,5 @@
 log.active
-import { $, fx, init } from 'signal'
+import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 
 export abstract class Render extends Scene {
@@ -15,6 +15,7 @@ export abstract class Render extends Scene {
   needRender?: boolean
   needDraw?: boolean
   needInit?: boolean
+
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
@@ -23,10 +24,4 @@ export abstract class Render extends Scene {
     const { size: { text } } = $.of(this.canvas)
     this.needInit = true
   }
-
-  // @fx update_canvas_size() {
-  //   const { rect } = $.of(this)
-  //   const { hasSize } = $.when(rect)
-  //   this.canvas.size.set(rect.size)
-  // }
 }
