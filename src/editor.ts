@@ -23,7 +23,7 @@ export class Editor extends RenderScene {
     const { size } = $.of(world.canvas)
     rect.setSize(size)
   }
-  @fx triggerRenderDraw() {
+  @fx maybe_needDraw() {
     const { scenes } = $.of(this)
     let d = false
     for (const scene of scenes) {
@@ -33,6 +33,10 @@ export class Editor extends RenderScene {
     if (d) {
       this.needDraw = true
     }
+  }
+  @fx trigger_draw() {
+    $.when(this).needDraw
+    this.draw()
   }
   @fn initCanvas() {
     const { c } = $.of(this.world.canvas)
