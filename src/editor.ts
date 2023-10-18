@@ -34,8 +34,10 @@ export class Editor extends RenderScene {
       this.draw()
     }
   }
-  @fn initCanvas() { }
-  @fn render() { }
+  @fn initCanvas() {
+  }
+  @fn render() {
+  }
   @fn draw() {
     //!: draw
     const { rect, world, scenes } = $.of(this)
