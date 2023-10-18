@@ -39,7 +39,7 @@ export class Input extends Comp {
   }
 
   @fx move_textarea() {
-    const { x, y } = this.textareaRect.center
+    const { x, y } = this.textareaRect.pos
     this.textarea.style.transform = `translate(${x}px,${y}px)`
   }
 }
