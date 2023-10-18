@@ -43,4 +43,3 @@ export class Context extends Scene {
     this.selection = $(new Selection(this))
   }
 }
-
