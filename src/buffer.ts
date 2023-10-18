@@ -192,7 +192,7 @@ export class Buffer {
 
       if (y + h < viewSpan.top || y > viewSpan.bottom) continue
 
-      r = poolArrayGet(fillRects, i++, () => $(new Rect))
+      r = poolArrayGet(fillRects, i++, Rect.create)
 
       r.x = x
       r.y = y
