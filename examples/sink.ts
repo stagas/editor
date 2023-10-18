@@ -28,7 +28,7 @@ const code = String.raw`{ x:=
 `.repeat(10)
 
 function tokenize({ code }: { code: string }) {
-  return [...code.matchAll(/(?<word>[^\s\n]+)|(?<space>[\s\n]+)/gmi)]
+  return [...code.matchAll(/(?<word>[^\s\n]+)|(?<space>[\s\n]+)/g)]
     .map(m => {
       return {
         type: 'text',
