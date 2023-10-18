@@ -54,5 +54,6 @@ export class Editor extends RenderScene {
       scene.render()
       scene.draw(c)
     }
+    this.needDraw = false
   }
 }
