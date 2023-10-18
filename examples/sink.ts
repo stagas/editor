@@ -42,9 +42,9 @@ $.batch(() => {
   const editor = $.batch(() => $(new Editor(world)))
   world.canvas = editor.canvas
   editor.canvas.appendTo(dom.body)
-$.flush()
   const source = $(new Source(tokenize))
   source.code = code //'[hello world]'
+  $.flush()
 
   editor.buffer.source = source
   editor.buffer.coli = 3
