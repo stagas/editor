@@ -17,15 +17,15 @@ interface Skin {
 }
 
 export class Context extends Scene {
-  misc: any
-  skin: any
-  colors: any
-  history: any
-  buffer: any
-  scroll: any
-  dims: any
-  input: any
-  selection: any
+  misc!: $<Misc>
+  skin!: Skin
+  colors!: Record<string, string>
+  history!: $<History>
+  buffer!: $<Buffer>
+  scroll!: $<Scroll>
+  dims!: $<Dims>
+  input!: $<Input>
+  selection!: $<Selection>
 
   constructor(public world: World, public rect: Rect) {
     super(world)
