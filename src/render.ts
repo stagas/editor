@@ -1,11 +1,13 @@
 log.active
 import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
+import { Editor } from './editor'
 
 export abstract class Render extends Scene {
   constructor(
-    public world: World,
+    public ctx: Editor,
     public rect = $(new Rect),
+    public world: World = ctx.world,
     public canvas = $(new Canvas(world), { size: rect.$.size }),
     public pr = world.screen.$.pr,
   ) {

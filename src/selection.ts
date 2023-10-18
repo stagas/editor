@@ -14,7 +14,7 @@ class SortedLine extends Line {
 
 export class Selection extends Render {
   constructor(public ctx: Editor) {
-    super(ctx.world, ctx.rect)
+    super(ctx, ctx.rect)
   }
 
   // data

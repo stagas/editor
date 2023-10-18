@@ -7,7 +7,7 @@ import { SourceToken } from './source.ts'
 
 export class Text extends Render {
   constructor(public ctx: Editor) {
-    super(ctx.world, ctx.rect)
+    super(ctx, ctx.rect)
   }
 
   // TODO: where is this used??
