@@ -126,19 +126,18 @@ export class Scroll extends Comp {
     const { dims } = $.of(ctx)
     const { rect, innerSize, lineBottoms, overscrollX } = $.of(dims)
     const { w, h } = $.of(innerSize)
-console.log('MINNN', rect.text, innerSize.w, innerSize.h, overscrollX)
-    const top = -innerSize.h
+
+    const top = -h
       + Math.min(
         lineBottoms.at(-1) || 0,
         rect.h
       )
-    const left = -Math.max(0, (innerSize.w - rect.w) + overscrollX)
+    const left = -Math.max(0, (w - rect.w) + overscrollX)
 
     $.untrack()
 
     minScroll.top = top
     minScroll.left = left
-    console.log('MIN', top ,left)
   }
 
   @fx clamp_targetScroll_top() {
