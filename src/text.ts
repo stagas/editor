@@ -12,6 +12,7 @@ export class TextScene extends RenderScene {
   viewRect = $(new Rect)
 
   @fn initCanvas(c: CanvasRenderingContext2D) {
+    //!: initCanvas
     const { dims, skin } = $.of(this.ctx)
 
     c.imageSmoothingEnabled = false
