@@ -8,6 +8,7 @@ export class Brackets extends Render {
   rect2 = $(new Rect)
   viewRect = $(new Rect)
   isHidden = false
+  needInit = true
 
   @fx update_rect() {
     const { ctx, pr, rect, rect1, rect2 } = $.of(this)
@@ -67,7 +68,6 @@ export class Brackets extends Render {
   @fn draw(c: CanvasRenderingContext2D) {
     const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
     if (!isHidden) {
-      console.log(pr)
       rect1.drawImage(canvas.el, c, pr, true)
       rect2.drawImage(canvas.el, c, pr, true)
     }
