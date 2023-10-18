@@ -1,7 +1,6 @@
 import { $, fn } from 'signal'
 import { Line, Point } from 'std'
 import { debounce, deepMerge } from 'utils'
-import { Editor } from './editor.ts'
 import { Comp } from './comp.ts'
 
 export interface Snapshot {
