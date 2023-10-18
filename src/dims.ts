@@ -61,11 +61,11 @@ export class Dims {
 
   innerSize = $(new Point)
   @fx update_innerSize_width() {
-    const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
-    const w = longestLine * charWidth + scrollbarSize.w
-    $.untrack()
-    innerSize.w = w
-    log('innerSize.w', w)
+    // const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
+    // const w = longestLine * charWidth + scrollbarSize.w
+    // $.untrack()
+    this.innerSize.w = this.innerSizeWidth
+    // log('innerSize.w', w)
   }
 
   viewSpan = $(new Point)
