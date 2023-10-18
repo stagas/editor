@@ -46,8 +46,8 @@ $.batch(() => {
   source.code = code //'[hello world]'
 
   editor.buffer.source = source
-  $.flush()
   editor.buffer.coli = 3
+  $.flush()
   editor.selection.start.set({ x: 3, y: 0 })
   editor.selection.end.set({ x: 7, y: 0 })
 })
