@@ -37,7 +37,7 @@ function tokenize({ code }: { code: string }) {
     }))
 }
 
-const world = $(World)
+const world = $(new World)
 
 $.batch(() => {
   const editor = $(new Editor(world))
