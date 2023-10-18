@@ -17,16 +17,30 @@ interface Skin {
 }
 
 export class Context extends Scene {
-  constructor(public world: World, public rect: Rect) { super(world) }
+  misc: any
+  skin: any
+  colors: any
+  history: any
+  buffer: any
+  scroll: any
+  dims: any
+  input: any
+  selection: any
 
-  misc = $(new Misc)
-  skin: Skin = { colors: {}, fonts: { mono: 'monospace' } }
-  colors: Record<string, string> = {}
-  history = $(new History(this))
-  buffer = $(new Buffer(this, { Type: {} }))
-  scroll = $(new Scroll(this))
-  dims = $(new Dims(this))
-  input = $(new Input(this))
-  selection = $(new Selection(this))
+  constructor(public world: World, public rect: Rect) {
+    super(world)
+  }
+
+  @init init() {
+    this.misc = $(new Misc)
+    this.skin = { colors: {}, fonts: { mono: 'monospace' } }
+    this.colors = {}
+    this.history = $(new History(this))
+    this.buffer = $(new Buffer(this, { Type: {} }))
+    this.scroll = $(new Scroll(this))
+    this.dims = $(new Dims(this))
+    this.input = $(new Input(this))
+    this.selection = $(new Selection(this))
+  }
 }
 
