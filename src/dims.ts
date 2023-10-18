@@ -19,12 +19,21 @@ export class Dims {
   //   $.untrack()
   //   this.rect = rect
   // }
-  lines?: string[]
-  @fx update_lines() {
-    const { lines } = $.of($.of($.of(this.ctx).buffer).source)
-    // $.untrack()
-    this.lines = lines
+
+  get lines() {
+    return $.of($.of(this.ctx).buffer).source.lines
   }
+  // @fx update_lines() {
+  //   const { lines } = $.of($.of($.of(this.ctx).buffer).source)
+  //   // $.untrack()
+  //   this.lines = lines
+  // }
+  // lines?: string[]
+  // @fx update_lines() {
+  //   const { lines } = $.of($.of($.of(this.ctx).buffer).source)
+  //   // $.untrack()
+  //   this.lines = lines
+  // }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
