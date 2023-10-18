@@ -40,7 +40,7 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  @init init_editor() {
+  @init init_Editor() {
     this.canvas.fullWindow = true
   }
   get scenes(): Render[] {
