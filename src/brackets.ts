@@ -67,7 +67,6 @@ export class Brackets extends Render {
   }
   @fn draw(c: CanvasRenderingContext2D) {
     const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
-    c.scale(pr, pr)
     if (!isHidden) {
       rect1.drawImage(canvas.el, c, pr, true)
       rect2.drawImage(canvas.el, c, pr, true)
