@@ -17,7 +17,7 @@ html, body {
 `
 
 function tokenize({ code }: { code: string }) {
-  return [...code.matchAll(/(?<word>[\w|]+)|(?<space>\s+)/g)]
+  return [...code.matchAll(/(?<word>[\w\[\]]+)|(?<space>\s+)/g)]
     .map(m => {
       return {
         type: 'text',
