@@ -40,5 +40,5 @@ $.batch(() => {
   // $.flush()
 
   editor.buffer.source = source
+  editor.selection.end.set({ x: 3, y: 0 })
 })
-editor.selection.end.set({ x: 3, y: 0 })
