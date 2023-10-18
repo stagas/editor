@@ -35,6 +35,8 @@ export class Editor extends RenderScene {
     }
   }
   @fn initCanvas() {
+    const { c } = $.of(this.world.canvas)
+    c.imageSmoothingEnabled = false
   }
   @fn render() {
   }
