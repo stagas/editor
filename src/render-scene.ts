@@ -8,14 +8,14 @@ export abstract class RenderScene extends Scene {
   rect = $(new Rect)
   needRender?: boolean
   needDraw?: boolean
+  needInit?: boolean
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
 
-  @fx run_initCanvas() {
-    const { c, size: { xy } } = $.of(this.canvas)
-    $.untrack()
-    this.initCanvas?.(c)
+  @fx trigger_needInit_on_size() {
+    const { size: { xy } } = $.of(this.canvas)
+    this.needInit = true
   }
 
   @fx update_canvas_size() {
