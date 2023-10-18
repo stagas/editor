@@ -20,7 +20,7 @@ const code = String.raw`{ x:=
   8123    \
 [  [sin 3]  ]
 
-   }
+  }
 [lfo 456     \ [sin 46.92\] 1913    \* + ] [exp 2] [blp 300]* @ [blp 500 q:1] @LR+=
 [rate 30k1]
 [zoo 50      \ [lfo 1         \]22        \*+ 33.5+] [exp .8] [blp 300]* @LR+=
