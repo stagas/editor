@@ -7,6 +7,15 @@ import { Render } from './render.ts'
 export class Caret extends Render {
   pos = this.ctx.buffer.$.lineCol
 
+  blink?= false
+  hideWhenTyping?= false
+  hideWhenAway?= true
+  color1?= '#727'
+  color2?= '#555'
+  color1Focused?= '#f0f'
+  color2Focused?= '#fff'
+  caretColor?= '#fff'
+
   @fn initCanvas() {
 
   }
