@@ -1,4 +1,4 @@
-import { $, init } from 'signal'
+import { $, fx, init } from 'signal'
 import { Canvas, Rect, Scene } from 'std'
 
 export abstract class RenderScene extends Scene {
@@ -10,7 +10,8 @@ export abstract class RenderScene extends Scene {
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
-  @init init_initCanvas() {
-    this.initCanvas?.(this.canvas.c)
+  @fx update_initCanvas() {
+    const { c, size: { wh } } = $.of(this.canvas)
+    this.initCanvas?.(c)
   }
 }
