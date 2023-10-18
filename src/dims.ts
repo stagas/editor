@@ -21,7 +21,6 @@ export class Dims {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
     $.untrack()
     //!: update_lines
-    console.warn([...lines])
     this.lines = lines
   }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
