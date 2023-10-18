@@ -32,11 +32,11 @@ export class TextScene extends RenderScene {
     const { rect } = $.of(this.ctx)
     const { hasSize, size: { wh } } = $.when(rect)
     this.rect.setSize(wh)
-    this.needRender = true
   }
 
   @fx trigger_render() {
-    const { ctx } = this
+    const { ctx, rect } = this
+    const { size: { wh: size_wh } } = rect
     const { buffer, dims } = $.of(ctx)
     const {
       fontSize,
@@ -85,10 +85,10 @@ export class TextScene extends RenderScene {
         c.fillStyle
           = c.strokeStyle
           = '#fff'
-          // = skin.colors[color] ?? '#fff'
+        // = skin.colors[color] ?? '#fff'
 
-          c.strokeText(t.text, x, y)
-          c.fillText(t.text, x, y)
+        c.strokeText(t.text, x, y)
+        c.fillText(t.text, x, y)
       }
     }
     c.restore()
