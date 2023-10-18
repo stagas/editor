@@ -100,7 +100,8 @@ export class TextScene extends RenderScene {
 
   @fn draw(c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = $.of(this)
-    rect.drawImage(canvas.el, c, pr, true)
+    c.drawImage(canvas.el)
+    // rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
   }
 }
