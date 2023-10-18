@@ -60,12 +60,12 @@ export class TextScene extends RenderScene {
     const { tokens, Token } = $.of(buffer)
 
     log('tokens', tokens)
-    const c = canvas.c
-    // const c = oc ?? canvas.c
-    // if (!oc) {
-    //   rect.clear(c)
-    // }
+    const c = oc ?? canvas.c
+    if (!oc) {
+      rect.clear(c)
+    }
 
+    this.initCanvas(c)
     c.save()
     c.translate(scroll.x, scroll.y)
     for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
