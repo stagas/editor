@@ -33,6 +33,7 @@ export class Text extends Render {
   @fx set_rect_size_to_editor_rect_size() {
     const { rect } = $.of(this.ctx)
     const { hasSize, size: { wh } } = $.when(rect)
+    console.log('YO', wh)
     this.rect.setSize(wh)
   }
 
