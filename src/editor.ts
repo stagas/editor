@@ -147,6 +147,7 @@ export class Editor extends Render {
     if (!needUpdate) {
       this.needUpdate = false
     }
+    console.log(this.needUpdate)
     this.needDraw = true
   }
   render() { }
