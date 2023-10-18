@@ -13,6 +13,13 @@ export class Text extends Render {
   // TODO: where is this used??
   viewRect = $(new Rect)
 
+  @fx measure_charWidth() {
+    const { canvas, ctx } = $.of(this)
+    const { dims } = $.of(ctx)
+    const { c } = $.of(canvas)
+    const em = c.measureText('M')
+    dims.charWidth = em.width
+  }
   @fn initCanvas(c: CanvasRenderingContext2D) {
     const { dims, skin } = $.of(this.ctx)
 
@@ -25,9 +32,6 @@ export class Text extends Render {
     c.textAlign = 'left'
     c.textBaseline = 'bottom'
     c.lineWidth = dims.fontSize / 100
-
-    const em = c.measureText('M')
-    dims.charWidth = em.width
 
     this.needInit = false
   }
