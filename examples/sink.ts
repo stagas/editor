@@ -41,5 +41,4 @@ $.batch(() => {
   editor.buffer.source = source
   editor.buffer.coli = 3
   editor.selection.end.set({ x: 5, y: 0 })
-  editor.isFocused = true
 })
