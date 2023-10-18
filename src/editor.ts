@@ -33,18 +33,20 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-    misc = $(new Misc)
-    skin = { colors: {
+  misc = $(new Misc)
+  skin = {
+    colors: {
       bgBright2: '#555'
-    }, fonts: { mono: 'monospace' } }
-    colors: Colors = {}
-    history = $(new History(this))
-    buffer = $(new Buffer(this, { Type: {} }))
-    scroll = $(new Scroll(this))
-    dims = $(new Dims(this))
-    input = $(new Input(this))
-    selection = $(new Selection(this))
-    text = $(new Text(this))
+    }, fonts: { mono: 'monospace' }
+  }
+  colors: Colors = {}
+  history = $(new History(this))
+  buffer = $(new Buffer(this, { Type: {} }))
+  scroll = $(new Scroll(this))
+  dims = $(new Dims(this))
+  input = $(new Input(this))
+  selection = $(new Selection(this))
+  text = $(new Text(this))
 
   // ctx: Context = $(new Context(this.world, this.rect))
 
