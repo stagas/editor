@@ -2,7 +2,7 @@ log.active
 import { $, fx, init } from 'signal'
 import { Canvas, Rect, Scene } from 'std'
 
-export abstract class RenderScene extends Scene {
+export abstract class Render extends Scene {
   pr = this.world.screen.$.pr
   canvas = $(new Canvas(this.world))
   rect = $(new Rect)

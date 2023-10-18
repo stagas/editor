@@ -3,9 +3,9 @@ import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
 import { Context } from './context.ts'
 import { SourceToken } from './source.ts'
-import { RenderScene } from './render.ts'
+import { Render } from './render.ts'
 
-export class TextScene extends RenderScene {
+export class TextScene extends Render {
   constructor(public ctx: Context) { super(ctx.world) }
 
   // TODO: where is this used??

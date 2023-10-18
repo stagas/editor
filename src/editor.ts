@@ -1,11 +1,11 @@
 log.active
 import { $, fn, fx, init } from 'signal'
 import { Context } from './context.ts'
-import { RenderScene } from './render.ts'
+import { Render } from './render.ts'
 import { TextScene } from './text.ts'
 import { World } from 'std'
 
-export class Editor extends RenderScene {
+export class Editor extends Render {
   constructor(public world: World) {
     super(world)
     this.ctx = $(new Context(world, this.rect))
@@ -14,7 +14,7 @@ export class Editor extends RenderScene {
   ctx: Context
   text: TextScene
 
-  get scenes(): RenderScene[] {
+  get scenes(): Render[] {
     const { text } = $.of(this)
     return [text]
   }
