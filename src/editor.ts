@@ -1,5 +1,5 @@
 log.active
-import { $, fn, fx, init } from 'signal'
+import { $, fn, fx, init, nu } from 'signal'
 import { Render } from './render.ts'
 import { Text } from './text.ts'
 import { Selection } from './selection.ts'
@@ -54,7 +54,7 @@ export class Editor extends Render {
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
-  @nulls get scenes(): Render[] {
+  @nu get scenes(): Render[] {
     const t = $.of(this)
     return [
       t.selection,
