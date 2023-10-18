@@ -29,7 +29,8 @@ export class Dims {
   get lines() {
     return this.ctx.buffer?.source?.lines
   }
-  @nulls get longestLine() {
+  @nulls
+  get longestLine() {
     const { lines } = $.of(this)
     let longest = 0
     for (let i = 0, len = 0; i < lines.length; i++) {
