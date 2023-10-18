@@ -25,7 +25,7 @@ type Colors = Record<string, string>
 
 export class Editor extends Render {
   constructor(public world: World) {
-    super({ world } as any)
+    super({ world } as Editor)
   }
   misc = $(new Misc)
   skin = {
