@@ -8,7 +8,6 @@ export class Brackets extends Render {
   rect2 = $(new Rect)
   viewRect = $(new Rect)
   isHidden = false
-  needInit = true
 
   @fx update_rect() {
     const { ctx, pr, rect, rect1, rect2 } = $.of(this)
