@@ -1,5 +1,4 @@
 export * from './buffer.ts'
-export * from './context.ts'
 export * from './dims.ts'
 export * from './editor.ts'
 export * from './history.ts'
