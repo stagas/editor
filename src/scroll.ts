@@ -1,3 +1,4 @@
+log.active
 import { $, alias, fx } from 'signal'
 import { Point } from 'std'
 import { clamp } from 'utils'
