@@ -36,7 +36,8 @@ export class Editor extends RenderScene {
   }
   @fx trigger_draw() {
     $.when(this).needDraw
-    requestAnimationFrame(() => this.draw())
+    this.draw()
+    // requestAnimationFrame(() => this.draw())
   }
   @fn initCanvas() {
     const { c } = $.of(this.world.canvas)
