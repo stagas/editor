@@ -48,6 +48,7 @@ export class Text extends Render {
     const { source, tokens, Token } = $.of(buffer)
     $.untrack()
     this.viewRect.setSize(wh)
+
     this.needRender = true
   }
 
@@ -57,7 +58,7 @@ export class Text extends Render {
     const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
     const { tokens, Token } = $.of(buffer)
 
-    log('tokens', tokens)
+    // log('tokens', tokens)
     const c = oc ?? canvas.c
     if (!oc) {
       rect.clear(c)
@@ -98,6 +99,7 @@ export class Text extends Render {
   @fn draw(c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = $.of(this)
     rect.drawImage(canvas.el, c, pr, true)
+
     this.needDraw = false
   }
 }

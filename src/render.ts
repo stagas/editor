@@ -12,9 +12,9 @@ export abstract class Render extends Scene {
     super(world)
   }
 
+  needInit?: boolean
   needRender?: boolean
   needDraw?: boolean
-  needInit?: boolean
 
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
