@@ -43,7 +43,9 @@ export class Dims {
 
   // TODO: single point? char.width char.height ?
   charWidth: number = 1
-  get lineHeight() { return Math.round(this.fontSize * 1.5) }
+  get lineHeight() {
+    return Math.round(this.fontSize * 1.5)
+  }
 
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
