@@ -1,4 +1,4 @@
-import { $, init } from 'signal'
+import { $, fx, init } from 'signal'
 import { Rect } from 'std'
 import { dom } from 'utils'
 import { Comp } from './comp.ts'
@@ -33,5 +33,10 @@ export class Input extends Comp {
 
   @init append_textarea() {
     dom.body.append(this.textarea)
+  }
+
+  @fx move_textarea() {
+    const { x, y } = this.textareaRect.pos
+    this.textarea.style.transform = `translate(${x}px,${y}px)`
   }
 }
