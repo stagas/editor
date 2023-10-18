@@ -51,6 +51,6 @@ $.batch(() => {
 
   editor.buffer.source = source
   editor.buffer.coli = 3
-  editor.selection.start.set({ x: 3, y: 0 })
-  editor.selection.end.set({ x: 7, y: 0 })
+  // editor.selection.start.set({ x: 3, y: 0 })
+  // editor.selection.end.set({ x: 7, y: 0 })
 })
