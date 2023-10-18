@@ -39,6 +39,6 @@ $.batch(() => {
   source.code = 'hello world'
 
   editor.buffer.source = source
-  editor.buffer.col = 2
   editor.selection.end.set({ x: 3, y: 0 })
+  editor.buffer.col = 2
 })
