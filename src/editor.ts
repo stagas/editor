@@ -44,8 +44,8 @@ export class Editor extends RenderScene {
     const { c } = canvas
     rect.fill(c, '#224')
     for (const scene of scenes) {
-      scene.initCanvas(c)
-      scene.render(c)
+      // scene.initCanvas(c)
+      scene.render()
       scene.draw(c)
     }
   }
