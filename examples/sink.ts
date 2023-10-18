@@ -40,7 +40,7 @@ function tokenize({ code }: { code: string }) {
 const world = $(World)
 
 $.batch(() => {
-  const editor = $(Editor, [world])
+  const editor = $(new Editor(world))
   world.canvas = editor.canvas
   editor.canvas.appendTo(dom.body)
 
