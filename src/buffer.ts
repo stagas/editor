@@ -1,4 +1,4 @@
-import { $, fn, fx, init, nulls } from 'signal'
+import { $, fn, fx, init, nul } from 'signal'
 import { Line, Point, PointLike, Rect } from 'std'
 import { Source } from './source.ts'
 import { Context } from './context.ts'
