@@ -19,10 +19,10 @@ export class Dims {
   lines?: string[]
   @fx update_lines() {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
-    // $.untrack()
+    $.untrack()
     //!: update_lines
     console.warn([...lines])
-    this.lines = lines
+    // this.lines = lines
   }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
