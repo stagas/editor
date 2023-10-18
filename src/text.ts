@@ -53,7 +53,6 @@ export class TextScene extends RenderScene {
   }
 
   @fn render(oc?: CanvasRenderingContext2D) {
-    //!: render
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)
     const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
@@ -98,7 +97,6 @@ export class TextScene extends RenderScene {
   }
 
   draw(c: CanvasRenderingContext2D) {
-    //!: draw
     const { pr, canvas, rect } = $.of(this)
     rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
