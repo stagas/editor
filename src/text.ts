@@ -20,7 +20,6 @@ export class TextScene extends RenderScene {
     c.lineCap = 'round'
 
     c.font = `100 ${dims.fontSize}px ${skin.fonts.mono}`
-    console.log(c.font)
     c.textAlign = 'left'
     c.textBaseline = 'bottom'
     c.lineWidth = dims.fontSize / 100
@@ -61,10 +60,11 @@ export class TextScene extends RenderScene {
     const { tokens, Token } = $.of(buffer)
 
     log('tokens', tokens)
-    const c = oc ?? canvas.c
-    if (!oc) {
-      rect.clear(c)
-    }
+    const c = canvas.c
+    // const c = oc ?? canvas.c
+    // if (!oc) {
+    //   rect.clear(c)
+    // }
 
     c.save()
     c.translate(scroll.x, scroll.y)
