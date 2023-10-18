@@ -48,6 +48,7 @@ export class Editor extends Render {
   @fn draw() {
     const { rect, scenes, canvas } = $.of(this)
     const { c } = canvas
+    console.log(rect.size.text)
     rect.fill(c, '#224')
     for (const scene of scenes) {
       if (scene.needInit) scene.initCanvas(scene.canvas.c)
