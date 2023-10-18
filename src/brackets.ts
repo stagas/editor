@@ -4,7 +4,6 @@ import { Render } from './render.ts'
 import { Rect } from 'std'
 
 export class Brackets extends Render {
-  rect = $(new Rect)
   rect1 = $(new Rect)
   rect2 = $(new Rect)
   viewRect = $(new Rect)
