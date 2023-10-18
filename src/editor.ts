@@ -31,7 +31,7 @@ export class Editor extends RenderScene {
       d ||= needRender || needDraw || false
     }
     if (d) {
-      this.draw()
+      this.needDraw = true
     }
   }
   @fn initCanvas() {
