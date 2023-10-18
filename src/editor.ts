@@ -1,9 +1,7 @@
 log.active
-import { $, fn, fx, init } from 'signal'
-import { Context } from './context.ts'
+import { $, fn, fx } from 'signal'
 import { Render } from './render.ts'
 import { Text } from './text.ts'
-import { World } from 'std'
 import { Selection } from './selection.ts'
 import { Input } from './input.ts'
 import { Dims } from './dims.ts'

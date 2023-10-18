@@ -1,11 +1,10 @@
 log.active
 import { $, alias, fn, fx, init } from 'signal'
-import { Point, Line, Rect, World } from 'std'
+import { Line, Point, Rect, World } from 'std'
 import { debounce } from 'utils'
-import { Context } from './context.ts'
+import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
-import { Editor } from './editor.ts'
 
 const tempPoint = $(new Point)
 

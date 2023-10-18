@@ -1,13 +1,10 @@
-import { $, alias, fn, fx, init } from 'signal'
-import { Point } from 'std'
-import { Context } from './context.ts'
-import { Key, Keyboard } from './keyboard.ts'
-import { Mouse } from './mouse.ts'
+import { $ } from 'signal'
 import { dom } from 'utils'
-import { Editor } from './editor.ts'
+import { Comp } from './comp.ts'
+import { Keyboard } from './keyboard.ts'
+import { Mouse } from './mouse.ts'
 
-export class Input {
-  constructor(public ctx: Editor) { }
+export class Input extends Comp {
   get keyboard() {
     return $(new Keyboard(this.ctx))
   }
