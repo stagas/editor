@@ -1,5 +1,5 @@
 log.active
-import { $, fx, nul } from 'signal'
+import { $, fx, nu } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
 import { Context } from './context.ts'
@@ -29,8 +29,7 @@ export class Dims {
   get lines() {
     return this.ctx.buffer?.source?.lines
   }
-  @nul
-  get longestLine() {
+  @nu get longestLine() {
     const { lines } = $.of(this)
     let longest = 0
     for (let i = 0, len = 0; i < lines.length; i++) {
@@ -45,8 +44,7 @@ export class Dims {
   get overscrollX() {
     return this.charWidth * 2
   }
-  @nul
-  get innerSizeWidth() {
+  @nu get innerSizeWidth() {
     const { longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
