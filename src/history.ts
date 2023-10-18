@@ -2,6 +2,7 @@ import { $, fn } from 'signal'
 import { Line, Point } from 'std'
 import { debounce, deepMerge } from 'utils'
 import { Editor } from './editor.ts'
+import { Comp } from './comp.ts'
 
 export interface Snapshot {
   code: string
@@ -19,9 +20,7 @@ export interface EditorViewState {
   history: Snapshot[]
 }
 
-export class History {
-  constructor(public ctx: Editor) { }
-
+export class History extends Comp {
   viewState: EditorViewState = {
     coli: 0,
     lineCol: $(new Point),
