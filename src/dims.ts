@@ -55,20 +55,13 @@ export class Dims {
   lineHeights: number[] = [0]
 
   @nulls get innerSizeWidth() {
-    const { lines, longestLine, charWidth, scrollbarSize } = $.of(this)
+    const { longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
 
   get innerSize() {
     return $(new Point, { x: $(this).$.innerSizeWidth })
   }
-  // @fx update_innerSize_width() {
-  //   // const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
-  //   // const w = longestLine * charWidth + scrollbarSize.w
-  //   // $.untrack()
-  //   this.innerSize.w = this.innerSizeWidth
-  //   // log('innerSize.w', w)
-  // }
 
   viewSpan = $(new Point)
   @fx update_viewSpan() {
