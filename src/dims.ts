@@ -176,8 +176,6 @@ export class Dims {
     }
 
     innerSize.h = lineBottoms.at(-1) || 0
-
-    $.flush()
   }
 
   get longestLine() {
