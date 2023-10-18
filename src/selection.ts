@@ -1,3 +1,4 @@
+log.active
 import { $, alias, fn, fx, init } from 'signal'
 import { Point, Line, Rect, World } from 'std'
 import { debounce } from 'utils'
@@ -10,43 +11,6 @@ const tempPoint = $(new Point)
 class SortedLine extends Line {
   forward?: boolean
 }
-
-// export class SelectionView extends Render {
-//   constructor(public world: World, public target: Selection) { super(world) }
-//   viewRect = $(new Rect)
-//   isHidden = false
-//   selectionSorted?: SortedLine
-//   topPx = $(new Point)
-//   bottomPx = $(new Point)
-
-//   @fx triggerRender() {
-//     const { viewRect: vr, target: t, topPx, bottomPx } = $.of(this)
-//     const { ctx } = $.of(t)
-//     const { buffer, dims } = $.of(ctx)
-//     const selectionSorted = t.getSelectionSorted()
-//     $.untrack()
-//     this.selectionSorted = selectionSorted
-//     const a = buffer.getPointFromLineCol(selectionSorted.top, topPx)
-//     const b = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
-//     b.y += dims.lineHeight
-//     vr.top = a.y
-//     vr.left = Math.min(a.x, b.x)
-//     vr.w = Math.max(a.x, b.x) - vr.left
-//     vr.h = b.y - a.y
-//     this.needRender = true
-//   }
-
-//   @fx triggerRenderOnScroll() {
-//     const { target: t } = this
-//     const { ctx } = $.of(t)
-//     const { dims } = $.of(ctx)
-//     const { scroll: { xy } } = $.of(dims)
-//     $.untrack()
-//     this.needRender = true
-//   }
-
-
-// }
 
 export class Selection extends Render {
   constructor(public ctx: Context) {
@@ -246,7 +210,6 @@ export class Selection extends Render {
     const { scroll } = $.of(dims)
     let { c } = $.of(canvas)
 
-    //!: render
     if (hasSelection) {
       log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
       if (oc) {
