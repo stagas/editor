@@ -18,8 +18,8 @@ export class Editor extends Render {
   get scenes(): Render[] {
     const { ctx, text } = $.of(this)
     return [
-      text,
       ctx.selection,
+      text,
     ]
   }
   @fx maybe_needDraw() {
