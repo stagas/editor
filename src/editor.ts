@@ -51,6 +51,7 @@ export class Editor extends Render {
   deco: WidgetLike[] = []
 
   needUpdate = false
+  needDirectDraw = false
 
   @init init_Editor() {
     this.canvas.fullWindow = true
@@ -102,7 +103,7 @@ export class Editor extends Render {
     this.needInit = false
     this.needDraw = true
   }
-  @fn update = () => {
+  @fn update () {
     const { misc, dims, scroll } = $.of(this)
     const { isTyping } = $.of(misc)
     const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
@@ -143,14 +144,20 @@ export class Editor extends Render {
     misc.isScrolling = isScrolling
 
     // check if we need further updates
-    let needUpdate = isScrolling
+    // let needUpdate = isScrolling
 
-    if (!needUpdate) {
+    if (!isScrolling) {
       this.needUpdate = false
+      this.needDraw = true
+      return 0
+    }
+    else {
+      this.needDirectDraw = true
+      this.needDraw = true
+      return 1
     }
     // console.log(this.needUpdate)
-    this.needDraw = true
-    return +this.needUpdate
+    // return +this.needUpdate
   }
   updateOne() {
     return 1
@@ -162,10 +169,21 @@ export class Editor extends Render {
 
     rect.fill(c, '#224')
 
-    for (const scene of scenes) {
-      scene.needInit && scene.initCanvas(scene.canvas.c)
-      scene.needRender && scene.render()
-      scene.draw(c)
+    if (this.needDirectDraw) {
+      for (const scene of scenes) {
+        scene.needInit && scene.initCanvas(c)
+        // scene.needRender &&
+        scene.render(c)
+        // scene.draw(c)
+      }
+      this.needDirectDraw = false
+    }
+    else {
+      for (const scene of scenes) {
+        scene.needInit && scene.initCanvas(scene.canvas.c)
+        scene.needRender && scene.render()
+        scene.draw(c)
+      }
     }
 
     this.needDraw = false
