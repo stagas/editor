@@ -13,10 +13,6 @@ export class Dims {
     public rect = ctx.rect
   ) { }
 
-  get lines() {
-    return this.ctx.buffer?.source?.lines
-  }
-
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -24,45 +20,42 @@ export class Dims {
   fontSize = 12
   fontsReady = true //?: boolean
 
-  // TODO: single point? char.width char.height ?
-  charWidth: number = 1
-  get lineHeight() {
-    return Math.round(this.fontSize * 1.5)
-  }
-
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
   scrollbarSize = $(new Point, { x: 13, y: 7 })
 
+  // TODO: single point? char.width char.height ?
+  charWidth: number = 1
+
+  get lineHeight() {
+    return Math.round(this.fontSize * 1.5)
+  }
+  get lines() {
+    return this.ctx.buffer?.source?.lines
+  }
+  @nulls get longestLine() {
+    const { lines } = $.of(this)
+    let longest = 0
+    for (let i = 0, len = 0; i < lines.length; i++) {
+      len = lines[i].length
+      if (len > longest) longest = len
+    }
+    return longest
+  }
   get scroll() {
     return this.ctx.scroll.pos
   }
-
   get overscrollX() {
     return this.charWidth * 2
   }
-
-  /** Top of the line, above decorations. */
-  lineTops: number[] = [0]
-  /** Base line top, at the character's top position. */
-  lineBaseTops: number[] = [0]
-  /** Base line bottom, at the character's bottom position.  */
-  lineBaseBottoms: number[] = [0]
-  /** Bottom of the line, below subs. */
-  lineBottoms: number[] = [0]
-  /** Line heights, including decorations, extra and subs. */
-  lineHeights: number[] = [0]
-
   @nulls get innerSizeWidth() {
     const { longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
-
   get innerSize() {
     return $(new Point, { x: $(this).$.innerSizeWidth })
   }
-
   get viewSpanTop() {
     const { scroll } = $.of(this)
     return -scroll.y
@@ -74,14 +67,6 @@ export class Dims {
   get viewSpan() {
     return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
   }
-  // @fx update_viewSpan() {
-  //   const { scroll, rect, lineHeight, viewSpan } = $.of(this)
-  //   const top = -scroll.y
-  //   const bottom = top + rect.h + lineHeight
-  //   $.untrack()
-  //   viewSpan.top = top
-  //   viewSpan.bottom = bottom
-  // }
 
   get lastVisibleLine() {
     const { lines, deco, sub } = $.of(this)
@@ -91,7 +76,6 @@ export class Dims {
       ...sub.map(wi => wi.dim.line),
     ) + 1
   }
-
   get decoHeights() {
     const { lastVisibleLine, deco } = $.of(this)
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
@@ -107,7 +91,6 @@ export class Dims {
 
     return decoHeights
   }
-
   get subHeights() {
     const { lastVisibleLine, sub } = $.of(this)
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
@@ -123,7 +106,6 @@ export class Dims {
 
     return subHeights
   }
-
   /** Stores deco extra height when there are empty lines above. */
   get extraDecoHeights() {
     const { lines, lineHeight, lastVisibleLine } = $.of(this)
@@ -136,6 +118,16 @@ export class Dims {
       return curr
     })
   }
+  /** Top of the line, above decorations. */
+  lineTops: number[] = [0]
+  /** Base line top, at the character's top position. */
+  lineBaseTops: number[] = [0]
+  /** Base line bottom, at the character's bottom position.  */
+  lineBaseBottoms: number[] = [0]
+  /** Bottom of the line, below subs. */
+  lineBottoms: number[] = [0]
+  /** Line heights, including decorations, extra and subs. */
+  lineHeights: number[] = [0]
 
   @fx update_lineDims() {
     const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
@@ -160,33 +152,19 @@ export class Dims {
     if (!arraysEqual(lineTops, this.lineTops)) {
       this.lineTops = lineTops
     }
-
     if (!arraysEqual(lineBaseTops, this.lineBaseTops)) {
       this.lineBaseTops = lineBaseTops
     }
-
     if (!arraysEqual(lineBaseBottoms, this.lineBaseBottoms)) {
       this.lineBaseBottoms = lineBaseBottoms
     }
-
     if (!arraysEqual(lineBottoms, this.lineBottoms)) {
       this.lineBottoms = lineBottoms
     }
-
     if (!arraysEqual(lineHeights, this.lineHeights)) {
       this.lineHeights = lineHeights
     }
 
     innerSize.h = lineBottoms.at(-1) || 0
-  }
-
-  @nulls get longestLine() {
-    const { lines } = $.of(this)
-    let longest = 0
-    for (let i = 0, len = 0; i < lines.length; i++) {
-      len = lines[i].length
-      if (len > longest) longest = len
-    }
-    return longest
   }
 }
