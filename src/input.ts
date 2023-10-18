@@ -38,11 +38,12 @@ export class Input extends Comp {
   @fx textarea_follows_pointer() {
     const { xy } = this.ctx.world.pointer.pos
     $.untrack()
-    console.log('move')
     this.textareaRect.center.set(xy)
   }
   @fx move_textarea() {
     const { x, y } = this.textareaRect.pos
-    this.textarea.style.transform = `translate(${x}px,${y}px)`
+    requestAnimationFrame(() => {
+      this.textarea.style.transform = `translate(${x}px,${y}px)`
+    })
   }
 }
