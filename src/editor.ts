@@ -5,7 +5,7 @@ import { Text } from './text.ts'
 import { Selection } from './selection.ts'
 import { Input } from './input.ts'
 import { Dims } from './dims.ts'
-import { Scroll } from './scroll.ts'
+import { AnimScrollStrategy, Scroll } from './scroll.ts'
 import { Buffer } from './buffer.ts'
 import { History } from './history.ts'
 import { Misc } from './misc.ts'
@@ -13,6 +13,7 @@ import { WidgetLike } from './widgets.ts'
 import { World } from 'std'
 import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
+import { clamp } from 'utils'
 
 interface PointerItem { }
 
@@ -48,6 +49,8 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
+  needUpdate = false
+
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
@@ -76,13 +79,76 @@ export class Editor extends Render {
     this.draw()
     // requestAnimationFrame(() => this.draw())
   }
+  @fx when_needUpdate_trigger_update() {
+    $.when(this).needUpdate
+    this.update()
+    // requestAnimationFrame(() => this.draw())
+  }
+  @fx trigger_update_when_scroll() {
+    const { pos: scrollPos, targetScroll } = $.of(this.scroll)
+    const needAnim =
+      Math.round(scrollPos.top) !== targetScroll.top ||
+      Math.round(scrollPos.left) !== targetScroll.left
+    $.untrack()
+    if (needAnim) {
+      this.needUpdate = true
+    }
+  }
   @fn initCanvas() {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
     this.needInit = false
     this.needDraw = true
   }
-  render() {}
+  @fn update = () => {
+    const { misc, dims, scroll } = $.of(this)
+    const { isTyping } = $.of(misc)
+    const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
+
+    const dy = (targetScroll.y - scrollPos.y)
+    const dx = (targetScroll.x - scrollPos.x)
+
+    const ady = Math.abs(dy)
+    const adx = Math.abs(dx)
+
+    // TODO: bezier? need to save eventTime to make the normal t
+    // will need a lerped t to smooth out changes
+    const { distance, tension, amount, min } =
+      (adx + ady > 55)
+        || isTyping
+        // || $.isHandlingScrollbar
+        ? animScrollStrategy
+        : AnimScrollStrategy.Slow
+
+    let isScrolling = false
+    if (ady > 1) {
+      scrollPos.y += dy * (clamp(0, 1, (ady / distance)) ** tension * amount + min)
+      isScrolling = true
+    }
+    else if (dy) {
+      scrollPos.y = targetScroll.y
+    }
+
+    if (adx > 1) {
+      scrollPos.x += dx * (clamp(0, 1, (adx / distance)) ** tension * amount + min)
+      isScrolling = true
+    }
+    else if (dx) {
+      scrollPos.x = targetScroll.x
+    }
+
+    misc.wasScrolling = misc.isScrolling
+    misc.isScrolling = isScrolling
+
+    // check if we need further updates
+    let needUpdate = isScrolling
+
+    if (!needUpdate) {
+      this.needUpdate = false
+    }
+    this.needDraw = true
+  }
+  render() { }
   @fn draw() {
     const { rect, scenes, canvas } = $.of(this)
     const { c } = canvas
@@ -96,5 +162,8 @@ export class Editor extends Render {
     }
 
     this.needDraw = false
+    if (this.needUpdate) {
+      requestAnimationFrame(this.update)
+    }
   }
 }
