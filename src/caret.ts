@@ -107,7 +107,6 @@ export class Caret extends Render {
     const { dims } = $.of(ctx)
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
-
     if (!isHidden) {
       log('lineCol', line, col)
       c.save()
@@ -118,8 +117,6 @@ export class Caret extends Render {
       ind.draw(c)
       c.restore()
     }
-
-    console.log(pos)
     this.needDraw = false
   }
 }
