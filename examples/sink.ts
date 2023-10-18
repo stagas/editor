@@ -29,9 +29,9 @@ function tokenize({ code }: { code: string }) {
 }
 
 const world = $(new World)
-$.batch(() => {
 
 const editor = $(new Editor(world))
+$.batch(() => {
 world.canvas = editor.canvas
 editor.canvas.appendTo(dom.body)
 
