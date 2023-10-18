@@ -31,7 +31,8 @@ export class TextScene extends RenderScene {
   @fx resizeCanvas() {
     const { rect } = $.of(this.ctx)
     const { hasSize } = $.when(rect)
-    this.canvas.size.set(this.ctx.rect.size)
+    this.rect.size.set(this.ctx.rect.size)
+    // this.canvas.size.set(this.ctx.rect.size)
   }
 
   @fx triggerRender() {
