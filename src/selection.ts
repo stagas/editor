@@ -201,7 +201,9 @@ export class Selection extends Render {
     this.needRender = true
   }
 
-  initCanvas() {}
+  @fn initCanvas() {
+    this.needRender = true
+  }
 
   @fn render(oc?: CanvasRenderingContext2D) {
     const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
