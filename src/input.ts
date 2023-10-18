@@ -9,10 +9,7 @@ export class Input extends Comp {
   keyboard = $(new Keyboard(this.ctx))
   mouse = $(new Mouse(this.ctx))
 
-  textareaRect = $(new Rect, {
-    cx: this.ctx.world.pointer.pos.$.x,
-    cy: this.ctx.world.pointer.pos.$.y,
-    w: 50, h: 50 })
+  textareaRect = $(new Rect, { w: 50, h: 50 })
   textarea: HTMLTextAreaElement = dom.el('textarea', {
     spellcheck: false,
     autocorrect: 'off',
@@ -38,6 +35,12 @@ export class Input extends Comp {
     dom.body.append(this.textarea)
   }
 
+  @fx textarea_follows_pointer() {
+    const { x, y } = this.ctx.world.pointer.pos
+    const r = this.textareaRect
+    r.center.x = x
+    r.center.y = y
+  }
   @fx move_textarea() {
     const { x, y } = this.textareaRect.pos
     this.textarea.style.transform = `translate(${x}px,${y}px)`
