@@ -20,6 +20,7 @@ export class TextScene extends RenderScene {
     c.lineCap = 'round'
 
     c.font = `100 ${dims.fontSize}px ${skin.fonts.mono}`
+    console.log(c.font)
     c.textAlign = 'left'
     c.textBaseline = 'bottom'
     c.lineWidth = dims.fontSize / 100
