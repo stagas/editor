@@ -23,6 +23,7 @@ export class Source {
 
   get lines() {
     const { code } = $.of(this)
+    console.log('UPDATE', code)
     return code.split('\n')
   }
 }
