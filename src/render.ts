@@ -18,9 +18,9 @@ export abstract class Render extends Scene {
     this.needInit = true
   }
 
-  // @fx update_canvas_size() {
-  //   const { rect } = $.of(this)
-  //   const { hasSize } = $.when(rect)
-  //   this.canvas.size.set(rect.size)
-  // }
+  @fx update_canvas_size() {
+    const { rect } = $.of(this)
+    const { hasSize } = $.when(rect)
+    this.canvas.size.set(rect.size)
+  }
 }
