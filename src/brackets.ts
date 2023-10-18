@@ -45,7 +45,7 @@ export class Brackets extends Render {
       viewRect.zero().combine(r1).combine(r2)
       this.isHidden = false
     }
-    this.needDraw = true
+    this.needRender = true
   }
   @fn initCanvas(c: CanvasRenderingContext2D) {
     c.translate(.5, .5)
