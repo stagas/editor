@@ -30,6 +30,7 @@ export class Editor extends Render {
   constructor(public world: World) {
     super({ world } as Editor)
   }
+  coeff = 1
   misc = $(new Misc)
   skin = {
     colors: {
@@ -149,6 +150,10 @@ export class Editor extends Render {
     }
     // console.log(this.needUpdate)
     this.needDraw = true
+    return +this.needUpdate
+  }
+  updateOne() {
+    return 1
   }
   render() { }
   @fn draw() {
