@@ -28,12 +28,12 @@ function tokenize({ code }: { code: string }) {
     })
 }
 
+  const source = $(new Source(tokenize))
+  source.code = 'hello world'
+  // $.flush()
+
 $.batch(() => {
   const world = $(new World)
-
-    const source = $(new Source(tokenize))
-    source.code = 'hello world'
-    $.flush()
 
   const editor = $(new Editor(world))
   world.canvas = editor.canvas
