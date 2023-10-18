@@ -44,7 +44,8 @@ export class Dims {
   get overscrollX() {
     return this.charWidth * 2
   }
-  @nulls get innerSizeWidth() {
+  @nulls
+  get innerSizeWidth() {
     const { longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
