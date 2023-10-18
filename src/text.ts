@@ -29,6 +29,7 @@ export class TextScene extends RenderScene {
   }
 
   @fx resizeCanvas() {
+    $.flush()
     this.canvas.size.set(this.ctx.rect.size)
     console.log(this.canvas.size.text)
   }
