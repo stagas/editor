@@ -31,18 +31,21 @@ function tokenize({ code }: { code: string }) {
   const regex = /(?<word>[^\s]+)|(?<space>[\s]+)/g;
   let line = 0; // Initialize line and col as 0
   let col = 0;
+  let c
 
   return [...code.matchAll(regex)].map(match => {
     const { word, space } = match.groups as any;
 
     if (word) {
+      c = col
       col += word.length;
-      return { type: 'text', text: word, line, col: col - word.length };
+      return { type: 'text', text: word, line, col: c };
     } else if (space) {
       const newlineCount = (space.match(/\n/g) || []).length;
       line += newlineCount;
+      c = col
       col = newlineCount === 0 ? col + space.length : 0; // Reset col to 0 when a newline is encountered
-      return { type: 'text', text: space, line, col: col - space.length };
+      return { type: 'text', text: space, line, col: c };
     }
 
     return null;
