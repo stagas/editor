@@ -164,8 +164,8 @@ export class Editor extends Render {
     }
 
     this.needDraw = false
-    if (this.needUpdate) {
-      requestAnimationFrame(this.update)
-    }
+    // if (this.needUpdate) {
+    //   requestAnimationFrame(this.update)
+    // }
   }
 }
