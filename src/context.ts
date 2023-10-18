@@ -25,9 +25,7 @@ export class Context extends Scene {
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
   scroll = $(new Scroll(this))
-  get dims() {
-    return $.batch(() => $.untracked(() => $(new Dims(this))))
-  }
+  dims = $(new Dims(this))
   input = $(new Input(this))
   selection = $(new Selection(this))
 }
