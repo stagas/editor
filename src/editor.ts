@@ -43,7 +43,7 @@ export class Editor extends Render {
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
-  caret = $(new Caret(this))
+  caret = $(new Caret(this), { blink: true })
   brackets = $(new Brackets(this))
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
