@@ -1,3 +1,4 @@
+log.active
 import { $, init } from 'signal'
 import { Rect, Scene, World } from 'std'
 import { Dims } from './dims.ts'
