@@ -76,6 +76,7 @@ export class Dims {
     const bottom = top + rect.h + lineHeight
     $.untrack()
     //!: update_viewSpan
+    console.log(top, bottom)
     viewSpan.top = top
     viewSpan.bottom = bottom
   }
