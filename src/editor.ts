@@ -6,20 +6,20 @@ import { Text } from './text.ts'
 import { World } from 'std'
 
 export class Editor extends Render {
+  ctx: Context
+  text: Text
   constructor(public world: World) {
     super(world)
     this.canvas.fullWindow = true
     this.ctx = $(new Context(world, this.rect))
     this.text = $(new Text(this.ctx))
   }
-  ctx: Context
-  text: Text
 
   get scenes(): Render[] {
     const { ctx, text } = $.of(this)
     return [
-      ctx.selection,
       text,
+      ctx.selection,
     ]
   }
   @fx maybe_needDraw() {
