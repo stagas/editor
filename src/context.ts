@@ -42,7 +42,7 @@ export class Context extends Scene {
 
   _props: any
   constructor(
-    world: World,
+    public world: World,
     rect: Rect
   ) {
     super(world)
