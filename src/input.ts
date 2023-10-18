@@ -36,6 +36,7 @@ export class Input extends Comp {
     dom.body.append(this.textarea)
   }
   @fx textarea_follows_pointer() {
+    console.log('move')
     this.textareaRect.center.set(this.ctx.world.pointer.pos)
   }
   @fx move_textarea() {
