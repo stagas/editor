@@ -28,11 +28,10 @@ export class TextScene extends RenderScene {
     dims.charWidth = em.width
   }
 
-  @fx resizeCanvas() {
+  @fx set_rect_size_to_context_rect_size() {
     const { rect } = $.of(this.ctx)
     const { hasSize } = $.when(rect)
-    this.rect.size.set(this.ctx.rect.size)
-    this.canvas.size.set(this.ctx.rect.size)
+    this.rect.size.set(rect.size)
   }
 
   @fx triggerRender() {
