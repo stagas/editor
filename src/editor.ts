@@ -1,5 +1,5 @@
 log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx, init } from 'signal'
 import { Render } from './render.ts'
 import { Text } from './text.ts'
 import { Selection } from './selection.ts'
