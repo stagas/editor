@@ -29,4 +29,8 @@ export class Input extends Comp {
       `
     }
   })
+
+  @init append_textarea() {
+    dom.body.append(this.textarea)
+  }
 }
