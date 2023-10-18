@@ -65,7 +65,7 @@ export class TextScene extends RenderScene {
     }
 
     c.save()
-    // c.translate(scroll.x, scroll.y)
+    c.translate(scroll.x, scroll.y)
     for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
       t = tokens![i]
 
@@ -92,6 +92,8 @@ export class TextScene extends RenderScene {
     }
     c.restore()
 
+    c.fillStyle = '#f00'
+    c.fillRect(0, 0, 50, 50)
     this.needRender = false
     this.needDraw = true
   }
