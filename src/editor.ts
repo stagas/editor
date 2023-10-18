@@ -23,9 +23,9 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Render {
-  _ = $.batch(() => {
+  @init init_editor() {
     this.canvas.fullWindow = true
-  })
+  }
 
   misc = $(new Misc)
   skin = {
