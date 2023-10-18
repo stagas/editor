@@ -55,7 +55,7 @@ export class Brackets extends Render {
     c.strokeStyle = '#f2a'
     c.lineWidth = 1
 
-    rect.clear(c)
+    // rect.clear(c)
     c.strokeRect(
       3,
       4,
