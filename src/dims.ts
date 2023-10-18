@@ -5,24 +5,20 @@ import { arraysEqual } from 'utils'
 import { WidgetLike } from './widgets.ts'
 import { Context } from './context.ts'
 
-interface PointerItem { }
-
 export class Dims {
   constructor(
     public ctx: Context,
     public rect = ctx.rect
   ) { }
 
-  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
-  deco: WidgetLike[] = []
-
-  blinkDelay = 270 // TODO: sync to beat
-  fontSize = 12
-  fontsReady = true //?: boolean
-
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
+
+  fontSize = 12
+  fontsReady = true //?: boolean
+
+  blinkDelay = 270 // TODO: sync to beat
   scrollbarSize = $(new Point, { x: 13, y: 7 })
 
   // TODO: single point? char.width char.height ?
@@ -68,7 +64,8 @@ export class Dims {
     return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
   }
   get lastVisibleLine() {
-    const { lines, deco, sub } = $.of(this)
+    const { lines, ctx } = $.of(this)
+    const { deco, sub } = $.of(ctx)
     return Math.max(
       lines.length,
       ...deco.map(wi => wi.dim.line),
@@ -76,7 +73,9 @@ export class Dims {
     ) + 1
   }
   get decoHeights() {
-    const { lastVisibleLine, deco } = $.of(this)
+    const { lastVisibleLine, ctx } = $.of(this)
+    const { deco } = $.of(ctx)
+
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const item of deco) {
       if (item.dim.line >= decoHeights.length) continue
@@ -89,7 +88,9 @@ export class Dims {
     return decoHeights
   }
   get subHeights() {
-    const { lastVisibleLine, sub } = $.of(this)
+    const { lastVisibleLine, ctx } = $.of(this)
+    const { sub } = $.of(ctx)
+
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const item of sub) {
       if (item.dim.line >= subHeights.length) continue

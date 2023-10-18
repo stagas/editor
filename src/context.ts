@@ -8,6 +8,9 @@ import { Misc } from './misc.ts'
 import { History } from './history.ts'
 import { Input } from './input.ts'
 import { Selection } from './selection.ts'
+import { WidgetLike } from './widgets.ts'
+
+interface PointerItem { }
 
 interface Skin {
   colors: Record<string, string>
@@ -33,6 +36,9 @@ export class Context extends Scene {
   dims!: $<Dims>
   input!: $<Input>
   selection!: $<Selection>
+
+  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
+  deco: WidgetLike[] = []
 
   @init init() {
     this.misc = $(new Misc)
