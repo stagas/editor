@@ -48,7 +48,6 @@ export class Brackets extends Render {
   }
   @fn initCanvas(c: CanvasRenderingContext2D) {
     c.translate(.5, .5)
-    c.scale(this.pr, this.pr)
   }
   @fn render() {
     const { canvas, rect1 } = $.of(this)
