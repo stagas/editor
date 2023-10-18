@@ -12,6 +12,7 @@ export class Indicator extends Render {
   }
 
   @fn initCanvas() {
+    this.needInit = false
   }
   @fn render(){
     const { canvas, rect, color1, color2 }= $.of(this)

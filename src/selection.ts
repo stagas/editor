@@ -202,6 +202,7 @@ export class Selection extends Render {
     this.needRender = true
   }
   @fn initCanvas() {
+    this.needInit = false
     this.needRender = true
   }
   @fn render(oc?: CanvasRenderingContext2D) {

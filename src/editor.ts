@@ -79,6 +79,7 @@ export class Editor extends Render {
   @fn initCanvas() {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
+    this.needInit = false
     this.needDraw = true
   }
   render() {}

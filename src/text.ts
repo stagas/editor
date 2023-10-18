@@ -30,6 +30,7 @@ export class Text extends Render {
     dims.charWidth = em.width
 
     this.needInit = false
+    this.needRender = true
   }
 
   @fx trigger_render() {
