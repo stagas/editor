@@ -29,15 +29,15 @@ function tokenize({ code }: { code: string }) {
 }
 
 $.batch(() => {
-const world = $(new World)
+  const world = $(new World)
 
-const editor = $(new Editor(world))
-world.canvas = editor.canvas
-editor.canvas.appendTo(dom.body)
+  const editor = $(new Editor(world))
+  world.canvas = editor.canvas
+  editor.canvas.appendTo(dom.body)
 
-const source = $(new Source(tokenize))
-source.code = 'hello world'
-editor.ctx.buffer.source = source
-editor.ctx.selection.end.set({ x: 3, y: 0})
-// editor.draw()
+  const source = $(new Source(tokenize))
+  source.code = 'hello world'
+  editor.ctx.buffer.source = source
+  editor.ctx.selection.end.set({ x: 3, y: 0 })
+  // editor.draw()
 })
