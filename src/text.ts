@@ -26,6 +26,8 @@ export class TextScene extends RenderScene {
 
     const em = c.measureText('M')
     dims.charWidth = em.width
+
+    this.needInit = false
   }
 
   @fx set_rect_size_to_context_rect_size() {
