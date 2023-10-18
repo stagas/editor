@@ -1,3 +1,4 @@
+log.active
 import { $, fx, nu } from 'signal'
 import { Line, Point, PointLike, Rect } from 'std'
 import { clamp, poolArrayGet } from 'utils'
