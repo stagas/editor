@@ -30,6 +30,7 @@ export class TextScene extends RenderScene {
 
   @fx resizeCanvas() {
     this.canvas.size.set(this.ctx.rect.size)
+    console.log(this.canvas.size.text)
   }
 
   @fx triggerRender() {
