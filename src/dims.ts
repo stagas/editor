@@ -158,7 +158,6 @@ export class Dims {
     }
 
     if (!arraysEqual(lineTops, this.lineTops)) {
-      console.log('NOT EQUAL', [...lineTops], [...this.lineTops])
       this.lineTops = lineTops
     }
 
