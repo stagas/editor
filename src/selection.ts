@@ -1,6 +1,6 @@
 log.active
-import { $, alias, fn, fx, init } from 'signal'
-import { Line, Point, Rect, World } from 'std'
+import { $, fn, fx } from 'signal'
+import { Line, Point, Rect } from 'std'
 import { debounce } from 'utils'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
@@ -17,16 +17,13 @@ export class Selection extends Render {
     super(ctx.world, ctx.rect)
   }
 
+  // data
+
   selection = $(new Line)
   start = this.selection.$.start
   end = this.selection.$.end
   selectionSorted = $(new SortedLine)
   selectionText = ''
-
-  viewRect = $(new Rect)
-  isHidden = false
-  topPx = $(new Point)
-  bottomPx = $(new Point)
 
   get hasSelection() {
     return !this.start.equals(this.end)
@@ -171,6 +168,13 @@ export class Selection extends Render {
     this.selectionText = code.slice(a, b)
     this.updateTextareaTextDebounced()
   }
+
+  // view
+
+  viewRect = $(new Rect)
+  isHidden = false
+  topPx = $(new Point)
+  bottomPx = $(new Point)
   @fx triggerRender() {
     const t = this
     const { viewRect: vr, topPx, bottomPx } = $.of(this)
