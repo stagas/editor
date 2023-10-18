@@ -38,7 +38,6 @@ $.batch(() => {
   const source = $(new Source(tokenize))
   source.code = 'hello world'
 
-  $.flush()
   editor.buffer.source = source
   editor.buffer.lineCol.x = 2
   editor.selection.end.set({ x: 3, y: 0 })
