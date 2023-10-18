@@ -119,6 +119,7 @@ export class Caret extends Render {
       c.restore()
     }
 
+    console.log(pos)
     this.needDraw = false
   }
 }
