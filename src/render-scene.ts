@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $, init } from 'signal'
 import { Canvas, Rect, Scene } from 'std'
 
 export abstract class RenderScene extends Scene {
@@ -10,4 +10,7 @@ export abstract class RenderScene extends Scene {
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
+  @init init_initCanvas() {
+    this.initCanvas?.(this.canvas.c)
+  }
 }
