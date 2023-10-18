@@ -92,8 +92,6 @@ export class TextScene extends RenderScene {
     }
     c.restore()
 
-    c.fillStyle = '#f00'
-    c.fillRect(0, 0, 50, 50)
     this.needRender = false
     this.needDraw = true
   }
