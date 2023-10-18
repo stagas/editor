@@ -16,8 +16,11 @@ export class Editor extends Render {
   text: Text
 
   get scenes(): Render[] {
-    const { text } = $.of(this)
-    return [text]
+    const { ctx, text } = $.of(this)
+    return [
+      ctx.selection,
+      text,
+    ]
   }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)
