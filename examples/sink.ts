@@ -28,8 +28,8 @@ function tokenize({ code }: { code: string }) {
     })
 }
 
-$.batch(() => {
 const world = $(new World)
+$.batch(() => {
 
 const editor = $(new Editor(world))
 world.canvas = editor.canvas
