@@ -47,7 +47,7 @@ export class Brackets extends Render {
     this.needDraw = true
   }
   @fn initCanvas(c: CanvasRenderingContext2D) {
-    c.translate(.5, .5)
+    c.translate(.25, .25)
     this.needRender = true
   }
   @fn render() {
