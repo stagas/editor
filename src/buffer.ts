@@ -1,4 +1,4 @@
-import { $, fx } from 'signal'
+import { $, fx, nu } from 'signal'
 import { Line, Point, PointLike, Rect } from 'std'
 import { clamp, poolArrayGet } from 'utils'
 import { Editor } from './editor.ts'
@@ -14,7 +14,7 @@ export class Buffer {
   get code() { return $.of(this).source.code ?? '' }
   set code(v: string) { $.of(this).source.code = v }
   get tokens() { return $.of(this).source.tokens }
-  get lines() { return $.of(this).source.lines }
+  @nu get lines() { return $.of(this).source.lines }
 
   lineCol = $(new Point)
   lineColClamped = $(new Point)
