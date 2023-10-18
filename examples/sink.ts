@@ -37,7 +37,7 @@ editor.canvas.appendTo(dom.body)
 
 const source = $(new Source(tokenize))
 source.code = 'hello world'
-$.flush()
+// $.flush()
   editor.buffer.source = source
   editor.selection.end.set({ x: 3, y: 0 })
 })
