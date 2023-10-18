@@ -36,7 +36,7 @@ export class Dims extends Comp {
     return longest
   }
   get scroll() {
-    return this.ctx.scroll.pos
+    return this.ctx.scroll?.pos
   }
   get overscrollX() {
     return this.charWidth * 2
