@@ -31,7 +31,7 @@ export class TextScene extends RenderScene {
   @fx set_rect_size_to_context_rect_size() {
     const { rect } = $.of(this.ctx)
     const { hasSize, size: { wh } } = $.when(rect)
-    this.rect.setSize(wh)
+    // this.rect.setSize(wh)
     this.canvas.size.set(rect.size)
   }
 
