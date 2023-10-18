@@ -1,5 +1,5 @@
 log.active
-import { $, fn, fx, init } from 'signal'
+import { $, fn, fx, init, nulls } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
 import { WidgetLike } from './widgets.ts'
@@ -54,7 +54,7 @@ export class Dims {
   /** Line heights, including decorations, extra and subs. */
   lineHeights: number[] = [0]
 
-  get innerSizeWidth() {
+  @nulls get innerSizeWidth() {
     const { lines, longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
