@@ -23,6 +23,7 @@ export class Mouse extends Comp {
     const e = pointer.event
     const { deltaTimeStamp, deltaX, deltaY } = $.of(e)
     $.untrack()
+    if (e.type !== 'wheel') return
     scroll.targetScroll.y -= deltaY * 0.2
     scroll.targetScroll.x -= deltaX * 0.2
     scroll.animScrollStrategy = AnimScrollStrategy.Medium
