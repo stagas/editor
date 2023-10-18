@@ -19,11 +19,11 @@ export class Editor extends Render {
     const { text } = $.of(this)
     return [text]
   }
-  @fx resize_editor_to_world() {
-    const { rect, canvas } = $.of(this)
-    const { size } = $.of(canvas)
-    rect.setSize(size)
-  }
+  // @fx resize_editor_to_world() {
+  //   const { rect, canvas } = $.of(this)
+  //   const { size } = $.of(canvas)
+  //   rect.setSize(size)
+  // }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)
     let d = false
