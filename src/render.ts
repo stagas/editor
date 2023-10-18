@@ -21,7 +21,7 @@ export abstract class Render extends Scene {
   abstract draw(c: CanvasRenderingContext2D): void
 
   @fx trigger_needInit_on_size() {
-    const { size: { text } } = $.of(this.canvas)
+    const { size: { xy } } = $.of(this.canvas)
     this.needInit = true
   }
 }
