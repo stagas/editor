@@ -40,5 +40,6 @@ $.batch(() => {
 
   editor.buffer.source = source
   editor.selection.end.set({ x: 3, y: 0 })
+
+  editor.canvas.appendTo(dom.body)
 })
-editor.canvas.appendTo(dom.body)
