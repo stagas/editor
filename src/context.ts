@@ -1,6 +1,5 @@
-import { $, fn, fx, init } from 'signal'
-import { Point, Rect, Scene, World } from 'std'
-import { arraysEqual } from 'utils'
+import { $, init } from 'signal'
+import { Rect, Scene, World } from 'std'
 import { Dims } from './dims.ts'
 import { Buffer } from './buffer.ts'
 import { Scroll } from './scroll.ts'
@@ -19,6 +18,8 @@ interface Skin {
   }
 }
 
+type Colors = Record<string, string>
+
 export class Context extends Scene {
   constructor(
     public world: World,
@@ -29,7 +30,7 @@ export class Context extends Scene {
 
   misc!: $<Misc>
   skin!: Skin
-  colors!: Record<string, string>
+  colors!: Colors
   history!: $<History>
   buffer!: $<Buffer>
   scroll!: $<Scroll>
