@@ -44,7 +44,9 @@ export class Context extends Scene {
 
   @init init() {
     this.misc = $(new Misc)
-    this.skin = { colors: {}, fonts: { mono: 'monospace' } }
+    this.skin = { colors: {
+      bgBright2: '#444'
+    }, fonts: { mono: 'monospace' } }
     this.colors = {}
     this.history = $(new History(this))
     this.buffer = $(new Buffer(this, { Type: {} }))
