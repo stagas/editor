@@ -23,10 +23,14 @@ export class Selection extends Render {
   selectionSorted = $(new SortedLine)
   selectionText = ''
 
+  viewRect = $(new Rect)
+  isHidden = false
+  topPx = $(new Point)
+  bottomPx = $(new Point)
+
   get hasSelection() {
     return !this.start.equals(this.end)
   }
-
   @fn getSelectionSorted () {
     const { selection, selectionSorted } = this
     // Line & forward
@@ -156,7 +160,6 @@ export class Selection extends Render {
     input.textarea.select()
   }
   updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
-
   @fx update_selectionText() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
@@ -168,12 +171,6 @@ export class Selection extends Render {
     this.selectionText = code.slice(a, b)
     this.updateTextareaTextDebounced()
   }
-
-  viewRect = $(new Rect)
-  isHidden = false
-  topPx = $(new Point)
-  bottomPx = $(new Point)
-
   @fx triggerRender() {
     const t = this
     const { viewRect: vr, topPx, bottomPx } = $.of(this)
@@ -182,16 +179,16 @@ export class Selection extends Render {
     const selectionSorted = t.getSelectionSorted()
     $.untrack()
     this.selectionSorted = selectionSorted
-    const a = buffer.getPointFromLineCol(selectionSorted.top, topPx)
-    const b = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
-    b.y += dims.lineHeight
-    vr.top = a.y
-    vr.left = Math.min(a.x, b.x)
-    vr.w = Math.max(a.x, b.x) - vr.left
-    vr.h = b.y - a.y
+    const top = buffer.getPointFromLineCol(selectionSorted.top, topPx)
+    const bottom = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
+    bottom.y += dims.lineHeight
+    vr.top = top.y
+    // TODO: top.x since its sorted?
+    vr.left = Math.min(top.x, bottom.x)
+    vr.w = Math.max(top.x, bottom.x) - vr.left
+    vr.h = bottom.y - top.y
     this.needRender = true
   }
-
   @fx triggerRenderOnScroll() {
     const t = this
     const { ctx } = $.of(t)
@@ -200,11 +197,9 @@ export class Selection extends Render {
     $.untrack()
     this.needRender = true
   }
-
   @fn initCanvas() {
     this.needRender = true
   }
-
   @fn render(oc?: CanvasRenderingContext2D) {
     const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
     const { skin, buffer, dims } = $.of(ctx)
