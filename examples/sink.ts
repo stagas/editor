@@ -41,5 +41,5 @@ $.batch(() => {
 
   editor.buffer.source = source
   editor.selection.end.set({ x: 3, y: 0 })
-  throw
+  throw 0
 })
