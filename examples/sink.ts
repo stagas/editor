@@ -16,6 +16,17 @@ html, body {
 }
 `
 
+const code = String.raw`{ x:=
+  8123    \
+[  [sin 3]  ]
+
+   }
+[lfo 456     \ [sin 46.92\] 1913    \* + ] [exp 2] [blp 300]* @ [blp 500 q:1] @LR+=
+[rate 30k1]
+[zoo 50      \ [lfo 1         \]22        \*+ 33.5+] [exp .8] [blp 300]* @LR+=
+[zoo 166     \ [lfo 4         \]973.9     \*+ ] [exp .5] [blp 300]* .215* @ [bhp 200 q:1] @LR+=
+`.repeat(10)
+
 function tokenize({ code }: { code: string }) {
   return [...code.matchAll(/(?<word>[\w\[\]]+)|(?<space>\s+)/g)]
     .map(m => {
@@ -36,7 +47,7 @@ $.batch(() => {
   editor.canvas.appendTo(dom.body)
 
   const source = $(new Source(tokenize))
-  source.code = '[hello world]'
+  source.code = code //'[hello world]'
 
   editor.buffer.source = source
   editor.buffer.coli = 3
