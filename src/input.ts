@@ -1,3 +1,4 @@
+log.active
 import { $, fx, init } from 'signal'
 import { Rect } from 'std'
 import { dom } from 'utils'
@@ -34,7 +35,6 @@ export class Input extends Comp {
   @init append_textarea() {
     dom.body.append(this.textarea)
   }
-
   @fx textarea_follows_pointer() {
     const { xy } = this.ctx.world.pointer.pos
     $.untrack()
