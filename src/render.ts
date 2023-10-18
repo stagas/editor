@@ -1,11 +1,17 @@
 log.active
 import { $, fx, init } from 'signal'
-import { Canvas, Rect, Scene } from 'std'
+import { Canvas, Rect, Scene, World } from 'std'
 
 export abstract class Render extends Scene {
-  pr = this.world.screen.$.pr
-  rect = $(new Rect)
-  canvas = $(new Canvas(this.world), { size: this.rect.$.size })
+  constructor(
+    public world: World,
+    public rect = $(new Rect),
+    public canvas = $(new Canvas(world), { size: rect.$.size }),
+    public pr = world.screen.$.pr,
+  ) {
+    super(world)
+  }
+
   needRender?: boolean
   needDraw?: boolean
   needInit?: boolean

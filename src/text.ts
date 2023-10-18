@@ -6,7 +6,9 @@ import { SourceToken } from './source.ts'
 import { Render } from './render.ts'
 
 export class Text extends Render {
-  constructor(public ctx: Context) { super(ctx.world) }
+  constructor(public ctx: Context) {
+    super(ctx.world, ctx.rect)
+  }
 
   // TODO: where is this used??
   viewRect = $(new Rect)
