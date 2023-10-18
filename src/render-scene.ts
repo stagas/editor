@@ -1,3 +1,4 @@
+log.active
 import { $, fx, init } from 'signal'
 import { Canvas, Rect, Scene } from 'std'
 
