@@ -125,6 +125,7 @@ export class Scroll extends Comp {
     const { ctx, minScroll } = $.of(this)
     const { dims } = $.of(ctx)
     const { rect, innerSize, lineBottoms, overscrollX } = $.of(dims)
+    const { wh } = $.of(innerSize)
 console.log('MINNN', rect.text, innerSize.w, innerSize.h, overscrollX)
     const top = -innerSize.h
       + Math.min(
