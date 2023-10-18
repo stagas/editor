@@ -16,7 +16,10 @@ export class Buffer {
   set code(v: string) { $.of(this).source.code = v }
 
   get tokens() { return $.of(this).source.tokens }
-  get lines() { return $.of(this).source.lines }
+  get lines() {
+    console.log('UPDATE LINES')
+    return $.of(this).source.lines
+  }
 
   // tokens = $.from(this).source!.$.tokens
   // lines = $.from(this).source!.$.lines
