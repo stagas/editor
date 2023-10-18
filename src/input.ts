@@ -36,10 +36,7 @@ export class Input extends Comp {
   }
 
   @fx textarea_follows_pointer() {
-    const { x, y } = this.ctx.world.pointer.pos
-    const r = this.textareaRect
-    r.center.x = x
-    r.center.y = y
+    this.textareaRect.center.set(this.ctx.world.pointer.pos)
   }
   @fx move_textarea() {
     const { x, y } = this.textareaRect.pos
