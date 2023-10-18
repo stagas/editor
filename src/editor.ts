@@ -18,7 +18,7 @@ export class Editor extends RenderScene {
     const { text } = $.of(this)
     return [text]
   }
-  @init initResizeToWorld() {
+  @fx resizeToWorld() {
     const { rect, world } = $.of(this)
     const { size } = $.of(world.canvas)
     rect.setSize(size)
