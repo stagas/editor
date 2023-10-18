@@ -59,7 +59,9 @@ export class Dims {
     return longestLine * charWidth + scrollbarSize.w
   }
 
-  innerSize = $(new Point, { x: this.$.innerSizeWidth })
+  get innerSize() {
+    return $(new Point, { x: $(this).$.innerSizeWidth })
+  }
   // @fx update_innerSize_width() {
   //   // const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
   //   // const w = longestLine * charWidth + scrollbarSize.w
