@@ -6,9 +6,9 @@ import { Text } from './text.ts'
 import { World } from 'std'
 
 export class Editor extends Render {
-  _ = (() => {
+  _ = $.batch(() => {
     this.canvas.fullWindow = true
-  })()
+  })
 
   ctx: Context = $(new Context(this.world, this.rect))
 
