@@ -16,8 +16,8 @@ export class Brackets extends Render {
     const { lineHeight, charWidth } = $.of(dims)
     $.untrack()
     if (!charWidth) return
-    rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
-    rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
+    rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6) * pr
+    rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6) * pr
     this.needRender = true
   }
   @fx update_brackets() {
@@ -45,7 +45,7 @@ export class Brackets extends Render {
       viewRect.zero().combine(r1).combine(r2)
       this.isHidden = false
     }
-    this.needRender = true
+    this.needDraw = true
   }
   @fn initCanvas(c: CanvasRenderingContext2D) {
     c.translate(.5, .5)
