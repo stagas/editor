@@ -29,7 +29,6 @@ export class Editor extends Render {
     this.canvas.fullWindow = true
   })
 
-
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -47,8 +46,6 @@ export class Editor extends Render {
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
-
-  // ctx: Context = $(new Context(this.world, this.rect))
 
   get scenes(): Render[] {
     const ctx = $.of(this)
