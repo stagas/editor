@@ -34,9 +34,8 @@ export class Editor extends Render {
       this.needDraw = true
     }
   }
-  @fx trigger_draw() {
+  @fx when_needDraw_trigger_draw() {
     $.when(this).needDraw
-    // this.draw()
     requestAnimationFrame(() => this.draw())
   }
   @fn initCanvas() {
