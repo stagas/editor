@@ -67,7 +67,6 @@ export class Dims {
   get viewSpan() {
     return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
   }
-
   get lastVisibleLine() {
     const { lines, deco, sub } = $.of(this)
     return Math.max(
@@ -79,7 +78,6 @@ export class Dims {
   get decoHeights() {
     const { lastVisibleLine, deco } = $.of(this)
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
-
     for (const item of deco) {
       if (item.dim.line >= decoHeights.length) continue
 
@@ -88,13 +86,11 @@ export class Dims {
         item.height
       )
     }
-
     return decoHeights
   }
   get subHeights() {
     const { lastVisibleLine, sub } = $.of(this)
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
-
     for (const item of sub) {
       if (item.dim.line >= subHeights.length) continue
 
@@ -103,7 +99,6 @@ export class Dims {
         item.height + 4
       )
     }
-
     return subHeights
   }
   /** Stores deco extra height when there are empty lines above. */
