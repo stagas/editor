@@ -39,7 +39,7 @@ export class Buffer {
   }
 
   @fx trimLines() {
-    const { source, lines, line } = $.of(this)
+    const { lines, line } = $.of(this)
     for (let i = 0; i < lines.length; i++) {
       if (i === line) continue
       lines[i] = lines[i].trimEnd()
