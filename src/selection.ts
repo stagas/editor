@@ -11,77 +11,47 @@ class SortedLine extends Line {
   forward?: boolean
 }
 
-export class SelectionScene extends Render {
-  constructor(public world: World, public target: Selection) { super(world) }
-  viewRect = $(new Rect)
-  isHidden = false
-  selectionSorted?: SortedLine
-  topPx = $(new Point)
-  bottomPx = $(new Point)
+// export class SelectionView extends Render {
+//   constructor(public world: World, public target: Selection) { super(world) }
+//   viewRect = $(new Rect)
+//   isHidden = false
+//   selectionSorted?: SortedLine
+//   topPx = $(new Point)
+//   bottomPx = $(new Point)
 
-  @fx triggerRender() {
-    const { viewRect: vr, target: t, topPx, bottomPx } = $.of(this)
-    const { ctx } = $.of(t)
-    const { buffer, dims } = $.of(ctx)
-    const selectionSorted = t.getSelectionSorted()
-    $.untrack()
-    this.selectionSorted = selectionSorted
-    const a = buffer.getPointFromLineCol(selectionSorted.top, topPx)
-    const b = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
-    b.y += dims.lineHeight
-    vr.top = a.y
-    vr.left = Math.min(a.x, b.x)
-    vr.w = Math.max(a.x, b.x) - vr.left
-    vr.h = b.y - a.y
-    this.needRender = true
+//   @fx triggerRender() {
+//     const { viewRect: vr, target: t, topPx, bottomPx } = $.of(this)
+//     const { ctx } = $.of(t)
+//     const { buffer, dims } = $.of(ctx)
+//     const selectionSorted = t.getSelectionSorted()
+//     $.untrack()
+//     this.selectionSorted = selectionSorted
+//     const a = buffer.getPointFromLineCol(selectionSorted.top, topPx)
+//     const b = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
+//     b.y += dims.lineHeight
+//     vr.top = a.y
+//     vr.left = Math.min(a.x, b.x)
+//     vr.w = Math.max(a.x, b.x) - vr.left
+//     vr.h = b.y - a.y
+//     this.needRender = true
+//   }
+
+//   @fx triggerRenderOnScroll() {
+//     const { target: t } = this
+//     const { ctx } = $.of(t)
+//     const { dims } = $.of(ctx)
+//     const { scroll: { xy } } = $.of(dims)
+//     $.untrack()
+//     this.needRender = true
+//   }
+
+
+// }
+
+export class Selection extends Render {
+  constructor(public ctx: Context) {
+    super(ctx.world, ctx.rect)
   }
-
-  @fx triggerRenderOnScroll() {
-    const { target: t } = this
-    const { ctx } = $.of(t)
-    const { dims } = $.of(ctx)
-    const { scroll: { xy } } = $.of(dims)
-    $.untrack()
-    this.needRender = true
-  }
-
-  render(oc?: CanvasRenderingContext2D) {
-    const { canvas, selectionSorted, rect, target: t } = $.of(this)
-    const { ctx } = $.of(t)
-    const { skin, buffer, dims } = $.of(ctx)
-    const { scroll } = $.of(dims)
-    let { c } = $.of(canvas)
-
-    //!: render
-    if (t.hasSelection) {
-      log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
-      if (oc) {
-        c = oc
-      }
-      else {
-        rect.clear(c)
-      }
-      c.save()
-      c.translate(scroll.x, scroll.y)
-      buffer.fillTextRange(c, selectionSorted, skin.colors.bgBright2, true)
-      c.restore()
-    }
-    this.needRender = false
-    this.needDraw = true
-  }
-  draw(
-    c: CanvasRenderingContext2D) {
-    const { pr, canvas, rect, target: t } = this
-    if (t.hasSelection) {
-      //!: draw
-      rect.drawImage(canvas.el, c, pr, true)
-    }
-    this.needDraw = false
-  }
-}
-
-export class Selection {
-  constructor(public ctx: Context) { }
 
   selection = $(new Line)
   start = this.selection.$.start
@@ -234,5 +204,73 @@ export class Selection {
     const b = buffer.getIndexFromCoords(bottom)
     this.selectionText = code.slice(a, b)
     this.updateTextareaTextDebounced()
+  }
+
+  viewRect = $(new Rect)
+  isHidden = false
+  topPx = $(new Point)
+  bottomPx = $(new Point)
+
+  @fx triggerRender() {
+    const t = this
+    const { viewRect: vr, topPx, bottomPx } = $.of(this)
+    const { ctx } = $.of(t)
+    const { buffer, dims } = $.of(ctx)
+    const selectionSorted = t.getSelectionSorted()
+    $.untrack()
+    this.selectionSorted = selectionSorted
+    const a = buffer.getPointFromLineCol(selectionSorted.top, topPx)
+    const b = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
+    b.y += dims.lineHeight
+    vr.top = a.y
+    vr.left = Math.min(a.x, b.x)
+    vr.w = Math.max(a.x, b.x) - vr.left
+    vr.h = b.y - a.y
+    this.needRender = true
+  }
+
+  @fx triggerRenderOnScroll() {
+    const t = this
+    const { ctx } = $.of(t)
+    const { dims } = $.of(ctx)
+    const { scroll: { xy } } = $.of(dims)
+    $.untrack()
+    this.needRender = true
+  }
+
+  initCanvas() {}
+
+  @fn render(oc?: CanvasRenderingContext2D) {
+    const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
+    const { skin, buffer, dims } = $.of(ctx)
+    const { scroll } = $.of(dims)
+    let { c } = $.of(canvas)
+
+    //!: render
+    if (hasSelection) {
+      log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
+      if (oc) {
+        c = oc
+      }
+      else {
+        rect.clear(c)
+      }
+      c.save()
+      c.translate(scroll.x, scroll.y)
+      buffer.fillTextRange(c, selectionSorted, skin.colors.bgBright2, true)
+      c.restore()
+      this.needDraw = true
+    }
+
+    this.needRender = false
+  }
+  @fn draw(c: CanvasRenderingContext2D) {
+    const { pr, canvas, rect, hasSelection } = $.of(this)
+
+    if (hasSelection) {
+      rect.drawImage(canvas.el, c, pr, true)
+    }
+
+    this.needDraw = false
   }
 }
