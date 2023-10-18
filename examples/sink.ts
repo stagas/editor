@@ -29,11 +29,11 @@ const code = String.raw`{ x:=
 
 function tokenize({ code }: { code: string }) {
   return [...code.matchAll(/(?<word>[^\s]+)|(?<space>[\s]+)/g)]
-    .map(m => ({
+    .map(({ 0: text, index }) => ({
       type: 'text',
-      text: m[0],
-      line: code.slice(0, m.index).split('\n').length - 1,
-      col: Math.max(0, m.index! - code.lastIndexOf('\n', m.index) - 1),
+      text,
+      line: code.slice(0, index).split('\n').length - 1,
+      col: Math.max(0, index! - code.lastIndexOf('\n', index) - 1),
 
       // col: Math.max(0,
       //   m.index!
