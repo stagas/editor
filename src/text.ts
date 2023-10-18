@@ -65,7 +65,6 @@ export class TextScene extends RenderScene {
       rect.clear(c)
     }
 
-    this.initCanvas(c)
     c.save()
     c.translate(scroll.x, scroll.y)
     for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
