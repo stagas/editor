@@ -34,7 +34,7 @@ export class TextScene extends RenderScene {
     this.rect.size.set(rect.size)
   }
 
-  @fx triggerRender() {
+  @fx trigger_render() {
     const { ctx } = this
     const { buffer, dims } = $.of(ctx)
     const {
