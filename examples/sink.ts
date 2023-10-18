@@ -41,13 +41,13 @@ const world = $(new World)
 $.batch(() => {
   const editor = $.batch(() => $(new Editor(world)))
   world.canvas = editor.canvas
+  $.flush()
   editor.canvas.appendTo(dom.body)
   const source = $(new Source(tokenize))
   source.code = code //'[hello world]'
 
   editor.buffer.source = source
   editor.buffer.coli = 3
-  $.flush()
   editor.selection.start.set({ x: 3, y: 0 })
   editor.selection.end.set({ x: 7, y: 0 })
 })
