@@ -51,11 +51,12 @@ export class Brackets extends Render {
     c.translate(.5, .5)
   }
   @fn render() {
-    const { canvas, rect1 } = $.of(this)
+    const { canvas, rect1, rect } = $.of(this)
     const { c } = $.of(canvas)
     c.strokeStyle = '#f2a'
     c.lineWidth = 1
 
+    rect.clear(c)
     c.strokeRect(
       3,
       4,
