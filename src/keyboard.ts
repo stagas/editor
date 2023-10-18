@@ -2,6 +2,7 @@ import { $ } from 'signal'
 import { Context } from './context.ts'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
 import { AnimScrollStrategy } from './scroll.ts'
+import { Editor } from './editor.ts'
 
 export interface Key {
   key: string
@@ -12,7 +13,7 @@ export interface Key {
 }
 
 export class Keyboard {
-  constructor(public ctx: Context) { }
+  constructor(public ctx: Editor) { }
 
   shiftKey = false
 

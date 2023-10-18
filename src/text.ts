@@ -4,9 +4,10 @@ import { Rect } from 'std'
 import { Context } from './context.ts'
 import { SourceToken } from './source.ts'
 import { Render } from './render.ts'
+import { Editor } from './editor.ts'
 
 export class Text extends Render {
-  constructor(public ctx: Context) {
+  constructor(public ctx: Editor) {
     super(ctx.world, ctx.rect)
   }
 

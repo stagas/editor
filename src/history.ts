@@ -1,7 +1,7 @@
 import { $, fn } from 'signal'
 import { Line, Point } from 'std'
 import { debounce, deepMerge } from 'utils'
-import { Context } from './context.ts'
+import { Editor } from './editor.ts'
 
 export interface Snapshot {
   code: string
@@ -20,7 +20,7 @@ export interface EditorViewState {
 }
 
 export class History {
-  constructor(public ctx: Context) { }
+  constructor(public ctx: Editor) { }
 
   viewState: EditorViewState = {
     coli: 0,

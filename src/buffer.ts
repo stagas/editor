@@ -1,14 +1,14 @@
-import { $, fn, fx, init, nu } from 'signal'
+import { $, fx } from 'signal'
 import { Line, Point, PointLike, Rect } from 'std'
-import { Source } from './source.ts'
-import { Context } from './context.ts'
 import { clamp, poolArrayGet } from 'utils'
+import { Editor } from './editor.ts'
+import { Source } from './source.ts'
 import { findMatchingBrackets } from './util.ts'
 
 const tempPoint = $(new Point)
 
 export class Buffer {
-  constructor(public ctx: Context, public Token: { Type: Record<string, string> }) { }
+  constructor(public ctx: Editor, public Token: { Type: Record<string, string> }) { }
 
   source?: $<Source>
 

@@ -5,6 +5,7 @@ import { debounce } from 'utils'
 import { Context } from './context.ts'
 import { Render } from './render.ts'
 import { Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
+import { Editor } from './editor.ts'
 
 const tempPoint = $(new Point)
 
@@ -13,7 +14,7 @@ class SortedLine extends Line {
 }
 
 export class Selection extends Render {
-  constructor(public ctx: Context) {
+  constructor(public ctx: Editor) {
     super(ctx.world, ctx.rect)
   }
 

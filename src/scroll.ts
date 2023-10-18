@@ -2,6 +2,7 @@ import { $, alias, fn, fx, init } from 'signal'
 import { Point } from 'std'
 import { clamp } from 'utils'
 import { Context } from './context.ts'
+import { Editor } from './editor.ts'
 
 export interface AnimScrollStrategy {
   tension: number
@@ -32,7 +33,7 @@ export const AnimScrollStrategy: Record<string, AnimScrollStrategy> = {
 }
 
 export class Scroll {
-  constructor(public ctx: Context) { }
+  constructor(public ctx: Editor) { }
 
   pos = $(new Point)
   scroll = alias(this, 'pos')

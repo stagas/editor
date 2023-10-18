@@ -3,10 +3,11 @@ import { $, fx, nu } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
 import { Context } from './context.ts'
+import { Editor } from './editor.ts'
 
 export class Dims {
   constructor(
-    public ctx: Context,
+    public ctx: Editor,
     public rect = ctx.rect
   ) { }
 
