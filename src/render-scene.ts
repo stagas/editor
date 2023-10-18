@@ -11,7 +11,7 @@ export abstract class RenderScene extends Scene {
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
   @fx update_initCanvas() {
-    const { c, size: { wh } } = $.of(this.canvas)
+    const { c, size: { xy } } = $.of(this.canvas)
     this.initCanvas?.(c)
   }
 }
