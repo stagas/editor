@@ -63,15 +63,25 @@ export class Dims {
     return $(new Point, { x: $(this).$.innerSizeWidth })
   }
 
-  viewSpan = $(new Point)
-  @fx update_viewSpan() {
-    const { scroll, rect, lineHeight, viewSpan } = $.of(this)
-    const top = -scroll.y
-    const bottom = top + rect.h + lineHeight
-    $.untrack()
-    viewSpan.top = top
-    viewSpan.bottom = bottom
+  get viewSpanTop() {
+    const { scroll } = $.of(this)
+    return -scroll.y
   }
+  get viewSpanBottom() {
+    const { rect, lineHeight, viewSpanTop } = $.of(this)
+    return viewSpanTop + rect.h + lineHeight
+  }
+  get viewSpan() {
+    return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
+  }
+  // @fx update_viewSpan() {
+  //   const { scroll, rect, lineHeight, viewSpan } = $.of(this)
+  //   const top = -scroll.y
+  //   const bottom = top + rect.h + lineHeight
+  //   $.untrack()
+  //   viewSpan.top = top
+  //   viewSpan.bottom = bottom
+  // }
 
   get lastVisibleLine() {
     const { lines, deco, sub } = $.of(this)
