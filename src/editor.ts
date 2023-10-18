@@ -7,13 +7,7 @@ import { World } from 'std'
 
 export class Editor extends Render {
   _ = (() => { this.canvas.fullWindow = true })()
-
   ctx: Context = $(new Context(this.world, this.rect))
-  // constructor(public world: World) {
-  //   super(world)
-  //   this.canvas.fullWindow = true
-  //   // this.ctx =
-  // }
 
   get scenes(): Render[] {
     const { ctx } = $.of(this)
