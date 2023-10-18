@@ -32,7 +32,7 @@ export class TextScene extends RenderScene {
     const { rect } = $.of(this.ctx)
     const { hasSize } = $.when(rect)
     this.rect.size.set(this.ctx.rect.size)
-    // this.canvas.size.set(this.ctx.rect.size)
+    this.canvas.size.set(this.ctx.rect.size)
   }
 
   @fx triggerRender() {
