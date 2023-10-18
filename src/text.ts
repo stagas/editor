@@ -33,7 +33,7 @@ export class Text extends Render {
   }
 
   @fx trigger_render() {
-    const { ctx, rect } = this
+    const { ctx, pr, rect } = this
     const { size: { wh: size_wh } } = rect
     const { buffer, dims } = $.of(ctx)
     const {
