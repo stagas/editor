@@ -13,7 +13,7 @@ export class Buffer {
   source?: $<Source>
   get code() { return $.of(this).source.code ?? '' }
   set code(v: string) { $.of(this).source.code = v }
-  get tokens() { return $.of(this).source.tokens }
+  @nu get tokens() { return $.of(this).source.tokens }
   @nu get lines() { return $.of(this).source.lines }
 
   lineCol = $(new Point)
