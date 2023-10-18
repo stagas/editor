@@ -18,6 +18,10 @@ export abstract class Render extends Scene {
   needRender?: boolean
   needDraw?: boolean
 
+  isVisible = false
+  isFocused = false
+  isHovering = false
+
   abstract initCanvas(c: CanvasRenderingContext2D): void
   abstract render(c?: CanvasRenderingContext2D): void
   abstract draw(c: CanvasRenderingContext2D): void
