@@ -117,7 +117,7 @@ export class Buffer {
     )
   }
   @fx update_brackets() {
-    const { source, lineCol, line, col, code, bracketsPair: { open, close } } = $.of(this)
+    const { lineCol, line, col, code, bracketsPair: { open, close } } = $.of(this)
     $.untrack()
     const index = this.getIndexFromCoords(lineCol)
     const brackets = findMatchingBrackets(code, index)
