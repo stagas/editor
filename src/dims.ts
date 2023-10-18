@@ -13,27 +13,10 @@ export class Dims {
     public rect = ctx.rect
   ) { }
 
-  // rect?: Rect
-  // @fx update_rect() {
-  //   const { rect } = $.of(this.ctx)
-  //   $.untrack()
-  //   this.rect = rect
-  // }
-
   get lines() {
     return this.ctx.buffer?.source?.lines
   }
-  // @fx update_lines() {
-  //   const { lines } = $.of($.of($.of(this.ctx).buffer).source)
-  //   // $.untrack()
-  //   this.lines = lines
-  // }
-  // lines?: string[]
-  // @fx update_lines() {
-  //   const { lines } = $.of($.of($.of(this.ctx).buffer).source)
-  //   // $.untrack()
-  //   this.lines = lines
-  // }
+
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -55,14 +38,10 @@ export class Dims {
   get scroll() {
     return this.ctx.scroll.pos
   }
-  // scroll?: Point
-  // @fx update_scroll() {
-  //   const { scroll } = $.of(this.ctx)
-  //   const { pos } = $.of(scroll)
-  //   // $.untrack()
-  //   this.scroll = pos
-  // }
-  get overscrollX() { return this.charWidth * 2 }
+
+  get overscrollX() {
+    return this.charWidth * 2
+  }
 
   /** Top of the line, above decorations. */
   lineTops: number[] = [0]
@@ -75,14 +54,19 @@ export class Dims {
   /** Line heights, including decorations, extra and subs. */
   lineHeights: number[] = [0]
 
-  innerSize = $(new Point)
-  @fx update_innerSize_width() {
+  get innerSizeWidth() {
     const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
-    const w = longestLine * charWidth + scrollbarSize.w
-    $.untrack()
-    innerSize.w = w
-    log('innerSize.w', w)
+    return longestLine * charWidth + scrollbarSize.w
   }
+
+  innerSize = $(new Point, { x: $(this).$.innerSizeWidth })
+  // @fx update_innerSize_width() {
+  //   const { lines, innerSize, longestLine, charWidth, scrollbarSize } = $.of(this)
+  //   const w = longestLine * charWidth + scrollbarSize.w
+  //   $.untrack()
+  //   innerSize.w = w
+  //   log('innerSize.w', w)
+  // }
 
   viewSpan = $(new Point)
   @fx update_viewSpan() {
