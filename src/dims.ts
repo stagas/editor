@@ -54,7 +54,7 @@ export class Dims {
   /** Line heights, including decorations, extra and subs. */
   lineHeights: number[] = [0]
 
-  @nulls get innerSizeWidth() {
+  get innerSizeWidth() {
     const { lines, longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
