@@ -6,9 +6,11 @@ import { WidgetLike } from './widgets.ts'
 import { Context } from './context.ts'
 
 interface PointerItem { }
-
+let id = 0
 export class Dims {
   constructor(public ctx: Context) { }
+
+  id = ++id
   rect?: Rect
   @fx update_rect() {
     const { rect } = $.of(this.ctx)
@@ -137,6 +139,7 @@ export class Dims {
     const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
     $.untrack()
     //!: update_lineDims
+    console.log(this.id)
     const lineTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseBottoms = Array.from<number>({ length: lastVisibleLine }).fill(0)
