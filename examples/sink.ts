@@ -34,7 +34,14 @@ function tokenize({ code }: { code: string }) {
         type: 'text',
         text: m[0],
         line: code.slice(0, m.index).split('\n').length - 1,
-        col: Math.max(0, m.index! - code.slice(0, m.index).split('\n').slice(0, -1).join('\n').length - 1),
+        col: Math.max(
+          0,
+          m.index!
+          - code.slice(0, m.index)
+            .split('\n')
+            .slice(0, -1)
+            .join('\n').length - 1
+        ),
       }
     })
 }
