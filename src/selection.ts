@@ -210,7 +210,7 @@ export class Selection extends Render {
     let { c } = $.of(canvas)
 
     if (hasSelection) {
-      log('Selection top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
+      log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
       if (oc) {
         c = oc
       }
