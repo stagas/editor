@@ -12,7 +12,7 @@ export class Buffer {
   constructor(public ctx: Editor, public Token: { Type: Record<string, string> }) { }
 
   source?: $<Source>
-  get code() { return $.of(this).source.code ?? '' }
+  @nu get code() { return $.of(this).source.code ?? '' }
   set code(v: string) { $.of(this).source.code = v }
   @nu get tokens() { return $.of(this).source.tokens }
   @nu get lines() { return $.of(this).source.lines }
