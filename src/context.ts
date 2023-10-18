@@ -17,6 +17,8 @@ interface Skin {
 }
 
 export class Context extends Scene {
+  constructor(public world: World, public rect: Rect) { super(world) }
+
   misc!: $<Misc>
   skin!: Skin
   colors!: Record<string, string>
@@ -26,10 +28,6 @@ export class Context extends Scene {
   dims!: $<Dims>
   input!: $<Input>
   selection!: $<Selection>
-
-  constructor(public world: World, public rect: Rect) {
-    super(world)
-  }
 
   @init init() {
     this.misc = $(new Misc)
