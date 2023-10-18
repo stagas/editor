@@ -11,14 +11,14 @@ export class Mouse extends Comp {
     const { ctx } = $.of(this)
     const { world, misc, buffer, scroll } = $.of(ctx)
     const { pointer } = $.of(world)
-    const { lines} = $.of(buffer)
+    const { lines } = $.of(buffer)
     const { x, y } = pointer.pos
     const { x: sx, y: sy } = scroll.pos
     $.untrack()
     if (misc.isScrolling || misc.wasScrolling || !ctx.isHovering) return
     buffer.getLineColFromPoint(pointer.pos, true, this.hoveringLineCol)
   }
-  @fx onWheel () {
+  @fx onWheel() {
     const { world: { pointer }, scroll } = $.of(this.ctx)
     const e = pointer.event
     const { deltaTimeStamp, deltaX, deltaY } = $.of(e)
@@ -27,7 +27,7 @@ export class Mouse extends Comp {
     scroll.targetScroll.x -= deltaX * 0.2
     scroll.animScrollStrategy = AnimScrollStrategy.Medium
   }
-  @fn onPointerUp(){
+  @fn onPointerUp() {
     const { input: { textarea } } = $.of(this.ctx)
     textarea.focus()
   }
@@ -41,7 +41,7 @@ export class Mouse extends Comp {
     b.line = selection.end.y
     b.coli = selection.end.x
   }
-  @fn onPointerDown (e: PointerEvent) {
+  @fn onPointerDown(e: PointerEvent) {
     const { hoveringLineCol: p, ctx } = $.of(this)
     const { world: { pointer }, buffer: b, selection } = $.of(ctx)
 
