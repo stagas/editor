@@ -51,7 +51,7 @@ export class Dims {
   scrollbarSize = $(new Point, { x: 13, y: 7 })
 
   get scroll() {
-    return this.ctx.scroll?.pos
+    return this.ctx.scroll.pos
   }
   // scroll?: Point
   // @fx update_scroll() {
