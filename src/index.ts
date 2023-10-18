@@ -1,4 +1,5 @@
 export * from './buffer.ts'
+export * from './caret.ts'
 export * from './comp.ts'
 export * from './dims.ts'
 export * from './editor.ts'
