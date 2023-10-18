@@ -55,7 +55,6 @@ export class Editor extends Render {
   @init init_Editor() {
     this.canvas.fullWindow = true
     this.isReady = true
-    console.log('MIN YEA')
   }
   @nu get scenes(): Render[] {
     const t = $.of(this)
