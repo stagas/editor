@@ -92,7 +92,7 @@ export class Editor extends Render {
       Math.round(scrollPos.left) !== targetScroll.left
     $.untrack()
     if (needAnim) {
-      this.needUpdate = true
+      // this.needUpdate = true
     }
   }
   @fn initCanvas() {
