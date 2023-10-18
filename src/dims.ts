@@ -1,8 +1,7 @@
 log.active
-import { $, fn, fx, init, nulls } from 'signal'
+import { $, fx, nulls } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
-import { WidgetLike } from './widgets.ts'
 import { Context } from './context.ts'
 
 export class Dims {
