@@ -31,13 +31,13 @@ function tokenize({ code }: { code: string }) {
 $.batch(() => {
   const world = $(new World)
 
+    const source = $(new Source(tokenize))
+    source.code = 'hello world'
+    $.flush()
+
   const editor = $(new Editor(world))
   world.canvas = editor.canvas
   editor.canvas.appendTo(dom.body)
-
-  const source = $(new Source(tokenize))
-  source.code = 'hello world'
-  $.flush()
 
   editor.buffer.source = source
   editor.selection.end.set({ x: 3, y: 0 })
