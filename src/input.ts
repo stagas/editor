@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $, init } from 'signal'
 import { Rect } from 'std'
 import { dom } from 'utils'
 import { Comp } from './comp.ts'
