@@ -31,14 +31,14 @@ export class Buffer {
 
   fillRects: Rect[] = []
 
-  @fx clampLineCol() {
+  @fx clamp_lineCol() {
     const { lines, line, coli } = $.of(this)
     $.untrack()
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
   }
 
-  @fx trimLines() {
+  @fx trim_lines() {
     const { lines, line } = $.of(this)
     for (let i = 0; i < lines.length; i++) {
       if (i === line) continue
