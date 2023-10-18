@@ -12,6 +12,7 @@ import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
 import { World } from 'std'
 import { Caret } from './caret.ts'
+import { Brackets } from './brackets.ts'
 
 interface PointerItem { }
 
@@ -43,6 +44,7 @@ export class Editor extends Render {
   selection = $(new Selection(this))
   text = $(new Text(this))
   caret = $(new Caret(this))
+  brackets = $(new Brackets(this))
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -55,6 +57,7 @@ export class Editor extends Render {
       t.selection,
       t.text,
       t.caret,
+      t.brackets,
     ]
   }
   @fx maybe_needDraw() {
