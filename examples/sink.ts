@@ -30,10 +30,8 @@ function tokenize({ code }: { code: string }) {
 
 const world = $(new World)
 world.canvas.appendTo(dom.body)
-$.batch(() => {
 const editor = $(new Editor(world))
-  const source = $(new Source(tokenize))
-  source.code = 'hello world'
-  editor.ctx.buffer.source = source
-})
+const source = $(new Source(tokenize))
+source.code = 'hello world'
+editor.ctx.buffer.source = source
 // editor.draw()
