@@ -43,7 +43,7 @@ export class Context extends Scene {
   _props: any
   constructor(
     public world: World,
-    rect: Rect
+    public rect: Rect
   ) {
     super(world)
     this._props = { rect }
