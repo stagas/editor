@@ -42,8 +42,6 @@ export class Input extends Comp {
   }
   @fx move_textarea() {
     const { x, y } = this.textareaRect.pos
-    requestAnimationFrame(() => {
-      this.textarea.style.transform = `translate(${x}px,${y}px)`
-    })
+    this.textarea.style.transform = `translate(${x}px,${y}px)`
   }
 }
