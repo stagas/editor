@@ -30,8 +30,8 @@ export class TextScene extends RenderScene {
 
   @fx set_rect_size_to_context_rect_size() {
     const { rect } = $.of(this.ctx)
-    const { hasSize } = $.when(rect)
-    this.rect.size.set(rect.size)
+    const { hasSize, size: { wh } } = $.when(rect)
+    this.rect.setSize(wh)
   }
 
   @fx trigger_render() {
