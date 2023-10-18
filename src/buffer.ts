@@ -11,22 +11,10 @@ export class Buffer {
   constructor(public ctx: Editor, public Token: { Type: Record<string, string> }) { }
 
   source?: $<Source>
-
   get code() { return $.of(this).source.code ?? '' }
   set code(v: string) { $.of(this).source.code = v }
-
-  get tokens() {
-    return $.of(this).source.tokens
-  }
-  get lines() {
-    return $.of(this).source.lines
-  }
-
-  // tokens = $.from(this).source!.$.tokens
-  // lines = $.from(this).source!.$.lines
-  // get tokens() {
-  //   return $.of($.of(this).source).tokens
-  // }
+  get tokens() { return $.of(this).source.tokens }
+  get lines() { return $.of(this).source.lines }
 
   lineCol = $(new Point)
   lineColClamped = $(new Point)
@@ -44,7 +32,7 @@ export class Buffer {
   fillRects: Rect[] = []
 
   @fx clampLineCol() {
-    const { source, lines, line, coli } = $.of(this)
+    const { lines, line, coli } = $.of(this)
     $.untrack()
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
