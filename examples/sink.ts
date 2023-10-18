@@ -38,6 +38,6 @@ const source = $(new Source(tokenize))
 source.code = 'hello world'
 
 $.batch(() => {
-  editor.ctx.selection.end.set({ x: 3, y: 0 })
   editor.ctx.buffer.source = source
+  editor.ctx.selection.end.set({ x: 3, y: 0 })
 })
