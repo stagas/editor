@@ -37,7 +37,7 @@ editor.canvas.appendTo(dom.body)
 const source = $(new Source(tokenize))
 source.code = 'hello world'
 
-$.batch(() => {
-  editor.ctx.buffer.source = source
+// $.batch(() => {
   editor.ctx.selection.end.set({ x: 3, y: 0 })
-})
+  editor.ctx.buffer.source = source
+// })
