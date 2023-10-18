@@ -27,9 +27,6 @@ export class Editor extends Render {
     this.canvas.fullWindow = true
   })
 
-  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
-  deco: WidgetLike[] = []
-
   misc = $(new Misc)
   skin = {
     colors: {
@@ -44,12 +41,14 @@ export class Editor extends Render {
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
+  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
+  deco: WidgetLike[] = []
 
   get scenes(): Render[] {
-    const ctx = $.of(this)
+    const t = $.of(this)
     return [
-      ctx.selection,
-      ctx.text,
+      t.selection,
+      t.text,
     ]
   }
   @fx maybe_needDraw() {
@@ -72,8 +71,7 @@ export class Editor extends Render {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
   }
-  @fn render() {
-  }
+  render() {}
   @fn draw() {
     const { rect, scenes, canvas } = $.of(this)
     const { c } = canvas
