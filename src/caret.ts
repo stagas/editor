@@ -93,6 +93,7 @@ export class Caret extends Render {
   }
   @fn initCanvas() {
     this.needInit = false
+    this.needRender = true
   }
   @fn render() {
     const { ind } = $.of(this)
