@@ -14,14 +14,12 @@ export class Dims {
   @fx update_rect() {
     const { rect } = $.of(this.ctx)
     $.untrack()
-    //!: update_rect
     this.rect = rect
   }
   lines?: string[]
   @fx update_lines() {
     const { lines } = $.of($.of($.of(this.ctx).buffer).source)
     $.untrack()
-    //!: update_lines
     this.lines = lines
   }
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
