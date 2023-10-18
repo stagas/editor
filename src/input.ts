@@ -10,8 +10,8 @@ export class Input extends Comp {
   mouse = $(new Mouse(this.ctx))
 
   textareaRect = $(new Rect, {
-    centerX: this.ctx.world.pointer.pos.$.x,
-    centerY: this.ctx.world.pointer.pos.$.y,
+    cx: this.ctx.world.pointer.pos.$.x,
+    cy: this.ctx.world.pointer.pos.$.y,
     w: 50, h: 50 })
   textarea: HTMLTextAreaElement = dom.el('textarea', {
     spellcheck: false,
