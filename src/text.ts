@@ -76,10 +76,10 @@ export class Text extends Render {
       if (y > viewSpan.top && y < viewSpan.bottom) {
         x = t.col * charWidth + 1
 
-        const color = (
-          colors[t.text]
-          ?? colors[Token.Type[t.type]]
-        ) as keyof typeof skin.colors
+        // const color = (
+        //   colors?.[t.text]
+        //   ?? colors?.[Token.Type[t.type]]
+        // ) as keyof typeof skin.colors
 
         c.fillStyle
           = c.strokeStyle
