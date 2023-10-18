@@ -30,11 +30,11 @@ export class Text extends Render {
     this.needInit = false
   }
 
-  @fx set_rect_size_to_editor_rect_size() {
-    const { rect } = $.of(this.ctx)
-    const { hasSize, size: { wh } } = $.when(rect)
-    this.rect.setSize(wh)
-  }
+  // @fx set_rect_size_to_editor_rect_size() {
+  //   const { rect } = $.of(this.ctx)
+  //   const { hasSize, size: { wh } } = $.when(rect)
+  //   this.rect.setSize(wh)
+  // }
 
   @fx trigger_render() {
     const { ctx, rect } = this
