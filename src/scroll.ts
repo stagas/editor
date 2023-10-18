@@ -122,8 +122,7 @@ export class Scroll extends Comp {
     }
   }
   @fx update_minScroll() {
-    $.flush()
-    const { ctx, minScroll } = $.of(this)
+    const { isReady, ctx, minScroll } = $.of(this)
     const { dims } = $.of(ctx)
     console.log('MIN YES')
     const { rect, innerSize, lineBottoms, overscrollX } = $.required(dims)

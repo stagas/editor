@@ -30,6 +30,7 @@ export class Editor extends Render {
   constructor(public world: World) {
     super({ world } as Editor)
   }
+  isReady?: boolean
   misc = $(new Misc)
   skin = {
     colors: {
@@ -53,6 +54,7 @@ export class Editor extends Render {
 
   @init init_Editor() {
     this.canvas.fullWindow = true
+    this.isReady = true
   }
   @nu get scenes(): Render[] {
     const t = $.of(this)
