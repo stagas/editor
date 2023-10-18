@@ -21,7 +21,7 @@ export class Dims {
   // }
 
   get lines() {
-    return $.of($.of(this.ctx).buffer).source.lines
+    return $.of(this.ctx).buffer?.source?.lines
   }
   // @fx update_lines() {
   //   const { lines } = $.of($.of($.of(this.ctx).buffer).source)
