@@ -5,7 +5,7 @@ import { Canvas, Rect, Scene } from 'std'
 export abstract class Render extends Scene {
   pr = this.world.screen.$.pr
   canvas = $(new Canvas(this.world))
-  rect = $(new Rect)
+  rect = $(new Rect, { size: this.canvas.$.size })
   needRender?: boolean
   needDraw?: boolean
   needInit?: boolean
