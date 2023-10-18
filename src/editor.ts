@@ -6,12 +6,12 @@ import { Text } from './text.ts'
 import { World } from 'std'
 
 export class Editor extends Render {
-  ctx: Context = $(new Context(world, this.rect))
-  constructor(public world: World) {
-    super(world)
-    this.canvas.fullWindow = true
-    // this.ctx =
-  }
+  ctx: Context = $(new Context(this.world, this.rect))
+  // constructor(public world: World) {
+  //   super(world)
+  //   this.canvas.fullWindow = true
+  //   // this.ctx =
+  // }
 
   get scenes(): Render[] {
     const { ctx } = $.of(this)
