@@ -113,6 +113,7 @@ export class Caret extends Render {
       c.translate(
         Math.floor(col * charWidth),
         // TODO: this can be undefined, how to deal with these
+        // lineDims getter
         Math.floor(lineBaseTops[line] + 1)
       )
       ind.draw(c)
