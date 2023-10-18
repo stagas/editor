@@ -14,6 +14,8 @@ export abstract class RenderScene extends Scene {
 
   @fx run_initCanvas() {
     const { c, size: { xy } } = $.of(this.canvas)
+    $.untrack()
+    $.flush()
     this.initCanvas?.(c)
   }
 
