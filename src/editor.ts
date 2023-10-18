@@ -54,7 +54,7 @@ export class Editor extends Render {
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
-  get scenes(): Render[] {
+  @nulls get scenes(): Render[] {
     const t = $.of(this)
     return [
       t.selection,
