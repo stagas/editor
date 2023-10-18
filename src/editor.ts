@@ -39,8 +39,8 @@ export class Editor extends Render {
   colors: Colors = {}
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
-  scroll = $(new Scroll(this))
   dims = $(new Dims(this))
+  scroll = $(new Scroll(this))
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
