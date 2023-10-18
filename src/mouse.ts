@@ -1,3 +1,4 @@
+log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { Comp } from './comp.ts'
@@ -17,8 +18,11 @@ export class Mouse extends Comp {
     if (misc.isScrolling || misc.wasScrolling || !ctx.isHovering) return
     buffer.getLineColFromPoint(pointer.pos, true, this.hoveringLineCol)
   }
-  @fn onWheel (e: PointerLikeEvent & { type: 'wheel' }) {
-    const { scroll } = $.of(this.ctx)
+  @fx onWheel () {
+    const { world: { pointer }, scroll } = $.of(this.ctx)
+    const e = pointer.event
+    const { deltaTimeStamp, deltaX, deltaY } = $.of(e)
+    $.untrack()
     scroll.targetScroll.y -= e.deltaY * 0.2
     scroll.targetScroll.x -= e.deltaX * 0.2
     scroll.animScrollStrategy = AnimScrollStrategy.Medium
