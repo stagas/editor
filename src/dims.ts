@@ -135,6 +135,7 @@ export class Dims {
 
   @fx update_lineDims() {
     const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
+    $.untrack()
     //!: update_lineDims
     const lineTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
