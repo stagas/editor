@@ -55,7 +55,7 @@ export class Dims {
   lineHeights: number[] = [0]
 
   @nulls get innerSizeWidth() {
-    const { lines, longestLine, charWidth, scrollbarSize } = $.of(this)
+    const { longestLine, charWidth, scrollbarSize } = $.of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
 
@@ -170,7 +170,7 @@ export class Dims {
     innerSize.h = lineBottoms.at(-1) || 0
   }
 
-  get longestLine() {
+  @nulls get longestLine() {
     const { lines } = $.of(this)
     let longest = 0
     for (let i = 0, len = 0; i < lines.length; i++) {
