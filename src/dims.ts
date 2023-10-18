@@ -114,6 +114,8 @@ export class Dims {
     })
   }
 
+  // TODO: LineDim[]
+
   /** Top of the line, above decorations. */
   lineTops: number[] = [0]
   /** Base line top, at the character's top position. */
