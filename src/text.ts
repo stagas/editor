@@ -29,6 +29,11 @@ export class TextScene extends RenderScene {
     dims.charWidth = em.width
   }
 
+  @fx resizeCanvas() {
+
+
+  }
+
   @fx triggerRender() {
     const { ctx } = this
     const { buffer, dims } = $.of(ctx)
