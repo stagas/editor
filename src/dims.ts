@@ -11,7 +11,7 @@ export class Dims extends Comp {
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
 
-  fontSize = 12
+  fontSize = 12.5
   fontsReady = true //?: boolean
 
   blinkDelay = 270 // TODO: sync to beat
