@@ -54,6 +54,7 @@ export class Editor extends Render {
     return [
       t.selection,
       t.text,
+      t.caret,
     ]
   }
   @fx maybe_needDraw() {
