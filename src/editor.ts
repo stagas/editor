@@ -20,7 +20,7 @@ export class Editor extends RenderScene {
   }
   @init initResizeToWindow() {
     const { rect } = $.of(this)
-    // rect.resizeToWindow()
+    rect.resizeToWindow()
   }
   @fx triggerRenderDraw() {
     const { scenes } = $.of(this)
