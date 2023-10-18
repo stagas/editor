@@ -32,6 +32,7 @@ export class Editor extends Render {
       d ||= needRender || needDraw || false
     }
     if (d) {
+      $.untrack()
       this.needDraw = true
     }
   }
