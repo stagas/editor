@@ -108,7 +108,7 @@ export class Caret extends Render {
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
     if (!isHidden) {
-      log('lineCol', line, col)
+      // log('lineCol', line, col)
       c.save()
       c.translate(
         Math.floor(col * charWidth!),
