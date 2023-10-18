@@ -55,7 +55,7 @@ export class Dims {
     const { scroll } = $.of(this)
     return -scroll.y
   }
-  @nulls get viewSpanBottom() {
+  get viewSpanBottom() {
     const { rect, lineHeight, viewSpanTop } = $.of(this)
     return viewSpanTop + rect.h + lineHeight
   }
