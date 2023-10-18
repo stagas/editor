@@ -17,7 +17,12 @@ interface Skin {
 }
 
 export class Context extends Scene {
-  constructor(public world: World, public rect: $<Rect>) { super(world) }
+  constructor(
+    public world: World,
+    public rect: $<Rect>,
+  ) {
+    super(world)
+  }
 
   misc!: $<Misc>
   skin!: Skin
