@@ -99,8 +99,7 @@ export class Selection extends Render {
       return removing
     })
   }
-
-  selectLine(line: number) {
+  @fn selectLine(line: number) {
     const { ctx, selection } = $.of(this)
     const { buffer } = $.of(ctx)
     const { lines } = $.of(buffer)
@@ -109,7 +108,7 @@ export class Selection extends Render {
     selection.end.set({ x: lines[line].length, y: line })
     return true
   }
-  selectMatchingBrackets(p: Point, exclusive?: boolean) {
+  @fn selectMatchingBrackets(p: Point, exclusive?: boolean) {
     const { ctx, selection } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code } = $.of(buffer)
@@ -124,7 +123,7 @@ export class Selection extends Render {
     }
     return false
   }
-  selectWordBoundary(p: Point) {
+  @fn selectWordBoundary(p: Point) {
     const { ctx, selection } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code, lines } = $.of(buffer)
@@ -150,13 +149,13 @@ export class Selection extends Render {
     $.untrack()
     selection.end.set({ x: col, y: line })
   }
-  updateTextareaText() {
+  @fn updateTextareaText = () => {
     const { ctx, selectionText } = $.of(this)
     const { input } = $.of(ctx)
     input.textarea.value = selectionText
     input.textarea.select()
   }
-  updateTextareaTextDebounced = debounce(250, () => this.updateTextareaText())
+  updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
 
   @fx update_selectionText() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
