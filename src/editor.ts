@@ -52,8 +52,8 @@ export class Editor extends Render {
 
     for (const scene of scenes) {
       if (scene.needInit) scene.initCanvas(scene.canvas.c)
-      scene.render()
-      scene.draw(c)
+      if (scene.needRender) scene.render()
+      if (scene.needDraw) scene.draw(c)
     }
 
     this.needDraw = false
