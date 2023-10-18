@@ -1,3 +1,4 @@
+log.active
 import { $, fn, fx } from 'signal'
 import { Render } from './render.ts'
 import { Rect } from 'std'
