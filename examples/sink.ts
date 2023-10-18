@@ -36,7 +36,7 @@ $.batch(() => {
   editor.canvas.appendTo(dom.body)
 
   const source = $(new Source(tokenize))
-  source.code = 'hello world'
+  source.code = '[hello world]'
 
   editor.buffer.source = source
   editor.buffer.coli = 3
