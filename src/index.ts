@@ -1,3 +1,4 @@
+export * from './brackets.ts'
 export * from './buffer.ts'
 export * from './caret.ts'
 export * from './comp.ts'
