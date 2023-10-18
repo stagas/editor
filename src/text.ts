@@ -14,7 +14,6 @@ export class TextScene extends RenderScene {
   @fn initCanvas(c: CanvasRenderingContext2D) {
     const { dims, skin } = $.of(this.ctx)
 
-    console.log('INIT C')
     c.imageSmoothingEnabled = false
     c.miterLimit = 3
     c.lineJoin = 'round'
