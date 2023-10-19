@@ -36,6 +36,7 @@ export class Editor extends Render {
   misc = $(new Misc)
   skin = {
     colors: {
+      bg: '#222',
       bgBright015: '#113',
       bgBright1: '#337',
       bgBright2: '#222',
@@ -175,11 +176,11 @@ export class Editor extends Render {
   updateOne() { return 0 }
   render() { }
   @fn draw(t: number) {
-    const { rect, scenes, canvas, scroll, dims: { viewSpan } } = $.of(this)
+    const { rect, scenes, canvas, scroll, skin, dims: { viewSpan } } = $.of(this)
     const { c } = canvas
     const { Layout, Scroll } = RenderPosition
 
-    rect.fill(c, '#224')
+    rect.fill(c, skin.colors.bg)
 
     let position: RenderPosition = Layout
 
