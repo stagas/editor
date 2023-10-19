@@ -30,15 +30,16 @@ export class Mouse extends Comp {
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
     out: {
+      let hoverItem
       for (const target of pointerTargets) {
-        if (target.isPointWithin(pos)) {
-          if (target !== this.hoverItem) {
+        if (hoverItem = target.isPointWithin(pos)) {
+          if (hoverItem !== this.hoverItem) {
             if (this.hoverItem) {
               this.hoverItem.isHovering = false
             }
-            this.hoverItem = target
+            this.hoverItem = hoverItem
             this.hoverItem.isHovering = true
-            console.log('YES', target)
+            console.log('YES', hoverItem)
           }
           break out
         }
