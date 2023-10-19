@@ -14,7 +14,6 @@ export class Brackets extends Render {
     const { dims } = $.of(ctx)
     const { lineHeight, charWidth } = $.of(dims)
     $.untrack()
-    console.log('update', charWidth)
     if (!charWidth) return
     rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
     rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
@@ -69,10 +68,8 @@ export class Brackets extends Render {
     )
     this.needRender = false
     this.needDraw = true
-    console.log('render')
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
-    console.log('draw')
     const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
     if (!isHidden) {
       rect1.drawImage(canvas.el, c, pr, true)
