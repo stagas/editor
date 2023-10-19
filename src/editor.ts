@@ -61,7 +61,7 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  @fn getItemAtPoint(p: Point) {
+  @fn isPointWithin(p: Point) {
     if (this.rect.isPointWithin(p)) return this
   }
   @init init_Editor() {
