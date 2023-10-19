@@ -49,6 +49,7 @@ export class Mouse extends Comp {
         this.downPos.set(pos)
 
         buffer.lineCol.set(lineCol)
+        buffer.coli = lineCol.col
 
         console.log(this.downCount)
         switch (this.downCount) {
