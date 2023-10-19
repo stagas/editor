@@ -19,11 +19,13 @@ export class Scrollbars extends Render {
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     for (const item of this.items) {
+      if (!item.isVisible) continue
+
       if (item.needRender) {
         item.render()
         item.draw(t, c)
       }
-      else if (item.isVisible && item.needDraw) {
+      else if (item.needDraw) {
         item.draw(t, c)
       }
     }
