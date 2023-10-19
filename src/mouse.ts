@@ -30,7 +30,7 @@ export class Mouse extends Comp {
     $._()
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
-    if (!this.downItem) {
+    if (!this.downItem || type === PointerEventType.Up) {
       out: {
         let hoverItem
         for (const target of pointerTargets) {
