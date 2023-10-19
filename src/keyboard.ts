@@ -91,6 +91,7 @@ export class Keyboard extends Comp {
             lines.splice(++top.y, 0, ...slice)
             ++bottom.y
             b.code = lines.join('\n')
+            $.flush()
           }
         }
 
