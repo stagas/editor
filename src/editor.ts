@@ -102,7 +102,9 @@ export class Editor extends Render {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
     this.needInit = false
-    this.needDraw = true
+    for (const scene of this.scenes) {
+      scene.needInit && scene.initCanvas(scene.canvas.c)
+    }
   }
   @fn update() {
     const { misc, dims, scroll } = $.of(this)
