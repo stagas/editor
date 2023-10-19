@@ -23,7 +23,7 @@ export class Brackets extends Render {
   @fx update_brackets() {
     const { ctx, rect1: r1, rect2: r2, viewRect } = $.of(this)
     const { buffer, dims } = $.of(ctx)
-    const { lineBaseTops } = $.of(dims)
+    const { lineBaseTops, charWidth } = $.of(dims)
     const {
       hasBrackets,
       bracketsPair: {
