@@ -187,6 +187,7 @@ export class Selection extends Render {
     const { viewRect: vr, topPx, bottomPx } = $.of(this)
     const { ctx } = $.of(t)
     const { buffer, dims } = $.of(ctx)
+    const { charWidth } = $.of(dims)
     const selectionSorted = t.getSelectionSorted()
     $.untrack()
     this.selectionSorted = selectionSorted
