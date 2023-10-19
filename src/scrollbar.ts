@@ -2,6 +2,7 @@
 import { $, fn, fx } from 'signal'
 import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
+import { Point } from 'std'
 
 const dimOpp = {
   x: 'y',
@@ -25,6 +26,9 @@ export class Scrollbar extends Render {
   dim?: Dim
   scrollBegin = 0
   pointerBegin = 0
+  isPointWithin(p: Point) {
+    return this.rect.isPointWithin(p) && this
+  }
   @fn onPointerDown() {
     const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)
     this.scrollBegin = scroll[dim]

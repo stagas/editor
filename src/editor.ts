@@ -17,7 +17,6 @@ import { clamp } from 'utils'
 import { Clipboard } from './clipboard.ts'
 import { Scrollbars } from './scrollbars.ts'
 import { Pointable } from './pointable.ts'
-import { Mouseable } from './mouseable.ts'
 
 interface PointerItem { }
 
@@ -78,7 +77,7 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): (Pointable & Mouseable)[] {
+  @nu get pointerTargets(): Pointable[] {
     const t = $.of(this)
     return [
       t.scrollbars,
