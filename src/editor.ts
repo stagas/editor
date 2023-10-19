@@ -58,8 +58,8 @@ export class Editor extends Render {
     return [
       t.selection,
       t.text,
-      t.caret,
       t.brackets,
+      t.caret,
     ]
   }
   @fx update_cursor_when_isHovering() {
