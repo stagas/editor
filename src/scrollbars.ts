@@ -135,7 +135,7 @@ export class Scrollbars extends Render {
   update() { return 0 }
   updateOne() { return 0 }
   @fn render(t: number, c: CanvasRenderingContext2D) {
-    // this.draw(t, c)
+    this.needDraw = true
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     for (const item of this.items) {
