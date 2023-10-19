@@ -210,7 +210,7 @@ export class Selection extends Render {
     this.needRender = true
   }
   @fn initCanvas() {
-    // this.needInit = false
+    this.needInit = false
     // this.needRender = true
   }
   update(dt: number) { return 0 }
