@@ -138,7 +138,7 @@ export class Scroll extends Comp {
 
     $.untrack()
 
-    minScroll.top = top + lineHeight
+    minScroll.top = top
     minScroll.left = left
   }
 
