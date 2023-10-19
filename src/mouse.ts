@@ -50,8 +50,8 @@ export class Mouse extends Comp {
     const { time } = $.of(pointer)
     $._()
     const { type, pos } = pointer
-    return
     const { downItem, hoverItem } = this
+    return
 
     if (type === Move && downItem) {
       downItem[PointerEventMap[type]]?.()
