@@ -202,13 +202,16 @@ export class Editor extends Render {
           || viewRect.top > viewSpan.bottom
         ) continue
 
-        if (scene.needRender) {
-          scene.render(t, scene.canvas.c, true)
-          scene.draw(t, c)
-        }
-        else {
-          scene.draw(t, c)
-        }
+        // if (scene.needRender) {
+        scene.needInit && scene.initCanvas(scene.canvas.c)
+        scene.needRender && scene.render(t, scene.canvas.c, true)
+        scene.draw(t, c)
+        // scene.render(t, scene.canvas.c, true)
+        // scene.draw(t, c)
+        // }
+        // else {
+        //   scene.draw(t, c)
+        // }
       }
       else if (position === 'layout') {
         if (this.needDirectDraw) {
@@ -233,8 +236,8 @@ export class Editor extends Render {
     }
 
     this.needDirectDraw
-    = this.needDraw
-    = false
+      = this.needDraw
+      = false
     // }
     // else {
     //   for (const scene of scenes) {
