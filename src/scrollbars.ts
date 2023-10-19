@@ -3,7 +3,6 @@ import { $, fx, fn } from 'signal'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { Scrollbar } from './scrollbar.ts'
-import { Pointable } from './pointable.ts'
 import { Point } from 'std'
 
 export class Scrollbars extends Render {

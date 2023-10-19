@@ -23,13 +23,13 @@ export abstract class Render extends Scene {
 
   coeff = 1
   renderPosition: RenderPosition = RenderPosition.Layout
+  viewRect?: $<Rect>
+
   needInit?: boolean
   needUpdate?: boolean
   needRender?: boolean
   needDraw?: boolean
   needDirectDraw?: boolean
-
-  viewRect?: $<Rect>
 
   isVisible = false
   isFocused = false
