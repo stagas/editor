@@ -14,8 +14,8 @@ export abstract class Render extends Scene {
   constructor(
     public ctx: Editor,
     public rect = $(new Rect),
+    public canvas = $(new Canvas(ctx.world), { size: rect.$.size }),
     public world: World = ctx.world,
-    public canvas = $(new Canvas(world), { size: rect.$.size }),
     public pr = world.screen.$.pr,
   ) {
     super(world)
@@ -42,8 +42,8 @@ export abstract class Render extends Scene {
   abstract draw(t: number, c: CanvasRenderingContext2D): void
 
   @fx trigger_needInit_on_size() {
-    const { pr } = $.of(this)
-    const { size: { x, y } } = $.of(this.canvas)
+    const { pr, canvas } = $.of(this)
+    const { size: { x, y } } = $.of(canvas)
     this.needInit = true
   }
 }

@@ -2,6 +2,7 @@ log.active
 import { $, fn, fx } from 'signal'
 import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
+import { Comp } from './comp.ts'
 
 const dimOpp = {
   x: 'y',
@@ -39,15 +40,16 @@ class Scrollbar extends Render {
     const { dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
     const side = sides[dim]
-    scroll.pos[dim] = 1
-    // const co = rect[side] / innerSize[side]
-    // scroll.pos[dim] =
-    //   scroll.targetScroll[dim] =
-    //   this.scrollBegin
-    //   - (p.pos[dim] - this.pointerBegin) / co
+    const co = rect[side] / innerSize[side]
+
+    scroll.pos[dim] =
+      scroll.targetScroll[dim] =
+      this.scrollBegin
+      - (p.pos[dim] - this.pointerBegin) / co
 
     scroll.animScrollStrategy = AnimScrollStrategy.Fast
-    this.needUpdate = true
+
+    ctx.needUpdate = true
   }
   // })
   @fx update_scrollbar() {
@@ -107,26 +109,29 @@ class Scrollbar extends Render {
 
     c.restore()
 
-    $.needRender = false
-    $.needDraw = true
+    this.needRender = false
+    this.needDraw = true
   }
-  @fn draw(c: CanvasRenderingContext2D) {
+  @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = this
-    rect.drawImage(c, canvas, pr, true)
-    $.needDraw = false
+    rect.drawImage( canvas.el,c, pr, true)
+    this.needDraw = false
   }
   @fx trigger_needRender() {
-    const { isReady, rect: { w, h }, isHovering } = this
-    $.done()
-    $.needRender = true
+    const { rect: { w, h }, isHovering } = $.of(this)
+    $._()
+    this.needRender = true
   }
   @fx trigger_needDraw() {
-    const { isReady, rect: { x, y } } = this
-    $.done()
-    $.needDraw = true
+    const { rect: { x, y } } = $.of(this)
+    $._()
+    this.needDraw = true
   }
 }
 
+export class Scrollbars extends Comp {
+
+}
 // export type Scrollbars = typeof Scrollbars.type
 // export const Scrollbars = Fx.tag('scrollbars')
 //   .mix(Sceneable)
