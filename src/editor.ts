@@ -173,9 +173,7 @@ export class Editor extends Render {
       for (const scene of scenes) {
         c.save()
         scene.initCanvas(c)
-        // scene.needRender &&
         scene.render(c)
-        // scene.draw(c)
         c.restore()
       }
       this.needDirectDraw = false
