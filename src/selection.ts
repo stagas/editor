@@ -218,7 +218,7 @@ export class Selection extends Render {
   @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
     const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
     const { skin, buffer, dims } = $.of(ctx)
-    const { scroll } = $.of(dims)
+    const { scroll, charWidth } = $.of(dims)
 
     if (hasSelection) {
       log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
