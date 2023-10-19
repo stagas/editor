@@ -149,6 +149,7 @@ export class Editor extends Render {
     if (!isScrolling) {
       this.needUpdate = false
       this.needDraw = true
+      console.log('0')
       return 0
     }
     else {
