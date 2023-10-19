@@ -121,6 +121,7 @@ export class Caret extends Render {
       )
       ind.draw(t,c)
       c.restore()
+      console.log('DRAW')
     }
     this.needDraw = false
   }
