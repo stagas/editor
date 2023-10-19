@@ -81,7 +81,7 @@ export class Mouse extends Comp {
       }
 
       if (this.hoverItem) {
-        console.log(this.hoverItem)
+        console.log(this.hoverItem.it)
         this.hoverItem.it.isHovering = true
         world.screen.cursor = this.hoverItem.cursor
         this.hoverItem.onEnter?.()

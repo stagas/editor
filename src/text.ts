@@ -30,7 +30,7 @@ export class Text extends Render {
     return $(new Pointable(ctx), {
       cursor: 'text',
       getItemAtPoint: (p: Point) => {
-        return ctx.rect.isPointWithin(p) && ctx
+        return ctx.rect.isPointWithin(p) && this.pointable
       },
       onClick: () => {
         textarea.focus()
