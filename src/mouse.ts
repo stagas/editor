@@ -16,6 +16,7 @@ export class Mouse extends Comp {
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
     const { world, misc, buffer, scroll, selection, input: { textarea } } = $.of(ctx)
+    const { lines } = $.of(buffer)
     const { pointer } = $.of(world)
     const { time } = pointer
     $._()
