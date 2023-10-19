@@ -16,6 +16,7 @@ export class Mouse extends Comp {
   downPos = $(new Point)
 
   hoverItem?: Pointable | null
+  downItem?: Pointable | null
 
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
@@ -50,6 +51,17 @@ export class Mouse extends Comp {
     }
 
     if (!ctx.isHovering) {
+      if (type === PointerEventType.Down) {
+        this.downItem = this.hoverItem
+        this.downItem?.onPointerDown?.()
+      }
+      if (this.downItem) {
+        switch (type) {
+          case PointerEventType.Move:
+            this.downItem.onHoldMove?.()
+            break
+        }
+      }
       return
     }
     // ctx.isHovering = pos.withinRect(ctx.rect)
