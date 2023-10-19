@@ -1,6 +1,7 @@
 export * from './brackets.ts'
 export * from './buffer.ts'
 export * from './caret.ts'
+export * from './clipboard.ts'
 export * from './comp.ts'
 export * from './constants.ts'
 export * from './dims.ts'
