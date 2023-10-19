@@ -15,7 +15,7 @@ export class Scrollbars extends Render {
   items = [this.scrollbarY, this.scrollbarX]
   @fn isPointWithin(p: Point) {
     for (const item of this.items) {
-      if (item.isPointWithin(p)){
+      if (item.isVisible && item.isPointWithin(p)){
         return item
       }
     }
