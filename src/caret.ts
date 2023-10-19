@@ -9,8 +9,8 @@ export class Caret extends Render {
   blink?= false
   isBlinking = false
   isHidden = false
-  hideWhenTyping?= false
-  hideWhenAway?= true
+  hideWhenTyping?= true
+  hideWhenAway?= false
   color1?= '#727'
   color2?= '#555'
   color1Focused?= '#f0f'
@@ -65,7 +65,7 @@ export class Caret extends Render {
     const { hideWhenAway, ctx } = $.when(this)
     const { isHovering } = $.of(ctx)
     $.untrack()
-    // this.isHidden = !isHovering
+    this.isHidden = !isHovering
   }
   @fx start_blinking() {
     const { blink, isBlinking, ctx, pos: { line, col } } = $.when(this)
