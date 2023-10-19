@@ -2,7 +2,7 @@ export const NONSPACE = /[^\s]/g
 export const SPACE = /\s/g
 export const WORD = /[\s]{2,}|[./\\()"'\-:,.;<>~!@#$%^&*|+=[\]{}`~?\b ]{1}|\w+/g
 export const TOKEN = /\s+|[\w\.]+|[\W]/g
-export const BRACKET = /[\[\]\(\)\{\}]/g
+export const BRACKET = /[\[\]\(\)\{\}]/
 ///.+?\b|.\B|\b.+?/g
 
 export const Open = {
