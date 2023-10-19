@@ -1,5 +1,5 @@
 log.active
-import { $, fn } from 'signal'
+import { $, fx, fn } from 'signal'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { Scrollbar } from './scrollbar.ts'
