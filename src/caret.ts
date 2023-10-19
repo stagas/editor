@@ -39,7 +39,7 @@ export class Caret extends Render {
     r.y = lineBaseTops[line]
   }
   @fx update_caret() {
-    const { rect: r, ctx, ind, blink } = $.of(this)
+    const { pr, rect: r, ctx, ind, blink } = $.of(this)
     const { isFocused, dims } = $.of(ctx)
     const { lineHeight, charWidth } = $.of(dims)
     $.untrack()
