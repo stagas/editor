@@ -68,7 +68,7 @@ export class Scrollbar extends Render {
     }
     r[s] = w
     r[so] = scrollbarSize[so]
-    console.log(r.text)
+    console.log(r.text, co)
   }
   initCanvas() {   }
   update() { return 0 }
