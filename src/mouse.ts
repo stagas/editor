@@ -38,8 +38,8 @@ export class Mouse extends Comp {
             }
             this.hoverItem = target
             this.hoverItem.isHovering = true
-            break out
           }
+          break out
         }
       }
       if (this.hoverItem) {
