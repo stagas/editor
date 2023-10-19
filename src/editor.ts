@@ -70,7 +70,7 @@ export class Editor extends Render {
       d ||= needRender || needDraw || false
     }
     if (d) {
-      this.needDraw = true
+      this.needUpdate = true
     }
   }
   // @fx when_needDraw_trigger_draw() {
