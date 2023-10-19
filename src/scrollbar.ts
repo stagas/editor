@@ -111,12 +111,14 @@ export class Scrollbar extends Render {
     this.needDraw = false
   }
   @fx trigger_needRender() {
-    const { rect: { w, h }, isHovering } = $.of(this)
+    const { rect, isHovering } = $.of(this)
+    const { hasSize, w, h } = $.of(rect)
     $._()
     this.needRender = true
   }
   @fx trigger_needDraw() {
-    const { rect: { x, y } } = $.of(this)
+    const { rect } = $.of(this)
+    const { hasSize, x, y } = $.of(rect)
     $._()
     this.needDraw = true
   }
