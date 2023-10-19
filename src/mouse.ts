@@ -58,10 +58,12 @@ export class Mouse extends Comp {
 
           case 2:
             if (selection.selectWordBoundary(lineCol)) {
+              this.downCount = 2
               break
             }
           case 3:
             if (selection.selectMatchingBrackets(lineCol)) {
+              this.downCount = 3
               break
             }
           case 4:
