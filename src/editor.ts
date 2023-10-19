@@ -89,12 +89,19 @@ export class Editor extends Render {
   @fx trigger_update_when_scroll() {
     const { scroll } = $.of(this)
     const { pos: scrollPos, targetScroll } = $.of(scroll)
-    const needAnim =
+
+    const needUpdate =
       Math.round(scrollPos.top) !== targetScroll.top ||
       Math.round(scrollPos.left) !== targetScroll.left
     $.untrack()
-    if (needAnim) {
+
+    if (needUpdate) {
       this.needUpdate = true
+    }
+  }
+  @fx trigger_anim_on_needUpdate() {
+    if (this.needUpdate && !this.world.anim.isAnimating) {
+      this.world.anim.start()
     }
   }
   @fn initCanvas() {
