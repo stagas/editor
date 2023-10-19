@@ -65,7 +65,7 @@ export class Caret extends Render {
     const { hideWhenAway, ctx } = $.when(this)
     const { isHovering } = $.of(ctx)
     $.untrack()
-    this.isHidden = !isHovering
+    // this.isHidden = !isHovering
   }
   @fx start_blinking() {
     const { blink, isBlinking, ctx, pos: { line, col } } = $.when(this)
@@ -110,7 +110,6 @@ export class Caret extends Render {
     const { dims } = $.of(ctx)
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
-    console.log('DRAW', isHidden)
     if (!isHidden) {
       // log('lineCol', line, col)
       c.save()
