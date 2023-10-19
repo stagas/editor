@@ -3,6 +3,7 @@ import { $, fn, fx } from 'signal'
 import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { Comp } from './comp.ts'
+import { Editor } from './editor.ts'
 
 const dimOpp = {
   x: 'y',
@@ -19,20 +20,15 @@ const sidesOpp = {
   y: 'w',
 } as const
 
+type Dim = 'x' | 'y'
 class Scrollbar extends Render {
   canFocus = false
-  dim?: 'x' | 'y'
+  dim?: Dim
   scrollBegin = 0
   pointerBegin = 0
-
-  // isReady: rect.hasSize || void 0
-  // .local($ => class {
-  // onWheel = (e: WheelEvent) => {
-  //   $.target.onWheel!(e)
-  // }
   @fn onPointerDown() {
-    const { world: { pointer: p }, dim, ctx: sa } = $.of(this)
-    this.scrollBegin = sa.scroll[dim]
+    const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)
+    this.scrollBegin = scroll[dim]
     this.pointerBegin = p.pos[dim]
   }
   @fn onHoldMove() {
@@ -42,8 +38,8 @@ class Scrollbar extends Render {
     const side = sides[dim]
     const co = rect[side] / innerSize[side]
 
-    scroll.pos[dim] =
-      scroll.targetScroll[dim] =
+    scroll.pos[<Dim>dim] =
+      scroll.targetScroll[<Dim>dim] =
       this.scrollBegin
       - (p.pos[dim] - this.pointerBegin) / co
 
@@ -72,7 +68,6 @@ class Scrollbar extends Render {
     r[s] = w
     r[so] = scrollbarSize[so]
   }
-
   initCanvas() { }
   update() { return 0 }
   updateOne() { return 0 }
@@ -114,7 +109,7 @@ class Scrollbar extends Render {
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = this
-    rect.drawImage( canvas.el,c, pr, true)
+    rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
   }
   @fx trigger_needRender() {
@@ -129,8 +124,31 @@ class Scrollbar extends Render {
   }
 }
 
-export class Scrollbars extends Comp {
-
+export class Scrollbars extends Render {
+  constructor(ctx: Editor) {
+    super(ctx, ctx.rect, ctx.world.canvas)
+  }
+  scrollbarY = $(new Scrollbar(this.ctx), { dim: 'y' })
+  scrollbarX = $(new Scrollbar(this.ctx), { dim: 'x' })
+  items = [this.scrollbarY, this.scrollbarX]
+  initCanvas() { }
+  update() { return 0 }
+  updateOne() { return 0 }
+  render() {}
+  @fn draw(t: number, c: CanvasRenderingContext2D): void {
+    for (const item of this.items) {
+      if (item.needRender) {
+        item.render()
+        item.draw(t, c)
+      }
+      else if (item.isVisible) {
+        item.draw(t, c)
+      }
+    }
+    this.needRender
+      = this.needDraw
+      = false
+  }
 }
 // export type Scrollbars = typeof Scrollbars.type
 // export const Scrollbars = Fx.tag('scrollbars')

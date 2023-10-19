@@ -15,6 +15,7 @@ import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
 import { Clipboard } from './clipboard.ts'
+import { Scrollbars } from './scrollbars.ts'
 
 interface PointerItem { }
 
@@ -47,11 +48,14 @@ export class Editor extends Render {
   scroll = $(new Scroll(this))
   dims = $(new Dims(this))
   input = $(new Input(this))
-  selection = $(new Selection(this))
   clipboard = $(new Clipboard(this))
+
+  selection = $(new Selection(this))
   text = $(new Text(this))
-  caret = $(new Caret(this), { blink: false, renderPosition: RenderPosition.Scroll })
   brackets = $(new Brackets(this), { renderPosition: RenderPosition.Scroll })
+  caret = $(new Caret(this), { blink: false, renderPosition: RenderPosition.Scroll })
+  scrollbars = $(new Scrollbars(this))
+
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -65,6 +69,7 @@ export class Editor extends Render {
       t.text,
       t.brackets,
       t.caret,
+      t.scrollbars,
     ]
   }
   @fx update_cursor_when_isHovering() {
