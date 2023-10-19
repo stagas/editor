@@ -47,8 +47,8 @@ export class Mouse extends Comp {
     const { ctx } = $.of(this)
     const { world, pointerTargets } = $.of(ctx)
     const { pointer } = $.of(world)
-    return
     const { time } = $.of(pointer)
+    return
     $._()
     const { type, pos } = pointer
     const { downItem, hoverItem } = this
