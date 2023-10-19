@@ -11,6 +11,9 @@ export interface Key {
   altKey?: boolean
 }
 
+const ignoredKeys = 'cvxJr=+-tn'
+const handledKeys = 'zyvxc=+-tnb'
+
 export class Keyboard extends Comp {
   shiftKey = false
 
@@ -617,7 +620,7 @@ export class Keyboard extends Comp {
       && selection.hasSelection
       && (
         !ctrlKey
-        || !'zyvxc=+-tnb'.includes(key)
+        || !handledKeys.includes(key)
       )
     ) {
       selection.start.set(selection.end)
@@ -636,7 +639,7 @@ export class Keyboard extends Comp {
   }
   handleKeyDown = (e: KeyboardEvent) => {
     if (e.ctrlKey || e.metaKey) {
-      if (e.key === 'Control' || 'cvxJr=+-tn'.includes(e.key)) {
+      if (e.key === 'Control' || ignoredKeys.includes(e.key)) {
         return
       }
     }
