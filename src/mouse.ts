@@ -54,6 +54,7 @@ export class Mouse extends Comp {
 
     if (!ctx.isHovering) {
       if (type === PointerEventType.Down) {
+        this.isDown = true
         this.downItem = this.hoverItem
         this.downItem?.onPointerDown?.()
       }
@@ -64,6 +65,7 @@ export class Mouse extends Comp {
             return
 
           case PointerEventType.Up:
+            this.isDown = false
             this.downItem.isHovering = false
             this.downItem = null
             return
