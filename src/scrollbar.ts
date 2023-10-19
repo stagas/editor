@@ -107,7 +107,6 @@ export class Scrollbar extends Render {
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = this
-    console.log(pr)
     rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
   }
