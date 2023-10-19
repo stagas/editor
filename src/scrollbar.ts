@@ -66,7 +66,7 @@ export class Scrollbar extends Render {
     r[s] = w
     r[so] = scrollbarSize[so]
   }
-  initCanvas() { }
+  initCanvas() {   }
   update() { return 0 }
   updateOne() { return 0 }
   @fn render() {
@@ -107,6 +107,7 @@ export class Scrollbar extends Render {
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = this
+    console.log(pr)
     rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
   }
