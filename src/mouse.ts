@@ -51,13 +51,13 @@ export class Mouse extends Comp {
     $._()
     const { type, pos } = pointer
     const { downItem, hoverItem } = this
-    return
 
     if (type === Move && downItem) {
       downItem[PointerEventMap[type]]?.()
       return
     }
 
+    return
     let currentItem =
       (type !== Up && downItem)
       || (this.findItemByPoint(pos))
