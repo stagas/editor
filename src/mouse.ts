@@ -33,7 +33,7 @@ export class Mouse extends Comp {
     const { pointerTargets, text } = $.of(ctx)
 
     let item: Pointable | false | undefined
-
+return
     for (const target of pointerTargets) {
       if (item = target.pointable.getItemAtPoint(p)) {
         return item
