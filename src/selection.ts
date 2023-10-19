@@ -55,8 +55,8 @@ export class Selection extends Render {
       top = selection.end
       bottom = selection.start
     }
-    selectionSorted.top.set(top)
-    selectionSorted.bottom.set(bottom)
+    selectionSorted.top = top
+    selectionSorted.bottom = bottom
     selectionSorted.forward = forward
     return selectionSorted
   }
