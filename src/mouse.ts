@@ -33,13 +33,12 @@ export class Mouse extends Comp {
     const { pointerTargets, text } = $.of(ctx)
 
     let item: Pointable | false | undefined
-    for (const target of pointerTargets) {
-      if (item = target.pointable.getItemAtPoint(p)) {
-        return item
-      }
-    }
+    // for (const target of pointerTargets) {
+    //   if (item = target.pointable.getItemAtPoint(p)) {
+    //     return item
+    //   }
+    // }
 
-    return
     return text.pointable
   }
 
@@ -61,7 +60,6 @@ export class Mouse extends Comp {
     (type !== Up && downItem)
     || (this.findItemByPoint(pos))
 
-    return
     if (type === Up && downItem) {
       downItem.it.isDown = false
     }
