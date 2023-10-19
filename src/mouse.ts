@@ -19,7 +19,7 @@ export class Mouse extends Comp {
   downItem?: Pointable | null | undefined
 
   pointable = $(new Pointable, <Pointable>{
-    getItemAtPoint: (p) => {
+    isPointWithin: (p) => {
       return this.ctx.isPointWithin(p)
     }
   })
@@ -40,7 +40,7 @@ export class Mouse extends Comp {
       out: {
         let hoverItem
         for (const target of pointerTargets) {
-          if (hoverItem = target.getItemAtPoint(pos)) {
+          if (hoverItem = target.isPointWithin(pos)) {
             if (hoverItem !== this.hoverItem) {
               if (this.hoverItem) {
                 this.hoverItem.isHovering = false
