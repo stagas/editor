@@ -28,11 +28,11 @@ export class Scrollbar extends Render {
   scrollBegin = 0
   pointerBegin = 0
 
-  get pointable() {
+  get pointable(): $<Pointable> {
     $._()
     return $(new Pointable(this), {
-      getItemAtPoint: fn((p: Point) => {
-        return this.rect.isPointWithin(p) && this
+      getItemAtPoint: fn((p: Point): false | $<Pointable> => {
+        return this.rect.isPointWithin(p) && this.pointable
       }),
       onDown: fn(() => {
         const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)

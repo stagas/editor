@@ -29,7 +29,7 @@ export class Text extends Render {
 
     return $(new Pointable(ctx), {
       cursor: 'text',
-      getItemAtPoint: (p: Point) => {
+      getItemAtPoint: (p: Point): false | $<Pointable> => {
         return ctx.rect.isPointWithin(p) && this.pointable
       },
       onClick: () => {
