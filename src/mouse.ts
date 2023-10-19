@@ -57,7 +57,7 @@ export class Mouse extends Comp {
 
         buffer.lineCol.set(lineCol)
         buffer.coli = lineCol.col
-console.log(this.downCount)
+
         switch (this.downCount) {
           case 1:
             selection.resetTo(lineCol)
