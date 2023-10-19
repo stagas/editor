@@ -45,7 +45,7 @@ class Scrollbar extends Render {
 
     scroll.animScrollStrategy = AnimScrollStrategy.Fast
 
-    ctx.needUpdate = true
+    // ctx.needUpdate = true
   }
   // })
   @fx update_scrollbar() {
