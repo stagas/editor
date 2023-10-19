@@ -35,8 +35,7 @@ export class Caret extends Render {
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
     $.untrack()
-    if (!charWidth) return
-    r.x = col * charWidth!
+    r.x = col * charWidth
     r.y = lineBaseTops[line]
   }
   @fx update_caret() {
