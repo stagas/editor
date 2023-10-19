@@ -31,8 +31,8 @@ export class Selection extends Render {
   @fn getSelectionSorted() {
     const { selection, selectionSorted } = this
     // Line & forward
-    let top: Point
-    let bottom: Point
+    let top: $<Point>
+    let bottom: $<Point>
     let forward = false
 
     if (selection.start.y === selection.end.y) {
