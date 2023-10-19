@@ -61,15 +61,15 @@ export class Mouse extends Comp {
         switch (type) {
           case PointerEventType.Move:
             this.downItem.onHoldMove?.()
-            break
+            return
 
           case PointerEventType.Up:
             this.downItem = null
-            break
+            return
         }
       }
-      return
     }
+
     // ctx.isHovering = pos.withinRect(ctx.rect)
 
     buffer.getLineColFromPoint(pos, true, lineCol)
