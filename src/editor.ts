@@ -10,12 +10,14 @@ import { Buffer } from './buffer.ts'
 import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
-import { World } from 'std'
+import { Point, World } from 'std'
 import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
 import { Clipboard } from './clipboard.ts'
 import { Scrollbars } from './scrollbars.ts'
+import { Pointable } from './pointable.ts'
+import { Mouseable } from './mouseable.ts'
 
 interface PointerItem { }
 
@@ -60,6 +62,9 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
+  @fn isPointWithin(p: Point) {
+    if (this.rect.isPointWithin(p)) return this
+  }
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
@@ -73,10 +78,11 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): Render[] {
+  @nu get pointerTargets(): (Pointable & Mouseable)[] {
     const t = $.of(this)
     return [
       t.scrollbars,
+      this,
     ]
   }
   @fx update_cursor_when_isHovering() {

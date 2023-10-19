@@ -3,6 +3,8 @@ import { $, fn } from 'signal'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { Scrollbar } from './scrollbar.ts'
+import { Pointable } from './pointable.ts'
+import { Point } from 'std'
 
 export class Scrollbars extends Render {
   constructor(ctx: Editor) {
@@ -11,6 +13,13 @@ export class Scrollbars extends Render {
   scrollbarY = $(new Scrollbar(this.ctx), { dim: 'y' })
   scrollbarX = $(new Scrollbar(this.ctx), { dim: 'x' })
   items = [this.scrollbarY, this.scrollbarX]
+  @fn isPointWithin(p: Point) {
+    for (const item of this.items) {
+      if (item.rect.isPointWithin(p)){
+        return item
+      }
+    }
+  }
   initCanvas() { }
   update() { return 0 }
   updateOne() { return 0 }

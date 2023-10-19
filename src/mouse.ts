@@ -4,8 +4,8 @@ import { Point, PointerEventType } from 'std'
 import { prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
-import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
+import { Pointable } from './pointable.ts'
 
 export class Mouse extends Comp {
   lineCol = $(new Point)
@@ -15,7 +15,7 @@ export class Mouse extends Comp {
   downTime = 0
   downPos = $(new Point)
 
-  hoverItem?: Render
+  hoverItem?: Pointable | null
 
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
@@ -29,13 +29,30 @@ export class Mouse extends Comp {
     $._()
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
-    for (const target of pointerTargets) {
-      if (target.isPointWithin(pos)) {
-        this.hoverItem = target
+    out: {
+      for (const target of pointerTargets) {
+        if (target.isPointWithin(pos)) {
+          if (target !== this.hoverItem) {
+            if (this.hoverItem) {
+              this.hoverItem.isHovering = false
+            }
+            this.hoverItem = target
+            this.hoverItem.isHovering = true
+            break out
+          }
+        }
       }
+      if (this.hoverItem) {
+        this.hoverItem.isHovering = false
+      }
+      this.hoverItem = null
     }
 
-    ctx.isHovering = pos.withinRect(ctx.rect)
+    if (!ctx.isHovering) {
+
+      return
+    }
+    // ctx.isHovering = pos.withinRect(ctx.rect)
 
     buffer.getLineColFromPoint(pos, true, lineCol)
 
