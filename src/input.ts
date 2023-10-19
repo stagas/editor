@@ -22,7 +22,7 @@ export class Input extends Comp {
     style: {
       cssText: /*css*/`
       position: fixed;
-      opacity: 0.5;
+      opacity: 0;
       width: 50px;
       height: 50px;
       pointer-events: none;
