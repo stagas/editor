@@ -26,6 +26,7 @@ export class Input extends Comp {
       width: 50px;
       height: 50px;
       pointer-events: none;
+      caret-color: transparent;
       border: none;
       resize: none;
       padding: 0;
