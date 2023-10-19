@@ -68,6 +68,7 @@ export class Brackets extends Render {
     )
     this.needRender = false
     this.needDraw = true
+    console.log('render')
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
     console.log('draw')
