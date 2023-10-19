@@ -142,6 +142,7 @@ export class Selection extends Render {
         selection.end.set({ x: word.index + word[0].length, y: line })
         // We exclude brackets from being selected as words, so
         // that we fall back to a matching brackets selection in mouse.
+        console.log(word[0])
         if (word[0].length === 1 && BRACKET.test(word)) return false
         return Boolean(word[0].trim().length)
       }
