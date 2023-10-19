@@ -70,7 +70,7 @@ export class Scroll extends Comp {
 
     let y = lineTops[line]!
 
-    let dy
+    let dy: number
 
     dy = viewTop - y
     if (dy > 0) {
@@ -107,7 +107,7 @@ export class Scroll extends Comp {
 
     let x = col * charWidth
 
-    let dx
+    let dx: number
 
     dx = viewLeft - (x - charWidth * 10)
     if (dx > 0) {
