@@ -51,7 +51,7 @@ export class Scrollbar extends Render {
     const { dim, ctx, rect: r } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { scrollSize } = $.of(scroll)
-    // const { absSum: ab1 } = $.when(scrollSize)
+    const { absSum: ab1 } = $.when(scrollSize)
     const { rect, scrollbarSize } = $.of(dims)
     // const { absSum: ab2 } = $.when(scrollbarSize)
 
