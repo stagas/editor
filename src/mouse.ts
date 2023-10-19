@@ -56,10 +56,13 @@ export class Mouse extends Comp {
       if (type === PointerEventType.Down) {
         this.isDown = true
         this.downItem = this.hoverItem
-        this.downItem?.onPointerDown?.()
       }
       if (this.downItem) {
         switch (type) {
+          case PointerEventType.Down:
+            this.downItem.onPointerDown?.()
+            return
+
           case PointerEventType.Move:
             this.downItem.onHoldMove?.()
             return
