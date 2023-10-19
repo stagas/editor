@@ -151,6 +151,7 @@ export class Keyboard extends Comp {
           ++b.line
         }
         b.coli = b.col
+        console.log(b.coli)
         break
 
       case 'ArrowLeft':
