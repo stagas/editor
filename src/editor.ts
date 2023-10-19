@@ -62,31 +62,20 @@ export class Editor extends Render {
       t.brackets,
     ]
   }
-  @fx maybe_needDraw() {
-    const { scenes } = $.of(this)
-    let d = false
-    for (const scene of scenes) {
-      const { needRender, needDraw } = scene
-      d ||= needRender || needDraw || false
-    }
-    if (d) {
-      this.needDraw = true
-    }
-  }
-  @fx maybe_update_cursor() {
+  @fx update_cursor_when_isHovering() {
     const { isHovering } = $.when(this)
     this.world.screen.cursor = 'text'
   }
-  // @fx when_needDraw_trigger_draw() {
-  //   $.when(this).needDraw
-  //   this.draw()
-  //   // requestAnimationFrame(() => this.draw())
-  // }
-  // @fx when_needUpdate_trigger_update() {
-  //   $.when(this).needUpdate
-  //   // this.update()
-  //   requestAnimationFrame(() => this.update())
-  // }
+  @fx maybe_needDraw() {
+    const { scenes } = $.of(this)
+    let needDraw = false
+    for (const scene of scenes) {
+      needDraw ||= scene.needRender || scene.needDraw || false
+    }
+    if (needDraw) {
+      this.needDraw = true
+    }
+  }
   @fx trigger_update_when_scroll() {
     const { scroll } = $.of(this)
     const { pos: scrollPos, targetScroll } = $.of(scroll)
@@ -101,19 +90,11 @@ export class Editor extends Render {
       this.needUpdate = true
     }
   }
-  @fx trigger_anim_on_needUpdate() {
-    if (this.needUpdate) {
+  @fx trigger_anim_on_needUpdateOrDraw() {
+    if (this.needUpdate || this.needDraw) {
       if (!this.world.anim.isAnimating) {
         $.untrack()
         this.world.anim.start()
-      }
-    }
-  }
-  @fx trigger_draw_on_needDraw() {
-    if (this.needDraw) {
-      if (!this.world.anim.isAnimating) {
-        $.untrack()
-        this.draw(1)
       }
     }
   }
@@ -169,12 +150,12 @@ export class Editor extends Render {
     if (!isScrolling) {
       this.needUpdate = false
       this.needDraw = true
-      return 0
+      return 0 // does not need next frame
     }
     else {
       this.needDirectDraw = true
       this.needDraw = true
-      return 1
+      return 1 // need next frame
     }
     // console.log(this.needUpdate)
     // return +this.needUpdate
