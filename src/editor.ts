@@ -91,7 +91,7 @@ export class Editor extends Render {
     }
   }
   @fx trigger_anim_on_needUpdateOrDraw() {
-    if (this.needUpdate || this.needDraw) {
+    if (this.needInit || this.needUpdate || this.needDraw) {
       if (!this.world.anim.isAnimating) {
         $.untrack()
         this.world.anim.start()
