@@ -1,7 +1,7 @@
 // log.active
 import { $, fx, init } from 'signal'
 import { Rect } from 'std'
-import { dom } from 'utils'
+import { dom, prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Keyboard } from './keyboard.ts'
 import { Mouse } from './mouse.ts'
@@ -12,6 +12,11 @@ export class Input extends Comp {
 
   textareaRect = $(new Rect, { w: 50, h: 50 })
   textarea: HTMLTextAreaElement = dom.el('textarea', {
+    oncontextmenu: prevent.stop,
+    onkeydown: this.keyboard.handleKeyDown,
+    onkeyup: this.keyboard.handleKeyUp,
+    onblur: () => { this.ctx.isFocused = false },
+    onfocus: () => { this.ctx.isFocused = true },
     spellcheck: false,
     autocorrect: 'off',
     style: {
