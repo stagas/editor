@@ -52,6 +52,5 @@ $.batch(() => {
   editor.selection.end.set({ x: 7, y: 0 })
 
   world.anim.items.push(editor)
-  $.flush()
   world.anim.start()
 })
