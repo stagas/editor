@@ -105,6 +105,7 @@ export class Editor extends Render {
     for (const scene of this.scenes) {
       scene.needInit && scene.initCanvas(scene.canvas.c)
     }
+    console.log('INIT!')
   }
   @fn update() {
     const { misc, dims, scroll } = $.of(this)
