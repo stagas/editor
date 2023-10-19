@@ -65,17 +65,17 @@ export class Editor extends Render {
       t.brackets,
     ]
   }
-  // @fx maybe_needDraw() {
-  //   const { scenes } = $.of(this)
-  //   let d = false
-  //   for (const scene of scenes) {
-  //     const { needRender, needDraw } = scene
-  //     d ||= needRender || needDraw || false
-  //   }
-  //   if (d) {
-  //     this.needDraw = true
-  //   }
-  // }
+  @fx maybe_needDraw() {
+    const { scenes } = $.of(this)
+    let d = false
+    for (const scene of scenes) {
+      const { needRender, needDraw } = scene
+      d ||= needRender || needDraw || false
+    }
+    if (d) {
+      this.needDraw = true
+    }
+  }
   // @fx when_needDraw_trigger_draw() {
   //   $.when(this).needDraw
   //   this.draw()
