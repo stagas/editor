@@ -59,7 +59,6 @@ export class Text extends Render {
 
     this.needInit = false
     this.didInitCanvas = true
-    $.flush()
   }
   update(dt: number) { return 0}
   updateOne(dt: number) { return 0}
