@@ -125,6 +125,7 @@ export class Selection extends Render {
 
       buffer.getLineColFromIndex(match[0] + exn, selection.start)
       buffer.getLineColFromIndex(match[1] - exn + 1, selection.end)
+      console.log('yeah', selection.start.text)
       return true
     }
     return false
