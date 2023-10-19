@@ -92,7 +92,7 @@ export class History extends Comp {
     buffer.code = snap.code
     // KEEP: wait for code effects (split lines etc.)
     //  before applying rest of snap
-    $.flush()
+    // $.flush()
     buffer.coli = copy.coli
     buffer.lineCol.set(copy.lineCol)
     scroll.targetScroll.set(copy.scroll)
