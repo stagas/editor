@@ -147,7 +147,6 @@ export class Keyboard extends Comp {
           ++b.col
         }
         if (b.col > text.length) {
-          console.log('YEA')
           b.col = 0
           ++b.line
         }
