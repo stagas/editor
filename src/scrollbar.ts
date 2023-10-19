@@ -1,8 +1,9 @@
 log.active
 import { $, fn, fx } from 'signal'
+import { Point } from 'std'
+import { Pointable } from './pointable.ts'
 import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
-import { Point } from 'std'
 
 const dimOpp = {
   x: 'y',
@@ -26,30 +27,36 @@ export class Scrollbar extends Render {
   dim?: Dim
   scrollBegin = 0
   pointerBegin = 0
-  isPointWithin(p: Point) {
-    return this.rect.isPointWithin(p) && this
-  }
-  @fn onPointerDown() {
-    const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)
-    this.scrollBegin = scroll[dim]
-    this.pointerBegin = p.pos[dim]
-  }
-  @fn onHoldMove() {
-    const { world: { pointer: p }, dim, ctx } = $.of(this)
-    const { dims, scroll } = $.of(ctx)
-    const { rect, innerSize } = $.of(dims)
 
-    const side = sides[dim]
-    const co = rect[side] / innerSize[side]
+  get pointable() {
+    $._()
+    return $(new Pointable(this), {
+      getItemAtPoint: (p: Point) => {
+        return this.rect.isPointWithin(p) && this
+      },
+      onDown: fn(() => {
+        const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)
+        this.scrollBegin = scroll[dim]
+        this.pointerBegin = p.pos[dim]
+      }),
+      onMove: fn(() => {
+        const { world: { pointer: p }, dim, ctx } = $.of(this)
+        const { dims, scroll } = $.of(ctx)
+        const { rect, innerSize } = $.of(dims)
 
-    scroll.pos[<Dim>dim] =
-      scroll.targetScroll[<Dim>dim] =
-      this.scrollBegin
-      - (p.pos[dim] - this.pointerBegin) / co
+        const side = sides[dim]
+        const co = rect[side] / innerSize[side]
 
-    scroll.animScrollStrategy = AnimScrollStrategy.Fast
+        scroll.pos[<Dim>dim] =
+          scroll.targetScroll[<Dim>dim] =
+          this.scrollBegin
+          - (p.pos[dim] - this.pointerBegin) / co
 
-    // ctx.needUpdate = true
+        scroll.animScrollStrategy = AnimScrollStrategy.Fast
+
+        // ctx.needUpdate = true
+      })
+    })
   }
   @fx update_scrollbar() {
     const { dim, ctx, rect: r } = $.of(this)

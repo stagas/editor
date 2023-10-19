@@ -61,9 +61,6 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  @fn getItemAtPoint(p: Point) {
-    if (this.rect.isPointWithin(p)) return this
-  }
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
@@ -77,22 +74,12 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): Pointable[] {
+  @nu get pointerTargets(): (Render & { pointable: Pointable })[] {
     const t = $.of(this)
     return [
       t.scrollbars,
-      this,
+      t.text,
     ]
-  }
-  // TODO: make the cursor change implicitly/declaratively
-  @fx update_cursor_when_isHovering() {
-    const { isHovering } = $.of(this)
-    if (isHovering) {
-      this.world.screen.cursor = 'text'
-    }
-    else {
-      this.world.screen.cursor = 'default'
-    }
   }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)

@@ -1,9 +1,12 @@
 log.active
 import { $, fn, fx } from 'signal'
-import { Rect } from 'std'
+import { Point, Rect } from 'std'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { SourceToken } from './source.ts'
+import { Pointable } from './pointable.ts'
+import { AnimScrollStrategy } from './scroll.ts'
+import { prevent } from 'utils'
 
 export class Text extends Render {
   constructor(public ctx: Editor) {
@@ -14,6 +17,70 @@ export class Text extends Render {
 
   // TODO: where is this used??
   viewRect = $(new Rect)
+
+  get pointable(): $<Pointable> {
+    $._()
+    const { ctx } = $.of(this)
+    const { world, buffer, scroll, selection,
+      input: { textarea, mouse } } = $.of(ctx)
+    const { lineCol } = $.of(mouse)
+    const { pointer } = $.of(world)
+    const { wheel } = pointer
+
+    return $(new Pointable(ctx), {
+      cursor: 'text',
+      getItemAtPoint: (p: Point) => {
+        return this.rect.isPointWithin(p) && this
+      },
+      onClick: () => {
+        textarea.focus()
+      },
+      onWheel: fn(() => {
+        scroll.targetScroll.mulSub(wheel, 0.2)
+        scroll.animScrollStrategy = AnimScrollStrategy.Medium
+      }),
+      onMove: fn(() => {
+        if (this.isDown) {
+          selection.end.set(lineCol)
+          buffer.lineCol.set(lineCol)
+          buffer.coli = lineCol.col
+        }
+      }),
+      onDown: fn((downCount: number) => {
+        const { real, shift } = $.of(pointer)
+
+        prevent(real)
+
+        buffer.lineCol.set(lineCol)
+        buffer.coli = lineCol.col
+
+        switch (downCount) {
+          case 1:
+            if (shift) {
+              selection.end.set(lineCol)
+            }
+            else {
+              selection.resetTo(lineCol)
+            }
+            break
+
+          case 2:
+            if (selection.selectWordBoundary(lineCol, shift)) {
+              mouse.downCount = 2
+              break
+            }
+          case 3:
+            if (selection.selectMatchingBrackets(lineCol)) {
+              mouse.downCount = 3
+              break
+            }
+          case 4:
+            selection.selectLine(lineCol.line)
+            break
+        }
+      }),
+    })
+  }
 
   @fx measure_charWidth() {
     const { didInitCanvas } = $.when(this)
@@ -60,8 +127,8 @@ export class Text extends Render {
     this.needInit = false
     this.didInitCanvas = true
   }
-  update(dt: number) { return 0}
-  updateOne(dt: number) { return 0}
+  update(dt: number) { return 0 }
+  updateOne(dt: number) { return 0 }
   @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)

@@ -32,6 +32,7 @@ export abstract class Render extends Scene {
   needDirectDraw?: boolean
 
   isVisible = false
+  isDown = false
   isFocused = false
   isHovering = false
 
