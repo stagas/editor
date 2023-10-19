@@ -180,7 +180,7 @@ export class Editor extends Render {
       for (const scene of scenes) {
         scene.needInit && scene.initCanvas(scene.canvas.c)
         scene.needRender && scene.render(t, scene.canvas.c, true)
-        scene.draw(t, scene.canvas.c)
+        scene.draw(t, c)
       }
     }
 
