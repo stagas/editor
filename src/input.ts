@@ -39,6 +39,11 @@ export class Input extends Comp {
 
   @init append_textarea() {
     dom.body.append(this.textarea)
+    // start page with focus on editor
+    // arbitrary, might not be necessary/solved another way
+    setTimeout(() => {
+      this.textarea.focus()
+    }, 50)
   }
   @fx textarea_follows_pointer() {
     const { xy } = this.ctx.world.pointer.pos
