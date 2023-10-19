@@ -114,6 +114,7 @@ export class Editor extends Render {
     this.needDraw = true
   }
   @fn update() {
+    console.log('UPDATE')
     const { misc, dims, scroll } = $.of(this)
     const { isTyping } = $.of(misc)
     const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
