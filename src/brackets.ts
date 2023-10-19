@@ -18,6 +18,7 @@ export class Brackets extends Render {
     rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
     rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
     this.needRender = true
+    console.log('update')
   }
   @fx update_brackets() {
     const { ctx, rect1: r1, rect2: r2, viewRect } = $.of(this)
