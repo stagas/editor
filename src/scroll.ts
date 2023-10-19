@@ -126,7 +126,7 @@ export class Scroll extends Comp {
   @fx update_minScroll() {
     const { ctx, minScroll } = $.of(this)
     const { dims } = $.of(ctx)
-    const { rect, innerSize, lineBottoms, overscrollX } = $.of(dims)
+    const { rect, innerSize, lineBottoms, lineHeight, overscrollX } = $.of(dims)
     const { w, h } = $.of(innerSize)
 
     const top = -h
@@ -138,7 +138,7 @@ export class Scroll extends Comp {
 
     $.untrack()
 
-    minScroll.top = top
+    minScroll.top = top + lineHeight
     minScroll.left = left
   }
 
