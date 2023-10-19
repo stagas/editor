@@ -84,6 +84,7 @@ export class Editor extends Render {
       this,
     ]
   }
+  // TODO: make the cursor change implicitly/declaratively
   @fx update_cursor_when_isHovering() {
     const { isHovering } = $.of(this)
     if (isHovering) {
