@@ -7,7 +7,16 @@ import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { Pointable } from './pointable.ts'
 
-export class Mouse extends Comp {
+export class Mouse extends Comp implements Pointable {
+  isHovering?: boolean
+  isPointWithin(p: Point): false | Pointable | undefined {
+    throw new Error('Method not implemented.')
+  }
+
+  onHoldMove?(): void {
+    throw new Error('Method not implemented.')
+  }
+
   lineCol = $(new Point)
 
   isDown = false
@@ -60,7 +69,7 @@ export class Mouse extends Comp {
       if (this.downItem) {
         switch (type) {
           case PointerEventType.Down:
-            this.downItem.onPointerDown?.()
+            this.downItem.onDown?.()
             return
 
           case PointerEventType.Move:
