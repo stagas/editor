@@ -23,7 +23,7 @@ export class Scrollbars extends Render {
         item.render()
         item.draw(t, c)
       }
-      else if (item.isVisible) {
+      else if (item.isVisible && item.needDraw) {
         item.draw(t, c)
       }
     }
