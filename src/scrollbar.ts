@@ -68,6 +68,7 @@ export class Scrollbar extends Render {
     }
     r[s] = w
     r[so] = scrollbarSize[so]
+    console.log(r.text)
   }
   initCanvas() {   }
   update() { return 0 }
@@ -118,7 +119,6 @@ export class Scrollbar extends Render {
     const { hasSize } = $.when(rect)
     const { w, h } = $.of(rect)
     $._()
-    console.log(w, h)
     this.needRender = true
   }
   @fx trigger_needDraw() {
