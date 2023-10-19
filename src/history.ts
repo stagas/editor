@@ -90,8 +90,8 @@ export class History extends Comp {
 
     const copy = JSON.parse(JSON.stringify(snap)) as any
     buffer.code = snap.code
-    // KEEP: wait for code effects (split lines etc.)
-    //  before applying rest of snap
+    // KEEP: flush code effects (split lines etc.)
+    // before applying rest of snap.
     $.flush()
     buffer.coli = copy.coli
     buffer.lineCol.set(copy.lineCol)
