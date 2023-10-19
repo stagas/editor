@@ -3,11 +3,12 @@ import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 
-export type RenderPosition =
+export enum RenderPosition {
   /** Layout position, remains fixed in space without scroll translations. */
-  | 'layout'
+  Layout,
   /** Scroll position, translations apply. */
-  | 'scroll'
+  Scroll
+}
 
 export abstract class Render extends Scene {
   constructor(
@@ -21,7 +22,7 @@ export abstract class Render extends Scene {
   }
 
   coeff = 1
-  renderPosition: RenderPosition = 'layout'
+  renderPosition: RenderPosition = RenderPosition.Layout
   needInit?: boolean
   needUpdate?: boolean
   needRender?: boolean

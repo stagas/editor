@@ -45,8 +45,8 @@ export class Editor extends Render {
   input = $(new Input(this))
   selection = $(new Selection(this))
   text = $(new Text(this))
-  caret = $(new Caret(this), { blink: false, renderPosition: 'scroll' })
-  brackets = $(new Brackets(this), { renderPosition: 'scroll' })
+  caret = $(new Caret(this), { blink: false, renderPosition: RenderPosition.Scroll })
+  brackets = $(new Brackets(this), { renderPosition: RenderPosition.Scroll })
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
@@ -176,15 +176,16 @@ export class Editor extends Render {
   @fn draw(t: number) {
     const { rect, scenes, canvas, scroll, dims: { viewSpan } } = $.of(this)
     const { c } = canvas
+    const { Layout, Scroll } = RenderPosition
 
     rect.fill(c, '#224')
 
-    let position: RenderPosition = 'layout'
+    let position: RenderPosition = Layout
 
     // if (this.needDirectDraw) {
     for (const scene of scenes) {
       if (scene.renderPosition !== position) {
-        if (scene.renderPosition === 'scroll') {
+        if (scene.renderPosition === Scroll) {
           c.save()
           scroll.pos.translate(c)
         }
@@ -196,7 +197,7 @@ export class Editor extends Render {
 
       const viewRect = scene.viewRect ?? scene.rect
 
-      if (position === 'scroll') {
+      if (position === Scroll) {
         if (
           viewRect.bottom < viewSpan.top
           || viewRect.top > viewSpan.bottom
@@ -213,7 +214,7 @@ export class Editor extends Render {
         //   scene.draw(t, c)
         // }
       }
-      else if (position === 'layout') {
+      else if (position === Layout) {
         if (this.needDirectDraw) {
           c.save()
           scene.initCanvas(c)
@@ -231,7 +232,7 @@ export class Editor extends Render {
       }
     }
 
-    if (position === 'scroll') {
+    if (position === Scroll) {
       c.restore()
     }
 
