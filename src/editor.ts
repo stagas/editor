@@ -38,8 +38,8 @@ export class Editor extends Render {
     colors: {
       bgBright015: '#113',
       bgBright1: '#337',
-      bgBright2: '#437',
-      bgBright25: '#447',
+      bgBright2: '#222',
+      bgBright25: '#333',
     }, fonts: { mono: 'monospace' }
   }
   colors: Colors = {}
