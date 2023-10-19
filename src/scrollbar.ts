@@ -32,7 +32,6 @@ export class Scrollbar extends Render {
     $._()
     return $(new Pointable(this), {
       getItemAtPoint: fn((p: Point) => {
-        $.flush()
         return this.rect.isPointWithin(p) && this
       }),
       onDown: fn(() => {
