@@ -16,7 +16,7 @@ export class Mouse extends Comp {
   downPos = $(new Point)
 
   hoverItem?: Pointable | null
-  downItem?: Pointable | null
+  downItem?: Pointable | null | undefined
 
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
@@ -31,26 +31,26 @@ export class Mouse extends Comp {
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
     if (!this.downItem) {
-    out: {
-      let hoverItem
-      for (const target of pointerTargets) {
-        if (hoverItem = target.isPointWithin(pos)) {
-          if (hoverItem !== this.hoverItem) {
-            if (this.hoverItem) {
-              this.hoverItem.isHovering = false
+      out: {
+        let hoverItem
+        for (const target of pointerTargets) {
+          if (hoverItem = target.isPointWithin(pos)) {
+            if (hoverItem !== this.hoverItem) {
+              if (this.hoverItem) {
+                this.hoverItem.isHovering = false
+              }
+              this.hoverItem = hoverItem
+              this.hoverItem.isHovering = true
             }
-            this.hoverItem = hoverItem
-            this.hoverItem.isHovering = true
+            break out
           }
-          break out
         }
+        if (this.hoverItem) {
+          this.hoverItem.isHovering = false
+        }
+        this.hoverItem = null
       }
-      if (this.hoverItem) {
-        this.hoverItem.isHovering = false
-      }
-      this.hoverItem = null
     }
-  }
 
     if (!ctx.isHovering) {
       if (type === PointerEventType.Down) {
@@ -133,6 +133,7 @@ export class Mouse extends Comp {
 
       case PointerEventType.Up:
         this.isDown = false
+        this.downItem = null
         if (time - this.downTime < SINGLE_CLICK_MS) {
           //on click
         }
