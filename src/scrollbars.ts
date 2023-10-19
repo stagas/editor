@@ -23,6 +23,17 @@ export class Scrollbars extends Render {
   initCanvas() { }
   update() { return 0 }
   updateOne() { return 0 }
+  @fx trigger_needRender() {
+    let needRender = false
+    for (const item of this.items) {
+      if (item.needRender) {
+        needRender = true
+        break
+      }
+    }
+    $._()
+    this.needRender = needRender
+  }
   @fn render(t: number, c: CanvasRenderingContext2D) {
     this.draw(t, c)
   }
