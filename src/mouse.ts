@@ -28,6 +28,11 @@ export class Mouse extends Comp {
 
     switch (type) {
       case PointerEventType.Move:
+        if (this.isDown) {
+          selection.end.set(lineCol)
+          buffer.lineCol.set(lineCol)
+          buffer.coli = lineCol.col
+        }
         break
 
       case PointerEventType.Wheel:
@@ -35,7 +40,7 @@ export class Mouse extends Comp {
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
         break
 
-        case PointerEventType.Down:
+      case PointerEventType.Down:
         this.isDown = true
 
         if (time - this.downTime < DOUBLE_CLICK_MS) {
