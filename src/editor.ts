@@ -94,6 +94,7 @@ export class Editor extends Render {
       Math.round(scrollPos.left) !== targetScroll.left
     $.untrack()
     if (needAnim) {
+      console.log('yea')
       this.needUpdate = true
     }
   }
