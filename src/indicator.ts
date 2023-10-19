@@ -13,6 +13,7 @@ export class Indicator extends Render {
 
   @fn initCanvas() {
     this.needInit = false
+    this.needRender = true
   }
   update() { return 0}
   updateOne() { return 0}
