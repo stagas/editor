@@ -4,6 +4,7 @@ import { Point, PointerEventType } from 'std'
 import { Comp } from './comp.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
+import { prevent } from 'utils'
 
 export class Mouse extends Comp {
   lineCol = $(new Point)
@@ -18,7 +19,7 @@ export class Mouse extends Comp {
     const { world, misc, buffer, scroll, selection, input: { textarea } } = $.of(ctx)
     const { lines } = $.of(buffer)
     const { pointer } = $.of(world)
-    const { time } = pointer
+    const { time,real } = $.of(pointer)
     $._()
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
@@ -41,6 +42,7 @@ export class Mouse extends Comp {
         break
 
       case PointerEventType.Down:
+        prevent(real)
         this.isDown = true
 
         if (time - this.downTime < DOUBLE_CLICK_MS) {
