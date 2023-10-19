@@ -7,16 +7,7 @@ import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { Pointable } from './pointable.ts'
 
-export class Mouse extends Comp implements Pointable {
-  isHovering?: boolean
-  isPointWithin(p: Point): false | Pointable | undefined {
-    throw new Error('Method not implemented.')
-  }
-
-  onHoldMove?(): void {
-    throw new Error('Method not implemented.')
-  }
-
+export class Mouse extends Comp {
   lineCol = $(new Point)
 
   isDown = false
@@ -26,6 +17,12 @@ export class Mouse extends Comp implements Pointable {
 
   hoverItem?: Pointable | null
   downItem?: Pointable | null | undefined
+
+  pointable = $(new Pointable, <Pointable>{
+    getItemAtPoint: (p) => {
+      return this.ctx.isPointWithin(p)
+    }
+  })
 
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
@@ -43,7 +40,7 @@ export class Mouse extends Comp implements Pointable {
       out: {
         let hoverItem
         for (const target of pointerTargets) {
-          if (hoverItem = target.isPointWithin(pos)) {
+          if (hoverItem = target.getItemAtPoint(pos)) {
             if (hoverItem !== this.hoverItem) {
               if (this.hoverItem) {
                 this.hoverItem.isHovering = false

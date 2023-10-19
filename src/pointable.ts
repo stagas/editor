@@ -1,8 +1,12 @@
 import { Point } from 'std'
 
-export interface Pointable {
+export class Pointable {
   isHovering?: boolean
-  isPointWithin(p: Point): Pointable | false | undefined
+  isDown?: boolean
+  getItemAtPoint(p: Point): Pointable | false | undefined { return {} as any }
+  onWheel?(): void
   onDown?(): void
-  onHoldMove?(): void
+  onUp?(): void
+  onLeave?(): void
+  onMove?(): void
 }
