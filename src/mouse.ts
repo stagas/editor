@@ -38,6 +38,7 @@ export class Mouse extends Comp {
 
       case PointerEventType.Wheel:
         scroll.targetScroll.mulSub(wheel, 0.2)
+        wheel.zero()
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
         break
 
