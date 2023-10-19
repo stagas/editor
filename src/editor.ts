@@ -30,7 +30,7 @@ export class Editor extends Render {
   constructor(public world: World) {
     super({ world } as Editor)
   }
-  // coeff = 1
+
   misc = $(new Misc)
   skin = {
     colors: {
@@ -50,9 +50,6 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  // needUpdate = false
-  // needDirectDraw = false
-
   @init init_Editor() {
     this.canvas.fullWindow = true
   }
@@ -65,17 +62,17 @@ export class Editor extends Render {
       t.brackets,
     ]
   }
-  // @fx maybe_needDraw() {
-  //   const { scenes } = $.of(this)
-  //   let d = false
-  //   for (const scene of scenes) {
-  //     const { needRender, needDraw } = scene
-  //     d ||= needRender || needDraw || false
-  //   }
-  //   if (d) {
-  //     this.needDraw = true
-  //   }
-  // }
+  @fx maybe_needDraw() {
+    const { scenes } = $.of(this)
+    let d = false
+    for (const scene of scenes) {
+      const { needRender, needDraw } = scene
+      d ||= needRender || needDraw || false
+    }
+    if (d) {
+      this.needDraw = true
+    }
+  }
   // @fx when_needDraw_trigger_draw() {
   //   $.when(this).needDraw
   //   this.draw()
