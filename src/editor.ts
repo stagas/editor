@@ -86,7 +86,12 @@ export class Editor extends Render {
   }
   @fx update_cursor_when_isHovering() {
     const { isHovering } = $.when(this)
-    this.world.screen.cursor = 'text'
+    if (isHovering) {
+      this.world.screen.cursor = 'text'
+    }
+    else {
+      this.world.screen.cursor = 'default'
+    }
   }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)
