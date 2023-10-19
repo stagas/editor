@@ -5,5 +5,4 @@ export interface Pointable {
   isPointWithin(p: Point): Pointable | false | undefined
   onPointerDown?(): void
   onHoldMove?(): void
-
 }
