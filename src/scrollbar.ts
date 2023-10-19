@@ -125,6 +125,6 @@ export class Scrollbar extends Render {
     const { hasSize } = $.when(rect)
     const { x, y } = $.of(rect)
     $._()
-    // this.needDraw = true
+    this.needDraw = true
   }
 }
