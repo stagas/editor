@@ -141,7 +141,9 @@ export class Scroll extends Comp {
     minScroll.top = top
     minScroll.left = left
   }
-
+  // TODO: for best experience we would need a `clampedScroll`
+  // that the targetScroll animates to.
+  // That will also make the edge bouncy.
   @fx clamp_targetScroll_top() {
     const { targetScroll, minScroll } = $.of(this)
     targetScroll.top = Math.round(

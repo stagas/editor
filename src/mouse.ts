@@ -19,7 +19,7 @@ export class Mouse extends Comp {
     const { world, misc, buffer, scroll, selection, input: { textarea } } = $.of(ctx)
     const { lines } = $.of(buffer)
     const { pointer } = $.of(world)
-    const { time,real } = $.of(pointer)
+    const { time, real } = $.of(pointer)
     $._()
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
@@ -60,7 +60,12 @@ export class Mouse extends Comp {
 
         switch (this.downCount) {
           case 1:
-            selection.resetTo(lineCol)
+            if (shift) {
+              selection.end.set(lineCol)
+            }
+            else {
+              selection.resetTo(lineCol)
+            }
             break
 
           case 2:
