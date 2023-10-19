@@ -162,6 +162,14 @@ export class Scroll extends Comp {
       )
     )
   }
+  @fx clamp_scroll_top() {
+    const { scroll } = $.of(this)
+    scroll.top = Math.min(0, scroll.top)
+  }
+  @fx clamp_scroll_left() {
+    const { scroll } = $.of(this)
+    scroll.left = Math.min(0, scroll.left)
+  }
   @fx update_scrollSize() {
     const { ctx, scrollSize } = $.of(this)
     const { dims } = $.of(ctx)
