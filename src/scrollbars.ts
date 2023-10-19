@@ -20,7 +20,7 @@ export class Scrollbars extends Render {
       getItemAtPoint: (p: Point) => {
         for (const item of this.items) {
           if (item.isVisible && item.pointable.getItemAtPoint(p)){
-            return item
+            return item.pointable
           }
         }
       }
