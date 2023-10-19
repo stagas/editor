@@ -1,7 +1,6 @@
 log.active
 import { $, fn, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
-import { PointerLikeEvent } from 'utils'
 import { Comp } from './comp.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
@@ -44,7 +43,7 @@ export class Mouse extends Comp {
         }
         this.isDown = true
         this.downPos.set(pos)
-        this.downTime = event.timeStamp
+        this.downTime = time
 
         buffer.lineCol.set(lineCol)
 
@@ -104,54 +103,53 @@ export class Mouse extends Comp {
   //   scroll.targetScroll.x -= deltaX * 0.2
   //   scroll.animScrollStrategy = AnimScrollStrategy.Medium
   // }
-  @fn onPointerUp() {
-    const { input: { textarea } } = $.of(this.ctx)
-    textarea.focus()
-  }
-  @fx onPointerMove(e: PointerLikeEvent) {
-    const { isHovering } = $.when(this.ctx)
-    $._()
-    if (e.type !== 'pointermove') return
-    this.ctx.misc.isTyping = false
-  }
-  // TODO: holdMove?
-  @fn onWindowMove(e: PointerLikeEvent) {
-    const { lineCol: p, ctx } = $.of(this)
-    const { buffer: b, selection } = $.of(ctx)
-    selection.end.set(p)
-    b.line = selection.end.y
-    b.coli = selection.end.x
-  }
-  @fx onPointerDown() {
-    const { isHovering } = $.when(this.ctx)
-    const { lineCol: p, ctx } = $.of(this)
-    const { world: { pointer }, buffer: b, selection } = $.of(ctx)
-    const { event: e } = $.of(pointer)
+  // @fn onPointerUp() {
+  //   const { input: { textarea } } = $.of(this.ctx)
+  //   textarea.focus()
+  // }
+  // @fx onPointerMove(e: PointerLikeEvent) {
+  //   const { isHovering } = $.when(this.ctx)
+  //   $._()
+  //   if (e.type !== 'pointermove') return
+  //   this.ctx.misc.isTyping = false
+  // }
+  // // TODO: holdMove?
+  // @fn onWindowMove(e: PointerLikeEvent) {
+  //   const { lineCol: p, ctx } = $.of(this)
+  //   const { buffer: b, selection } = $.of(ctx)
+  //   selection.end.set(p)
+  //   b.line = selection.end.y
+  //   b.coli = selection.end.x
+  // }
+  // @fx onPointerDown() {
+  //   const { isHovering } = $.when(this.ctx)
+  //   const { lineCol: p, ctx } = $.of(this)
+  //   const { world: { pointer }, buffer: b, selection } = $.of(ctx)
+  //   const { event: e } = $.of(pointer)
 
-    $.untrack()
+  //   $.untrack()
 
-    if (e.type !== 'pointerdown') return
+  //   if (e.type !== 'pointerdown') return
 
-    b.getLineColFromPoint(pointer.pos, true, p)
-    b.line = p.y
-    b.coli = p.x
+  //   b.getLineColFromPoint(pointer.pos, true, p)
+  //   b.line = p.y
+  //   b.coli = p.x
 
-    selection.start.set(p)
-    selection.end.set(p)
+  //   selection.start.set(p)
+  //   selection.end.set(p)
 
-    switch (++this.downCount) {
-      case 2:
-        if (selection.selectWordBoundary(p)) {
-          break
-        }
-      case 3:
-        if (selection.selectMatchingBrackets(p)) {
-          break
-        }
-      case 4:
-        selection.selectLine(p.y)
-        break
-    }
-  }
-
+  //   switch (++this.downCount) {
+  //     case 2:
+  //       if (selection.selectWordBoundary(p)) {
+  //         break
+  //       }
+  //     case 3:
+  //       if (selection.selectMatchingBrackets(p)) {
+  //         break
+  //       }
+  //     case 4:
+  //       selection.selectLine(p.y)
+  //       break
+  //   }
+  // }
 }

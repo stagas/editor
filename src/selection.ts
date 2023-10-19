@@ -28,7 +28,7 @@ export class Selection extends Render {
   get hasSelection() {
     return !this.start.equals(this.end)
   }
-  @fn getSelectionSorted () {
+  @fn getSelectionSorted() {
     const { selection, selectionSorted } = this
     // Line & forward
     let top: Point
@@ -99,6 +99,10 @@ export class Selection extends Render {
       }
       return removing
     })
+  }
+  @fn resetTo(p: Point) {
+    this.start.set(p)
+    this.end.set(p)
   }
   @fn selectLine(line: number) {
     const { ctx, selection } = $.of(this)
@@ -205,8 +209,8 @@ export class Selection extends Render {
     this.needInit = false
     this.needRender = true
   }
-  update(dt: number) { return 0}
-  updateOne(dt: number) { return 0}
+  update(dt: number) { return 0 }
+  updateOne(dt: number) { return 0 }
   @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
     const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
     const { skin, buffer, dims } = $.of(ctx)
