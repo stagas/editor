@@ -87,7 +87,7 @@ export class Caret extends Render {
     }
   }
   @fx trigger_draw() {
-    const { isHidden } = $.of(this)
+    const { isHidden, rect: { x, y } } = $.of(this)
     $.untrack()
     this.needDraw = true
   }
