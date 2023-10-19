@@ -52,7 +52,7 @@ export class Scrollbar extends Render {
     const { scrollSize } = $.of(scroll)
     const { absSum } = $.when(scrollSize)
     const { rect, scrollbarSize } = $.of(dims)
-
+console.log(absSum)
     const s = sides[dim]
     const so = sidesOpp[dim]
     const co = rect[s] / scrollSize[s]
