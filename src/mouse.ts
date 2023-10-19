@@ -65,9 +65,9 @@ export class Mouse extends Comp {
     }
 
     let currentItem =
-    (type !== Up && downItem)
-    || (this.findItemByPoint(pos))
-console.log(currentItem)
+      (type !== Up && downItem)
+      || (this.findItemByPoint(pos))
+
     if (type === Up && downItem) {
       downItem.it.isDown = false
     }
@@ -81,6 +81,7 @@ console.log(currentItem)
       }
 
       if (this.hoverItem) {
+        console.log(this.hoverItem)
         this.hoverItem.it.isHovering = true
         world.screen.cursor = this.hoverItem.cursor
         this.hoverItem.onEnter?.()
