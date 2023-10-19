@@ -105,6 +105,14 @@ export class Editor extends Render {
       }
     }
   }
+  @fx trigger_draw_on_needDraw() {
+    if (this.needDraw) {
+      if (!this.world.anim.isAnimating) {
+        $.untrack()
+        this.draw()
+      }
+    }
+  }
   @fn initCanvas() {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
