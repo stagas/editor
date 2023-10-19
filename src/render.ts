@@ -23,7 +23,7 @@ export abstract class Render extends Scene {
 
   coeff = 1
   renderPosition: RenderPosition = RenderPosition.Layout
-  needInit = true
+  needInit?: boolean
   needUpdate?: boolean
   needRender?: boolean
   needDraw?: boolean
