@@ -79,14 +79,14 @@ export class Keyboard extends Comp {
             const line = lines.splice(b.line, 1)[0]!
             lines.splice(++b.line, 0, line)
             b.code = lines.join('\n')
-            $.flush() //await rest()
+            $.flush()
             selection.start.set(selection.end)
             break
           }
           else {
             const { top, bottom } = selection.getSelectionSorted()
             if (bottom.y === maxLine) break
-console.log(top.text, bottom.text)
+
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
             lines.splice(++top.y, 0, ...slice)
             ++bottom.y
@@ -109,7 +109,6 @@ console.log(top.text, bottom.text)
             const line = lines.splice(b.line, 1)[0]!
             lines.splice(--b.line, 0, line)
             b.code = lines.join('\n')
-            // await rest()
             $.flush()
             selection.start.set(selection.end)
             break
