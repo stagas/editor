@@ -122,6 +122,7 @@ export class Selection extends Render {
     const match = findMatchingBrackets(code, index)
     if (match) {
       const exn = Number(exclusive ?? 0)
+
       buffer.getLineColFromIndex(match[0] + exn, selection.start)
       buffer.getLineColFromIndex(match[1] - exn + 1, selection.end)
       return true
