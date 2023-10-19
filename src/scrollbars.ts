@@ -147,9 +147,9 @@ export class Scrollbars extends Render {
         item.draw(t, c)
       }
     }
-    this.needRender
-      = this.needDraw
-      = false
+    // this.needRender
+    //   = this.needDraw
+    //   = false
   }
 }
 // export type Scrollbars = typeof Scrollbars.type
