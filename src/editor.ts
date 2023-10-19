@@ -101,12 +101,10 @@ export class Editor extends Render {
   @fn initCanvas() {
     const { c } = $.of(this.canvas)
     c.imageSmoothingEnabled = false
-    console.log(this.needInit)
     for (const scene of this.scenes) {
       scene.needInit && scene.initCanvas(scene.canvas.c)
     }
     this.needInit = false
-    console.warn('INIT!')
   }
   @fn update() {
     const { misc, dims, scroll } = $.of(this)
