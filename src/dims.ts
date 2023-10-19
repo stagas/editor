@@ -18,7 +18,7 @@ export class Dims extends Comp {
   scrollbarSize = $(new Point, { x: 13, y: 7 })
 
   // TODO: single point? char.width char.height ?
-  charWidth: number = 1
+  charWidth?: number
 
   get lineHeight() {
     return Math.round(this.fontSize * 1.5)
@@ -38,8 +38,8 @@ export class Dims extends Comp {
   get scroll() {
     return this.ctx.scroll.pos
   }
-  get overscrollX() {
-    return this.charWidth * 2
+  @nu get overscrollX() {
+    return $.of(this).charWidth * 2
   }
   @nu get innerSizeWidth() {
     const { longestLine, charWidth, scrollbarSize } = $.of(this)
