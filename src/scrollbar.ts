@@ -73,7 +73,7 @@ export class Scrollbar extends Render {
     const { canvas, pr, rect, isHovering, ctx } = $.of(this)
     const { c } = $.of(canvas)
     const { skin } = $.of(ctx)
-    const alpha = '66'
+    const alpha = '6'
     // c.restore()
     // c.save()
     // c.scale(pr, pr)
