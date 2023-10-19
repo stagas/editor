@@ -67,7 +67,7 @@ export class Mouse extends Comp {
     let currentItem =
     (type !== Up && downItem)
     || (this.findItemByPoint(pos))
-
+console.log(currentItem)
     if (type === Up && downItem) {
       downItem.it.isDown = false
     }
