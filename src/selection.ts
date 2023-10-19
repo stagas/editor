@@ -205,7 +205,7 @@ export class Selection extends Render {
     const t = this
     const { ctx } = $.of(t)
     const { dims } = $.of(ctx)
-    const { scroll: { xy } } = $.of(dims)
+    const { scroll: { xy }, charWidth } = $.of(dims)
     $.untrack()
     this.needRender = true
   }
