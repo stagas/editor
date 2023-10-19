@@ -66,9 +66,10 @@ export class History extends Comp {
   saveHistoryDebounced = debounce(300, () => this.saveHistory(), { first: true, last: true })
 
   historic<T extends (...args: any[]) => any>(fn: T): T & { sansHistory: T } {
+    const self = this
     return Object.assign(function (this: any, ...args: any[]) {
       try {
-        this.saveHistory()
+        self.saveHistory()
         return fn.apply(this, args)
       }
       catch (error) {
@@ -76,7 +77,7 @@ export class History extends Comp {
         throw error
       }
       finally {
-        this.saveHistory()
+        self.saveHistory()
       }
     } as T, {
       sansHistory: fn
