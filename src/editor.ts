@@ -102,6 +102,7 @@ export class Editor extends Render {
   @fx trigger_anim_on_needUpdate() {
     if (this.needUpdate && !this.world.anim.isAnimating) {
       this.world.anim.start()
+      console.log('yo')
     }
   }
   @fn initCanvas() {
