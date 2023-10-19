@@ -74,9 +74,9 @@ export class Scrollbar extends Render {
     const { c } = $.of(canvas)
     const { skin } = $.of(ctx)
     const alpha = '66'
-    c.restore()
-    c.save()
-    c.scale(pr, pr)
+    // c.restore()
+    // c.save()
+    // c.scale(pr, pr)
     c.clearRect(0, 0, rect.w, rect.h)
     c.fillStyle =
       (isHovering
@@ -100,7 +100,7 @@ export class Scrollbar extends Render {
     c.strokeStyle = skin.colors.bgBright25 + alpha
     c.stroke()
 
-    c.restore()
+    // c.restore()
 
     this.needRender = false
     this.needDraw = true
