@@ -138,6 +138,7 @@ export class Scrollbars extends Render {
     this.draw(t, c)
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
+    console.warn('yo')
     for (const item of this.items) {
       if (item.needRender) {
         item.render()
