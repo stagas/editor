@@ -88,6 +88,7 @@ export class Scroll extends Comp {
         targetScroll.top -= dy
       }
     }
+    console.log(dy)
   }
 
   @fx update_targetScroll_left() {
