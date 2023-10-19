@@ -22,6 +22,7 @@ export class Text extends Render {
     const { c } = $.of(canvas)
     const em = c.measureText('M')
     dims.charWidth = em.width
+    console.log('read')
   }
 
   @fx trigger_render() {
