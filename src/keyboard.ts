@@ -617,7 +617,7 @@ export class Keyboard extends Comp {
       && selection.hasSelection
       && (
         !ctrlKey
-        || !'zyvxc=+-tn'.includes(key)
+        || !'zyvxc=+-tnb'.includes(key)
       )
     ) {
       selection.start.set(selection.end)
