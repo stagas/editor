@@ -49,8 +49,9 @@ export class Mouse extends Comp {
     const { pointable } = $.of(text)
     scrollbars.items.forEach(x => {
       const { pointable } = $.of(x)
+      console.log(pointable)
     })
-return
+
     const { pointer } = $.of(world)
     const { time } = $.of(pointer)
     $._()
