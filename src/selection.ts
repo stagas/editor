@@ -140,6 +140,7 @@ export class Selection extends Render {
       if (col >= word.index && col < next.index) {
         selection.start.set({ x: word.index, y: line })
         selection.end.set({ x: word.index + word[0].length, y: line })
+        console.log(word[0].trim().length)
         return Boolean(word[0].trim().length)
       }
     }
