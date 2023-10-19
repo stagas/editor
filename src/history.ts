@@ -1,4 +1,4 @@
-import { $, fn } from 'signal'
+import { $, fn, fx } from 'signal'
 import { Line, Point } from 'std'
 import { debounce, deepMerge } from 'utils'
 import { Comp } from './comp.ts'
@@ -115,4 +115,12 @@ export class History extends Comp {
       this.applySnap(snap)
     }
   })
+
+  @fx update_prevViewState() {
+    const { viewState } = this
+    $._()
+    return () => {
+      this.prevViewState = viewState
+    }
+  }
 }
