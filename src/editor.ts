@@ -39,7 +39,7 @@ export class Editor extends Render {
       bgBright015: '#113',
       bgBright1: '#337',
       bgBright2: '#222',
-      bgBright25: '#555',
+      bgBright25: '#558',
     }, fonts: { mono: 'monospace' }
   }
   colors: Colors = {}
