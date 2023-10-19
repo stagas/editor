@@ -86,12 +86,11 @@ export class Keyboard extends Comp {
           else {
             const { top, bottom } = selection.getSelectionSorted()
             if (bottom.y === maxLine) break
-
+console.log(top.text, bottom.text)
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
             lines.splice(++top.y, 0, ...slice)
             ++bottom.y
             b.code = lines.join('\n')
-            $.flush()
           }
         }
 
