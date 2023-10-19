@@ -57,11 +57,11 @@ export class Mouse extends Comp {
       return
     }
 
-    return
     let currentItem =
-      (type !== Up && downItem)
-      || (this.findItemByPoint(pos))
+    (type !== Up && downItem)
+    || (this.findItemByPoint(pos))
 
+    return
     if (type === Up && downItem) {
       downItem.it.isDown = false
     }
