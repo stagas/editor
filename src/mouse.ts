@@ -69,7 +69,7 @@ export class Mouse extends Comp {
             break
 
           case 2:
-            if (selection.selectWordBoundary(lineCol)) {
+            if (selection.selectWordBoundary(lineCol, shift)) {
               this.downCount = 2
               break
             }

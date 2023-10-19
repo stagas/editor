@@ -128,7 +128,7 @@ export class Selection extends Render {
     }
     return false
   }
-  @fn selectWordBoundary(p: Point) {
+  @fn selectWordBoundary(p: Point, expand?: boolean) {
     const { ctx, selection } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code, lines } = $.of(buffer)
@@ -138,7 +138,7 @@ export class Selection extends Render {
       word = words[i]
       next = i < words.length - 1 ? words[i + 1] : { index: Infinity }
       if (col >= word.index && col < next.index) {
-        selection.start.set({ x: word.index, y: line })
+        if (!expand) selection.start.set({ x: word.index, y: line })
         selection.end.set({ x: word.index + word[0].length, y: line })
         // We exclude brackets from being selected as words, so
         // that we fall back to a matching brackets selection in mouse.
