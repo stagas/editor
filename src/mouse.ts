@@ -49,8 +49,8 @@ export class Mouse extends Comp {
     const { pointer } = $.of(world)
     const { time } = $.of(pointer)
     $._()
-    return
     const { type, pos } = pointer
+    return
     const { downItem, hoverItem } = this
 
     if (type === Move && downItem) {
