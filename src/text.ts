@@ -10,10 +10,13 @@ export class Text extends Render {
     super(ctx, ctx.rect)
   }
 
+  didInitCanvas = false
+
   // TODO: where is this used??
   viewRect = $(new Rect)
 
   @fx measure_charWidth() {
+    const { didInitCanvas } = $.when(this)
     const { canvas, ctx } = $.of(this)
     const { dims } = $.of(ctx)
     const { c } = $.of(canvas)
@@ -41,7 +44,6 @@ export class Text extends Render {
     this.needRender = true
   }
 
-
   @fn initCanvas(c: CanvasRenderingContext2D) {
     const { dims, skin } = $.of(this.ctx)
 
@@ -56,6 +58,7 @@ export class Text extends Render {
     c.lineWidth = dims.fontSize / 100
 
     this.needInit = false
+    this.didInitCanvas = true
   }
   update(dt: number) { return 0}
   updateOne(dt: number) { return 0}
