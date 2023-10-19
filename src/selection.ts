@@ -4,7 +4,7 @@ import { Line, Point, Rect } from 'std'
 import { debounce } from 'utils'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
-import { Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
+import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 
 const tempPoint = $(new Point)
 
@@ -140,7 +140,9 @@ export class Selection extends Render {
       if (col >= word.index && col < next.index) {
         selection.start.set({ x: word.index, y: line })
         selection.end.set({ x: word.index + word[0].length, y: line })
-        console.log(word[0])
+        // We exclude brackets from being selected as words, so
+        // that we fall back to a matching brackets selection in mouse.
+        if (word[0].length === 1 && BRACKET.test(word)) return false
         return Boolean(word[0].trim().length)
       }
     }
