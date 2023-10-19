@@ -186,6 +186,7 @@ export class Editor extends Render {
         scene.initCanvas(c)
         scene.render(t, c, false)
         c.restore()
+        scene.needInit = scene.needRender = true
       }
       this.needDirectDraw = false
     }
