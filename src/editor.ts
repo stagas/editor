@@ -100,9 +100,12 @@ export class Editor extends Render {
     }
   }
   @fx trigger_anim_on_needUpdate() {
-    if (this.needUpdate && $.untrack(() => !this.world.anim.isAnimating)) {
-      this.world.anim.start()
-      console.log('yo')
+    if (this.needUpdate) {
+      $.untrack()
+      if (!this.world.anim.isAnimating) {
+        this.world.anim.start()
+        console.log('yo')
+      }
     }
   }
   @fn initCanvas() {
@@ -111,7 +114,7 @@ export class Editor extends Render {
     this.needInit = false
     this.needDraw = true
   }
-  @fn update () {
+  @fn update() {
     const { misc, dims, scroll } = $.of(this)
     const { isTyping } = $.of(misc)
     const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
