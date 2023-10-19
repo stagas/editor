@@ -43,7 +43,7 @@ export abstract class Render extends Scene {
 
   @fx trigger_needInit_on_size() {
     const { pr } = $.of(this)
-    const { size: { xy } } = $.of(this.canvas)
+    const { size: { x, y } } = $.of(this.canvas)
     this.needInit = true
   }
 }
