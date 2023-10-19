@@ -106,11 +106,11 @@ export class Caret extends Render {
     this.needDraw = true
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
-    console.log('DRAW')
     const { ind, pos, ctx, isHidden } = $.of(this)
     const { dims } = $.of(ctx)
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
+    console.log('DRAW', isHidden)
     if (!isHidden) {
       // log('lineCol', line, col)
       c.save()
