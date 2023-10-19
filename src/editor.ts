@@ -109,7 +109,7 @@ export class Editor extends Render {
     if (this.needDraw) {
       if (!this.world.anim.isAnimating) {
         $.untrack()
-        this.draw()
+        this.draw(1)
       }
     }
   }
