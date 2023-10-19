@@ -64,7 +64,12 @@ export class Mouse extends Comp {
             return
 
           case PointerEventType.Up:
+            this.downItem.isHovering = false
             this.downItem = null
+            return
+
+          case PointerEventType.Leave:
+            this.downItem.isHovering = false
             return
         }
       }
