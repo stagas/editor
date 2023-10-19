@@ -20,7 +20,7 @@ export class Mouse extends Comp {
 
   pointable = $(new Pointable, <Pointable>{
     getItemAtPoint: (p) => {
-      return this.ctx.isPointWithin(p)
+      return this.ctx.getItemAtPoint(p)
     }
   })
 
