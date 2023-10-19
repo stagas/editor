@@ -1,6 +1,6 @@
 log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Render } from './render.ts'
+import { Render, RenderPosition } from './render.ts'
 import { Text } from './text.ts'
 import { Selection } from './selection.ts'
 import { Input } from './input.ts'
@@ -174,31 +174,77 @@ export class Editor extends Render {
   updateOne() { return 0 }
   render() { }
   @fn draw(t: number) {
-    console.log('draw')
-    const { rect, scenes, canvas } = $.of(this)
+    const { rect, scenes, canvas, scroll, dims: { viewSpan } } = $.of(this)
     const { c } = canvas
 
     rect.fill(c, '#224')
 
-    if (this.needDirectDraw) {
-      for (const scene of scenes) {
-        c.save()
-        scene.initCanvas(c)
-        scene.render(t, c, false)
-        c.restore()
-        scene.needInit = scene.needRender = true
+    let position: RenderPosition = 'layout'
+
+    // if (this.needDirectDraw) {
+    for (const scene of scenes) {
+      if (scene.renderPosition !== position) {
+        if (scene.renderPosition === 'scroll') {
+          c.save()
+          scroll.pos.translate(c)
+        }
+        else {
+          c.restore()
+        }
+        position = scene.renderPosition
       }
-      this.needDirectDraw = false
-    }
-    else {
-      for (const scene of scenes) {
-        scene.needInit && scene.initCanvas(scene.canvas.c)
-        scene.needRender && scene.render(t, scene.canvas.c, true)
-        scene.draw(t, c)
+
+      const viewRect = scene.viewRect ?? scene.rect
+
+      if (position === 'scroll') {
+        if (
+          viewRect.bottom < viewSpan.top
+          || viewRect.top > viewSpan.bottom
+        ) continue
+
+        if (scene.needRender) {
+          scene.render(t, scene.canvas.c, true)
+          scene.draw(t, c)
+        }
+        else {
+          scene.draw(t, c)
+        }
+      }
+      else if (position === 'layout') {
+        if (this.needDirectDraw) {
+          c.save()
+          scene.initCanvas(c)
+          scene.render(t, c, false)
+          c.restore()
+          // when we finish the direct layout draws,
+          // we need the items to also render their own canvas.
+          scene.needInit = scene.needRender = true
+        }
+        else {
+          scene.needInit && scene.initCanvas(scene.canvas.c)
+          scene.needRender && scene.render(t, scene.canvas.c, true)
+          scene.draw(t, c)
+        }
       }
     }
 
-    this.needDraw = false
+    if (position === 'scroll') {
+      c.restore()
+    }
+
+    this.needDirectDraw
+    = this.needDraw
+    = false
+    // }
+    // else {
+    //   for (const scene of scenes) {
+    //     scene.needInit && scene.initCanvas(scene.canvas.c)
+    //     scene.needRender && scene.render(t, scene.canvas.c, true)
+    //     scene.draw(t, c)
+    //   }
+    // }
+
+    // this.needDraw = false
     // if (this.needUpdate) {
     //   requestAnimationFrame(this.update)
     // }

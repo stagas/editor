@@ -28,6 +28,8 @@ export abstract class Render extends Scene {
   needDraw?: boolean
   needDirectDraw?: boolean
 
+  viewRect?: $<Rect>
+
   isVisible = false
   isFocused = false
   isHovering = false

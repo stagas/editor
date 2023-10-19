@@ -34,6 +34,8 @@ export const AnimScrollStrategy: Record<string, AnimScrollStrategy> = {
 
 export class Scroll extends Comp {
   pos = $(new Point)
+  x = this.pos.$.x
+  y = this.pos.$.y
   scroll = alias(this, 'pos')
   minScroll = $(new Point)
   scrollSize = $(new Point)
