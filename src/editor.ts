@@ -85,7 +85,7 @@ export class Editor extends Render {
     ]
   }
   @fx update_cursor_when_isHovering() {
-    const { isHovering } = $.when(this)
+    const { isHovering } = $.of(this)
     if (isHovering) {
       this.world.screen.cursor = 'text'
     }
