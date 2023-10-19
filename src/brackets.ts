@@ -70,6 +70,7 @@ export class Brackets extends Render {
     this.needDraw = true
   }
   @fn draw(t: number, c: CanvasRenderingContext2D) {
+    console.log('draw')
     const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
     if (!isHidden) {
       rect1.drawImage(canvas.el, c, pr, true)
