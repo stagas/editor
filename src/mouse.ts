@@ -1,10 +1,11 @@
 log.active
 import { $, fn, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
-import { Comp } from './comp.ts'
-import { AnimScrollStrategy } from './scroll.ts'
-import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { prevent } from 'utils'
+import { Comp } from './comp.ts'
+import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
+import { Render } from './render.ts'
+import { AnimScrollStrategy } from './scroll.ts'
 
 export class Mouse extends Comp {
   lineCol = $(new Point)
@@ -14,15 +15,25 @@ export class Mouse extends Comp {
   downTime = 0
   downPos = $(new Point)
 
+  hoverItem?: Render
+
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
-    const { world, misc, buffer, dims, scroll, selection, input: { textarea } } = $.of(ctx)
+    const { world, misc, buffer, dims, scroll,
+      selection, input: { textarea },
+      pointerTargets } = $.of(ctx)
     const { charWidth } = $.of(dims)
     const { lines } = $.of(buffer)
     const { pointer } = $.of(world)
     const { time, real } = $.of(pointer)
     $._()
     const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
+
+    for (const target of pointerTargets) {
+      if (target.isPointWithin(pos)) {
+        this.hoverItem = target
+      }
+    }
 
     ctx.isHovering = pos.withinRect(ctx.rect)
 

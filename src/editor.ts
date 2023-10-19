@@ -73,6 +73,12 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
+  @nu get pointerTargets(): Render[] {
+    const t = $.of(this)
+    return [
+      t.scrollbars,
+    ]
+  }
   @fx update_cursor_when_isHovering() {
     const { isHovering } = $.when(this)
     this.world.screen.cursor = 'text'
