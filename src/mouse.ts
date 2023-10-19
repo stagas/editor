@@ -1,31 +1,77 @@
 log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
+import { PointerLikeEvent } from 'utils'
 import { Comp } from './comp.ts'
 import { AnimScrollStrategy } from './scroll.ts'
-import { PointerLikeEvent } from 'utils'
+import { DOUBLE_CLICK_MS } from './constants.ts'
 
 export class Mouse extends Comp {
   hoveringLineCol = $(new Point)
+
+  isDown = false
   downCount = 0
+  downPos = $(new Point)
+  downTime = 0
 
   @fx handle_pointer_event() {
-    const { ctx } = $.of(this)
-    const { world, misc, buffer, scroll } = $.of(ctx)
+    const { ctx, hoveringLineCol: p } = $.of(this)
+    const { world, misc, buffer: b, scroll, selection } = $.of(ctx)
     const { pointer } = $.of(world)
-    const { event, pos, wheel, buttons, alt, ctrl, shift } = pointer
+    const { time } = pointer
     $._()
+    const { event, type, pos, wheel, buttons, alt, ctrl, shift } = pointer
 
-    switch (event.type) {
+    b.getLineColFromPoint(pos, true, p)
+
+    switch (type) {
       case 'move':
         break
+
       case 'wheel':
+        scroll.targetScroll.subMul(wheel, 0.2)
+        scroll.animScrollStrategy = AnimScrollStrategy.Medium
         break
+
       case 'down':
+        if (time - this.downTime < DOUBLE_CLICK_MS) {
+          this.downCount++
+        }
+        else {
+          this.downCount = 1
+        }
+        this.isDown = true
+        this.downPos.set(pos)
+        this.downTime = event.timeStamp
+
+        b.line = p.y
+        b.coli = p.x
+
+        switch (this.downCount) {
+          case 1:
+            selection.resetTo(p)
+            break
+
+          case 2:
+            if (selection.selectWordBoundary(p)) {
+              break
+            }
+          case 3:
+            if (selection.selectMatchingBrackets(p)) {
+              break
+            }
+          case 4:
+            selection.selectLine(p.y)
+            break
+        }
         break
+
       case 'up':
+        this.isDown = false
         break
+
       case 'leave':
+        ctx.isHovering = false
         break
     }
   }
