@@ -14,17 +14,22 @@ export abstract class Render extends Scene {
     super(world)
   }
 
+  coeff = 1
   needInit?: boolean
+  needUpdate?: boolean
   needRender?: boolean
   needDraw?: boolean
+  needDirectDraw?: boolean
 
   isVisible = false
   isFocused = false
   isHovering = false
 
   abstract initCanvas(c: CanvasRenderingContext2D): void
-  abstract render(c?: CanvasRenderingContext2D): void
-  abstract draw(c: CanvasRenderingContext2D): void
+  abstract update(deltaTime: number): number
+  abstract updateOne(deltaTime: number): number
+  abstract render(t: number, c: CanvasRenderingContext2D, clear: boolean): void
+  abstract draw(t: number, c: CanvasRenderingContext2D): void
 
   @fx trigger_needInit_on_size() {
     const { pr } = $.of(this)

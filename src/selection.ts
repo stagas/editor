@@ -205,18 +205,16 @@ export class Selection extends Render {
     this.needInit = false
     this.needRender = true
   }
-  @fn render(oc?: CanvasRenderingContext2D) {
+  update(dt: number) { return 0}
+  updateOne(dt: number) { return 0}
+  @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
     const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
     const { skin, buffer, dims } = $.of(ctx)
     const { scroll } = $.of(dims)
-    let { c } = $.of(canvas)
 
     if (hasSelection) {
       log('top', selectionSorted.top.text, 'bottom', selectionSorted.bottom.text)
-      if (oc) {
-        c = oc
-      }
-      else {
+      if (clear) {
         rect.clear(c)
       }
       c.save()
@@ -228,7 +226,7 @@ export class Selection extends Render {
 
     this.needRender = false
   }
-  @fn draw(c: CanvasRenderingContext2D) {
+  @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect, hasSelection } = $.of(this)
 
     if (hasSelection) {

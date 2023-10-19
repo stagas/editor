@@ -20,21 +20,6 @@ export class Text extends Render {
     const em = c.measureText('M')
     dims.charWidth = em.width
   }
-  @fn initCanvas(c: CanvasRenderingContext2D) {
-    const { dims, skin } = $.of(this.ctx)
-
-    c.imageSmoothingEnabled = false
-    c.miterLimit = 3
-    c.lineJoin = 'round'
-    c.lineCap = 'round'
-
-    c.font = `100 ${dims.fontSize}px ${skin.fonts.mono}`
-    c.textAlign = 'left'
-    c.textBaseline = 'bottom'
-    c.lineWidth = dims.fontSize / 100
-
-    this.needInit = false
-  }
 
   @fx trigger_render() {
     const { ctx, pr, rect } = this
@@ -56,15 +41,32 @@ export class Text extends Render {
     this.needRender = true
   }
 
-  @fn render(oc?: CanvasRenderingContext2D) {
+
+  @fn initCanvas(c: CanvasRenderingContext2D) {
+    const { dims, skin } = $.of(this.ctx)
+
+    c.imageSmoothingEnabled = false
+    c.miterLimit = 3
+    c.lineJoin = 'round'
+    c.lineCap = 'round'
+
+    c.font = `100 ${dims.fontSize}px ${skin.fonts.mono}`
+    c.textAlign = 'left'
+    c.textBaseline = 'bottom'
+    c.lineWidth = dims.fontSize / 100
+
+    this.needInit = false
+  }
+  update(dt: number) { return 0}
+  updateOne(dt: number) { return 0}
+  @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
     const { canvas, rect, ctx } = $.of(this)
     const { buffer, dims, colors, skin } = $.of(ctx)
     const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
     const { tokens, Token } = $.of(buffer)
 
     // log('tokens', tokens)
-    const c = oc ?? canvas.c
-    if (!oc) {
+    if (clear) {
       rect.clear(c)
     }
 
@@ -100,7 +102,7 @@ export class Text extends Render {
     this.needDraw = true
   }
 
-  @fn draw(c: CanvasRenderingContext2D) {
+  @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect } = $.of(this)
     rect.drawImage(canvas.el, c, pr, true)
 

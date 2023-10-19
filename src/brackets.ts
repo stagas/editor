@@ -51,6 +51,8 @@ export class Brackets extends Render {
     this.needInit = false
     this.needRender = true
   }
+  update(dt: number) { return 0 }
+  updateOne(dt: number) { return 0 }
   @fn render() {
     const { canvas, rect1, rect } = $.of(this)
     const { c } = $.of(canvas)
@@ -67,7 +69,7 @@ export class Brackets extends Render {
     this.needRender = false
     this.needDraw = true
   }
-  @fn draw(c: CanvasRenderingContext2D) {
+  @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
     if (!isHidden) {
       rect1.drawImage(canvas.el, c, pr, true)

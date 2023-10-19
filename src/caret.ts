@@ -95,6 +95,8 @@ export class Caret extends Render {
     this.needInit = false
     this.needRender = true
   }
+  update(dt: number) { return 0 }
+  updateOne(dt: number) { return 0 }
   @fn render() {
     const { ind } = $.of(this)
     if (ind.needRender) {
@@ -103,7 +105,7 @@ export class Caret extends Render {
     this.needRender = false
     this.needDraw = true
   }
-  @fn draw(c: CanvasRenderingContext2D) {
+  @fn draw(t: number, c: CanvasRenderingContext2D) {
     const { ind, pos, ctx, isHidden } = $.of(this)
     const { dims } = $.of(ctx)
     const { charWidth, lineBaseTops } = $.of(dims)

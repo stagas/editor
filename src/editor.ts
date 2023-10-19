@@ -30,7 +30,7 @@ export class Editor extends Render {
   constructor(public world: World) {
     super({ world } as Editor)
   }
-  coeff = 1
+  // coeff = 1
   misc = $(new Misc)
   skin = {
     colors: {
@@ -50,8 +50,8 @@ export class Editor extends Render {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  needUpdate = false
-  needDirectDraw = false
+  // needUpdate = false
+  // needDirectDraw = false
 
   @init init_Editor() {
     this.canvas.fullWindow = true
@@ -159,11 +159,9 @@ export class Editor extends Render {
     // console.log(this.needUpdate)
     // return +this.needUpdate
   }
-  updateOne() {
-    return 1
-  }
+  updateOne() { return 0 }
   render() { }
-  @fn draw() {
+  @fn draw(t: number) {
     const { rect, scenes, canvas } = $.of(this)
     const { c } = canvas
 
@@ -173,7 +171,7 @@ export class Editor extends Render {
       for (const scene of scenes) {
         c.save()
         scene.initCanvas(c)
-        scene.render(c)
+        scene.render(t, c, false)
         c.restore()
       }
       this.needDirectDraw = false
@@ -181,8 +179,8 @@ export class Editor extends Render {
     else {
       for (const scene of scenes) {
         scene.needInit && scene.initCanvas(scene.canvas.c)
-        scene.needRender && scene.render()
-        scene.draw(c)
+        scene.needRender && scene.render(t, scene.canvas.c, true)
+        scene.draw(t, scene.canvas.c)
       }
     }
 
