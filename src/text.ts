@@ -30,7 +30,7 @@ export class Text extends Render {
     return $(new Pointable(ctx), {
       cursor: 'text',
       getItemAtPoint: (p: Point) => {
-        return this.rect.isPointWithin(p) && this
+        return ctx.rect.isPointWithin(p) && ctx
       },
       onClick: () => {
         textarea.focus()
@@ -40,7 +40,7 @@ export class Text extends Render {
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
       }),
       onMove: fn(() => {
-        if (this.isDown) {
+        if (ctx.isDown) {
           selection.end.set(lineCol)
           buffer.lineCol.set(lineCol)
           buffer.coli = lineCol.col
