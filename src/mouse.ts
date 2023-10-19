@@ -49,7 +49,6 @@ export class Mouse extends Comp {
     }
 
     if (!ctx.isHovering) {
-
       return
     }
     // ctx.isHovering = pos.withinRect(ctx.rect)
