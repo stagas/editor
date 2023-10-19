@@ -47,9 +47,10 @@ export class Input extends Comp {
     }, 50)
   }
   @fx textarea_follows_pointer() {
-    const { xy } = this.ctx.world.pointer.pos
+    const { pos } = this.ctx.world.pointer
+    const { x, y } = pos
     $.untrack()
-    this.textareaRect.center.set(xy)
+    this.textareaRect.center.set(pos)
   }
   @fx move_textarea() {
     this.textarea.style.transform =
