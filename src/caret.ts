@@ -119,7 +119,7 @@ export class Caret extends Render {
         // lineDims getter
         Math.floor(lineBaseTops[line] + 1)
       )
-      ind.draw(c)
+      ind.draw(t,c)
       c.restore()
     }
     this.needDraw = false

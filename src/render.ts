@@ -3,6 +3,12 @@ import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 
+export type RenderPosition =
+  /** Layout position, remains fixed in space without scroll translations. */
+  | 'layout'
+  /** Scroll position, translations apply. */
+  | 'scroll'
+
 export abstract class Render extends Scene {
   constructor(
     public ctx: Editor,
@@ -15,6 +21,7 @@ export abstract class Render extends Scene {
   }
 
   coeff = 1
+  renderPosition: RenderPosition = 'layout'
   needInit?: boolean
   needUpdate?: boolean
   needRender?: boolean

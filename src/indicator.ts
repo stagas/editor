@@ -14,6 +14,8 @@ export class Indicator extends Render {
   @fn initCanvas() {
     this.needInit = false
   }
+  update() { return 0}
+  updateOne() { return 0}
   @fn render(){
     const { canvas, rect, color1, color2 }= $.of(this)
     const { c } = $.of(canvas)
@@ -41,7 +43,7 @@ export class Indicator extends Render {
     this.needRender = false
     this.needDraw = true
   }
-  @fn draw(c: CanvasRenderingContext2D){
+  @fn draw(t: number, c: CanvasRenderingContext2D){
     const { pr, canvas, rect } = $.of(this)
     c.save()
     c.translate(-7, -5.5)

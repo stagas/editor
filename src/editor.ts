@@ -46,7 +46,7 @@ export class Editor extends Render {
   selection = $(new Selection(this))
   text = $(new Text(this))
   caret = $(new Caret(this), { blink: false })
-  brackets = $(new Brackets(this))
+  brackets = $(new Brackets(this), { renderPosition: 'scroll' })
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
