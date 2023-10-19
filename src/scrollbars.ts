@@ -1,9 +1,9 @@
 log.active
-import { $, fx, fn } from 'signal'
+import { $, fn, fx } from 'signal'
+import { Point } from 'std'
 import { Editor } from './editor.ts'
 import { Render } from './render.ts'
 import { Scrollbar } from './scrollbar.ts'
-import { Point } from 'std'
 
 export class Scrollbars extends Render {
   constructor(ctx: Editor) {
