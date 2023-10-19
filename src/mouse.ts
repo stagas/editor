@@ -46,8 +46,8 @@ export class Mouse extends Comp {
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
     const { world, pointerTargets } = $.of(ctx)
-    return
     const { pointer } = $.of(world)
+    return
     const { time } = $.of(pointer)
     $._()
     const { type, pos } = pointer
