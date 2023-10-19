@@ -34,7 +34,6 @@ export class Scrollbar extends Render {
     const { world: { pointer: p }, dim, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
-    const { absSum } = $.when(innerSize)
 
     const side = sides[dim]
     const co = rect[side] / innerSize[side]
