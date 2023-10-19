@@ -9,7 +9,7 @@ export class Caret extends Render {
   blink?= false
   isBlinking = false
   isHidden = false
-  hideWhenTyping?= true
+  hideWhenTyping?= false
   hideWhenAway?= false
   color1?= '#727'
   color2?= '#555'
