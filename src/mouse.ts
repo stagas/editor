@@ -38,6 +38,7 @@ export class Mouse extends Comp {
             }
             this.hoverItem = target
             this.hoverItem.isHovering = true
+            console.log('YES', target)
           }
           break out
         }
