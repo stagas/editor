@@ -119,7 +119,7 @@ export class History extends Comp {
   @fx update_prevViewState() {
     const { viewState } = this
     $._()
-    if (!this.prevViewState) this.prevViewState = viewState
+    this.prevViewState ??= viewState
     return () => {
       this.prevViewState = viewState
     }
