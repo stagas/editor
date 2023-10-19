@@ -138,8 +138,8 @@ export class Selection extends Render {
       word = words[i]
       next = i < words.length - 1 ? words[i + 1] : { index: Infinity }
       if (col >= word.index && col < next.index) {
-        if (!expand || forward) selection.start.set({ x: word.index, y: line })
-        if (!expand || !forward) selection.end.set({ x: word.index + word[0].length, y: line })
+        if (!expand || !forward) selection.start.set({ x: word.index, y: line })
+        if (!expand || forward) selection.end.set({ x: word.index + word[0].length, y: line })
         // We exclude brackets from being selected as words, so
         // that we fall back to a matching brackets selection in mouse.
         if (word[0].length === 1 && BRACKET.test(word)) return false
