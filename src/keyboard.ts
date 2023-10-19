@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $, fn } from 'signal'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
 import { AnimScrollStrategy } from './scroll.ts'
 import { Comp } from './comp.ts'
@@ -20,7 +20,7 @@ export class Keyboard extends Comp {
     'Space': ' ',
   }
 
-  handleKey(event: Key) {
+  @fn handleKey(event: Key) {
     const { ctx, /* onKeyDown,  */specialKeys } = $.of(this)
     const { misc, history, buffer: b, dims, scroll, selection } = $.of(ctx)
     const { rect } = $.of(dims)
