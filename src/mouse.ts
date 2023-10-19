@@ -60,6 +60,10 @@ export class Mouse extends Comp {
           case PointerEventType.Move:
             this.downItem.onHoldMove?.()
             break
+
+          case PointerEventType.Up:
+            this.downItem = null
+            break
         }
       }
       return
