@@ -73,6 +73,10 @@ export class Editor extends Render {
       this.needDraw = true
     }
   }
+  @fx maybe_update_cursor() {
+    const { isHovering } = $.when(this)
+    this.world.screen.cursor = 'text'
+  }
   // @fx when_needDraw_trigger_draw() {
   //   $.when(this).needDraw
   //   this.draw()
