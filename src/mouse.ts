@@ -10,8 +10,8 @@ export class Mouse extends Comp {
 
   isDown = false
   downCount = 0
-  downPos = $(new Point)
   downTime = 0
+  downPos = $(new Point)
 
   @fx handle_pointer_event() {
     const { ctx, lineCol } = $.of(this)
@@ -35,16 +35,18 @@ export class Mouse extends Comp {
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
         break
 
-      case PointerEventType.Down:
+        case PointerEventType.Down:
+        this.isDown = true
+
         if (time - this.downTime < DOUBLE_CLICK_MS) {
           this.downCount++
         }
         else {
           this.downCount = 1
         }
-        this.isDown = true
-        this.downPos.set(pos)
         this.downTime = time
+
+        this.downPos.set(pos)
 
         buffer.lineCol.set(lineCol)
 
