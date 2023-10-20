@@ -71,6 +71,7 @@ export class Widget extends Comp {
   get widgetable() {
     $()
     const it = this
+    console.log('YES')
     return $(new Widgetable(this))
   }
   get renderable() {
@@ -85,10 +86,6 @@ export class Widget extends Comp {
       }
     }
     return $(new WidgetRenderable(this.ctx))
-  }
-  @init init_widgetable() {
-    this.renderable
-    this.widgetable
   }
 }
 
