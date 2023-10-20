@@ -41,7 +41,7 @@ export class Mouse extends Comp {
 
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
-    const { world, pointerTargets, input, text, scrollbars } = $.of(ctx)
+    const { world, buffer, pointerTargets, input, text, scrollbars } = $.of(ctx)
     const { mouse } = $.of(input)
     const { pointable } = $.of(text)
 
@@ -53,7 +53,9 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $._()
     const { type, pos } = pointer
-    const { downItem, hoverItem } = this
+    const { lineCol, downItem, hoverItem } = this
+
+    buffer.getLineColFromPoint(pos, true, lineCol)
 
     if (type === Move && downItem) {
       downItem[PointerEventMap[type]]?.()
