@@ -6,45 +6,45 @@ import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 
-const dimOpp = {
+type Axis = 'x' | 'y'
+
+const AxisOpp = {
   x: 'y',
   y: 'x',
 } as const
 
-const sides = {
+const Sides = {
   x: 'w',
   y: 'h',
 } as const
 
-const sidesOpp = {
+const SidesOpp = {
   x: 'h',
   y: 'w',
 } as const
-
-type Axis = 'x' | 'y'
 
 export class Scrollbar extends Comp {
   axis?: Axis
   scrollBegin = 0
   pointerBegin = 0
   @fx update_scrollbar() {
-    const { renderable, axis: dim, ctx } = $.of(this)
+    const { renderable, axis, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { scrollSize, targetScroll } = $.of(scroll)
     const { hasSize } = $.when(scrollSize)
     const { rect: r } = $.of(renderable)
     const { rect, scrollbarSize } = $.of(dims)
 
-    const s = sides[dim]
-    const so = sidesOpp[dim]
+    const s = Sides[axis]
+    const so = SidesOpp[axis]
     const co = rect[s] / scrollSize[s]
-    const x = -targetScroll[dim] * co
+    const x = -targetScroll[axis] * co
     const w = rect[s] * co
     const y = rect[so] - scrollbarSize[so]
     $()
     if (renderable.isVisible = co < 1) {
-      r[dim] = x
-      r[dimOpp[dim]] = y
+      r[axis] = x
+      r[AxisOpp[axis]] = y
     }
     r[s] = w
     r[so] = scrollbarSize[so]
@@ -115,26 +115,26 @@ export class Scrollbar extends Comp {
   get pointable(): $<Pointable> {
     $()
     const it = this
-    const { axis: dim, ctx } = $.of(it)
+    const { axis, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
       @fn onDown() {
-        it.scrollBegin = scroll[dim]
-        it.pointerBegin = pointer.pos[dim]
+        it.scrollBegin = scroll[axis]
+        it.pointerBegin = pointer.pos[axis]
       }
       @fn onMove() {
         const { buttons } = pointer
         if (this.isDown && (buttons & MouseButtons.Left)) {
-          const side = sides[dim]
+          const side = Sides[axis]
           const co = rect[side] / innerSize[side]
 
           scroll.animSettings = Scroll.AnimSettings.Fast
 
-          scroll.targetScroll[<Axis>dim] =
+          scroll.targetScroll[<Axis>axis] =
             it.scrollBegin
-            - (pointer.pos[dim] - it.pointerBegin) / co
+            - (pointer.pos[axis] - it.pointerBegin) / co
         }
       }
     }
