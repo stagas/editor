@@ -64,7 +64,7 @@ export class Editor extends Scene {
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  @nu get scenes(): Renderable.It[] {
+  @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
       t.selection,
@@ -74,12 +74,22 @@ export class Editor extends Scene {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): (Renderable.It & Pointable.It)[] {
+  @nu get pointables(): (Renderable.It & Pointable.It)[] {
     const t = $.of(this)
     return [
       t.text,
       t.scrollbars,
     ]
+  }
+  get pointable() {
+    $()
+    const it = this
+    class EditorPointable extends Pointable {
+      @fx update_hovering() {
+        this.isHovering = it.renderables.some(s => s.pointable.isHovering)
+      }
+    }
+    return $(new EditorPointable(this))
   }
   get renderable() {
     $()
@@ -88,11 +98,8 @@ export class Editor extends Scene {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      @fx update_hovering() {
-        this.isHovering = it.scenes.some(s => s.renderable.isHovering)
-      }
       @fx maybe_needDraw() {
-        const { scenes } = $.of(it)
+        const { renderables: scenes } = $.of(it)
         let needDraw = false
         for (const scene of scenes) {
           needDraw ||= scene.renderable.needRender || scene.renderable.needDraw || false
@@ -126,7 +133,7 @@ export class Editor extends Scene {
       @fn initCanvas() {
         const { c } = $.of(this.canvas)
         c.imageSmoothingEnabled = false
-        for (const { renderable: r } of it.scenes) {
+        for (const { renderable: r } of it.renderables) {
           r.needInit && r.initCanvas(r.canvas.c)
         }
         this.needInit = false
@@ -189,7 +196,7 @@ export class Editor extends Scene {
         // return +this.needUpdate
       }
       @fn draw(t: number) {
-        const { scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
+        const { renderables: scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
         const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = Renderable.Position

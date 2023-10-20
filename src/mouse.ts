@@ -27,7 +27,7 @@ export class Mouse extends Comp {
 
   @fn findItemsAtPoint(p: Point): Pointable[] {
     const { ctx } = $.of(this)
-    const { pointerTargets, text } = $.of(ctx)
+    const { pointables: pointerTargets, text } = $.of(ctx)
     const items: Pointable[] = [text.pointable]
 
     let item: Pointable | false | undefined
@@ -42,7 +42,7 @@ export class Mouse extends Comp {
 
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
-    const { world, buffer, pointerTargets, input, text, scrollbars, dims } = $.of(ctx)
+    const { world, buffer, pointables: pointerTargets, input, text, scrollbars, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
     const { mouse } = $.of(input)
     const { pointable } = $.of(text)
@@ -73,19 +73,19 @@ export class Mouse extends Comp {
     let currentItem = items.at(itemIndex)!
 
     if (type === Up && downItem) {
-      downItem.it.renderable.isDown = false
+      downItem.isDown = false
     }
 
-    if (!downItem?.it.renderable.isDown && hoverItem !== currentItem) {
+    if (!downItem?.isDown && hoverItem !== currentItem) {
       this.hoverItem = currentItem
 
       if (hoverItem) {
-        hoverItem.it.renderable.isHovering = false
+        hoverItem.isHovering = false
         hoverItem.onLeave?.()
       }
 
       if (this.hoverItem) {
-        this.hoverItem.it.renderable.isHovering = true
+        this.hoverItem.isHovering = true
         world.screen.cursor = this.hoverItem.cursor
         this.hoverItem.onEnter?.()
       }
@@ -102,7 +102,7 @@ export class Mouse extends Comp {
         this.downTime = time
         this.downPos.set(pos)
         this.downItem = currentItem
-        this.downItem.it.renderable.isDown = true
+        this.downItem.isDown = true
         currentItem.onDown?.(this.downCount)
         return
 
@@ -115,9 +115,9 @@ export class Mouse extends Comp {
         break
 
       case PointerEventType.Leave:
-        if (this.hoverItem) this.hoverItem.it.renderable.isHovering = false
+        if (this.hoverItem) this.hoverItem.isHovering = false
         pointerTargets.forEach(t =>
-          t.renderable.isHovering = false
+          t.pointable.isHovering = false
         )
         break
     }
