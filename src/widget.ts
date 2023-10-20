@@ -63,6 +63,7 @@ export class Widgetable {
         r.w -= 1
         break
     }
+    console.log(renderable)
     renderable.needDraw = true
   }
 }
