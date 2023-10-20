@@ -130,7 +130,7 @@ export class Text extends Comp {
       }
       @fn onWheel() {
         scroll.targetScroll.mulSub(wheel, 0.2)
-        scroll.animStrategy = AnimScrollStrategy.Medium
+        scroll.animSettings = AnimScrollStrategy.Medium
       }
       @fn onMove() {
         if (it.renderable.isDown) {

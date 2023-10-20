@@ -135,7 +135,7 @@ export class Editor extends Scene {
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
-        const { targetScroll, pos: scrollPos, animStrategy: animStrategy } = $.of(scroll)
+        const { targetScroll, pos: scrollPos, animSettings: animStrategy } = $.of(scroll)
 
         const dy = (targetScroll.y - scrollPos.y)
         const dx = (targetScroll.x - scrollPos.x)

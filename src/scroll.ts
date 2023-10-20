@@ -12,7 +12,7 @@ export class Scroll extends Comp {
   minScroll = $(new Point)
   scrollSize = $(new Point)
   targetScroll = $(new Point)
-  animStrategy: Scroll.AnimSettings = Scroll.AnimSettings.Fast
+  animSettings: Scroll.AnimSettings = Scroll.AnimSettings.Fast
 
   @fx update_innerMatrix_translation() {
     const { misc, dims, world } = $.of(this.ctx)
@@ -44,7 +44,7 @@ export class Scroll extends Comp {
 
     dy = viewTop - y
     if (dy > 0) {
-      this.animStrategy = Scroll.AnimSettings.Slow
+      this.animSettings = Scroll.AnimSettings.Slow
       targetScroll.top += dy
     }
     else {
@@ -54,7 +54,7 @@ export class Scroll extends Comp {
       y = lineBottoms[line] + lineHeight + scrollbarSize.h + 2
       dy = y - viewBottom
       if (dy > 0) {
-        this.animStrategy = Scroll.AnimSettings.Slow
+        this.animSettings = Scroll.AnimSettings.Slow
         targetScroll.top -= dy
       }
     }
@@ -80,14 +80,14 @@ export class Scroll extends Comp {
 
     dx = viewLeft - (x - charWidth * 10)
     if (dx > 0) {
-      this.animStrategy = Scroll.AnimSettings.Slow
+      this.animSettings = Scroll.AnimSettings.Slow
       targetScroll.left += dx
     }
     else {
       x += charWidth * 10
       dx = x - viewRight
       if (dx > 0) {
-        this.animStrategy = Scroll.AnimSettings.Slow
+        this.animSettings = Scroll.AnimSettings.Slow
         targetScroll.left -= dx
       }
     }
