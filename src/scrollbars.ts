@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { Comp } from './comp.ts'
@@ -29,7 +29,6 @@ export class Scrollbars extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D) {
         this.draw(t, c)
-        this.needRender = false
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         for (const {renderable:r } of it.items) {
