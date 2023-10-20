@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { Editor } from './editor.ts'
@@ -38,7 +38,6 @@ export class Scrollbars extends Render {
       }
     }
     $._()
-    console.log('need render eeee')
     this.needRender = needRender
   }
   @fn render(t: number, c: CanvasRenderingContext2D) {

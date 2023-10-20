@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx, init, nu } from 'signal'
 import { Render, RenderPosition } from './render.ts'
 import { Text } from './text.ts'
@@ -180,7 +180,6 @@ export class Editor extends Render {
   updateOne() { return 0 }
   render() { }
   @fn draw(t: number) {
-    console.log('DRAAAAAAAAAAAAAAAAAW')
     const { rect, scenes, canvas, scroll, skin, dims: { viewSpan } } = $.of(this)
     const { c } = canvas
     const { Layout, Scroll } = RenderPosition
