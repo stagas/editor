@@ -63,7 +63,7 @@ export class Widgetable {
         r.w -= 1
         break
     }
-    console.log(renderable)
+
     renderable.needDraw = true
   }
 }
@@ -97,6 +97,11 @@ export namespace Widget {
     Sub,
   }
 
+  export interface It {
+    widgetable: $<Widgetable>
+    renderable: $<Renderable>
+    pointable?: $<Pointable>
+  }
   // export interface It extends Widget {
   //   renderable: $<Widget.Renderable>
   //   pointable?: $<Widget.Pointable>
