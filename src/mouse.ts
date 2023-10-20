@@ -28,16 +28,15 @@ export class Mouse extends Comp {
   @fn findItemsAtPoint(p: Point): Pointable[] {
     const { ctx } = $.of(this)
     const { pointerTargets, text } = $.of(ctx)
-    const items: Pointable[] = []
+    const items: Pointable[] = [text.pointable]
 
     let item: Pointable | false | undefined
     for (const target of pointerTargets) {
       if (item = target.pointable.getItemAtPoint(p)) {
-        items.unshift(item)
+        items.push(item)
       }
     }
 
-    if (!items.length) items.unshift(text.pointable)
     return items
   }
 
