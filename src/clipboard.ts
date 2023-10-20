@@ -16,7 +16,7 @@ export class Clipboard extends Comp {
   })
   handlePasteHistoric = this.ctx.history.historic((e: ClipboardEvent) => {
     const { buffer, selection } = this.ctx
-    const textToPaste = e.clipboardData!.getData("text")
+    const textToPaste = e.clipboardData!.getData('text')
 
     if (selection.hasSelection) selection.deleteSelection.sansHistory()
 
