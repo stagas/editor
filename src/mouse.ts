@@ -72,7 +72,7 @@ export class Mouse extends Comp {
 
     let itemIndex = -1
     let currentIt = items.at(itemIndex)!
-console.log(currentIt)
+
     if (type === Up && downItem) {
       downItem.isDown = false
     }
@@ -127,9 +127,9 @@ console.log(currentIt)
     }
 
     const handler = PointerEventMap[type]
-    let receiver: Pointable.It | undefined = currentIt
+    let receiver: Pointable | undefined = currentIt.pointable
     while (receiver && !receiver[handler]) {
-      receiver = items.at(--itemIndex)
+      receiver = items.at(--itemIndex)?.pointable
     }
     receiver?.[handler]?.()
   }
