@@ -146,7 +146,7 @@ export class Text extends Comp {
       @fn onDown(downCount: number) {
         const { real } = $.of(pointer)
         const { shift } = pointer
-
+console.log(real)
         prevent(real)
 
         buffer.linecol.set(lineCol)
