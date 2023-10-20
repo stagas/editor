@@ -68,11 +68,11 @@ export class Widgetable {
 }
 
 export class Widget extends Comp {
-  // get widgetable() {
-  //   $()
-  //   const it = this
-  //   return $(new Widgetable(this))
-  // }
+  get widgetable() {
+    $()
+    const it = this
+    return $(new Widgetable(this))
+  }
   get renderable() {
     $()
     const it = this
