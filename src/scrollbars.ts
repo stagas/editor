@@ -3,7 +3,7 @@ import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 import { Scrollbar } from './scrollbar.ts'
 
 export class Scrollbars extends Comp {

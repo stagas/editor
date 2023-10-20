@@ -1,5 +1,5 @@
 import { $, fn, fx } from 'signal'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 import { Comp } from './comp.ts'
 
 export class Indicator extends Comp {

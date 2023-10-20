@@ -4,7 +4,7 @@ import { Rect } from 'std'
 import { prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 

@@ -2,7 +2,7 @@
 import { $, fn, fx } from 'signal'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 
 const dimOpp = {

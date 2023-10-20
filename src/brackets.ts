@@ -2,7 +2,7 @@
 import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
 import { Comp } from './comp.ts'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 
 export class Brackets extends Comp {
   get renderable(): $<Renderable> {

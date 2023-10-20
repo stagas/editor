@@ -2,7 +2,7 @@
 import { $, fn, fx } from 'signal'
 import { Line, Point, Rect } from 'std'
 import { debounce } from 'utils'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 import { Comp } from './comp.ts'
 

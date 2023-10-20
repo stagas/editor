@@ -1,5 +1,5 @@
 import { Point } from 'std'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 
 export class Pointable {
   constructor(public it: Renderable.It) {}

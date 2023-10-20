@@ -2,7 +2,7 @@
 import $, { fn, fx } from 'signal'
 import { Comp } from './comp.ts'
 import { Indicator } from './indicator.ts'
-import { Renderable } from './render.ts'
+import { Renderable } from './renderable.ts'
 
 export class Caret extends Comp {
   pos = this.ctx.buffer.$.lineCol
