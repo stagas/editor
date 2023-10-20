@@ -45,11 +45,6 @@ export class Mouse extends Comp {
     const { world, buffer, pointables, input, text, scrollbars, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
     const { mouse } = $.of(input)
-    // const { pointable } = $.of(text)
-
-    // scrollbars.items.forEach(x => {
-    //   const { pointable } = $.of(x)
-    // })
 
     const { pointer } = $.of(world)
     const { time, real } = $.of(pointer)
