@@ -52,10 +52,17 @@ export class Mouse extends Comp {
     const { type, pos } = pointer
     const { linecol, downIt, hoverIt } = this
 
+    // we update the mouse.linecol, but not when we are scrolling
+    // or some element has focus. We also prevent updating right after
+    // scroll at the arbitrary new position, because it's surprising,
+    // so instead we see if we were scrolling and skip it, except when
+    // it is Down, which means the user clicked.
     if (type === Down || (type !== Wheel && !misc.isScrolling && !misc.wasScrolling && ctx.pointable.isHovering)) {
       buffer.getLineColFromPoint(pos, true, linecol)
       misc.isTyping = false
     }
+    // We return the state to normal at the next events,
+    // unless it's a Wheel or user is pressing down on an item.
     if (type !== Wheel && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
       misc.wasScrolling = false
     }
