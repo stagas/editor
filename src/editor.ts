@@ -87,7 +87,11 @@ export class Editor extends Scene {
   scrollbars = $(new Scrollbars(this))
 
   sub: Widget.It[] = []
-  deco: Widget.It[] = []
+  deco: Widget.It[] = [
+    $(new SkeletonDeco(this), {
+      renderable: { dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } } }
+    })
+  ]
 
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
@@ -97,9 +101,7 @@ export class Editor extends Scene {
       t.brackets,
       t.caret,
       t.scrollbars,
-      $(new SkeletonDeco(this), {
-        renderable: { dim: { p1: { y: 0, x: 1 }, p2: { y: 0, x: 4 } } }
-      })
+      ...t.deco,
     ]
   }
   @nu get pointables(): (Renderable.It & Pointable.It)[] {
