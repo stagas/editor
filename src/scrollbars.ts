@@ -45,16 +45,18 @@ export class Scrollbars extends Comp {
     return $(new ScrollbarsRenderable(this.ctx, this.ctx.renderable.rect, this.ctx.world.canvas))
   }
 
-  get pointable(): $<Pointable> {
+  get pointable() {
     $()
-    return $(new Pointable(this), {
-      getItAtPoint: (p: Point) => {
-        for (const item of this.items) {
+    const it = this
+    class ScrollbarsPointable extends Pointable {
+      getItAtPoint(p: Point) {
+        for (const item of it.items) {
           if (item.renderable.isVisible && item.pointable.getItAtPoint(p)) {
-            return item.pointable
+            return item
           }
         }
       }
-    })
+    }
+    return $(new ScrollbarsPointable(this))
   }
 }
