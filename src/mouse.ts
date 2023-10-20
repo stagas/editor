@@ -27,12 +27,12 @@ export class Mouse extends Comp {
 
   @fn findItemsAtPoint(p: Point): Pointable.It[] {
     const { ctx } = $.of(this)
-    const { pointables: pointerTargets, text } = $.of(ctx)
+    const { pointables, text } = $.of(ctx)
     const items: Pointable.It[] = [text]
 
     let item: Pointable.It | false | undefined
-    for (const target of pointerTargets) {
-      if (item = target.pointable.getItAtPoint(p)) {
+    for (const { pointable } of pointables) {
+      if (item = pointable.getItAtPoint(p)) {
         items.push(item)
       }
     }
@@ -52,32 +52,29 @@ export class Mouse extends Comp {
     const { type, pos } = pointer
     const { lineCol, downIt, hoverIt } = this
 
-    const downItem = downIt?.pointable
-    const hoverItem = hoverIt?.pointable
-
     buffer.getLineColFromPoint(pos, true, lineCol)
 
-    if (type === Move && downItem) {
-      downItem[PointerEventMap[type]]?.()
+    if (type === Move && downIt) {
+      downIt.pointable[PointerEventMap[type]]?.()
       return
     }
 
     const items = this.findItemsAtPoint(pos)
-    if (type !== Up && downItem) items.push(downIt)
+    if (type !== Up && downIt) items.push(downIt)
 
     let itemIndex = -1
     let currentIt = items.at(itemIndex)!
 
-    if (type === Up && downItem) {
-      downItem.isDown = false
+    if (type === Up && downIt) {
+      downIt.pointable.isDown = false
     }
 
-    if (!downItem?.isDown && hoverIt !== currentIt) {
+    if (!downIt?.pointable.isDown && hoverIt !== currentIt) {
       this.hoverIt = currentIt
 
-      if (hoverItem) {
-        hoverItem.isHovering = false
-        hoverItem.onLeave?.()
+      if (hoverIt) {
+        hoverIt.pointable.isHovering = false
+        hoverIt.pointable.onLeave?.()
       }
 
       if (this.hoverIt) {
@@ -105,7 +102,7 @@ export class Mouse extends Comp {
       case PointerEventType.Up:
         this.downIt = null
         if (time - this.downTime < SINGLE_CLICK_MS) {
-          downItem?.onClick?.()
+          downIt?.pointable.onClick?.()
           return
         }
         break
@@ -122,10 +119,10 @@ export class Mouse extends Comp {
     }
 
     const handler = PointerEventMap[type]
-    let receiver: Pointable | undefined = currentIt.pointable
-    while (receiver && !receiver[handler]) {
-      receiver = items.at(--itemIndex)?.pointable
+    let receiver: Pointable.It | undefined = currentIt
+    while (receiver && !receiver.pointable[handler]) {
+      receiver = items.at(--itemIndex)
     }
-    receiver?.[handler]?.()
+    receiver?.pointable[handler]?.()
   }
 }
