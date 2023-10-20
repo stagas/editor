@@ -5,7 +5,7 @@ import { Comp } from './comp.ts'
 import { Renderable } from './renderable.ts'
 
 export class Brackets extends Comp {
-  get renderable(): $<Renderable> {
+  get renderable() {
     $()
     class BracketsRenderable extends Renderable {
       rect1 = $(new Rect)
