@@ -76,7 +76,7 @@ export class Scrollbar extends Comp {
         const { pointable } = $.of(it)
         const { isHovering } = $.of(pointable)
 
-        const alpha = '6'
+        const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
           (isHovering
