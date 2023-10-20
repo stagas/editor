@@ -14,7 +14,6 @@ export class Clipboard extends Comp {
   }
   get handlePasteHistoric() {
     return this.ctx.history.historic((e: ClipboardEvent) => {
-      console.log('paste')
       const { buffer, selection } = this.ctx
       const textToPaste = e.clipboardData!.getData("text")
 
