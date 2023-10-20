@@ -12,46 +12,45 @@ export class Clipboard extends Comp {
       })
     })
   }
-  get handlePasteHistoric() {
-    return this.ctx.history.historic((e: ClipboardEvent) => {
-      const { buffer, selection } = this.ctx
-      const textToPaste = e.clipboardData!.getData("text")
+  handlePasteHistoric = this.ctx.history.historic((e: ClipboardEvent) => {
+    const { buffer, selection } = this.ctx
+    const textToPaste = e.clipboardData!.getData("text")
 
-      if (selection.hasSelection) selection.deleteSelection.sansHistory()
+    if (selection.hasSelection) selection.deleteSelection.sansHistory()
 
-      const index = buffer.getIndexFromCoords(buffer.lineCol)
+    const index = buffer.getIndexFromCoords(buffer.lineCol)
 
-      // we use $.code here instead of using fn deps, because the
-      // deleteSelection call above is potentially modifying it and we need the fresh one.
-      buffer.code =
-        buffer.code.slice(0, index)
-        + textToPaste
-        + buffer.code.slice(index)
+    // we use $.code here instead of using fn deps, because the
+    // deleteSelection call above is potentially modifying it and we need the fresh one.
+    buffer.code =
+      buffer.code.slice(0, index)
+      + textToPaste
+      + buffer.code.slice(index)
 
-      $.flush()
+    $.flush()
 
-      buffer.getLineColFromIndex(index + textToPaste.length, buffer.lineCol)
-      buffer.coli = buffer.lineCol.col
+    buffer.getLineColFromIndex(index + textToPaste.length, buffer.lineCol)
+    buffer.coli = buffer.lineCol.col
 
-      // this fixes glitching issues while holding ctrl+v
-      let t = performance.now()
-      const waitIdle = () => {
-        requestAnimationFrame(() => {
-          const now = performance.now()
-          if (now - t < 18) {
-            setTimeout(() => {
-              lockPaste = false
-            }, 25)
-          }
-          else {
-            t = now
-            waitIdle()
-          }
-        })
-      }
-      waitIdle()
-    })
-  }
+    // this fixes glitching issues while holding ctrl+v
+    let t = performance.now()
+    const waitIdle = () => {
+      requestAnimationFrame(() => {
+        const now = performance.now()
+        if (now - t < 18) {
+          setTimeout(() => {
+            lockPaste = false
+          }, 25)
+        }
+        else {
+          t = now
+          waitIdle()
+        }
+      })
+    }
+    waitIdle()
+  })
+
   @fn handlePaste = (e: ClipboardEvent) => {
     e.preventDefault()
 
