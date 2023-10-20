@@ -86,6 +86,7 @@ export class Widget extends Comp {
     }
     return $(new WidgetRenderable(this.ctx))
   }
+  get pointable() {}
 }
 
 export namespace Widget {
