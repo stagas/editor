@@ -3,7 +3,7 @@ import { $, fn, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
-import { Pointable as Pointable.It } from './pointable.ts'
+import { Pointable } from './pointable.ts'
 
 const { Wheel, Down, Up, Leave, Move } = PointerEventType
 
@@ -55,7 +55,10 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $()
     const { type, pos } = pointer
-    const { lineCol, downIt: downItem, hoverIt: hoverItem } = this
+    const { lineCol, downIt, hoverIt } = this
+
+    const downItem = downIt?.pointable
+    const hoverItem = hoverIt?.pointable
 
     buffer.getLineColFromPoint(pos, true, lineCol)
 
@@ -67,17 +70,17 @@ export class Mouse extends Comp {
     }
 
     const items = this.findItemsAtPoint(pos)
-    if (type !== Up && downItem) items.push(downItem)
+    if (type !== Up && downItem) items.push(downIt)
 
     let itemIndex = -1
-    let currentItem = items.at(itemIndex)!
+    let currentIt = items.at(itemIndex)!
 
     if (type === Up && downItem) {
       downItem.isDown = false
     }
 
-    if (!downItem?.isDown && hoverItem !== currentItem) {
-      this.hoverIt = currentItem
+    if (!downItem?.isDown && hoverIt !== currentIt) {
+      this.hoverIt = currentIt
 
       if (hoverItem) {
         hoverItem.isHovering = false
@@ -85,9 +88,9 @@ export class Mouse extends Comp {
       }
 
       if (this.hoverIt) {
-        this.hoverIt.isHovering = true
-        world.screen.cursor = this.hoverIt.cursor
-        this.hoverIt.onEnter?.()
+        this.hoverIt.pointable.isHovering = true
+        world.screen.cursor = this.hoverIt.pointable.cursor
+        this.hoverIt.pointable.onEnter?.()
       }
     }
 
@@ -101,9 +104,9 @@ export class Mouse extends Comp {
         }
         this.downTime = time
         this.downPos.set(pos)
-        this.downIt = currentItem
-        this.downIt.isDown = true
-        currentItem.onDown?.(this.downCount)
+        this.downIt = currentIt
+        this.downIt.pointable.isDown = true
+        currentIt.pointable.onDown?.(this.downCount)
         return
 
       case PointerEventType.Up:
@@ -116,7 +119,7 @@ export class Mouse extends Comp {
 
       case PointerEventType.Leave:
         if (this.hoverIt) {
-          this.hoverIt.isHovering = false
+          this.hoverIt.pointable.isHovering = false
           this.hoverIt = null
         }
         pointables.forEach(t =>
@@ -126,7 +129,7 @@ export class Mouse extends Comp {
     }
 
     const handler = PointerEventMap[type]
-    let receiver: Pointable.It | undefined = currentItem
+    let receiver: Pointable.It | undefined = currentIt
     while (receiver && !receiver[handler]) {
       receiver = items.at(--itemIndex)
     }
