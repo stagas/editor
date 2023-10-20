@@ -117,10 +117,8 @@ export class Scrollbar extends Comp {
     const { dim, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
-
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
-
       @fn onDown() {
         it.scrollBegin = scroll[dim]
         it.pointerBegin = pointer.pos[dim]
@@ -138,7 +136,6 @@ export class Scrollbar extends Comp {
           - (pointer.pos[dim] - it.pointerBegin) / co
       }
     }
-
     return $(new ScrollbarPointable(this))
   }
 }

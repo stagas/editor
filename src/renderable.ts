@@ -25,11 +25,11 @@ export class Renderable extends Scene {
   needDirectDraw?: boolean
 
   isVisible = false
-  initCanvas(c: CanvasRenderingContext2D): void {}
-  update(deltaTime: number): number { return 0}
-  updateOne(deltaTime: number): number { return 0}
-  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {}
-  draw(t: number, c: CanvasRenderingContext2D): void {}
+  initCanvas(c: CanvasRenderingContext2D): void { }
+  update(dt: number): number { return 0 }
+  updateOne(dt: number): number { return 0 }
+  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void { }
+  draw(t: number, c: CanvasRenderingContext2D): void { }
 
   @fx trigger_needInit_on_size() {
     const { pr, canvas } = $.of(this)
