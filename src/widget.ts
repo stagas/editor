@@ -1,4 +1,4 @@
-import { $, fx } from 'signal'
+import { $, fn, fx } from 'signal'
 import { Range } from './range.ts'
 import { Pointable as PointableBase } from './pointable.ts'
 import { Renderable as RenderableBase } from './renderable.ts'
@@ -16,6 +16,17 @@ export class Widget extends Comp {
   dimWidthExclusive = false
   height = 25
   offsetX = 0
+  get renderable() {
+    $()
+    const it = this
+    class WidgetRenderable extends Widget.Renderable {
+      @fn draw(t: number, c: CanvasRenderingContext2D) {
+        const { rect } = $.of(this)
+        rect.fill(c, '#666')
+      }
+    }
+    return $(new WidgetRenderable(this))
+  }
 }
 
 export namespace Widget {
@@ -26,8 +37,8 @@ export namespace Widget {
   }
 
   export interface It extends Widget {
-    renderable: Widget.Renderable
-    pointable?: Widget.Pointable
+    renderable: $<Widget.Renderable>
+    pointable?: $<Widget.Pointable>
   }
 
   export class Renderable extends RenderableBase {
