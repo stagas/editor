@@ -87,24 +87,32 @@ export class Editor extends Scene {
   scrollbars = $(new Scrollbars(this))
 
   // widgets
-  sub: Widget.It[] = [
+  sub: Widget[] = [
     $(new Widget(this), {
-      kind: Widget.Kind.Sub,
-      dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
+      }
     }),
     $(new Widget(this), {
-      kind: Widget.Kind.Sub,
-      dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
+      }
     }),
   ]
-  deco: Widget.It[] = [
+  deco: Widget[] = [
     $(new Widget(this), {
-      kind: Widget.Kind.Deco,
-      dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+      widgetable: {
+        kind: Widget.Kind.Deco,
+        dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+      }
     }),
     $(new Widget(this), {
-      kind: Widget.Kind.Deco,
-      dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
+      widgetable: {
+        kind: Widget.Kind.Deco,
+        dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
+      }
     }),
   ]
 
