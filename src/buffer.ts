@@ -180,7 +180,7 @@ export class Buffer {
 
       if (y + h < viewSpan.top || y > viewSpan.bottom) continue
 
-      r = poolArrayGet(fillRects, i++, Rect.create)
+      r = poolArrayGet(fillRects, i++, Rect.create<Rect>)
 
       r.x = x
       r.y = y
