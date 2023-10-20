@@ -1,23 +1,20 @@
 // log.active
 import { $, fn, fx } from 'signal'
-import { Line, Point, Rect } from 'std'
-import { debounce } from 'utils'
-import { Renderable } from './renderable.ts'
-import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
+import { Point, Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Linecol } from './linecol.ts'
 import { Range } from './range.ts'
+import { Renderable } from './renderable.ts'
+import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 
 const tempPoint = $(new Point)
-
-class SortedRange extends Range {
-  forward?: boolean
-}
 
 export class Selection extends Comp {
   get renderable(): $<Renderable> {
     $()
     const it = this
+    const { ctx, selection } = $.of(it)
+    const { buffer, dims, scroll, skin } = $.of(ctx)
     class SelectionRenderable extends Renderable {
       viewRect = $(new Rect)
       isHidden = false
@@ -25,12 +22,11 @@ export class Selection extends Comp {
       bottomPx = $(new Point)
       @fx triggerRender() {
         const { viewRect: vr, topPx, bottomPx } = $.of(this)
-        const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(it)
-        const { buffer, dims } = $.of(ctx)
+        const { selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(it)
         const { charWidth } = $.of(dims)
         $()
-        const top = buffer.getPointFromLineCol(it.sorted.top, topPx)
-        const bottom = buffer.getPointFromLineCol(it.sorted.bottom, bottomPx)
+        const top = buffer.getPointFromLineCol(selection.sorted.top, topPx)
+        const bottom = buffer.getPointFromLineCol(selection.sorted.bottom, bottomPx)
         bottom.y += dims.lineHeight
         vr.top = top.y
         // TODO: top.x since its sorted?
@@ -40,18 +36,15 @@ export class Selection extends Comp {
         this.needRender = true
       }
       @fx triggerRenderOnScroll() {
-        const t = this
-        const { ctx } = $.of(t)
-        const { dims } = $.of(ctx)
         const { scroll: { xy }, charWidth } = $.of(dims)
         $()
         this.needRender = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         const { canvas, rect } = $.of(this)
-        const { sorted, hasSelection, ctx } = $.of(it)
-        const { skin, buffer, dims } = $.of(ctx)
-        const { scroll, charWidth } = $.of(dims)
+        const { selection, hasSelection, ctx } = $.of(it)
+        const { sorted } = selection
+        const { charWidth } = $.of(dims)
 
         if (hasSelection) {
           log('top', sorted.top.text, 'bottom', sorted.bottom.text)
@@ -82,6 +75,7 @@ export class Selection extends Comp {
   }
 
   selection = $(new Range)
+  sorted = this.selection.$.sorted
   start = this.selection.$.start
   end = this.selection.$.end
   text = ''
@@ -89,43 +83,9 @@ export class Selection extends Comp {
   get hasSelection() {
     return !this.start.equals(this.end)
   }
-  _sorted = $(new SortedRange)
-  get sorted() {
-    const { selection, _sorted } = this
-    // Line & forward
-    let top: $<Linecol>
-    let bottom: $<Linecol>
-    let forward = false
-
-    if (selection.start.y === selection.end.y) {
-      if (selection.start.x < selection.end.x) {
-        top = selection.start
-        bottom = selection.end
-        forward = true
-      }
-      else {
-        top = selection.end
-        bottom = selection.start
-      }
-    }
-    else if (selection.start.y < selection.end.y) {
-      top = selection.start
-      bottom = selection.end
-      forward = true
-    }
-    else {
-      top = selection.end
-      bottom = selection.start
-    }
-    $()
-    _sorted.top = top
-    _sorted.bottom = bottom
-    _sorted.forward = forward
-    return _sorted
-  }
   @fn getSelectionIndexes() {
     const { buffer } = $.of(this.ctx)
-    const { top, bottom } = this.sorted
+    const { top, bottom } = this.selection.sorted
     const a = buffer.getIndexFromLineCol(top)
     const b = buffer.getIndexFromLineCol(bottom)
     tempPoint.left = a
@@ -140,7 +100,7 @@ export class Selection extends Comp {
       const { selection } = this
       if (selection.start.equals(selection.end)) return ''
 
-      const { top, bottom } = this.sorted
+      const { top, bottom } = selection.sorted
       const a = buffer.getIndexFromLineCol(top)
       const b = buffer.getIndexFromLineCol(bottom)
       const removing = code.slice(a, b)
@@ -198,7 +158,8 @@ export class Selection extends Comp {
     return false
   }
   @fn selectWordBoundary(p: Linecol, expand?: boolean) {
-    const { ctx, selection, sorted: { forward } } = $.of(this)
+    const { ctx, selection } = $.of(this)
+    const { sorted: { forward } } = selection.sorted
     const { buffer } = $.of(ctx)
     const { code, lines } = $.of(buffer)
     const { line, col } = p
@@ -241,11 +202,12 @@ export class Selection extends Comp {
   }
   // updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
   @fx update_text() {
-    const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
+    const { ctx, selection } = $.of(this)
+    const { start: { xy: sxy }, end: { xy: exy } } = selection
     const { buffer, input } = $.of(ctx)
     const { source, code } = $.of(buffer)
     $()
-    const { top, bottom } = this.sorted
+    const { top, bottom } = selection.sorted
     const a = buffer.getIndexFromLineCol(top)
     const b = buffer.getIndexFromLineCol(bottom)
     this.text = code.slice(a, b)
