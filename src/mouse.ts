@@ -125,6 +125,7 @@ export class Mouse extends Comp {
     while (currentItem && !(handler in currentItem)) {
       currentItem = items[--itemIndex]
     }
+    console.log(handler)
     currentItem?.[handler]?.()
   }
 }
