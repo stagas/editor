@@ -107,6 +107,7 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
+        if (!this.needDraw) return
         const { isHidden } = $.of(it)
         const { charWidth, lineBaseTops } = $.of(dims)
         const { line, col } = linecol
