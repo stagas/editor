@@ -89,10 +89,10 @@ export class Editor extends Scene {
   sub: Widget.It[] = []
   deco: Widget.It[] = [
     $(new SkeletonDeco(this), {
-      renderable: { dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } } }
+      dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
     }),
     $(new SkeletonDeco(this), {
-      renderable: { dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } } }
+      dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
     }),
   ]
 
