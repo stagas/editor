@@ -68,7 +68,6 @@ export class Widgetable {
 }
 
 export class Widget extends Comp {
-
   get widgetable() {
     $()
     const it = this
@@ -78,12 +77,12 @@ export class Widget extends Comp {
     $()
     const it = this
     class WidgetRenderable extends Renderable {
-      // position = Renderable.Position.Scroll
-      // @fn draw(t: number, c: CanvasRenderingContext2D) {
-      //   const { rect } = $.of(this)
-      //   rect.fill(c, '#666')
-      //   this.needDraw = false
-      // }
+      position = Renderable.Position.Scroll
+      @fn draw(t: number, c: CanvasRenderingContext2D) {
+        const { rect } = $.of(this)
+        rect.fill(c, '#666')
+        this.needDraw = false
+      }
     }
     return $(new WidgetRenderable(this.ctx))
   }
