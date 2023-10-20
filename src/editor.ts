@@ -30,8 +30,194 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Scene {
-  get renderable(): $<Renderable> {
-    return $(new Renderable(this))
+  get renderable(){
+    $()
+    const it = this
+    class EditorRenderable extends Renderable {
+      @fx update_hovering() {
+        this.isHovering = it.scenes.some(s => s.renderable.isHovering)
+      }
+      @fx maybe_needDraw() {
+        const { scenes } = $.of(it)
+        let needDraw = false
+        for (const scene of scenes) {
+          needDraw ||= scene.renderable.needRender || scene.renderable.needDraw || false
+        }
+        if (needDraw) {
+          $()
+          this.needDraw = true
+        }
+      }
+      @fx trigger_update_when_scroll() {
+        const { scroll } = $.of(it)
+        const { pos: scrollPos, targetScroll } = $.of(scroll)
+
+        const needUpdate =
+          Math.round(scrollPos.top) !== targetScroll.top ||
+          Math.round(scrollPos.left) !== targetScroll.left
+
+        if (needUpdate) {
+          $()
+          this.needUpdate = true
+        }
+      }
+      @fx trigger_anim_on_needUpdateOrDraw() {
+        if (this.needInit || this.needUpdate || this.needDraw) {
+          if (!this.world.anim.isAnimating) {
+            $()
+            this.world.anim.start()
+          }
+        }
+      }
+      @fn initCanvas() {
+        const { c } = $.of(this.canvas)
+        c.imageSmoothingEnabled = false
+        for (const { renderable: r } of it.scenes) {
+          r.needInit && r.initCanvas(r.canvas.c)
+        }
+        this.needInit = false
+      }
+      @fn update() {
+        const { misc, dims, scroll } = $.of(it)
+        const { isTyping } = $.of(misc)
+        const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
+
+        const dy = (targetScroll.y - scrollPos.y)
+        const dx = (targetScroll.x - scrollPos.x)
+
+        const ady = Math.abs(dy)
+        const adx = Math.abs(dx)
+
+        // TODO: bezier? need to save eventTime to make the normal t
+        // will need a lerped t to smooth out changes
+        const { distance, tension, amount, min } =
+          (adx + ady > 55)
+            || isTyping
+            // || $.isHandlingScrollbar
+            ? animScrollStrategy
+            : AnimScrollStrategy.Slow
+
+        let isScrolling = false
+        if (ady > 1) {
+          scrollPos.y += dy * (clamp(0, 1, (ady / distance)) ** tension * amount + min)
+          isScrolling = true
+        }
+        else if (dy) {
+          scrollPos.y = targetScroll.y
+        }
+
+        if (adx > 1) {
+          scrollPos.x += dx * (clamp(0, 1, (adx / distance)) ** tension * amount + min)
+          isScrolling = true
+        }
+        else if (dx) {
+          scrollPos.x = targetScroll.x
+        }
+
+        misc.wasScrolling = misc.isScrolling
+        misc.isScrolling = isScrolling
+
+        // check if we need further updates
+        // let needUpdate = isScrolling
+
+        if (!isScrolling) {
+          this.needUpdate = false
+          this.needDraw = true
+          return 0 // does not need next frame
+        }
+        else {
+          this.needDirectDraw = true
+          this.needDraw = true
+          return 1 // need next frame
+        }
+        // console.log(this.needUpdate)
+        // return +this.needUpdate
+      }
+      updateOne() { return 0 }
+      render() { }
+      @fn draw(t: number) {
+        const { scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
+        const { rect,canvas} = $.of(this)
+        const { c } = canvas
+        const { Layout, Scroll } = RenderPosition
+
+        rect.fill(c, skin.colors.bg)
+
+        let position: RenderPosition = Layout
+
+        // if (this.needDirectDraw) {
+        for (const { renderable: r } of scenes) {
+          if (r.renderPosition !== position) {
+            if (r.renderPosition === Scroll) {
+              c.save()
+              scroll.pos.translate(c)
+            }
+            else {
+              c.restore()
+            }
+            position = r.renderPosition
+          }
+
+          const viewRect = r.viewRect ?? r.rect
+
+          if (position === Scroll) {
+            if (
+              viewRect.bottom < viewSpan.top
+              || viewRect.top > viewSpan.bottom
+            ) continue
+
+            // if (scene.needRender) {
+            r.needInit && r.initCanvas(r.canvas.c)
+            r.needRender && r.render(t, r.canvas.c, true)
+            r.draw(t, c)
+            // scene.render(t, scene.canvas.c, true)
+            // scene.draw(t, c)
+            // }
+            // else {
+            //   scene.draw(t, c)
+            // }
+          }
+          else if (position === Layout) {
+            if (this.needDirectDraw) {
+              c.save()
+              r.initCanvas(c)
+              r.render(t, c, false)
+              c.restore()
+              // when we finish the direct layout draws,
+              // we need the items to also render their own canvas.
+              r.needInit = r.needRender = true
+            }
+            else {
+              r.needInit && r.initCanvas(r.canvas.c)
+              r.needRender && r.render(t, r.canvas.c, true)
+              r.draw(t, c)
+            }
+          }
+        }
+
+        if (position === Scroll) {
+          c.restore()
+        }
+
+        this.needDirectDraw
+          = this.needDraw
+          = false
+        // }
+        // else {
+        //   for (const scene of scenes) {
+        //     scene.needInit && scene.initCanvas(scene.canvas.c)
+        //     scene.needRender && scene.render(t, scene.canvas.c, true)
+        //     scene.draw(t, c)
+        //   }
+        // }
+
+        // this.needDraw = false
+        // if (this.needUpdate) {
+        //   requestAnimationFrame(this.update)
+        // }
+      }
+    }
+    return $(new EditorRenderable(this))
   }
   misc = $(new Misc)
   skin = {
@@ -83,187 +269,5 @@ export class Editor extends Scene {
       t.text,
       t.scrollbars,
     ]
-  }
-  @fx update_hovering() {
-    this.renderable.isHovering = this.scenes.some(s => s.renderable.isHovering)
-  }
-  @fx maybe_needDraw() {
-    const { scenes } = $.of(this)
-    let needDraw = false
-    for (const scene of scenes) {
-      needDraw ||= scene.renderable.needRender || scene.renderable.needDraw || false
-    }
-    if (needDraw) {
-      $()
-      this.renderable.needDraw = true
-    }
-  }
-  @fx trigger_update_when_scroll() {
-    const { scroll } = $.of(this)
-    const { pos: scrollPos, targetScroll } = $.of(scroll)
-
-    const needUpdate =
-      Math.round(scrollPos.top) !== targetScroll.top ||
-      Math.round(scrollPos.left) !== targetScroll.left
-
-    if (needUpdate) {
-      $()
-      this.renderable.needUpdate = true
-    }
-  }
-  @fx trigger_anim_on_needUpdateOrDraw() {
-    if (this.renderable.needInit || this.renderable.needUpdate || this.renderable.needDraw) {
-      if (!this.world.anim.isAnimating) {
-        $()
-        this.world.anim.start()
-      }
-    }
-  }
-  @fn initCanvas() {
-    const { c } = $.of(this.renderable.canvas)
-    c.imageSmoothingEnabled = false
-    for (const { renderable: r } of this.scenes) {
-      r.needInit && r.initCanvas(r.canvas.c)
-    }
-    this.renderable.needInit = false
-  }
-  @fn update() {
-    const { misc, dims, scroll } = $.of(this)
-    const { isTyping } = $.of(misc)
-    const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
-
-    const dy = (targetScroll.y - scrollPos.y)
-    const dx = (targetScroll.x - scrollPos.x)
-
-    const ady = Math.abs(dy)
-    const adx = Math.abs(dx)
-
-    // TODO: bezier? need to save eventTime to make the normal t
-    // will need a lerped t to smooth out changes
-    const { distance, tension, amount, min } =
-      (adx + ady > 55)
-        || isTyping
-        // || $.isHandlingScrollbar
-        ? animScrollStrategy
-        : AnimScrollStrategy.Slow
-
-    let isScrolling = false
-    if (ady > 1) {
-      scrollPos.y += dy * (clamp(0, 1, (ady / distance)) ** tension * amount + min)
-      isScrolling = true
-    }
-    else if (dy) {
-      scrollPos.y = targetScroll.y
-    }
-
-    if (adx > 1) {
-      scrollPos.x += dx * (clamp(0, 1, (adx / distance)) ** tension * amount + min)
-      isScrolling = true
-    }
-    else if (dx) {
-      scrollPos.x = targetScroll.x
-    }
-
-    misc.wasScrolling = misc.isScrolling
-    misc.isScrolling = isScrolling
-
-    // check if we need further updates
-    // let needUpdate = isScrolling
-
-    if (!isScrolling) {
-      this.renderable.needUpdate = false
-      this.renderable.needDraw = true
-      return 0 // does not need next frame
-    }
-    else {
-      this.renderable.needDirectDraw = true
-      this.renderable.needDraw = true
-      return 1 // need next frame
-    }
-    // console.log(this.needUpdate)
-    // return +this.needUpdate
-  }
-  updateOne() { return 0 }
-  render() { }
-  @fn draw(t: number) {
-    const { scenes, renderable, scroll, skin, dims: { viewSpan } } = $.of(this)
-    const { rect,canvas} = $.of(renderable)
-    const { c } = canvas
-    const { Layout, Scroll } = RenderPosition
-
-    rect.fill(c, skin.colors.bg)
-
-    let position: RenderPosition = Layout
-
-    // if (this.needDirectDraw) {
-    for (const { renderable: r } of scenes) {
-      if (r.renderPosition !== position) {
-        if (r.renderPosition === Scroll) {
-          c.save()
-          scroll.pos.translate(c)
-        }
-        else {
-          c.restore()
-        }
-        position = r.renderPosition
-      }
-
-      const viewRect = r.viewRect ?? r.rect
-
-      if (position === Scroll) {
-        if (
-          viewRect.bottom < viewSpan.top
-          || viewRect.top > viewSpan.bottom
-        ) continue
-
-        // if (scene.needRender) {
-        r.needInit && r.initCanvas(r.canvas.c)
-        r.needRender && r.render(t, r.canvas.c, true)
-        r.draw(t, c)
-        // scene.render(t, scene.canvas.c, true)
-        // scene.draw(t, c)
-        // }
-        // else {
-        //   scene.draw(t, c)
-        // }
-      }
-      else if (position === Layout) {
-        if (this.renderable.needDirectDraw) {
-          c.save()
-          r.initCanvas(c)
-          r.render(t, c, false)
-          c.restore()
-          // when we finish the direct layout draws,
-          // we need the items to also render their own canvas.
-          r.needInit = r.needRender = true
-        }
-        else {
-          r.needInit && r.initCanvas(r.canvas.c)
-          r.needRender && r.render(t, r.canvas.c, true)
-          r.draw(t, c)
-        }
-      }
-    }
-
-    if (position === Scroll) {
-      c.restore()
-    }
-
-    this.renderable.needDirectDraw
-      = this.renderable.needDraw
-      = false
-    // }
-    // else {
-    //   for (const scene of scenes) {
-    //     scene.needInit && scene.initCanvas(scene.canvas.c)
-    //     scene.needRender && scene.render(t, scene.canvas.c, true)
-    //     scene.draw(t, c)
-    //   }
-    // }
-
-    // this.needDraw = false
-    // if (this.needUpdate) {
-    //   requestAnimationFrame(this.update)
-    // }
   }
 }

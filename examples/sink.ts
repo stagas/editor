@@ -41,8 +41,8 @@ $.batch(() => {
   const world = $(new World)
   const editor = $(new Editor(world))
   $.flush()
-  world.canvas = editor.canvas
-  editor.canvas.appendTo(dom.body)
+  world.canvas = editor.renderable.canvas
+  editor.renderable.canvas.appendTo(dom.body)
   const source = $(new Source(tokenize))
   source.code = code //'[hello world]'
 
@@ -51,5 +51,5 @@ $.batch(() => {
   editor.selection.start.set({ x: 3, y: 0 })
   editor.selection.end.set({ x: 7, y: 0 })
 
-  world.anim.items.push(editor)
+  world.anim.items.push(editor.renderable)
 })
