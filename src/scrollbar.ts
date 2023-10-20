@@ -47,6 +47,7 @@ export class Scrollbar extends Render {
         const side = sides[dim]
         const co = rect[side] / innerSize[side]
 
+        scroll.animScrollStrategy = AnimScrollStrategy.Fast
         scroll.targetScroll[<Dim>dim] =
           this.scrollBegin
           - (p.pos[dim] - this.pointerBegin) / co
@@ -54,7 +55,6 @@ export class Scrollbar extends Render {
         $.flush()
 
         scroll.pos[<Dim>dim] = scroll.targetScroll[<Dim>dim]
-        scroll.animScrollStrategy = AnimScrollStrategy.Fast
 
         // ctx.needUpdate = true
       })
