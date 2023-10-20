@@ -5,25 +5,25 @@ import { Comp } from './comp.ts'
 import { Renderable } from './renderable.ts'
 
 export class Brackets extends Comp {
+  r1 = $(new Rect)
+  r2 = $(new Rect)
   get renderable() {
     $()
+    const it = this
+    const { ctx, r1, r2 } = $.of(this)
+    const { buffer, dims } = $.of(ctx)
     class BracketsRenderable extends Renderable {
-      rect1 = $(new Rect)
-      rect2 = $(new Rect)
       viewRect = $(new Rect)
-      isHidden = false
       @fx update_rect() {
-        const { ctx, pr, rect, rect1, rect2 } = $.of(this)
-        const { dims } = $.of(ctx)
+        const { pr, rect } = $.of(this)
         const { lineHeight, charWidth } = $.of(dims)
         $()
-        rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
-        rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
+        rect.w = r1.w = r2.w = Math.floor(charWidth + 6)
+        rect.h = r1.h = r2.h = Math.floor(lineHeight + 6)
         this.needRender = true
       }
       @fx update_brackets() {
-        const { ctx, rect1: r1, rect2: r2, viewRect } = $.of(this)
-        const { buffer, dims } = $.of(ctx)
+        const { viewRect } = $.of(this)
         const { lineBaseTops, charWidth } = $.of(dims)
         const {
           hasBrackets,
@@ -50,30 +50,31 @@ export class Brackets extends Comp {
       }
       @fn initCanvas(c: CanvasRenderingContext2D) {
         c.translate(.5, .5)
+        c.strokeStyle = '#f2a'
+        c.lineWidth = 1
+
         this.needInit = false
         this.needRender = true
       }
       @fn render() {
-        const { canvas, rect1, rect } = $.of(this)
+        const { canvas, rect } = $.of(this)
         const { c } = $.of(canvas)
-        c.strokeStyle = '#f2a'
-        c.lineWidth = 1
 
         rect.clear(c)
         c.strokeRect(
           3,
           4,
-          rect1.w - 6,
-          rect1.h - 6
+          r1.w - 6,
+          r1.h - 6
         )
         this.needRender = false
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect1, rect2, isHidden } = $.of(this)
+        const { pr, canvas, isHidden } = $.of(this)
         if (!isHidden) {
-          rect1.drawImage(canvas.el, c, pr, true)
-          rect2.drawImage(canvas.el, c, pr, true)
+          r1.drawImage(canvas.el, c, pr, true)
+          r2.drawImage(canvas.el, c, pr, true)
         }
         this.needDraw = false
       }
