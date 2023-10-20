@@ -68,6 +68,7 @@ export class Widgetable {
 }
 
 export class Widget extends Comp {
+
   get widgetable() {
     $()
     const it = this
