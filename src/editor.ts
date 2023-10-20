@@ -80,7 +80,7 @@ export class Editor extends Scene {
     renderable: { position: Renderable.Position.Scroll }
   })
   caret = $(new Caret(this), {
-    blink: false,
+    blink: true,
     renderable: { position: Renderable.Position.Scroll }
   })
   scrollbars = $(new Scrollbars(this))
