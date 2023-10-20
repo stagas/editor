@@ -51,10 +51,10 @@ export class Scrollbar extends Comp {
   get renderable() {
     $()
     const it = this
-    const { pointable } = $.of(it)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
         const { rect } = $.of(this)
+        const { pointable } = $.of(it)
         const {isHovering} = $.of(pointable)
         const { hasSize } = $.when(rect)
         const { w, h } = $.of(rect)
@@ -70,6 +70,7 @@ export class Scrollbar extends Comp {
       }
       @fn render() {
         const { canvas, pr, rect, ctx } = $.of(this)
+        const { pointable } = $.of(it)
         const {isHovering} = $.of(pointable)
         const { c } = $.of(canvas)
         const { skin } = $.of(ctx)
