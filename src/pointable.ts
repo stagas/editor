@@ -4,7 +4,10 @@ import { Render } from './render.ts'
 export class Pointable {
   constructor(public it: Render) {}
   cursor= 'default'
-  getItemAtPoint(p: Point): Pointable | false | undefined { return {} as any }
+  hitArea?: { isPointWithin(p: Point): boolean }
+  getItemAtPoint(p: Point): Pointable | false | undefined {
+    return this.hitArea?.isPointWithin(p) && this
+  }
   onWheel?(): void
   onDown?(clicks: number): void
   onClick?(): void
