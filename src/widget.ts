@@ -88,7 +88,7 @@ export class Widget extends Comp {
     return $(new WidgetRenderable(this.ctx))
   }
   get pointable() {
-    return $(new Pointable)
+    return $(new Pointable(this.ctx))
   }
 }
 
