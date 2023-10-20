@@ -99,7 +99,7 @@ export class Editor extends Render {
       Math.round(scrollPos.top) !== targetScroll.top ||
       Math.round(scrollPos.left) !== targetScroll.left
 
-    $.untrack()
+    $._()
 
     if (needUpdate) {
       this.needUpdate = true
@@ -108,7 +108,7 @@ export class Editor extends Render {
   @fx trigger_anim_on_needUpdateOrDraw() {
     if (this.needInit || this.needUpdate || this.needDraw) {
       if (!this.world.anim.isAnimating) {
-        $.untrack()
+        $._()
         this.world.anim.start()
       }
     }
