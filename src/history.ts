@@ -75,7 +75,7 @@ export class History extends Comp {
 
   historic<T extends (...args: any[]) => any>(fn: T): T & { sansHistory: T } {
     const self = this
-    return $.fn(Object.assign(function (this: any, ...args: any[]) {
+    return Object.assign($.fn(function (this: any, ...args: any[]) {
       try {
         self.saveHistory()
         return fn.apply(this, args)
@@ -87,9 +87,9 @@ export class History extends Comp {
       finally {
         self.saveHistory()
       }
-    } as T, {
+    }) as T, {
       sansHistory: fn
-    }))
+    })
   }
 
   @fn applySnap(snap: Snapshot) {
