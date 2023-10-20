@@ -10,7 +10,7 @@ import { Buffer } from './buffer.ts'
 import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
-import { Point, Scene, World } from 'std'
+import { Scene } from 'std'
 import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
@@ -30,6 +30,54 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Scene {
+  misc = $(new Misc)
+  skin = {
+    colors: {
+      bg: '#111',
+      bgBright015: '#113',
+      bgBright1: '#337',
+      bgBright2: '#558',
+      bgBright25: '#669',
+    },
+    fonts: {
+      mono: 'monospace'
+    }
+  }
+  colors: Colors = {}
+  history = $(new History(this))
+  buffer = $(new Buffer(this, { Type: {} }))
+  scroll = $(new Scroll(this))
+  dims = $(new Dims(this))
+  input = $(new Input(this))
+  clipboard = $(new Clipboard(this))
+
+  // renderables
+  selection = $(new Selection(this))
+  text = $(new Text(this))
+  brackets = $(new Brackets(this), { renderable: { place: RenderPosition.Scroll } })
+  caret = $(new Caret(this), { blink: false, renderable: { place: RenderPosition.Scroll } })
+  scrollbars = $(new Scrollbars(this))
+
+  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
+  deco: WidgetLike[] = []
+
+  @nu get scenes(): Renderable.It[] {
+    const t = $.of(this)
+    return [
+      t.selection,
+      t.text,
+      t.brackets,
+      t.caret,
+      t.scrollbars,
+    ]
+  }
+  @nu get pointerTargets(): (Renderable.It & Pointable.It)[] {
+    const t = $.of(this)
+    return [
+      t.text,
+      t.scrollbars,
+    ]
+  }
   get renderable() {
     $()
     const it = this
@@ -149,15 +197,15 @@ export class Editor extends Scene {
 
         // if (this.needDirectDraw) {
         for (const { renderable: r } of scenes) {
-          if (r.renderPosition !== position) {
-            if (r.renderPosition === Scroll) {
+          if (r.place !== position) {
+            if (r.place === Scroll) {
               c.save()
               scroll.pos.translate(c)
             }
             else {
               c.restore()
             }
-            position = r.renderPosition
+            position = r.place
           }
 
           const viewRect = r.viewRect ?? r.rect
@@ -204,69 +252,8 @@ export class Editor extends Scene {
         this.needDirectDraw
           = this.needDraw
           = false
-        // }
-        // else {
-        //   for (const scene of scenes) {
-        //     scene.needInit && scene.initCanvas(scene.canvas.c)
-        //     scene.needRender && scene.render(t, scene.canvas.c, true)
-        //     scene.draw(t, c)
-        //   }
-        // }
-
-        // this.needDraw = false
-        // if (this.needUpdate) {
-        //   requestAnimationFrame(this.update)
-        // }
       }
     }
     return $(new EditorRenderable(this))
-  }
-  misc = $(new Misc)
-  skin = {
-    colors: {
-      bg: '#111',
-      bgBright015: '#113',
-      bgBright1: '#337',
-      bgBright2: '#558',
-      bgBright25: '#669',
-    },
-    fonts: {
-      mono: 'monospace'
-    }
-  }
-  colors: Colors = {}
-  history = $(new History(this))
-  buffer = $(new Buffer(this, { Type: {} }))
-  scroll = $(new Scroll(this))
-  dims = $(new Dims(this))
-  input = $(new Input(this))
-  clipboard = $(new Clipboard(this))
-
-  // renderables
-  selection = $(new Selection(this))
-  text = $(new Text(this))
-  brackets = $(new Brackets(this), { renderable: { renderPosition: RenderPosition.Scroll } })
-  caret = $(new Caret(this), { blink: false, renderable: { renderPosition: RenderPosition.Scroll } })
-  scrollbars = $(new Scrollbars(this))
-
-  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
-  deco: WidgetLike[] = []
-
-  @nu get scenes(): Renderable.It[] {
-    const t = $.of(this)
-    return [
-      t.selection,
-      t.text,
-      t.brackets,
-      t.caret,
-      t.scrollbars,
-    ]
-  }
-  @nu get pointerTargets(): (Renderable.It & Pointable.It)[] {
-    const t = $.of(this)
-    return [
-      t.text,
-      t.scrollbars,
-    ]
   }
 }
