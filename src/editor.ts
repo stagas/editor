@@ -42,7 +42,10 @@ export class Editor extends Render {
       bgBright1: '#337',
       bgBright2: '#558',
       bgBright25: '#669',
-    }, fonts: { mono: 'monospace' }
+    },
+    fonts: {
+      mono: 'monospace'
+    }
   }
   colors: Colors = {}
   history = $(new History(this))
@@ -52,6 +55,7 @@ export class Editor extends Render {
   input = $(new Input(this))
   clipboard = $(new Clipboard(this))
 
+  // renderables
   selection = $(new Selection(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this), { renderPosition: RenderPosition.Scroll })
