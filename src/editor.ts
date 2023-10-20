@@ -40,8 +40,8 @@ export class Editor extends Render {
       bg: '#111',
       bgBright015: '#113',
       bgBright1: '#337',
-      bgBright2: '#444',
-      bgBright25: '#558',
+      bgBright2: '#558',
+      bgBright25: '#669',
     }, fonts: { mono: 'monospace' }
   }
   colors: Colors = {}
