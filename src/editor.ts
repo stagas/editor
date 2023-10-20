@@ -128,13 +128,13 @@ export class Editor extends Scene {
         console.log('MAYBE')
         const { renderables } = $.of(it)
         console.log(renderables)
-        let needDraw = false
+        let needSelfDraw = false
         for (const { renderable: r } of renderables) {
           const { needRender, needDraw } = r
-          needDraw ||= needRender || needDraw || false
+          needSelfDraw ||= needRender || needDraw || false
         }
-        console.log('WHAT', needDraw)
-        if (needDraw) {
+        console.log('WHAT', needSelfDraw)
+        if (needSelfDraw) {
           $()
           this.needDraw = true
         }
