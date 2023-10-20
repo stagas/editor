@@ -21,14 +21,14 @@ const sidesOpp = {
   y: 'w',
 } as const
 
-type Dim = 'x' | 'y'
+type Axis = 'x' | 'y'
 
 export class Scrollbar extends Comp {
-  dim?: Dim
+  axis?: Axis
   scrollBegin = 0
   pointerBegin = 0
   @fx update_scrollbar() {
-    const { renderable, dim, ctx } = $.of(this)
+    const { renderable, axis: dim, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { scrollSize, targetScroll } = $.of(scroll)
     const { hasSize } = $.when(scrollSize)
@@ -115,7 +115,7 @@ export class Scrollbar extends Comp {
   get pointable(): $<Pointable> {
     $()
     const it = this
-    const { dim, ctx } = $.of(it)
+    const { axis: dim, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
     class ScrollbarPointable extends Pointable {
@@ -132,7 +132,7 @@ export class Scrollbar extends Comp {
 
           scroll.animSettings = Scroll.AnimSettings.Fast
 
-          scroll.targetScroll[<Dim>dim] =
+          scroll.targetScroll[<Axis>dim] =
             it.scrollBegin
             - (pointer.pos[dim] - it.pointerBegin) / co
         }

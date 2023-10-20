@@ -7,8 +7,8 @@ import { Renderable } from './renderable.ts'
 import { Scrollbar } from './scrollbar.ts'
 
 export class Scrollbars extends Comp {
-  scrollbarY = $(new Scrollbar(this.ctx), { dim: 'y' })
-  scrollbarX = $(new Scrollbar(this.ctx), { dim: 'x' })
+  scrollbarY = $(new Scrollbar(this.ctx), { axis: 'y' })
+  scrollbarX = $(new Scrollbar(this.ctx), { axis: 'x' })
   items = [this.scrollbarY, this.scrollbarX]
 
   get renderable(): $<Renderable> {
