@@ -51,9 +51,11 @@ export class Scrollbar extends Comp {
   get renderable() {
     $()
     const it = this
+    const { pointable } = $.of(it)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
-        const { rect, isHovering } = $.of(this)
+        const { rect } = $.of(this)
+        const {isHovering} = $.of(pointable)
         const { hasSize } = $.when(rect)
         const { w, h } = $.of(rect)
         $()
@@ -67,7 +69,8 @@ export class Scrollbar extends Comp {
         this.needDraw = true
       }
       @fn render() {
-        const { canvas, pr, rect, isHovering, ctx } = $.of(this)
+        const { canvas, pr, rect, ctx } = $.of(this)
+        const {isHovering} = $.of(pointable)
         const { c } = $.of(canvas)
         const { skin } = $.of(ctx)
         const alpha = '6'
@@ -112,10 +115,10 @@ export class Scrollbar extends Comp {
   }
   get pointable(): $<Pointable> {
     $()
-    const { dim, ctx } = $.of(this)
+    const it = this
+    const { dim, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
-    const it = this
 
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
@@ -125,7 +128,7 @@ export class Scrollbar extends Comp {
         it.pointerBegin = pointer.pos[dim]
       }
       @fn onMove() {
-        if (!it.renderable.isDown) return
+        if (!this.isDown) return
 
         const side = sides[dim]
         const co = rect[side] / innerSize[side]
