@@ -1,7 +1,7 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
 import { Scene } from 'std'
-import { clamp } from 'utils'
+import { clamp, luminate as lum, saturate as sat } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -20,30 +20,52 @@ import { WidgetLike } from './widgets.ts'
 
 interface PointerItem { }
 
-interface Skin {
-  colors: Record<string, string>
-  fonts: {
-    mono: string
+class Skin {
+  get colors() {
+    const fg = '#aaa' //theme.brightWhite
+    const bg = '#111' //theme.background
+    const colors = {
+      fg,
+      bg,
+      bgBright015: lum(bg, 0.015),
+      bgBright025: lum(bg, 0.025),
+      bgBright05: lum(bg, 0.05),
+      bgBright1: lum(bg, 0.1),
+      bgBright15: lum(bg, 0.15),
+      bgBright2: lum(bg, 0.2),
+      bgBright25: lum(bg, 0.25),
+      bgBright3: lum(bg, 0.3),
+      bgBright35: lum(bg, 0.35),
+      sliderFill: '#f61',
+      sliderActiveFill: sat(lum(bg, 0.5), 0.6),
+      sliderActiveStroke: sat(lum(bg, 0.15), -0.05),
+      sliderActiveHover: sat(lum(bg, 0.45), -0.25),
+
+      // black: '#080808',
+      // white: theme.white,
+      // grey: luminate(saturate(theme.white, -1), -0.39),
+      // dark: luminate(saturate(theme.white, -1), -0.5),
+      // ...theme
+    }
+
+    return colors
+    // {
+    //   bg: '#111',
+    //   bgBright015: '#113',
+    //   bgBright1: '#337',
+    //   bgBright2: '#558',
+    //   bgBright25: '#669',
+    // }
+  }
+  fonts = {
+    sans: '"Jost", sans-serif',
+    mono: '"JetBrains Mono", monospace',
   }
 }
 
-type Colors = Record<string, string>
-
 export class Editor extends Scene {
   misc = $(new Misc)
-  skin = {
-    colors: {
-      bg: '#111',
-      bgBright015: '#113',
-      bgBright1: '#337',
-      bgBright2: '#558',
-      bgBright25: '#669',
-    },
-    fonts: {
-      mono: 'monospace'
-    }
-  }
-  colors: Colors = {}
+  skin = $(new Skin)
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
   scroll = $(new Scroll(this))
@@ -103,10 +125,10 @@ export class Editor extends Scene {
         this.canvas.fullWindow = true
       }
       @fx maybe_needDraw() {
-        const { renderables: scenes } = $.of(it)
+        const { renderables } = $.of(it)
         let needDraw = false
-        for (const scene of scenes) {
-          needDraw ||= scene.renderable.needRender || scene.renderable.needDraw || false
+        for (const { renderable: r } of renderables) {
+          needDraw ||= r.needRender || r.needDraw || false
         }
         if (needDraw) {
           $()
@@ -200,7 +222,7 @@ export class Editor extends Scene {
         // return +this.needUpdate
       }
       @fn draw(t: number) {
-        const { renderables: scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
+        const { renderables, scroll, skin, dims: { viewSpan } } = $.of(it)
         const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = Renderable.Position
@@ -209,8 +231,7 @@ export class Editor extends Scene {
 
         let position: Renderable.Position = Layout
 
-        // if (this.needDirectDraw) {
-        for (const { renderable: r } of scenes) {
+        for (const { renderable: r } of renderables) {
           if (r.position !== position) {
             if (r.position === Scroll) {
               c.save()
@@ -230,16 +251,9 @@ export class Editor extends Scene {
               || viewRect.top > viewSpan.bottom
             ) continue
 
-            // if (scene.needRender) {
             r.needInit && r.initCanvas(r.canvas.c)
             r.needRender && r.render(t, r.canvas.c, true)
             r.draw(t, c)
-            // scene.render(t, scene.canvas.c, true)
-            // scene.draw(t, c)
-            // }
-            // else {
-            //   scene.draw(t, c)
-            // }
           }
           else if (position === Layout) {
             if (this.needDirectDraw) {
