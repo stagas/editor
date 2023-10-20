@@ -473,9 +473,11 @@ export class Keyboard extends Comp {
                 if (match) {
                   if (code[match[0] + 1] === ';') {
                     b.code = code.slice(0, match[0] + 1) + code.slice(match[0] + 2)
+                    b.coli--
                   }
                   else {
                     b.code = code.slice(0, match[0] + 1) + ';' + code.slice(match[0] + 1)
+                    b.coli++
                   }
                 }
                 $.flush()
