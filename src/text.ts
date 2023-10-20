@@ -121,7 +121,7 @@ export class Text extends Comp {
 
     class TextPointable extends Pointable {
       cursor = 'text'
-      hitArea = it.renderable.viewRect
+      hitArea = it.renderable.rect
       @fn onClick() {
         textarea.focus()
       }
