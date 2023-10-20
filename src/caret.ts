@@ -6,19 +6,19 @@ import { Renderable } from './renderable.ts'
 
 export class Caret extends Comp {
   linecol = this.ctx.buffer.$.linecol
-  blink?= false
+  blink = false
   ind = $(new Indicator(this.ctx))
   isBlinking = false
   isHidden = false
-  hideWhenTyping?= false
-  hideWhenAway?= false
-  color1?= '#727'
-  color2?= '#555'
-  color1Focused?= '#f0f'
-  color2Focused?= '#fff'
-  caretColor?= '#fff'
+  hideWhenTyping = false
+  hideWhenAway = false
+  color1 = '#727'
+  color2 = '#555'
+  color1Focused = '#f0f'
+  color2Focused = '#fff'
+  caretColor = '#fff'
 
-  get renderable(): $<Renderable> {
+  get renderable() {
     $()
     const it = this
     const { ctx, linecol, ind } = $.of(it)
