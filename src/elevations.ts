@@ -184,7 +184,7 @@ export class Elevations extends Comp {
         const { canvas, rect, pr } = $.of(this)
         rect.drawImage(canvas.el, c, pr, true)
         this.needDraw = false
-        console.log('draw?')
+        console.log(it.elevations)
       }
 
     }
