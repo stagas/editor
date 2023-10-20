@@ -115,6 +115,6 @@ export class Mouse extends Comp {
     }
 
     currentItem[PointerEventMap[type]]?.()
-    debugger
+    // debugger
   }
 }
