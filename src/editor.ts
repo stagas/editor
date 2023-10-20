@@ -152,11 +152,13 @@ export class Editor extends Scene {
         }
       }
       @fx trigger_anim_on_needUpdateOrDraw() {
-        if (this.needInit || this.needUpdate || this.needDraw) {
-          // if (!this.world.anim.isAnimating) {
+        const { world, needInit, needUpdate, needDraw } = this
+
+        if (needInit || needUpdate || needDraw) {
+          if (!world.anim.isAnimating) {
             $()
-            this.world.anim.start()
-          // }
+            world.anim.start()
+          }
         }
       }
       @fn initCanvas() {
