@@ -167,9 +167,9 @@ export class Elevations extends Comp {
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         const { rect } = $.of(this)
         const { isTyping } = $.of(misc)
-        if (clear) {
-          rect.clear(c)
-        }
+        // if (clear) {
+        //   rect.clear(c)
+        // }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
