@@ -99,7 +99,11 @@ export class Elevations extends Comp {
             if (item) {
               const start = item
               const end = t
-              const el = poolArrayGet(elevationsPool, elevations.length, () => $(new Elevation))
+              const el = poolArrayGet(
+                elevationsPool,
+                elevations.length,
+                Elevation.create
+                )
               el.start.col = start.col
               el.start.line = start.line
               el.end.col = end.col + 1
