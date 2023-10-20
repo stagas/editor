@@ -73,19 +73,19 @@ export class Mouse extends Comp {
     let currentItem = items.at(itemIndex)!
 
     if (type === Up && downItem) {
-      downItem.it.isDown = false
+      downItem.it.renderable.isDown = false
     }
 
-    if (!downItem?.it.isDown && hoverItem !== currentItem) {
+    if (!downItem?.it.renderable.isDown && hoverItem !== currentItem) {
       this.hoverItem = currentItem
 
       if (hoverItem) {
-        hoverItem.it.isHovering = false
+        hoverItem.it.renderable.isHovering = false
         hoverItem.onLeave?.()
       }
 
       if (this.hoverItem) {
-        this.hoverItem.it.isHovering = true
+        this.hoverItem.it.renderable.isHovering = true
         world.screen.cursor = this.hoverItem.cursor
         this.hoverItem.onEnter?.()
       }
@@ -102,7 +102,7 @@ export class Mouse extends Comp {
         this.downTime = time
         this.downPos.set(pos)
         this.downItem = currentItem
-        this.downItem.it.isDown = true
+        this.downItem.it.renderable.isDown = true
         currentItem.onDown?.(this.downCount)
         return
 
@@ -115,9 +115,9 @@ export class Mouse extends Comp {
         break
 
       case PointerEventType.Leave:
-        if (this.hoverItem) this.hoverItem.it.isHovering = false
+        if (this.hoverItem) this.hoverItem.it.renderable.isHovering = false
         pointerTargets.forEach(t =>
-          t.isHovering = false
+          t.renderable.isHovering = false
         )
         break
     }
