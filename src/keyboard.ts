@@ -468,7 +468,7 @@ export class Keyboard extends Comp {
                 b.col = b.coli
               }
               else {
-                const index = b.getIndexFromLineCol({ x: b.col, y: b.line })
+                const index = b.getIndexFromLineCol(b)
                 const match = findMatchingBrackets(code, index)
                 if (match) {
                   if (code[match[0] + 1] === ';') {

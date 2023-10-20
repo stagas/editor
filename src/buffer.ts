@@ -48,19 +48,17 @@ export class Buffer {
     // $.code = lines.join('\n')
   }
 
-  getIndexFromLineCol(
-    { x, y }: PointLike): number {
+  getIndexFromLineCol({ line, col }: Point): number {
     const { code } = this
     const lines = code
       .split('\n')
-      .slice(0, y)
-    return x
+      .slice(0, line)
+    return col
       + lines.join('\n').length
       // add the missing \n to the length when line >0
       + (lines.length ? 1 : 0)
   }
-  @fn getLineColFromIndex(
-    index: number, tp: Point = tempPoint): Point {
+  @fn getLineColFromIndex(index: number, tp: Point = tempPoint): Point {
     const { code } = this
     const slice = code.slice(0, index)
     const lines = slice.split('\n')
