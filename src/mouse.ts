@@ -25,18 +25,20 @@ export class Mouse extends Comp {
   hoverItem?: Pointable | null
   downItem?: Pointable | null | undefined
 
-  @fn findItemByPoint(p: Point): Pointable {
+  @fn findItemsAtPoint(p: Point): Pointable[] {
     const { ctx } = $.of(this)
     const { pointerTargets, text } = $.of(ctx)
+    const items: Pointable[] = []
 
     let item: Pointable | false | undefined
     for (const target of pointerTargets) {
       if (item = target.pointable.getItemAtPoint(p)) {
-        return item
+        items.push(item)
       }
     }
 
-    return text.pointable
+    if (!items.length) items.push(text.pointable)
+    return items
   }
 
   @fx handle_pointer_event() {
@@ -63,9 +65,11 @@ export class Mouse extends Comp {
       return
     }
 
-    let currentItem =
-      (type !== Up && downItem)
-      || (this.findItemByPoint(pos))
+    const items = this.findItemsAtPoint(pos)
+    if (type !== Up && downItem) items.push(downItem)
+
+    let itemIndex = -1
+    let currentItem = items.at(itemIndex)!
 
     if (type === Up && downItem) {
       downItem.it.isDown = false
@@ -117,7 +121,10 @@ export class Mouse extends Comp {
         break
     }
 
-    currentItem[PointerEventMap[type]]?.()
-    // debugger
+    const handler = PointerEventMap[type]
+    while (currentItem && !(handler in currentItem)) {
+      currentItem = items[--itemIndex]
+    }
+    currentItem?.[handler]?.()
   }
 }
