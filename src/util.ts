@@ -9,20 +9,20 @@ export const Open = {
   '(': ')',
   '[': ']',
   '{': '}',
-} as any
+} as const
 
 export const Close = {
   ')': '(',
   ']': '[',
   '}': '{',
-} as any
+} as const
 
 export const openers = new Set(Object.keys(Open))
 export const closers = new Set(Object.keys(Close))
 
 export function findMatchingBrackets(s: string, i: number): [number, number] | undefined {
-  let char
-  const stack = []
+  let char: string
+  const stack: string[] = []
   let max = 1000
 
   --i
@@ -74,7 +74,7 @@ export function findMatchingBrackets(s: string, i: number): [number, number] | u
 export const parseWords = (regexp: RegExp, text: any) => {
   regexp.lastIndex = 0
   let word
-  const words = []
+  const words: string[] = []
   while ((word = regexp.exec(text))) words.push(word)
   return words
 }

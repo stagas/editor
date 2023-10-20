@@ -5,4 +5,7 @@ declare global {
   interface Window {
     log: Logger
   }
+  interface ErrorConstructor {
+    captureStackTrace(thisArg: any, func: any): void
+  }
 }
