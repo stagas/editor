@@ -55,7 +55,7 @@ export class Scrollbar extends Comp {
     const { skin } = $.of(ctx)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
-        const { rect } = $.of(this)
+        const { rect, pr } = $.of(this)
         const { hasSize } = $.when(rect)
         const { w, h } = $.of(rect)
         const { pointable } = $.of(it)
