@@ -403,6 +403,7 @@ export class Keyboard extends Comp {
                   + code.slice(p1, p2)
                   + code.slice(p2)
                 const p = b.getLineColFromIndex(p2 + (p2 - p1))
+                $.flush()
                 selection.start.set(bottom)
                 selection.end.set(p)
                 b.line = p.line
@@ -413,7 +414,6 @@ export class Keyboard extends Comp {
                 b.code = lines.join('\n')
                 b.line++
                 $.flush()
-                // await rest()
                 selection.start.set(selection.end)
               }
               break
