@@ -124,7 +124,7 @@ export class Text extends Comp {
       hitArea = it.renderable.rect
       @fn onMenu() {
         const { real } = $.of(pointer)
-        prevent.stop(real)
+        prevent(real)
       }
       @fn onClick() {
         textarea.focus()
