@@ -11,12 +11,12 @@ export class Input extends Comp {
   mouse = $(new Mouse(this.ctx))
 
   textareaRect = $(new Rect, { w: 50, h: 50 })
-  textarea: HTMLTextAreaElement = dom.el('textarea', $({
+  textarea: HTMLTextAreaElement = dom.el('textarea', {
     oncontextmenu: prevent.stop,
     onkeydown: this.keyboard.handleKeyDown,
     onkeyup: this.keyboard.handleKeyUp,
     oncopy: (e: ClipboardEvent) => this.ctx.clipboard.handleCopy(e),
-    oncut: $.from(this.ctx).clipboard.handleCut,
+    oncut: (e: ClipboardEvent) => this.ctx.clipboard.handleCut(e),
     onpaste: (e: ClipboardEvent) => this.ctx.clipboard.handlePaste(e),
     onblur: () => { this.ctx.pointable.isFocused = false },
     onfocus: () => { this.ctx.pointable.isFocused = true },
@@ -39,7 +39,7 @@ export class Input extends Comp {
       z-index: 999999;
       `
     }
-  }))
+  })
 
   @init append_textarea() {
     dom.body.append(this.textarea)
