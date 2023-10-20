@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, init } from 'signal'
 import { Range } from './range.ts'
 import { Renderable } from './renderable.ts'
@@ -82,7 +82,6 @@ export class Widget extends Comp {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { rect } = $.of(this)
         rect.fill(c, '#666')
-        console.log('DRAW')
         this.needDraw = false
       }
     }
