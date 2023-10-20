@@ -163,7 +163,7 @@ export class Selection extends Render {
     const { line, col } = $.of(buffer)
     const { keyboard } = $.of(input)
     const { shiftKey } = $.when(keyboard)
-    $.untrack()
+    $._()
     selection.end.set({ x: col, y: line })
   }
   @fn updateTextareaText = () => {
