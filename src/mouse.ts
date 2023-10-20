@@ -62,7 +62,6 @@ export class Mouse extends Comp {
     // console.log(PointerEventMap[type])
 
     if (type === Move && downItem) {
-      console.log(world.anim.isAnimating)
       downItem[PointerEventMap[type]]?.()
       return
     }
