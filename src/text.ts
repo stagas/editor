@@ -137,7 +137,9 @@ export class Text extends Comp {
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
-        if (this.isDown) {
+        const { buttons } = pointer
+
+        if (this.isDown && (buttons & MouseButtons.Left)) {
           selection.end.set(lineCol)
           buffer.linecol.set(lineCol)
           buffer.coli = lineCol.col
