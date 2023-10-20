@@ -66,7 +66,6 @@ export class Scrollbar extends Render {
     const { w, h } = $.of(rect)
     $._()
     this.needRender = true
-    console.log('need render yea')
   }
   @fx trigger_needDraw() {
     const { rect } = $.of(this)

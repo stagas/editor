@@ -59,6 +59,8 @@ export class Mouse extends Comp {
 
     buffer.getLineColFromPoint(pos, true, lineCol)
 
+    log(PointerEventMap[type])
+
     if (type === Move && downItem) {
       downItem[PointerEventMap[type]]?.()
       return
@@ -117,7 +119,6 @@ export class Mouse extends Comp {
         pointerTargets.forEach(t =>
           t.pointable.it.isHovering = false
         )
-        console.log('leave')
         break
     }
 
