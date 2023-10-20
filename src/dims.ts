@@ -125,7 +125,6 @@ export class Dims extends Comp {
   lineHeights: number[] = [0]
 
   @fx update_lineDims() {
-    return
     const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
     $._()
     const lineTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
