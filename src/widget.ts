@@ -6,7 +6,13 @@ import { Comp } from './comp.ts'
 
 export class Widget extends Comp {
   kind: Widget.Kind = Widget.Kind.Deco
-  dim = $(new Range)
+  _dim = $(new Range)
+  get dim() {
+    return this._dim.$.sorted
+  }
+  get line() {
+    return this.dim.top.line
+  }
   dimWidthExclusive = false
   height = 25
   offsetX = 0
@@ -20,7 +26,7 @@ export namespace Widget {
     Sub,
   }
 
-  export interface It {
+  export interface It extends Widget {
     renderable: Widget.Renderable
     pointable?: Widget.Pointable
   }
