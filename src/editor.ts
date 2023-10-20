@@ -135,7 +135,7 @@ export class Editor extends Scene {
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
-        const { targetScroll, pos: scrollPos, animSettings: animStrategy } = $.of(scroll)
+        const { targetScroll, pos: scrollPos, animSettings } = $.of(scroll)
 
         const dy = (targetScroll.y - scrollPos.y)
         const dx = (targetScroll.x - scrollPos.x)
@@ -149,7 +149,7 @@ export class Editor extends Scene {
           (adx + ady > 55)
             || isTyping
             // || $.isHandlingScrollbar
-            ? animStrategy
+            ? animSettings
             : Scroll.AnimSettings.Slow
 
         let isScrolling = false

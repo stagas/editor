@@ -3,19 +3,6 @@ import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 
-export enum RenderPosition {
-  /** Layout position, remains fixed in space without scroll translations. */
-  Layout,
-  /** Scroll position, translations apply. */
-  Scroll
-}
-
-export namespace Renderable {
-  export interface It {
-    renderable: Renderable
-  }
-}
-
 export class Renderable extends Scene {
   constructor(
     public ctx: Editor,
@@ -28,7 +15,7 @@ export class Renderable extends Scene {
   }
 
   coeff = 1
-  position: RenderPosition = RenderPosition.Layout
+  position: Renderable.Position = Renderable.Position.Layout
   viewRect?: $<Rect>
 
   needInit?: boolean
@@ -52,5 +39,17 @@ export class Renderable extends Scene {
     const { pr, canvas } = $.of(this)
     const { size: { x, y } } = $.of(canvas)
     this.needInit = true
+  }
+}
+
+export namespace Renderable {
+  export interface It {
+    renderable: Renderable
+  }
+  export enum Position {
+    /** Layout position, remains fixed in space without scroll translations. */
+    Layout,
+    /** Scroll position, translations apply. */
+    Scroll
   }
 }

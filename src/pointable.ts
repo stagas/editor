@@ -1,12 +1,6 @@
 import { Point } from 'std'
 import { Renderable } from './render.ts'
 
-export namespace Pointable {
-  export interface It {
-    pointable: Pointable
-  }
-}
-
 export class Pointable {
   constructor(public it: Renderable.It) {}
   cursor= 'default'
@@ -21,4 +15,10 @@ export class Pointable {
   onEnter?(): void
   onLeave?(): void
   onMove?(): void
+}
+
+export namespace Pointable {
+  export interface It {
+    pointable: Pointable
+  }
 }
