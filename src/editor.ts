@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Scene } from 'std'
+import { Point, Scene } from 'std'
 import { clamp, luminate as lum, prevent, saturate as sat } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
@@ -129,6 +129,8 @@ export class Editor extends Scene {
     const it = this
     const { world: { anim }, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
+    const d = $(new Point)
+    const ad = $(new Point)
     class EditorRenderable extends Renderable {
       @init init_Editor() {
         this.canvas.fullWindow = true
@@ -176,35 +178,37 @@ export class Editor extends Scene {
         const { isTyping } = $.of(misc)
         const { animSettings } = $.of(scroll)
 
-        const dy = (targetScroll.y - scrollPos.y)
-        const dx = (targetScroll.x - scrollPos.x)
+        d.set(targetScroll).sub(scrollPos)
+        ad.set(d).abs()
+        // const dy = (targetScroll.y - scrollPos.y)
+        // const dx = (targetScroll.x - scrollPos.x)
 
-        const ady = Math.abs(dy)
-        const adx = Math.abs(dx)
+        // const ady = Math.abs(dy)
+        // const adx = Math.abs(dx)
 
         // TODO: bezier? need to save eventTime to make the normal t
         // will need a lerped t to smooth out changes
         const { distance, tension, amount, min } =
-          (adx + ady > 55)
+          (ad.x + ad.y > 55)
             || isTyping
             // || $.isHandlingScrollbar
             ? animSettings
             : Scroll.AnimSettings.Slow
 
         let isScrolling = false
-        if (ady > 1) {
-          scrollPos.y += dy * (clamp(0, 1, (ady / distance)) ** tension * amount + min)
+        if (ad.y > 1) {
+          scrollPos.y += d.y * (clamp(0, 1, (ad.y / distance)) ** tension * amount + min)
           isScrolling = true
         }
-        else if (dy) {
+        else if (d.y) {
           scrollPos.y = targetScroll.y
         }
 
-        if (adx > 1) {
-          scrollPos.x += dx * (clamp(0, 1, (adx / distance)) ** tension * amount + min)
+        if (ad.x > 1) {
+          scrollPos.x += d.x * (clamp(0, 1, (ad.x / distance)) ** tension * amount + min)
           isScrolling = true
         }
-        else if (dx) {
+        else if (d.x) {
           scrollPos.x = targetScroll.x
         }
 
