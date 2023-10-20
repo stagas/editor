@@ -22,7 +22,7 @@ export class Selection extends Render {
   selection = $(new Line)
   start = this.selection.$.start
   end = this.selection.$.end
-  selectionText = ''
+  text = ''
 
   get hasSelection() {
     return !this.start.equals(this.end)
@@ -167,13 +167,13 @@ export class Selection extends Render {
     selection.end.set({ x: col, y: line })
   }
   @fn updateTextareaText = () => {
-    const { ctx, selectionText } = $.of(this)
+    const { ctx, text } = $.of(this)
     const { input } = $.of(ctx)
-    input.textarea.value = selectionText
+    input.textarea.value = text
     input.textarea.select()
   }
   updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
-  @fx update_selectionText() {
+  @fx update_text() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
     const { source, code } = $.of(buffer)
@@ -181,7 +181,7 @@ export class Selection extends Render {
     const { top, bottom } = this.sorted
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
-    this.selectionText = code.slice(a, b)
+    this.text = code.slice(a, b)
     this.updateTextareaTextDebounced()
   }
 
