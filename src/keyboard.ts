@@ -1,7 +1,7 @@
 import { $, fn } from 'signal'
-import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
-import { AnimScrollStrategy } from './scroll.ts'
 import { Comp } from './comp.ts'
+import { Scroll } from './scroll.ts'
+import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
 
 export interface Key {
   key: string
@@ -203,7 +203,7 @@ export class Keyboard extends Comp {
         dy = targetLine - b.line
         b.line = targetLine
         scroll.targetScroll.top -= dy * dims.lineHeight
-        scroll.animSettings = AnimScrollStrategy.Slow
+        scroll.animSettings = Scroll.AnimSettings.Slow
         break
 
       case 'Home':
@@ -427,12 +427,12 @@ export class Keyboard extends Comp {
               break
 
             case 'z':
-              scroll.animSettings = AnimScrollStrategy.Fast
+              scroll.animSettings = Scroll.AnimSettings.Fast
               history.undo()
               break
 
             case 'y':
-              scroll.animSettings = AnimScrollStrategy.Fast
+              scroll.animSettings = Scroll.AnimSettings.Fast
               history.redo()
               break
 
@@ -657,7 +657,7 @@ export class Keyboard extends Comp {
     if (!e.key.startsWith('Page')
       && e.key !== 'v') {
       requestAnimationFrame(() => {
-        scroll.animSettings = AnimScrollStrategy.Fast
+        scroll.animSettings = Scroll.AnimSettings.Fast
       })
     }
 

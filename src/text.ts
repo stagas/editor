@@ -5,7 +5,7 @@ import { prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './render.ts'
-import { AnimScrollStrategy } from './scroll.ts'
+import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 
 export class Text extends Comp {
@@ -130,7 +130,7 @@ export class Text extends Comp {
       }
       @fn onWheel() {
         scroll.targetScroll.mulSub(wheel, 0.2)
-        scroll.animSettings = AnimScrollStrategy.Medium
+        scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
         if (it.renderable.isDown) {
