@@ -89,7 +89,6 @@ export class Editor extends Render {
     }
     if (needDraw) {
       $._()
-      console.log('NEED DRAW', needDraw, this.needDraw)
       this.needDraw = true
     }
   }
@@ -101,9 +100,8 @@ export class Editor extends Render {
       Math.round(scrollPos.top) !== targetScroll.top ||
       Math.round(scrollPos.left) !== targetScroll.left
 
-    $._()
-
     if (needUpdate) {
+      $._()
       this.needUpdate = true
     }
   }
