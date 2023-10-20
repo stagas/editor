@@ -138,7 +138,6 @@ export class Text extends Comp {
       }
       @fn onMove() {
         const { buttons } = pointer
-
         if (this.isDown && (buttons & MouseButtons.Left)) {
           selection.end.set(lineCol)
           buffer.linecol.set(lineCol)

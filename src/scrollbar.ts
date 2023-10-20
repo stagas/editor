@@ -1,5 +1,6 @@
 // log.active
 import { $, fn, fx } from 'signal'
+import { MouseButtons } from 'utils'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
@@ -124,16 +125,17 @@ export class Scrollbar extends Comp {
         it.pointerBegin = pointer.pos[dim]
       }
       @fn onMove() {
-        if (!this.isDown) return
+        const { buttons } = pointer
+        if (this.isDown && (buttons & MouseButtons.Left)) {
+          const side = sides[dim]
+          const co = rect[side] / innerSize[side]
 
-        const side = sides[dim]
-        const co = rect[side] / innerSize[side]
+          scroll.animSettings = Scroll.AnimSettings.Fast
 
-        scroll.animSettings = Scroll.AnimSettings.Fast
-
-        scroll.targetScroll[<Dim>dim] =
-          it.scrollBegin
-          - (pointer.pos[dim] - it.pointerBegin) / co
+          scroll.targetScroll[<Dim>dim] =
+            it.scrollBegin
+            - (pointer.pos[dim] - it.pointerBegin) / co
+        }
       }
     }
     return $(new ScrollbarPointable(this))
