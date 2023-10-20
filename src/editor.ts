@@ -282,6 +282,7 @@ export class Editor extends Scene {
           c.restore()
         }
 
+        console.log('DRAWWWWWW')
         this.needDirectDraw
           = this.needDraw
           = false
