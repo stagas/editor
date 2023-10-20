@@ -10,7 +10,7 @@ export class Brackets extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, r1, r2 } = $.of(this)
+    const { ctx, r1, r2 } = $.of(it)
     const { buffer, dims } = $.of(ctx)
     class BracketsRenderable extends Renderable {
       viewRect = $(new Rect)
