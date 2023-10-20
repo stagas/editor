@@ -131,10 +131,10 @@ export class Editor extends Scene {
     const { targetScroll, pos: scrollPos } = $.of(scroll)
     class EditorRenderable extends Renderable {
       @init init_Editor() {
-        const { renderables } = $.of(it)
         this.canvas.fullWindow = true
       }
       @fx trigger_needDraw() {
+        const { renderables } = $.of(it)
         let needSelfDraw = false
         for (const { renderable: r } of renderables) {
           const { needRender, needDraw } = r
