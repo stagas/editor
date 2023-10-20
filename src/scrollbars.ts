@@ -24,7 +24,6 @@ export class Scrollbars extends Comp {
           }
         }
         $()
-        console.log('YEA')
         this.needRender = needRender
       }
       @fn render(t: number, c: CanvasRenderingContext2D) {

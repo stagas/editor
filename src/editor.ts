@@ -278,7 +278,8 @@ export class Editor extends Scene {
         }
 
         this.needDirectDraw
-          = this.needDraw
+        = this.needDraw
+        = this.needRender
           = false
       }
     }
