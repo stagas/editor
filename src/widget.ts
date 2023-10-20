@@ -8,7 +8,7 @@ export class Widget extends Comp {
   kind: Widget.Kind = Widget.Kind.Deco
   _dim = $(new Range)
   get dim() {
-    return this._dim.$.sorted
+    return this._dim.sorted
   }
   get line() {
     return this.dim.top.line
