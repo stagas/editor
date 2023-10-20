@@ -153,10 +153,10 @@ export class Editor extends Scene {
       }
       @fx trigger_anim_on_needUpdateOrDraw() {
         if (this.needInit || this.needUpdate || this.needDraw) {
-          if (!this.world.anim.isAnimating) {
+          // if (!this.world.anim.isAnimating) {
             $()
             this.world.anim.start()
-          }
+          // }
         }
       }
       @fn initCanvas() {
