@@ -17,7 +17,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
-import { SkeletonWidget } from './skeleton-widgets.ts'
+import { SkeletonWidget } from './skeleton-widget.ts'
 
 class Skin {
   get colors() {

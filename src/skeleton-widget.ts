@@ -1,5 +1,5 @@
 import { $, fn } from 'signal'
-import { Widget } from './widget.ts'
+import { Widget } from './widget.js'
 
 export class SkeletonWidget extends Widget {
   get renderable() {
