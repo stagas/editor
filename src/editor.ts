@@ -88,6 +88,7 @@ export class Editor extends Render {
       needDraw ||= scene.needRender || scene.needDraw || false
     }
     if (needDraw) {
+      console.log('NEED DRAW', needDraw, this.needDraw)
       this.needDraw = true
     }
   }
