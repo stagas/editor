@@ -77,8 +77,8 @@ export class Editor extends Render {
   @nu get pointerTargets(): (Render & { pointable: Pointable })[] {
     const t = $.of(this)
     return [
-      t.scrollbars,
       t.text,
+      t.scrollbars,
     ]
   }
   @fx maybe_needDraw() {
