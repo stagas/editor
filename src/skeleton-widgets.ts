@@ -1,8 +1,7 @@
 import { $, fn } from 'signal'
-import { Comp } from './comp.ts'
 import { Widget } from './widget.ts'
 
-export class SkeletonDeco extends Comp {
+export class SkeletonDeco extends Widget {
   get renderable() {
     $()
     const it = this
@@ -12,6 +11,6 @@ export class SkeletonDeco extends Comp {
         rect.fill(c, '#666')
       }
     }
-    return $(new SkeletonDecoRenderable(this.ctx))
+    return $(new SkeletonDecoRenderable(this))
   }
 }

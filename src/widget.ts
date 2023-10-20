@@ -2,6 +2,16 @@ import { $, fx } from 'signal'
 import { Range } from './range.ts'
 import { Pointable as PointableBase } from './pointable.ts'
 import { Renderable as RenderableBase } from './renderable.ts'
+import { Comp } from './comp.ts'
+
+export class Widget extends Comp {
+  kind: Widget.Kind = Widget.Kind.Deco
+  dim = $(new Range)
+  dimWidthExclusive = false
+  height = 25
+  offsetX = 0
+  draw(t: number, c: CanvasRenderingContext2D): void {}
+}
 
 export namespace Widget {
   export enum Kind {
@@ -16,14 +26,13 @@ export namespace Widget {
   }
 
   export class Renderable extends RenderableBase {
-    kind: Widget.Kind = Widget.Kind.Deco
-    dim = $(new Range)
-    dimWidthExclusive = false
-    height = 25
-    offsetX = 0
+    constructor(public it: Widget) {
+      super(it.ctx)
+    }
     position = RenderableBase.Position.Scroll
     @fx update_rect() {
-      const { ctx, rect: r, kind, dim, dimWidthExclusive, height, offsetX } = $.of(this)
+      const { it, ctx, rect: r } = $.of(this)
+      const { kind, dim, dimWidthExclusive, height, offsetX } = $.of(it)
       const { buffer, dims } = $.of(ctx)
       const { lines } = $.of(buffer)
       const { lineTops, lineBaseTops, lineBaseBottoms,
@@ -64,8 +73,12 @@ export namespace Widget {
           r.w -= 1
           break
       }
-
       this.needDraw = true
+    }
+    draw(t: number, c: CanvasRenderingContext2D) {
+      const { it } = this
+      it.draw(t, c)
+      this.needDraw = false
     }
   }
 
