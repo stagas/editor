@@ -27,10 +27,10 @@ export class Text extends Render {
     const { pointer } = $.of(world)
     const { wheel } = pointer
 
-    return $(new Pointable(ctx), {
+    return $(new Pointable(this), {
       cursor: 'text',
       getItemAtPoint: (p: Point): false | $<Pointable> => {
-        return ctx.rect.isPointWithin(p) && this.pointable
+        return this.rect.isPointWithin(p) && this.pointable
       },
       onClick: () => {
         textarea.focus()
