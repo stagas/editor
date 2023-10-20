@@ -80,6 +80,7 @@ export class Mouse extends Comp {
       this.hoverItem = currentItem
 
       if (hoverItem) {
+        console.log('WHAT', hoverItem.it, hoverItem.it.isHovering)
         hoverItem.it.isHovering = false
         hoverItem.onLeave?.()
       }
