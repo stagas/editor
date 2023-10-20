@@ -89,6 +89,7 @@ export class Caret extends Comp {
           )
         }, 1250)
         return () => {
+          it.isHidden = false
           clearTimeout(st)
           clearInterval(iv)
         }
@@ -100,10 +101,6 @@ export class Caret extends Comp {
         const { charWidth } = $.of(dims)
         $()
         this.needDraw = true
-      }
-      @fn initCanvas() {
-        this.needInit = false
-        // this.needRender = true
       }
       @fn render() {
         const { ind } = $.of(it)
