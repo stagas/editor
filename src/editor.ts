@@ -85,6 +85,10 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
+  // @ts-expect-error
+  get isHovering() {
+    return this.scenes.some(s => s.isHovering)
+  }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)
     let needDraw = false
