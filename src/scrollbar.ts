@@ -1,6 +1,5 @@
 // log.active
 import { $, fn, fx } from 'signal'
-import { Point } from 'std'
 import { Pointable } from './pointable.ts'
 import { Render } from './render.ts'
 import { AnimScrollStrategy } from './scroll.ts'
@@ -36,6 +35,7 @@ export class Scrollbar extends Render {
 
     class ScrollbarPointable extends Pointable {
       hitArea = it.rect
+
       @fn onDown() {
         it.scrollBegin = scroll[dim]
         it.pointerBegin = pointer.pos[dim]
