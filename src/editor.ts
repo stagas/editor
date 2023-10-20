@@ -180,11 +180,6 @@ export class Editor extends Scene {
 
         d.set(targetScroll).sub(scrollPos)
         ad.set(d).abs()
-        // const dy = (targetScroll.y - scrollPos.y)
-        // const dx = (targetScroll.x - scrollPos.x)
-
-        // const ady = Math.abs(dy)
-        // const adx = Math.abs(dx)
 
         // TODO: bezier? need to save eventTime to make the normal t
         // will need a lerped t to smooth out changes
