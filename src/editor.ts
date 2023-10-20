@@ -127,6 +127,7 @@ export class Editor extends Scene {
       @fx maybe_needDraw() {
         console.log('MAYBE')
         const { renderables } = $.of(it)
+        console.log(renderables)
         let needDraw = false
         for (const { renderable: r } of renderables) {
           needDraw ||= r.needRender || r.needDraw || false

@@ -23,7 +23,7 @@ export class Scrollbars extends Comp {
             break
           }
         }
-        // $()
+        $()
         this.needRender = needRender
       }
       @fn render(t: number, c: CanvasRenderingContext2D) {
