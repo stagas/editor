@@ -88,28 +88,28 @@ export class Editor extends Scene {
 
   // widgets
   sub: Widget[] = [
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Sub,
-    //     dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
-    //   }
-    // }),
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Sub,
-    //     dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
-    //   }
-    // }),
+    $(new Widget(this), {
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
+      }
+    }),
+    $(new Widget(this), {
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
+      }
+    }),
   ]
   get deco(): Widget[] {
     $()
     return [
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Deco,
-    //     dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
-    //   }
-    // }),
+    $(new Widget(this), {
+      widgetable: {
+        kind: Widget.Kind.Deco,
+        dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+      }
+    }),
     $(new Widget(this), {
       widgetable: {
         kind: Widget.Kind.Deco,
