@@ -7,6 +7,7 @@ import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
 import { Clipboard } from './clipboard.ts'
 import { Dims } from './dims.ts'
+import { Elevations } from './elevations.ts'
 import { History } from './history.ts'
 import { Input } from './input.ts'
 import { Misc } from './misc.ts'
@@ -74,6 +75,7 @@ export class Editor extends Scene {
 
   // renderables
   selection = $(new Selection(this))
+  elevations = $(new Elevations(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this), {
     renderable: { position: Renderable.Position.Scroll }
@@ -110,6 +112,7 @@ export class Editor extends Scene {
     const t = $.of(this)
     return [
       t.selection,
+      t.elevations,
       ...t.sub,
       ...t.deco,
       t.text,
