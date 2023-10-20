@@ -6,7 +6,7 @@ import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Pointable } from './pointable.ts'
 import { Linecol } from './linecol.ts'
 
-const { Wheel, Down, Up, Leave, Move } = PointerEventType
+const { Wheel, Down, Up, Leave, Move, Menu } = PointerEventType
 
 const PointerEventMap = {
   [Wheel]: 'onWheel',
@@ -14,6 +14,7 @@ const PointerEventMap = {
   [Up]: 'onUp',
   [Leave]: 'onLeave',
   [Move]: 'onMove',
+  [Menu]: 'onMenu',
 } as const
 
 export class Mouse extends Comp {
