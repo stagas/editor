@@ -109,8 +109,9 @@ export class Editor extends Scene {
   get pointable() {
     $()
     const it = this
-    const { world: { pointer } } = $.of(this)
+    const { world: { pointer } } = $.of(it)
     class EditorPointable extends Pointable {
+      hitArea = it.renderable.rect
       @fx update_hovering() {
         this.isHovering = it.pointables.some(s =>
           s.pointable.isHovering

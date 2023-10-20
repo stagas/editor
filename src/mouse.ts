@@ -118,7 +118,6 @@ export class Mouse extends Comp {
         break
     }
 
-    console.log(items)
     const handler = PointerEventMap[type]
     let receiver: Pointable.It | undefined = currentIt
     while (receiver && !receiver.pointable[handler]) {
