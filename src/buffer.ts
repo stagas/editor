@@ -6,8 +6,10 @@ import { Editor } from './editor.ts'
 import { Source } from './source.ts'
 import { findMatchingBrackets } from './util.ts'
 import { Linecol } from './linecol.ts'
+import { Range } from './range.ts'
 
 const tempPoint = $(new Point)
+const tempLinecol = $(new Linecol)
 
 export class Buffer {
   constructor(public ctx: Editor, public Token: { Type: Record<string, string> }) { }
@@ -19,15 +21,15 @@ export class Buffer {
   @nu get lines() { return $.of(this).source.lines }
 
   linecol = $(new Linecol)
-  lineColClamped = $(new Point)
+  linecolClamped = $(new Linecol)
 
   line = this.linecol.$.line
   col = this.linecol.$.col // actual col
   coli = 0 // col intent
 
   bracketsPair = {
-    open: $(new Point),
-    close: $(new Point)
+    open: $(new Linecol),
+    close: $(new Linecol)
   }
   hasBrackets = false
 
@@ -47,7 +49,7 @@ export class Buffer {
     }
     // $.code = lines.join('\n')
   }
-  getIndexFromLineCol({ line, col }: Point): number {
+  getIndexFromLineCol({ line, col }: Linecol): number {
     const { code } = this
     const lines = code
       .split('\n')
@@ -57,7 +59,7 @@ export class Buffer {
       // add the missing \n to the length when line >0
       + (lines.length ? 1 : 0)
   }
-  @fn getLineColFromIndex(index: number, tp: Point = tempPoint): Point {
+  @fn getLineColFromIndex(index: number, tp: Linecol = tempLinecol): Linecol {
     const { code } = this
     const slice = code.slice(0, index)
     const lines = slice.split('\n')
@@ -68,7 +70,7 @@ export class Buffer {
     return tp
   }
   @fn getLineColFromPoint(
-    p: Point, clampPos = true, tp?: Point): Point {
+    p: Point, clampPos = true, tp?: Linecol): Linecol {
     const { lines, ctx } = $.of(this)
     const { dims } = $.of(ctx)
     const { lineTops, scroll, rect, charWidth } = $.of(dims)
@@ -94,12 +96,12 @@ export class Buffer {
       tp.y = y
       return tp
     }
-    tempPoint.x = x
-    tempPoint.y = y
-    return tempPoint
+    tempLinecol.x = x
+    tempLinecol.y = y
+    return tempLinecol
   }
   @fn getPointFromLineCol(
-    { line, col }: Point,
+    { line, col }: Linecol,
     tp: PointLike): PointLike {
     const { dims } = $.of(this.ctx)
     const { lineBaseTops, charWidth } = $.of(dims)
@@ -130,7 +132,7 @@ export class Buffer {
   }
   @fn fillTextRange(
     c: CanvasRenderingContext2D,
-    range: Line,
+    range: Range,
     color: string,
     full: boolean = false,
     padBottom: number = 0,

@@ -5,10 +5,12 @@ import { debounce } from 'utils'
 import { Renderable } from './renderable.ts'
 import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 import { Comp } from './comp.ts'
+import { Linecol } from './linecol.ts'
+import { Range } from './range.ts'
 
 const tempPoint = $(new Point)
 
-class SortedLine extends Line {
+class SortedRange extends Range {
   forward?: boolean
 }
 
@@ -79,7 +81,7 @@ export class Selection extends Comp {
     return $(new SelectionRenderable(this.ctx, this.ctx.renderable.rect))
   }
 
-  selection = $(new Line)
+  selection = $(new Range)
   start = this.selection.$.start
   end = this.selection.$.end
   text = ''
@@ -87,12 +89,12 @@ export class Selection extends Comp {
   get hasSelection() {
     return !this.start.equals(this.end)
   }
-  _sorted = $(new SortedLine)
+  _sorted = $(new SortedRange)
   get sorted() {
     const { selection, _sorted } = this
     // Line & forward
-    let top: $<Point>
-    let bottom: $<Point>
+    let top: $<Linecol>
+    let bottom: $<Linecol>
     let forward = false
 
     if (selection.start.y === selection.end.y) {
@@ -174,7 +176,7 @@ export class Selection extends Comp {
     selection.end.set({ x: lines[line].length, y: line })
     return true
   }
-  @fn selectMatchingBrackets(p: Point, exclusive?: boolean) {
+  @fn selectMatchingBrackets(p: Linecol, exclusive?: boolean) {
     const { ctx, selection } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code } = $.of(buffer)
@@ -195,7 +197,7 @@ export class Selection extends Comp {
     }
     return false
   }
-  @fn selectWordBoundary(p: Point, expand?: boolean) {
+  @fn selectWordBoundary(p: Linecol, expand?: boolean) {
     const { ctx, selection, sorted: { forward } } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code, lines } = $.of(buffer)

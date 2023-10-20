@@ -4,6 +4,7 @@ import { Point, PointerEventType } from 'std'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Pointable } from './pointable.ts'
+import { Linecol } from './linecol.ts'
 
 const { Wheel, Down, Up, Leave, Move } = PointerEventType
 
@@ -16,7 +17,7 @@ const PointerEventMap = {
 } as const
 
 export class Mouse extends Comp {
-  linecol = $(new Point)
+  linecol = $(new Linecol)
 
   downCount = 0
   downTime = 0
