@@ -22,14 +22,14 @@ export class Selection extends Render {
   selection = $(new Line)
   start = this.selection.$.start
   end = this.selection.$.end
-  selectionSorted = $(new SortedLine)
   selectionText = ''
 
   get hasSelection() {
     return !this.start.equals(this.end)
   }
-  @fn getSelectionSorted() {
-    const { selection, selectionSorted } = this
+  _sorted = $(new SortedLine)
+  get sorted() {
+    const { selection, _sorted } = this
     // Line & forward
     let top: $<Point>
     let bottom: $<Point>
@@ -55,14 +55,14 @@ export class Selection extends Render {
       top = selection.end
       bottom = selection.start
     }
-    selectionSorted.top = top
-    selectionSorted.bottom = bottom
-    selectionSorted.forward = forward
-    return selectionSorted
+    _sorted.top = top
+    _sorted.bottom = bottom
+    _sorted.forward = forward
+    return _sorted
   }
   @fn getSelectionIndexes() {
     const { buffer } = $.of(this.ctx)
-    const { top, bottom } = this.getSelectionSorted()
+    const { top, bottom } = this.sorted
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
     tempPoint.left = a
@@ -77,7 +77,7 @@ export class Selection extends Render {
       const { selection } = this
       if (selection.start.equals(selection.end)) return ''
 
-      const { top, bottom } = this.getSelectionSorted()
+      const { top, bottom } = this.sorted
       const a = buffer.getIndexFromCoords(top)
       const b = buffer.getIndexFromCoords(bottom)
       const removing = code.slice(a, b)
@@ -130,7 +130,7 @@ export class Selection extends Render {
     return false
   }
   @fn selectWordBoundary(p: Point, expand?: boolean) {
-    const { ctx, selection, selectionSorted: { forward } } = $.of(this)
+    const { ctx, selection, sorted: { forward } } = $.of(this)
     const { buffer } = $.of(ctx)
     const { code, lines } = $.of(buffer)
     const { line, col } = p
@@ -177,7 +177,7 @@ export class Selection extends Render {
     const { buffer, input } = $.of(ctx)
     const { source, code } = $.of(buffer)
     $._()
-    const { top, bottom } = this.getSelectionSorted()
+    const { top, bottom } = this.sorted
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
     this.selectionText = code.slice(a, b)
@@ -196,11 +196,9 @@ export class Selection extends Render {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
-    // TODO: selectionSorted should be a computed
-    const selectionSorted = t.getSelectionSorted()
     $._()
-    const top = buffer.getPointFromLineCol(selectionSorted.top, topPx)
-    const bottom = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
+    const top = buffer.getPointFromLineCol(t.sorted.top, topPx)
+    const bottom = buffer.getPointFromLineCol(t.sorted.bottom, bottomPx)
     bottom.y += dims.lineHeight
     vr.top = top.y
     // TODO: top.x since its sorted?
@@ -224,7 +222,7 @@ export class Selection extends Render {
   update(dt: number) { return 0 }
   updateOne(dt: number) { return 0 }
   @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-    const { canvas, selectionSorted, hasSelection, rect, ctx } = $.of(this)
+    const { canvas, sorted: selectionSorted, hasSelection, rect, ctx } = $.of(this)
     const { skin, buffer, dims } = $.of(ctx)
     const { scroll, charWidth } = $.of(dims)
 

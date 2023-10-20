@@ -84,7 +84,7 @@ export class Keyboard extends Comp {
             break
           }
           else {
-            const { top, bottom } = selection.getSelectionSorted()
+            const { top, bottom } = selection.sorted
             if (bottom.y === maxLine) break
 
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
@@ -114,7 +114,7 @@ export class Keyboard extends Comp {
             break
           }
           else {
-            const { top, bottom } = selection.getSelectionSorted()
+            const { top, bottom } = selection.sorted
             if (top.y === 0) break
 
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
@@ -334,7 +334,7 @@ export class Keyboard extends Comp {
           let lns: string[]
           let y: number
           if (hasSelection) {
-            const { top, bottom } = selection.getSelectionSorted()
+            const { top, bottom } = selection.sorted
             for (let i = top.y; i <= bottom.y; i++) {
               index = Math.min(index, lineBegin(lines[i]!))
             }
@@ -396,7 +396,7 @@ export class Keyboard extends Comp {
             case 'D':
               history.saveHistoryDebounced()
               if (hasSelection) {
-                const { top, bottom } = selection.getSelectionSorted()
+                const { top, bottom } = selection.sorted
                 const p1 = b.getIndexFromCoords(top)
                 const p2 = b.getIndexFromCoords(bottom)
                 b.code = code.slice(0, p2)
@@ -443,7 +443,7 @@ export class Keyboard extends Comp {
               history.saveHistoryDebounced()
 
               if (hasSelection) {
-                const { top, bottom } = selection.getSelectionSorted()
+                const { top, bottom } = selection.sorted
                 const p1 = b.getIndexFromCoords(top)
                 const p2 = b.getIndexFromCoords(bottom)
                 const dx = 2 + (top.y === bottom.y ? 2 : 0)
@@ -495,7 +495,7 @@ export class Keyboard extends Comp {
               let lns: string[]
               let y: number
               if (selection.hasSelection) {
-                const { top, bottom } = selection.getSelectionSorted()
+                const { top, bottom } = selection.sorted
                 for (let i = top.y; i <= bottom.y; i++) {
                   index = Math.min(index, lineBegin(lines[i]!))
                 }
