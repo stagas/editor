@@ -33,11 +33,11 @@ export class Mouse extends Comp {
     let item: Pointable | false | undefined
     for (const target of pointerTargets) {
       if (item = target.pointable.getItemAtPoint(p)) {
-        items.push(item)
+        items.unshift(item)
       }
     }
 
-    if (!items.length) items.push(text.pointable)
+    if (!items.length) items.unshift(text.pointable)
     return items
   }
 
