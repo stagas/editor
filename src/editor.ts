@@ -291,7 +291,7 @@ export class Editor extends Scene {
 
             r.needInit && r.initCanvas(r.canvas.c)
             r.needRender && r.render(t, r.canvas.c, true)
-            r.draw(t, c)
+            if (r.didDraw || r.needDraw) r.draw(t, c)
           }
           else if (position === Layout) {
             if (this.needDirectDraw) {
@@ -306,7 +306,7 @@ export class Editor extends Scene {
             else {
               r.needInit && r.initCanvas(r.canvas.c)
               r.needRender && r.render(t, r.canvas.c, true)
-              r.draw(t, c)
+              if (r.didDraw || r.needDraw) r.draw(t, c)
             }
           }
         }

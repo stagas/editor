@@ -19,6 +19,7 @@ export class Renderable extends Scene {
   viewRect?: $<Rect>
   dirtyRect?: $<Rect>
 
+  didDraw?: boolean
   needInit?: boolean
   needUpdate?: boolean
   needRender?: boolean
