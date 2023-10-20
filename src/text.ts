@@ -121,7 +121,7 @@ export class Text extends Comp {
 
     class TextPointable extends Pointable {
       cursor = 'text'
-      hitArea = it.renderable.rect
+      hitArea = it.renderable.viewRect
       @fn onClick() {
         textarea.focus()
       }
@@ -134,7 +134,6 @@ export class Text extends Comp {
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
-        console.log('moving')
         if (this.isDown) {
           selection.end.set(lineCol)
           buffer.lineCol.set(lineCol)
