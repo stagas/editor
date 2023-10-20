@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { poolArrayGet } from 'utils'
@@ -146,8 +146,6 @@ export class Elevations extends Comp {
               colors.light,
               colors.dark,
             )
-            console.log(c.canvas)
-            console.log('FILL!', el.text)
           }
         }
 
@@ -164,7 +162,6 @@ export class Elevations extends Comp {
             colors.light,
             colors.dark,
           )
-          console.log('FILL!')
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
