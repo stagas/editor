@@ -33,8 +33,8 @@ export class Scrollbar extends Render {
     const { world: { pointer }, dim, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
-
     const it = this
+
     class ScrollbarPointable extends Pointable {
       hitArea = it.rect
       @fn onDown() {
@@ -55,31 +55,6 @@ export class Scrollbar extends Render {
     }
 
     return $(new ScrollbarPointable(this))
-    // , {
-    //   hitArea: this.rect,
-    //   onDown: fn(() => {
-    //     this.scrollBegin = scroll[dim]
-    //     this.pointerBegin = pointer.pos[dim]
-    //   }),
-    //   onMove: fn(() => {
-    //     if (!this.isDown) return
-
-    //     const side = sides[dim]
-    //     const co = rect[side] / innerSize[side]
-
-    //     scroll.animScrollStrategy = AnimScrollStrategy.Fast
-    //     // scroll.pos[<Dim>dim] =
-    //     scroll.targetScroll[<Dim>dim] =
-    //       this.scrollBegin
-    //       - (pointer.pos[dim] - this.pointerBegin) / co
-
-    //     // $.flush()
-
-    //     // scroll.pos[<Dim>dim] = scroll.targetScroll[<Dim>dim]
-
-    //     // ctx.needUpdate = true
-    //   })
-    // })
   }
   @fx trigger_needRender() {
     const { rect, isHovering } = $.of(this)
