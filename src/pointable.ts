@@ -1,5 +1,5 @@
 import { Point } from 'std'
-import { Render } from './render.ts'
+import { Renderable } from './render.ts'
 
 export namespace Pointable {
   export interface It {
@@ -8,7 +8,7 @@ export namespace Pointable {
 }
 
 export class Pointable {
-  constructor(public it: Render) {}
+  constructor(public it: Renderable.It) {}
   cursor= 'default'
   hitArea?: { isPointWithin(p: Point): boolean }
   getItemAtPoint(p: Point): Pointable | false | undefined {

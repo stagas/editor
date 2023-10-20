@@ -10,7 +10,13 @@ export enum RenderPosition {
   Scroll
 }
 
-export abstract class Render extends Scene {
+export namespace Renderable {
+  export interface It {
+    renderable: Renderable
+  }
+}
+
+export class Renderable extends Scene {
   constructor(
     public ctx: Editor,
     public rect = $(new Rect),
@@ -36,11 +42,11 @@ export abstract class Render extends Scene {
   isFocused = false
   isHovering = false
 
-  abstract initCanvas(c: CanvasRenderingContext2D): void
-  abstract update(deltaTime: number): number
-  abstract updateOne(deltaTime: number): number
-  abstract render(t: number, c: CanvasRenderingContext2D, clear: boolean): void
-  abstract draw(t: number, c: CanvasRenderingContext2D): void
+  initCanvas(c: CanvasRenderingContext2D): void {}
+  update(deltaTime: number): number { return 0}
+  updateOne(deltaTime: number): number { return 0}
+  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {}
+  draw(t: number, c: CanvasRenderingContext2D): void {}
 
   @fx trigger_needInit_on_size() {
     const { pr, canvas } = $.of(this)

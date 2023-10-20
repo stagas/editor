@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Render, RenderPosition } from './render.ts'
+import { Renderable, RenderPosition } from './render.ts'
 import { Text } from './text.ts'
 import { Selection } from './selection.ts'
 import { Input } from './input.ts'
@@ -10,7 +10,7 @@ import { Buffer } from './buffer.ts'
 import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { WidgetLike } from './widgets.ts'
-import { Point, World } from 'std'
+import { Point, Scene, World } from 'std'
 import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
@@ -29,11 +29,10 @@ interface Skin {
 
 type Colors = Record<string, string>
 
-export class Editor extends Render {
-  constructor(public world: World) {
-    super({ world } as Editor)
+export class Editor extends Scene {
+  get renderable(): $<Renderable> {
+    return $(new Renderable(this))
   }
-
   misc = $(new Misc)
   skin = {
     colors: {
@@ -58,17 +57,17 @@ export class Editor extends Render {
   // renderables
   selection = $(new Selection(this))
   text = $(new Text(this))
-  brackets = $(new Brackets(this), { renderPosition: RenderPosition.Scroll })
-  caret = $(new Caret(this), { blink: false, renderPosition: RenderPosition.Scroll })
+  brackets = $(new Brackets(this), { renderable: { renderPosition: RenderPosition.Scroll } })
+  caret = $(new Caret(this), { blink: false, renderable: { renderPosition: RenderPosition.Scroll   } })
   scrollbars = $(new Scrollbars(this))
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
   @init init_Editor() {
-    this.canvas.fullWindow = true
+    this.renderable.canvas.fullWindow = true
   }
-  @nu get scenes(): Render[] {
+  @nu get scenes(): Renderable.It[] {
     const t = $.of(this)
     return [
       t.selection,
@@ -78,7 +77,7 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): (Render & Pointable.It)[] {
+  @nu get pointerTargets(): (Renderable.It & Pointable.It)[] {
     const t = $.of(this)
     return [
       t.text,
@@ -86,17 +85,17 @@ export class Editor extends Render {
     ]
   }
   @fx update_hovering() {
-    this.isHovering = this.scenes.some(s => s.isHovering)
+    this.renderable.isHovering = this.scenes.some(s => s.renderable.isHovering)
   }
   @fx maybe_needDraw() {
     const { scenes } = $.of(this)
     let needDraw = false
     for (const scene of scenes) {
-      needDraw ||= scene.needRender || scene.needDraw || false
+      needDraw ||= scene.renderable.needRender || scene.renderable.needDraw || false
     }
     if (needDraw) {
       $()
-      this.needDraw = true
+      this.renderable.needDraw = true
     }
   }
   @fx trigger_update_when_scroll() {
@@ -109,11 +108,11 @@ export class Editor extends Render {
 
     if (needUpdate) {
       $()
-      this.needUpdate = true
+      this.renderable.needUpdate = true
     }
   }
   @fx trigger_anim_on_needUpdateOrDraw() {
-    if (this.needInit || this.needUpdate || this.needDraw) {
+    if (this.renderable.needInit || this.renderable.needUpdate || this.renderable.needDraw) {
       if (!this.world.anim.isAnimating) {
         $()
         this.world.anim.start()
@@ -121,12 +120,12 @@ export class Editor extends Render {
     }
   }
   @fn initCanvas() {
-    const { c } = $.of(this.canvas)
+    const { c } = $.of(this.renderable.canvas)
     c.imageSmoothingEnabled = false
-    for (const scene of this.scenes) {
-      scene.needInit && scene.initCanvas(scene.canvas.c)
+    for (const { renderable: r } of this.scenes) {
+      r.needInit && r.initCanvas(r.canvas.c)
     }
-    this.needInit = false
+    this.renderable.needInit = false
   }
   @fn update() {
     const { misc, dims, scroll } = $.of(this)
@@ -172,13 +171,13 @@ export class Editor extends Render {
     // let needUpdate = isScrolling
 
     if (!isScrolling) {
-      this.needUpdate = false
-      this.needDraw = true
+      this.renderable.needUpdate = false
+      this.renderable.needDraw = true
       return 0 // does not need next frame
     }
     else {
-      this.needDirectDraw = true
-      this.needDraw = true
+      this.renderable.needDirectDraw = true
+      this.renderable.needDraw = true
       return 1 // need next frame
     }
     // console.log(this.needUpdate)
@@ -187,7 +186,8 @@ export class Editor extends Render {
   updateOne() { return 0 }
   render() { }
   @fn draw(t: number) {
-    const { rect, scenes, canvas, scroll, skin, dims: { viewSpan } } = $.of(this)
+    const { scenes, renderable, scroll, skin, dims: { viewSpan } } = $.of(this)
+    const { rect,canvas} = $.of(renderable)
     const { c } = canvas
     const { Layout, Scroll } = RenderPosition
 
@@ -196,19 +196,19 @@ export class Editor extends Render {
     let position: RenderPosition = Layout
 
     // if (this.needDirectDraw) {
-    for (const scene of scenes) {
-      if (scene.renderPosition !== position) {
-        if (scene.renderPosition === Scroll) {
+    for (const { renderable: r } of scenes) {
+      if (r.renderPosition !== position) {
+        if (r.renderPosition === Scroll) {
           c.save()
           scroll.pos.translate(c)
         }
         else {
           c.restore()
         }
-        position = scene.renderPosition
+        position = r.renderPosition
       }
 
-      const viewRect = scene.viewRect ?? scene.rect
+      const viewRect = r.viewRect ?? r.rect
 
       if (position === Scroll) {
         if (
@@ -217,9 +217,9 @@ export class Editor extends Render {
         ) continue
 
         // if (scene.needRender) {
-        scene.needInit && scene.initCanvas(scene.canvas.c)
-        scene.needRender && scene.render(t, scene.canvas.c, true)
-        scene.draw(t, c)
+        r.needInit && r.initCanvas(r.canvas.c)
+        r.needRender && r.render(t, r.canvas.c, true)
+        r.draw(t, c)
         // scene.render(t, scene.canvas.c, true)
         // scene.draw(t, c)
         // }
@@ -228,19 +228,19 @@ export class Editor extends Render {
         // }
       }
       else if (position === Layout) {
-        if (this.needDirectDraw) {
+        if (this.renderable.needDirectDraw) {
           c.save()
-          scene.initCanvas(c)
-          scene.render(t, c, false)
+          r.initCanvas(c)
+          r.render(t, c, false)
           c.restore()
           // when we finish the direct layout draws,
           // we need the items to also render their own canvas.
-          scene.needInit = scene.needRender = true
+          r.needInit = r.needRender = true
         }
         else {
-          scene.needInit && scene.initCanvas(scene.canvas.c)
-          scene.needRender && scene.render(t, scene.canvas.c, true)
-          scene.draw(t, c)
+          r.needInit && r.initCanvas(r.canvas.c)
+          r.needRender && r.render(t, r.canvas.c, true)
+          r.draw(t, c)
         }
       }
     }
@@ -249,8 +249,8 @@ export class Editor extends Render {
       c.restore()
     }
 
-    this.needDirectDraw
-      = this.needDraw
+    this.renderable.needDirectDraw
+      = this.renderable.needDraw
       = false
     // }
     // else {

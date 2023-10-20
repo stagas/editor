@@ -1,12 +1,13 @@
 // log.active
 import $, { fn, fx } from 'signal'
-import { Render } from './render.ts'
+import { Comp } from './comp.ts'
 import { Indicator } from './indicator.ts'
+import { Renderable } from './render.ts'
 
-export class Caret extends Render {
+export class Caret extends Comp {
   pos = this.ctx.buffer.$.lineCol
-  ind = $(new Indicator(this.ctx))
   blink?= false
+  ind = $(new Indicator(this.ctx))
   isBlinking = false
   isHidden = false
   hideWhenTyping?= false
@@ -17,112 +18,124 @@ export class Caret extends Render {
   color2Focused?= '#fff'
   caretColor?= '#fff'
 
-  @fx update_indicator_focused_color() {
-    const {
-      ind,
-      color1, color2,
-      color1Focused, color2Focused,
-      ctx,
-    } = $.of(this)
-    const { isFocused } = $.of(ctx)
+  get renderable(): $<Renderable> {
     $()
-    ind.color1 = isFocused ? color1Focused : color1
-    ind.color2 = isFocused ? color2Focused : color2
-  }
-  @fx update_rect() {
-    const { rect: r, pos, ctx } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { charWidth, lineBaseTops } = $.of(dims)
-    const { line, col } = pos
-    $()
-    r.x = col * charWidth
-    r.y = lineBaseTops[line]
-  }
-  @fx update_caret() {
-    const { pr, rect: r, ctx, ind, blink } = $.of(this)
-    const { isFocused, dims } = $.of(ctx)
-    const { lineHeight, charWidth } = $.of(dims)
-    $()
-    r.w = charWidth || 1
-    r.h = lineHeight + 1
-    ind.rect.w = r.w + 10
-    ind.rect.h = r.h + 5.5
-    $.flush()
-    if (blink) {
-      this.isBlinking = isFocused
-    }
-    this.isHidden = false
-    this.needRender = true
-  }
-  @fx hide_when_typing() {
-    const { hideWhenTyping, ctx } = $.when(this)
-    const { misc: { isTyping } } = $.of(ctx)
-    $()
-    this.isHidden = isTyping
-  }
-  @fx hide_when_away() {
-    const { hideWhenAway, ctx } = $.when(this)
-    const { isHovering } = $.of(ctx)
-    $()
-    this.isHidden = !isHovering
-  }
-  @fx start_blinking() {
-    const { blink, isBlinking, ctx, pos: { line, col } } = $.when(this)
-    const { dims } = $.of(ctx)
-    const { blinkDelay } = $.of(dims)
+    const it = this
+    class CaretRenderable extends Renderable {
 
-    let iv: any
-    // TODO: better debounce here so we don't create/dispose tons of setTimeouts
-    // TODO: we need a better setTimeout
-    const st = setTimeout(() => {
-      iv = setInterval(() =>
-        this.isHidden = !this.isHidden,
-        blinkDelay
-      )
-    }, 1250)
-    return () => {
-      clearTimeout(st)
-      clearInterval(iv)
+      @fx update_indicator_focused_color() {
+        const {
+          ind,
+          color1, color2,
+          color1Focused, color2Focused,
+          ctx,
+        } = $.of(it)
+        const { renderable: { isFocused } } = $.of(ctx)
+        $()
+        ind.color1 = isFocused ? color1Focused : color1
+        ind.color2 = isFocused ? color2Focused : color2
+      }
+      @fx update_rect() {
+        const { rect: r, ctx } = $.of(this)
+        const { pos } = $.of(it)
+        const { dims } = $.of(ctx)
+        const { charWidth, lineBaseTops } = $.of(dims)
+        const { line, col } = pos
+        $()
+        r.x = col * charWidth
+        r.y = lineBaseTops[line]
+      }
+      @fx update_caret() {
+        const { pr, rect: r} = $.of(this)
+        const {ctx, ind, blink } = $.of(it)
+        const { renderable: { isFocused }, dims } = $.of(ctx)
+        const { lineHeight, charWidth } = $.of(dims)
+        $()
+        r.w = charWidth || 1
+        r.h = lineHeight + 1
+        ind.renderable.rect.w = r.w + 10
+        ind.renderable.rect.h = r.h + 5.5
+        $.flush()
+        if (blink) {
+          it.isBlinking = isFocused
+        }
+        it.isHidden = false
+        this.needRender = true
+      }
+      @fx hide_when_typing() {
+        const { hideWhenTyping, ctx } = $.when(it)
+        const { misc: { isTyping } } = $.of(ctx)
+        $()
+        it.isHidden = isTyping
+      }
+      @fx hide_when_away() {
+        const { hideWhenAway, ctx } = $.when(it)
+        const { renderable: { isHovering } } = $.of(ctx)
+        $()
+        it.isHidden = !isHovering
+      }
+      @fx start_blinking() {
+        const { blink, isBlinking, ctx } = $.when(it)
+        const { pos: { line, col } } = $.of(it)
+        const { dims } = $.of(ctx)
+        const { blinkDelay } = $.of(dims)
+
+        let iv: any
+        // TODO: better debounce here so we don't create/dispose tons of setTimeouts
+        // TODO: we need a better setTimeout
+        const st = setTimeout(() => {
+          iv = setInterval(() =>
+            it.isHidden = !it.isHidden,
+            blinkDelay
+          )
+        }, 1250)
+        return () => {
+          clearTimeout(st)
+          clearInterval(iv)
+        }
+      }
+      @fx trigger_draw() {
+        const { ctx, isHidden } = $.of(it)
+        const { rect: { x, y } } = $.of(this)
+        const { dims } = $.of(ctx)
+        const { charWidth } = $.of(dims)
+        $()
+        this.needDraw = true
+      }
+      @fn initCanvas() {
+        this.needInit = false
+        // this.needRender = true
+      }
+      @fn render() {
+        const { ind } = $.of(it)
+        if (ind.renderable.needRender) {
+          ind.renderable.render()
+        }
+        this.needRender = false
+        this.needDraw = true
+      }
+      @fn draw(t: number, c: CanvasRenderingContext2D) {
+        const { ind, ctx, isHidden } = $.of(it)
+        const { pos } = $.of(it)
+        const { dims } = $.of(ctx)
+        const { charWidth, lineBaseTops } = $.of(dims)
+        const { line, col } = pos
+        if (!isHidden) {
+          // log('lineCol', line, col)
+          c.save()
+          c.translate(
+            Math.floor(col * charWidth),
+            // TODO: this can be undefined, how to deal with these
+            // lineDims getter
+            Math.floor(lineBaseTops[line] + 1)
+          )
+          ind.renderable.draw(t,c)
+          c.restore()
+        }
+        this.needDraw = false
+      }
+
     }
-  }
-  @fx trigger_draw() {
-    const { ctx, isHidden, rect: { x, y } } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { charWidth } = $.of(dims)
-    $()
-    this.needDraw = true
-  }
-  @fn initCanvas() {
-    this.needInit = false
-    // this.needRender = true
-  }
-  update(dt: number) { return 0 }
-  updateOne(dt: number) { return 0 }
-  @fn render() {
-    const { ind } = $.of(this)
-    if (ind.needRender) {
-      ind.render()
-    }
-    this.needRender = false
-    this.needDraw = true
-  }
-  @fn draw(t: number, c: CanvasRenderingContext2D) {
-    const { ind, pos, ctx, isHidden } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { charWidth, lineBaseTops } = $.of(dims)
-    const { line, col } = pos
-    if (!isHidden) {
-      // log('lineCol', line, col)
-      c.save()
-      c.translate(
-        Math.floor(col * charWidth),
-        // TODO: this can be undefined, how to deal with these
-        // lineDims getter
-        Math.floor(lineBaseTops[line] + 1)
-      )
-      ind.draw(t,c)
-      c.restore()
-    }
-    this.needDraw = false
+    return $(new CaretRenderable(this.ctx))
   }
 }
