@@ -13,7 +13,7 @@ export class Brackets extends Render {
     const { ctx, pr, rect, rect1, rect2 } = $.of(this)
     const { dims } = $.of(ctx)
     const { lineHeight, charWidth } = $.of(dims)
-    $.untrack()
+    $._()
     if (!charWidth) return
     rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
     rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
@@ -32,7 +32,7 @@ export class Brackets extends Render {
     } = $.of(buffer)
     const { x: ox, y: oy } = open
     const { x: cx, y: cy } = close
-    $.untrack()
+    $._()
     if (!hasBrackets) {
       this.isHidden = true
     }
