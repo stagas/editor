@@ -24,7 +24,8 @@ export namespace Widget {
     position = RenderableBase.Position.Scroll
     @fx update_rect() {
       const { ctx, rect: r, kind, dim, dimWidthExclusive, height, offsetX } = $.of(this)
-      const { dims } = $.of(ctx)
+      const { buffer, dims } = $.of(ctx)
+      const { lines } = $.of(buffer)
       const { lineTops, lineBaseTops, lineBaseBottoms,
         decoHeights, extraDecoHeights,
         charWidth, lineHeight } = $.of(dims)
