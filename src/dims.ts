@@ -5,7 +5,7 @@ import { arraysEqual } from 'utils'
 import { Comp } from './comp.ts'
 
 export class Dims extends Comp {
-  rect = this.ctx.rect
+  rect = this.ctx.renderable.rect
 
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
