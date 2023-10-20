@@ -1,7 +1,7 @@
 import { $, fx } from 'signal'
-import { Pointable } from './pointable.ts'
 import { Range } from './range.ts'
-import { Renderable } from './renderable.ts'
+import { Pointable as PointableBase } from './pointable.ts'
+import { Renderable as RenderableBase } from './renderable.ts'
 
 export namespace Widget {
   export enum Kind {
@@ -11,17 +11,17 @@ export namespace Widget {
   }
 
   export interface It {
-    renderable: WidgetRenderable
-    pointable?: WidgetPointable
+    renderable: Widget.Renderable
+    pointable?: Widget.Pointable
   }
 
-  export class WidgetRenderable extends Renderable {
+  export class Renderable extends RenderableBase {
     kind: Widget.Kind = Widget.Kind.Deco
     dim = $(new Range)
     dimWidthExclusive = false
     height = 25
     offsetX = 0
-    position = Renderable.Position.Scroll
+    position = RenderableBase.Position.Scroll
     @fx update_rect() {
       const { ctx, rect: r, kind, dim, dimWidthExclusive, height, offsetX } = $.of(this)
       const { dims } = $.of(ctx)
@@ -68,7 +68,7 @@ export namespace Widget {
     }
   }
 
-  export class WidgetPointable extends Pointable {
+  export class Pointable extends PointableBase {
 
   }
 }
