@@ -481,7 +481,6 @@ export class Keyboard extends Comp {
                   }
                 }
                 $.flush()
-                // await rest()
                 selection.start.set(selection.end)
               }
               break
