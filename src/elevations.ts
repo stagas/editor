@@ -11,12 +11,12 @@ import { Editor } from './editor.ts'
 
 const colors = {
   hover: {
-    fill: '#ffffff05',
+    fill: '#ffffff15',
     light: '#fff4',
     dark: '#fff2',
   },
   caret: {
-    fill: '#7755ff18',
+    fill: '#7755ff28',
     light: '#75f7',
     dark: '#75f4',
   }
