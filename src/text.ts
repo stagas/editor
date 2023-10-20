@@ -129,7 +129,6 @@ export class Text extends Comp {
         textarea.focus()
       }
       @fn onWheel() {
-        console.log('wheel')
         scroll.targetScroll.mulSub(wheel, 0.2)
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
