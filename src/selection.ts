@@ -232,7 +232,7 @@ export class Selection extends Comp {
     input.textarea.value = text
     input.textarea.select()
   }
-  updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
+  // updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
   @fx update_text() {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
@@ -242,6 +242,6 @@ export class Selection extends Comp {
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
     this.text = code.slice(a, b)
-    this.updateTextareaTextDebounced()
+    // this.updateTextareaTextDebounced()
   }
 }
