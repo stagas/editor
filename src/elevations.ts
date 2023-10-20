@@ -44,7 +44,7 @@ export class Elevations extends Comp {
         super(ctx, ctx.renderable.rect)
       }
       @fx trigger_needRender() {
-        const { rect: r } = $.of(this)
+        const { rect: r, pr } = $.of(this)
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
         const { line, col, code, hasBrackets, bracketsPair: { open } } = $.of(buffer)
         const { xy: oxy } = open
