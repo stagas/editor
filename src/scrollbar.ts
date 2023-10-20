@@ -23,7 +23,6 @@ const sidesOpp = {
 type Dim = 'x' | 'y'
 
 export class Scrollbar extends Render {
-  canFocus = false
   dim?: Dim
   scrollBegin = 0
   pointerBegin = 0
@@ -48,6 +47,7 @@ export class Scrollbar extends Render {
         const co = rect[side] / innerSize[side]
 
         scroll.animScrollStrategy = AnimScrollStrategy.Fast
+
         scroll.targetScroll[<Dim>dim] =
           it.scrollBegin
           - (pointer.pos[dim] - it.pointerBegin) / co
