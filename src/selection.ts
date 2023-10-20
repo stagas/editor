@@ -196,6 +196,7 @@ export class Selection extends Render {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
+    // TODO: selectionSorted should be a computed
     const selectionSorted = t.getSelectionSorted()
     $._()
     const top = buffer.getPointFromLineCol(selectionSorted.top, topPx)
