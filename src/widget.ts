@@ -18,6 +18,7 @@ export class Widgetable {
   height = 25
   offsetX = 0
   @fx update_rect() {
+    return
     const { it } = $.of(this)
     const { renderable } = $.of(it)
     const { ctx, rect: r } = $.of(renderable)
