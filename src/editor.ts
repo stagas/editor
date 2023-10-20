@@ -91,6 +91,7 @@ export class Editor extends Scene {
         this.isHovering = it.pointables.some(s =>
           s.pointable.isHovering
         )
+        console.log('HOVERING', this.isHovering)
       }
     }
     return $(new EditorPointable(this))
