@@ -65,7 +65,6 @@ export class Text extends Render {
 
           case 2:
             if (selection.selectWordBoundary(lineCol, shift)) {
-              console.log('yo')
               mouse.downCount = 2
               break
             }

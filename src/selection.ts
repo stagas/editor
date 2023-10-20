@@ -176,7 +176,7 @@ export class Selection extends Render {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
     const { source, code } = $.of(buffer)
-    $.untrack()
+    $._()
     const { top, bottom } = this.getSelectionSorted()
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
@@ -193,12 +193,11 @@ export class Selection extends Render {
   @fx triggerRender() {
     const t = this
     const { viewRect: vr, topPx, bottomPx } = $.of(this)
-    const { ctx } = $.of(t)
+    const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
     const selectionSorted = t.getSelectionSorted()
-    $.untrack()
-    this.selectionSorted = selectionSorted
+    $._()
     const top = buffer.getPointFromLineCol(selectionSorted.top, topPx)
     const bottom = buffer.getPointFromLineCol(selectionSorted.bottom, bottomPx)
     bottom.y += dims.lineHeight
@@ -214,7 +213,7 @@ export class Selection extends Render {
     const { ctx } = $.of(t)
     const { dims } = $.of(ctx)
     const { scroll: { xy }, charWidth } = $.of(dims)
-    $.untrack()
+    $._()
     this.needRender = true
   }
   @fn initCanvas() {
