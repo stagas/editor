@@ -115,7 +115,10 @@ export class Mouse extends Comp {
         break
 
       case PointerEventType.Leave:
-        if (this.hoverItem) this.hoverItem.isHovering = false
+        if (this.hoverItem) {
+          this.hoverItem.isHovering = false
+          this.hoverItem = null
+        }
         pointerTargets.forEach(t =>
           t.pointable.isHovering = false
         )
