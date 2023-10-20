@@ -127,12 +127,14 @@ export class Editor extends Scene {
   get renderable() {
     $()
     const it = this
+    const { misc, scroll } = $.of(it)
+    const { targetScroll, pos: scrollPos } = $.of(scroll)
+    const { renderables } = $.of(it)
     class EditorRenderable extends Renderable {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
       @fx trigger_needDraw() {
-        const { renderables } = $.of(it)
         let needSelfDraw = false
         for (const { renderable: r } of renderables) {
           const { needRender, needDraw } = r
@@ -144,9 +146,6 @@ export class Editor extends Scene {
         }
       }
       @fx trigger_needUpdate_on_scroll() {
-        const { scroll } = $.of(it)
-        const { pos: scrollPos, targetScroll } = $.of(scroll)
-
         const needUpdate =
           Math.round(scrollPos.top) !== targetScroll.top ||
           Math.round(scrollPos.left) !== targetScroll.left
@@ -175,9 +174,8 @@ export class Editor extends Scene {
         this.needInit = false
       }
       @fn update() {
-        const { misc, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
-        const { targetScroll, pos: scrollPos, animSettings } = $.of(scroll)
+        const { animSettings } = $.of(scroll)
 
         const dy = (targetScroll.y - scrollPos.y)
         const dx = (targetScroll.x - scrollPos.x)
