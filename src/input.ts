@@ -11,7 +11,7 @@ export class Input extends Comp {
   mouse = $(new Mouse(this.ctx))
 
   textareaRect = $(new Rect, { w: 50, h: 50 })
-  textarea: HTMLTextAreaElement = dom.el('textarea', {
+  textarea: HTMLTextAreaElement = dom.el('textarea', $({
     oncontextmenu: prevent.stop,
     onkeydown: this.keyboard.handleKeyDown,
     onkeyup: this.keyboard.handleKeyUp,
@@ -39,7 +39,7 @@ export class Input extends Comp {
       z-index: 999999;
       `
     }
-  })
+  }))
 
   @init append_textarea() {
     dom.body.append(this.textarea)
