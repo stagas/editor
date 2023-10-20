@@ -111,13 +111,13 @@ export class Text extends Comp {
 
   get pointable(): $<Pointable> {
     $()
-    const { ctx } = $.of(this)
+    const it = this
+    const { ctx } = $.of(it)
     const { world, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
     const { lineCol } = $.of(mouse)
     const { pointer } = $.of(world)
     const { wheel } = pointer
-    const it = this
 
     class TextPointable extends Pointable {
       cursor = 'text'
@@ -129,6 +129,7 @@ export class Text extends Comp {
         textarea.focus()
       }
       @fn onWheel() {
+        console.log('wheel')
         scroll.targetScroll.mulSub(wheel, 0.2)
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
