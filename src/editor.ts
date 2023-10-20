@@ -180,6 +180,7 @@ export class Editor extends Render {
   updateOne() { return 0 }
   render() { }
   @fn draw(t: number) {
+    console.log('DRAAAAAAAAAAAAAAAAAW')
     const { rect, scenes, canvas, scroll, skin, dims: { viewSpan } } = $.of(this)
     const { c } = canvas
     const { Layout, Scroll } = RenderPosition
