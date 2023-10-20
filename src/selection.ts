@@ -185,6 +185,7 @@ export class Selection extends Comp {
       const exn = Number(exclusive ?? 0)
       let start = match[0] + exn
       let end = match[1] - exn + 1
+      // swap direction depending on which side we are closest.
       if (Math.abs(end - index) > Math.abs(start - index)) {
         [start, end] = [end, start]
       }
