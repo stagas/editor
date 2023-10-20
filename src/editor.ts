@@ -87,6 +87,7 @@ export class Editor extends Render {
   }
   // @ts-expect-error
   get isHovering() {
+    console.log('yo')
     return this.scenes.some(s => s.isHovering)
   }
   @fx maybe_needDraw() {
