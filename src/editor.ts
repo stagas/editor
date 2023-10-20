@@ -118,7 +118,6 @@ export class Editor extends Scene {
         )
       }
       @fn onMenu() {
-        console.log('HOLY FUCK')
         const { real } = $.of(pointer)
         prevent(real)
       }
