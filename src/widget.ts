@@ -75,8 +75,8 @@ export class Widget extends Comp {
   get renderable() {
     $()
     const it = this
-    console.log('RUN')
     class WidgetRenderable extends Renderable {
+      position = RenderableBase.Position.Scroll
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { rect } = $.of(this)
         rect.fill(c, '#666')
