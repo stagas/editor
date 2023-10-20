@@ -1,22 +1,22 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Renderable, RenderPosition } from './render.ts'
-import { Text } from './text.ts'
-import { Selection } from './selection.ts'
-import { Input } from './input.ts'
-import { Dims } from './dims.ts'
-import { AnimScrollStrategy, Scroll } from './scroll.ts'
-import { Buffer } from './buffer.ts'
-import { History } from './history.ts'
-import { Misc } from './misc.ts'
-import { WidgetLike } from './widgets.ts'
 import { Scene } from 'std'
-import { Caret } from './caret.ts'
-import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
+import { Brackets } from './brackets.ts'
+import { Buffer } from './buffer.ts'
+import { Caret } from './caret.ts'
 import { Clipboard } from './clipboard.ts'
-import { Scrollbars } from './scrollbars.ts'
+import { Dims } from './dims.ts'
+import { History } from './history.ts'
+import { Input } from './input.ts'
+import { Misc } from './misc.ts'
 import { Pointable } from './pointable.ts'
+import { Renderable } from './render.ts'
+import { AnimScrollStrategy, Scroll } from './scroll.ts'
+import { Scrollbars } from './scrollbars.ts'
+import { Selection } from './selection.ts'
+import { Text } from './text.ts'
+import { WidgetLike } from './widgets.ts'
 
 interface PointerItem { }
 
@@ -54,8 +54,11 @@ export class Editor extends Scene {
   // renderables
   selection = $(new Selection(this))
   text = $(new Text(this))
-  brackets = $(new Brackets(this), { renderable: { position: RenderPosition.Scroll } })
-  caret = $(new Caret(this), { blink: false, renderable: { position: RenderPosition.Scroll } })
+  brackets = $(new Brackets(this), {
+    renderable: { position: Renderable.Position.Scroll } })
+  caret = $(new Caret(this), {
+    blink: false,
+    renderable: { position: Renderable.Position.Scroll } })
   scrollbars = $(new Scrollbars(this))
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
@@ -132,7 +135,7 @@ export class Editor extends Scene {
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
-        const { targetScroll, pos: scrollPos, animScrollStrategy } = $.of(scroll)
+        const { targetScroll, pos: scrollPos, animStrategy: animScrollStrategy } = $.of(scroll)
 
         const dy = (targetScroll.y - scrollPos.y)
         const dx = (targetScroll.x - scrollPos.x)
@@ -189,11 +192,11 @@ export class Editor extends Scene {
         const { scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
         const { rect, canvas } = $.of(this)
         const { c } = canvas
-        const { Layout, Scroll } = RenderPosition
+        const { Layout, Scroll } = Renderable.Position
 
         rect.fill(c, skin.colors.bg)
 
-        let position: RenderPosition = Layout
+        let position: Renderable.Position = Layout
 
         // if (this.needDirectDraw) {
         for (const { renderable: r } of scenes) {

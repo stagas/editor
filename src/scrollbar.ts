@@ -130,7 +130,7 @@ export class Scrollbar extends Comp {
         const side = sides[dim]
         const co = rect[side] / innerSize[side]
 
-        scroll.animScrollStrategy = AnimScrollStrategy.Fast
+        scroll.animStrategy = AnimScrollStrategy.Fast
 
         scroll.targetScroll[<Dim>dim] =
           it.scrollBegin

@@ -203,7 +203,7 @@ export class Keyboard extends Comp {
         dy = targetLine - b.line
         b.line = targetLine
         scroll.targetScroll.top -= dy * dims.lineHeight
-        scroll.animScrollStrategy = AnimScrollStrategy.Slow
+        scroll.animStrategy = AnimScrollStrategy.Slow
         break
 
       case 'Home':
@@ -427,12 +427,12 @@ export class Keyboard extends Comp {
               break
 
             case 'z':
-              scroll.animScrollStrategy = AnimScrollStrategy.Fast
+              scroll.animStrategy = AnimScrollStrategy.Fast
               history.undo()
               break
 
             case 'y':
-              scroll.animScrollStrategy = AnimScrollStrategy.Fast
+              scroll.animStrategy = AnimScrollStrategy.Fast
               history.redo()
               break
 
@@ -657,7 +657,7 @@ export class Keyboard extends Comp {
     if (!e.key.startsWith('Page')
       && e.key !== 'v') {
       requestAnimationFrame(() => {
-        scroll.animScrollStrategy = AnimScrollStrategy.Fast
+        scroll.animStrategy = AnimScrollStrategy.Fast
       })
     }
 

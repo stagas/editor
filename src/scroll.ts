@@ -4,34 +4,6 @@ import { Point } from 'std'
 import { clamp } from 'utils'
 import { Comp } from './comp.ts'
 
-export interface AnimScrollStrategy {
-  tension: number
-  distance: number
-  amount: number
-  min: number
-}
-
-export const AnimScrollStrategy: Record<string, AnimScrollStrategy> = {
-  "Fast": {
-    "tension": 1,
-    "distance": 100,
-    "amount": 0.5,
-    "min": 0.5
-  },
-  "Medium": {
-    "tension": 2.93,
-    "distance": 500,
-    "amount": 0.6,
-    "min": 0.25
-  },
-  "Slow": {
-    "tension": 0.015,
-    "distance": 1000,
-    "amount": 0.29,
-    "min": 0.01
-  }
-}
-
 export class Scroll extends Comp {
   pos = $(new Point)
   x = this.pos.$.x
@@ -40,7 +12,7 @@ export class Scroll extends Comp {
   minScroll = $(new Point)
   scrollSize = $(new Point)
   targetScroll = $(new Point)
-  animScrollStrategy: AnimScrollStrategy = AnimScrollStrategy.Fast
+  animStrategy: AnimScrollStrategy = AnimScrollStrategy.Fast
 
   @fx update_innerMatrix_translation() {
     const { misc, dims, world } = $.of(this.ctx)
@@ -74,7 +46,7 @@ export class Scroll extends Comp {
 
     dy = viewTop - y
     if (dy > 0) {
-      this.animScrollStrategy = AnimScrollStrategy.Slow
+      this.animStrategy = Scroll.AnimStrategy.Slow
       targetScroll.top += dy
     }
     else {
@@ -84,7 +56,7 @@ export class Scroll extends Comp {
       y = lineBottoms[line] + lineHeight + scrollbarSize.h + 2
       dy = y - viewBottom
       if (dy > 0) {
-        this.animScrollStrategy = AnimScrollStrategy.Slow
+        this.animStrategy = Scroll.AnimStrategy.Slow
         targetScroll.top -= dy
       }
     }
@@ -110,14 +82,14 @@ export class Scroll extends Comp {
 
     dx = viewLeft - (x - charWidth * 10)
     if (dx > 0) {
-      this.animScrollStrategy = AnimScrollStrategy.Slow
+      this.animStrategy = Scroll.AnimStrategy.Slow
       targetScroll.left += dx
     }
     else {
       x += charWidth * 10
       dx = x - viewRight
       if (dx > 0) {
-        this.animScrollStrategy = AnimScrollStrategy.Slow
+        this.animStrategy = Scroll.AnimStrategy.Slow
         targetScroll.left -= dx
       }
     }
@@ -180,5 +152,34 @@ export class Scroll extends Comp {
     $()
     scrollSize.w = w
     scrollSize.h = h
+  }
+}
+
+export namespace Scroll {
+  export interface AnimStrategy {
+    tension: number
+    distance: number
+    amount: number
+    min: number
+  }
+  export const AnimStrategy: Record<string, AnimStrategy> = {
+    "Fast": {
+      "tension": 1,
+      "distance": 100,
+      "amount": 0.5,
+      "min": 0.5
+    },
+    "Medium": {
+      "tension": 2.93,
+      "distance": 500,
+      "amount": 0.6,
+      "min": 0.25
+    },
+    "Slow": {
+      "tension": 0.015,
+      "distance": 1000,
+      "amount": 0.29,
+      "min": 0.01
+    }
   }
 }
