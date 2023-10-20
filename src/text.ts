@@ -12,7 +12,7 @@ export class Text extends Comp {
   get renderable(): $<Renderable> {
     $()
     const it = this
-    const { ctx } = $.of(this)
+    const { ctx } = $.of(it)
     const { buffer, dims, skin } = $.of(ctx)
 
     class TextRenderable extends Renderable {
@@ -59,7 +59,7 @@ export class Text extends Comp {
         this.didInitCanvas = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
-        const { canvas, rect } = $.of(this)
+        const { rect } = $.of(this)
         const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
         const { tokens, Token } = $.of(buffer)
 
