@@ -16,7 +16,7 @@ import { Brackets } from './brackets.ts'
 import { clamp } from 'utils'
 import { Clipboard } from './clipboard.ts'
 import { Scrollbars } from './scrollbars.ts'
-import { Pointable } from './pointable.ts'
+import { ItPointable, Pointable } from './pointable.ts'
 
 interface PointerItem { }
 
@@ -78,7 +78,7 @@ export class Editor extends Render {
       t.scrollbars,
     ]
   }
-  @nu get pointerTargets(): (Render & { pointable: Pointable })[] {
+  @nu get pointerTargets(): (Render & ItPointable)[] {
     const t = $.of(this)
     return [
       t.text,

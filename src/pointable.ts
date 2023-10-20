@@ -1,6 +1,10 @@
 import { Point } from 'std'
 import { Render } from './render.ts'
 
+export interface ItPointable {
+  pointable: Pointable
+}
+
 export class Pointable {
   constructor(public it: Render) {}
   cursor= 'default'
