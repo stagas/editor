@@ -53,7 +53,7 @@ export class Clipboard extends Comp {
     e.preventDefault()
 
     // we check for hover to ensure our intention to paste is in the editor
-    if (!this.ctx.renderable.isHovering) {
+    if (!this.ctx.pointable.isHovering) {
       return false
     }
 
