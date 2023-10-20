@@ -85,8 +85,8 @@ export class Editor extends Scene {
   })
   scrollbars = $(new Scrollbars(this))
 
-  sub: (Widget | (Widget & Pointable.It))[] = []
-  deco: Widget[] = []
+  sub: Widget.It[] = []
+  deco: Widget.It[] = []
 
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
