@@ -1,9 +1,9 @@
 // log.active
 import { $, fn, fx } from 'signal'
+import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './render.ts'
-import { AnimScrollStrategy } from './scroll.ts'
-import { Comp } from './comp.ts'
+import { Scroll } from './scroll.ts'
 
 const dimOpp = {
   x: 'y',
@@ -130,7 +130,7 @@ export class Scrollbar extends Comp {
         const side = sides[dim]
         const co = rect[side] / innerSize[side]
 
-        scroll.animStrategy = AnimScrollStrategy.Fast
+        scroll.animStrategy = Scroll.AnimSettings.Fast
 
         scroll.targetScroll[<Dim>dim] =
           it.scrollBegin

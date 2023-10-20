@@ -12,7 +12,7 @@ export class Scroll extends Comp {
   minScroll = $(new Point)
   scrollSize = $(new Point)
   targetScroll = $(new Point)
-  animStrategy: AnimScrollStrategy = AnimScrollStrategy.Fast
+  animStrategy: Scroll.AnimSettings = Scroll.AnimSettings.Fast
 
   @fx update_innerMatrix_translation() {
     const { misc, dims, world } = $.of(this.ctx)
@@ -20,7 +20,6 @@ export class Scroll extends Comp {
     const { scroll: { x, y } } = $.of(dims)
     const { pr } = $.of(world.screen)
     $()
-
     m.e = x * pr
     m.f = y * pr
   }
@@ -31,7 +30,6 @@ export class Scroll extends Comp {
     const { line } = $.of(buffer)
     const { viewState } = $.of(history)
     $()
-
     if (history.prevViewState !== viewState) return
 
     const { lineTops, lineBottoms, lineHeight, scrollbarSize } = $.of(dims)
@@ -46,7 +44,7 @@ export class Scroll extends Comp {
 
     dy = viewTop - y
     if (dy > 0) {
-      this.animStrategy = Scroll.AnimStrategy.Slow
+      this.animStrategy = Scroll.AnimSettings.Slow
       targetScroll.top += dy
     }
     else {
@@ -56,7 +54,7 @@ export class Scroll extends Comp {
       y = lineBottoms[line] + lineHeight + scrollbarSize.h + 2
       dy = y - viewBottom
       if (dy > 0) {
-        this.animStrategy = Scroll.AnimStrategy.Slow
+        this.animStrategy = Scroll.AnimSettings.Slow
         targetScroll.top -= dy
       }
     }
@@ -82,14 +80,14 @@ export class Scroll extends Comp {
 
     dx = viewLeft - (x - charWidth * 10)
     if (dx > 0) {
-      this.animStrategy = Scroll.AnimStrategy.Slow
+      this.animStrategy = Scroll.AnimSettings.Slow
       targetScroll.left += dx
     }
     else {
       x += charWidth * 10
       dx = x - viewRight
       if (dx > 0) {
-        this.animStrategy = Scroll.AnimStrategy.Slow
+        this.animStrategy = Scroll.AnimSettings.Slow
         targetScroll.left -= dx
       }
     }
@@ -156,13 +154,13 @@ export class Scroll extends Comp {
 }
 
 export namespace Scroll {
-  export interface AnimStrategy {
+  export interface AnimSettings {
     tension: number
     distance: number
     amount: number
     min: number
   }
-  export const AnimStrategy: Record<string, AnimStrategy> = {
+  export const AnimSettings: Record<string, AnimSettings> = {
     "Fast": {
       "tension": 1,
       "distance": 100,

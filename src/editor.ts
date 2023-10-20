@@ -12,7 +12,7 @@ import { Input } from './input.ts'
 import { Misc } from './misc.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './render.ts'
-import { AnimScrollStrategy, Scroll } from './scroll.ts'
+import { Scroll } from './scroll.ts'
 import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
@@ -135,7 +135,7 @@ export class Editor extends Scene {
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
-        const { targetScroll, pos: scrollPos, animStrategy: animScrollStrategy } = $.of(scroll)
+        const { targetScroll, pos: scrollPos, animStrategy: animStrategy } = $.of(scroll)
 
         const dy = (targetScroll.y - scrollPos.y)
         const dx = (targetScroll.x - scrollPos.x)
@@ -149,8 +149,8 @@ export class Editor extends Scene {
           (adx + ady > 55)
             || isTyping
             // || $.isHandlingScrollbar
-            ? animScrollStrategy
-            : AnimScrollStrategy.Slow
+            ? animStrategy
+            : Scroll.AnimSettings.Slow
 
         let isScrolling = false
         if (ady > 1) {
