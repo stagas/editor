@@ -117,10 +117,10 @@ export class Mouse extends Comp {
         break
 
       case PointerEventType.Leave:
-        pointerTargets.forEach(t => {
-if (t.isHovering) {console.log("YOO", t)}
+        if (this.hoverItem) this.hoverItem.it.isHovering = false
+        pointerTargets.forEach(t =>
           t.isHovering = false
-        })
+        )
         break
     }
 
