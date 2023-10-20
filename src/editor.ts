@@ -101,7 +101,7 @@ export class Editor extends Scene {
     //   }
     // }),
   ]
-  deco: Widget[] = [
+  get deco(): Widget[] { return [
     // $(new Widget(this), {
     //   widgetable: {
     //     kind: Widget.Kind.Deco,
@@ -114,7 +114,7 @@ export class Editor extends Scene {
         dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
       }
     }),
-  ]
+  ] }
 
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
