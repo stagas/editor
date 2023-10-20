@@ -4,6 +4,9 @@ import { Comp } from './comp.ts'
 
 let lockPaste = false
 export class Clipboard extends Comp {
+  @fn handleCopy = (e: ClipboardEvent) => {
+    this.ctx.selection.updateTextareaText()
+  }
   handleCut = this.ctx.history.historic((e: ClipboardEvent) => {
     this.ctx.selection.updateTextareaText()
     // timeout otherwise data are removed before they have time to be copied

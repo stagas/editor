@@ -15,6 +15,7 @@ export class Input extends Comp {
     oncontextmenu: prevent.stop,
     onkeydown: this.keyboard.handleKeyDown,
     onkeyup: this.keyboard.handleKeyUp,
+    oncopy: (e: ClipboardEvent) => this.ctx.clipboard.handleCopy(e),
     oncut: (e: ClipboardEvent) => this.ctx.clipboard.handleCut(e),
     onpaste: (e: ClipboardEvent) => this.ctx.clipboard.handlePaste(e),
     onblur: () => { this.ctx.pointable.isFocused = false },
