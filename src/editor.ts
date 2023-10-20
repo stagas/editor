@@ -125,6 +125,7 @@ export class Editor extends Scene {
         this.canvas.fullWindow = true
       }
       @fx maybe_needDraw() {
+        console.log('MAYBE')
         const { renderables } = $.of(it)
         let needDraw = false
         for (const { renderable: r } of renderables) {
