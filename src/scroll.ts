@@ -177,7 +177,7 @@ export class Scroll extends Comp {
     const { innerSize, overscrollX } = $.of(dims)
     const w = innerSize.w + overscrollX
     const h = innerSize.h
-    $.untrack()
+    $()
     scrollSize.w = w
     scrollSize.h = h
   }

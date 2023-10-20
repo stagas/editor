@@ -34,7 +34,7 @@ export class Buffer {
 
   @fx clamp_lineCol() {
     const { lines, line, coli } = $.of(this)
-    $.untrack()
+    $()
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
   }
@@ -118,7 +118,7 @@ export class Buffer {
   }
   @fx update_brackets() {
     const { code, lineCol, line, col, bracketsPair: { open, close } } = $.of(this)
-    $.untrack()
+    $()
     const index = this.getIndexFromCoords(lineCol)
     const brackets = findMatchingBrackets(code, index)
 

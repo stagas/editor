@@ -25,7 +25,7 @@ export class Caret extends Render {
       ctx,
     } = $.of(this)
     const { isFocused } = $.of(ctx)
-    $.untrack()
+    $()
     ind.color1 = isFocused ? color1Focused : color1
     ind.color2 = isFocused ? color2Focused : color2
   }
@@ -34,7 +34,7 @@ export class Caret extends Render {
     const { dims } = $.of(ctx)
     const { charWidth, lineBaseTops } = $.of(dims)
     const { line, col } = pos
-    $.untrack()
+    $()
     r.x = col * charWidth
     r.y = lineBaseTops[line]
   }
@@ -42,7 +42,7 @@ export class Caret extends Render {
     const { pr, rect: r, ctx, ind, blink } = $.of(this)
     const { isFocused, dims } = $.of(ctx)
     const { lineHeight, charWidth } = $.of(dims)
-    $.untrack()
+    $()
     r.w = charWidth || 1
     r.h = lineHeight + 1
     ind.rect.w = r.w + 10
@@ -57,13 +57,13 @@ export class Caret extends Render {
   @fx hide_when_typing() {
     const { hideWhenTyping, ctx } = $.when(this)
     const { misc: { isTyping } } = $.of(ctx)
-    $.untrack()
+    $()
     this.isHidden = isTyping
   }
   @fx hide_when_away() {
     const { hideWhenAway, ctx } = $.when(this)
     const { isHovering } = $.of(ctx)
-    $.untrack()
+    $()
     this.isHidden = !isHovering
   }
   @fx start_blinking() {
@@ -89,7 +89,7 @@ export class Caret extends Render {
     const { ctx, isHidden, rect: { x, y } } = $.of(this)
     const { dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
-    $.untrack()
+    $()
     this.needDraw = true
   }
   @fn initCanvas() {

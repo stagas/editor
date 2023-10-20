@@ -51,7 +51,7 @@ export class Input extends Comp {
   @fx textarea_follows_pointer() {
     const { pos } = this.ctx.world.pointer
     const { x, y } = pos
-    $.untrack()
+    $()
     this.textareaRect.center.set(pos)
   }
   @fx move_textarea() {

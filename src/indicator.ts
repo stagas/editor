@@ -7,7 +7,7 @@ export class Indicator extends Render {
 
   @fx trigger_needRender() {
     const { pr, color1, color2, rect: { w, h } } = $.of(this)
-    $.untrack()
+    $()
     this.needRender = true
   }
 
