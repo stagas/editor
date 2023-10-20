@@ -19,8 +19,6 @@ import { Text } from './text.ts'
 import { Widget } from './widget.ts'
 import { SkeletonWidget } from './skeleton-widgets.ts'
 
-interface PointerItem { }
-
 class Skin {
   get colors() {
     const fg = '#aaa' //theme.brightWhite
