@@ -19,7 +19,7 @@ export class Text extends Render {
   viewRect = $(new Rect)
 
   get pointable(): $<Pointable> {
-    $._()
+    $()
     const { ctx } = $.of(this)
     const { world, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
@@ -104,7 +104,7 @@ export class Text extends Render {
       scroll: { xy },
     } = $.of(dims)
     const { source, tokens, Token } = $.of(buffer)
-    $.untrack()
+    $()
     this.viewRect.setSize(wh)
 
     this.needRender = true

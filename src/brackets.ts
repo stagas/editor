@@ -32,7 +32,7 @@ export class Brackets extends Render {
     } = $.of(buffer)
     const { x: ox, y: oy } = open
     const { x: cx, y: cy } = close
-    $._()
+    $()
     if (!hasBrackets) {
       this.isHidden = true
     }

@@ -55,7 +55,7 @@ export class Selection extends Render {
       top = selection.end
       bottom = selection.start
     }
-    $._()
+    $()
     _sorted.top = top
     _sorted.bottom = bottom
     _sorted.forward = forward
@@ -163,7 +163,7 @@ export class Selection extends Render {
     const { line, col } = $.of(buffer)
     const { keyboard } = $.of(input)
     const { shiftKey } = $.when(keyboard)
-    $._()
+    $()
     selection.end.set({ x: col, y: line })
   }
   @fn updateTextareaText = () => {
@@ -177,7 +177,7 @@ export class Selection extends Render {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, input } = $.of(ctx)
     const { source, code } = $.of(buffer)
-    $._()
+    $()
     const { top, bottom } = this.sorted
     const a = buffer.getIndexFromCoords(top)
     const b = buffer.getIndexFromCoords(bottom)
@@ -197,7 +197,7 @@ export class Selection extends Render {
     const { ctx, selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(this)
     const { buffer, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
-    $._()
+    $()
     const top = buffer.getPointFromLineCol(t.sorted.top, topPx)
     const bottom = buffer.getPointFromLineCol(t.sorted.bottom, bottomPx)
     bottom.y += dims.lineHeight
@@ -213,7 +213,7 @@ export class Selection extends Render {
     const { ctx } = $.of(t)
     const { dims } = $.of(ctx)
     const { scroll: { xy }, charWidth } = $.of(dims)
-    $._()
+    $()
     this.needRender = true
   }
   @fn initCanvas() {
