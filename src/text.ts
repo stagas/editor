@@ -1,7 +1,7 @@
 // log.active
 import { $, fn, fx } from 'signal'
 import { Rect } from 'std'
-import { prevent } from 'utils'
+import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
@@ -145,7 +145,9 @@ export class Text extends Comp {
       }
       @fn onDown(downCount: number) {
         const { real } = $.of(pointer)
-        const { shift } = pointer
+        const { shift, buttons } = pointer
+
+        if (!(buttons & MouseButtons.Left)) return
 
         prevent(real)
 
