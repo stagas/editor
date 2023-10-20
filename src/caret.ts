@@ -22,7 +22,6 @@ export class Caret extends Comp {
     $()
     const it = this
     class CaretRenderable extends Renderable {
-
       @fx update_indicator_focused_color() {
         const {
           ind,
@@ -30,7 +29,7 @@ export class Caret extends Comp {
           color1Focused, color2Focused,
           ctx,
         } = $.of(it)
-        const { renderable: { isFocused } } = $.of(ctx)
+        const { pointable: { isFocused } } = $.of(ctx)
         $()
         ind.color1 = isFocused ? color1Focused : color1
         ind.color2 = isFocused ? color2Focused : color2
@@ -48,7 +47,7 @@ export class Caret extends Comp {
       @fx update_caret() {
         const { pr, rect: r} = $.of(this)
         const {ctx, ind, blink } = $.of(it)
-        const { renderable: { isFocused }, dims } = $.of(ctx)
+        const { pointable: { isFocused }, dims } = $.of(ctx)
         const { lineHeight, charWidth } = $.of(dims)
         $()
         r.w = charWidth || 1
@@ -70,7 +69,7 @@ export class Caret extends Comp {
       }
       @fx hide_when_away() {
         const { hideWhenAway, ctx } = $.when(it)
-        const { renderable: { isHovering } } = $.of(ctx)
+        const { pointable: { isHovering } } = $.of(ctx)
         $()
         it.isHidden = !isHovering
       }
