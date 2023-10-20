@@ -3,6 +3,7 @@ import { $, fn, fx, init } from 'signal'
 import { Range } from './range.ts'
 import { Renderable } from './renderable.ts'
 import { Comp } from './comp.ts'
+import { Pointable } from './pointable.ts'
 
 export class Widgetable {
   constructor(public it: Renderable.It) { }
