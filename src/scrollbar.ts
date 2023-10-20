@@ -40,6 +40,8 @@ export class Scrollbar extends Render {
         this.pointerBegin = p.pos[dim]
       }),
       onMove: fn(() => {
+        if (!this.isDown) return
+
         const { world: { pointer: p }, dim, ctx } = $.of(this)
         const { dims, scroll } = $.of(ctx)
         const { rect, innerSize } = $.of(dims)
