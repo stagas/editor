@@ -40,7 +40,7 @@ export class History extends Comp {
   @fn saveHistoryMeta() {
     const { ctx, viewState: vs } = this
     const { buffer, dims, selection } = $.of(ctx)
-    const { coli, lineCol } = $.of(buffer)
+    const { coli, linecol: lineCol } = $.of(buffer)
     const { scroll } = $.of(dims)
 
     const snapshot: Partial<Snapshot> = {
@@ -102,7 +102,7 @@ export class History extends Comp {
     // before applying rest of snap.
     $.flush()
     buffer.coli = copy.coli
-    buffer.lineCol.set(copy.lineCol)
+    buffer.linecol.set(copy.lineCol)
     scroll.targetScroll.set(copy.scroll)
     selection.selection.set(copy.selection)
   }

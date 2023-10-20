@@ -20,7 +20,7 @@ export class Clipboard extends Comp {
 
     if (selection.hasSelection) selection.deleteSelection.sansHistory()
 
-    const index = buffer.getIndexFromLineCol(buffer.lineCol)
+    const index = buffer.getIndexFromLineCol(buffer.linecol)
 
     // we use $.code here instead of using fn deps, because the
     // deleteSelection call above is potentially modifying it and we need the fresh one.
@@ -31,8 +31,8 @@ export class Clipboard extends Comp {
 
     $.flush()
 
-    buffer.getLineColFromIndex(index + textToPaste.length, buffer.lineCol)
-    buffer.coli = buffer.lineCol.col
+    buffer.getLineColFromIndex(index + textToPaste.length, buffer.linecol)
+    buffer.coli = buffer.linecol.col
 
     // this fixes glitching issues while holding ctrl+v
     let t = performance.now()

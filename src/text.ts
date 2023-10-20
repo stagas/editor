@@ -135,7 +135,7 @@ export class Text extends Comp {
       @fn onMove() {
         if (this.isDown) {
           selection.end.set(lineCol)
-          buffer.lineCol.set(lineCol)
+          buffer.linecol.set(lineCol)
           buffer.coli = lineCol.col
         }
       }
@@ -145,7 +145,7 @@ export class Text extends Comp {
 
         prevent(real)
 
-        buffer.lineCol.set(lineCol)
+        buffer.linecol.set(lineCol)
         buffer.coli = lineCol.col
 
         switch (downCount) {

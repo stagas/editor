@@ -5,6 +5,7 @@ import { clamp, poolArrayGet } from 'utils'
 import { Editor } from './editor.ts'
 import { Source } from './source.ts'
 import { findMatchingBrackets } from './util.ts'
+import { Linecol } from './linecol.ts'
 
 const tempPoint = $(new Point)
 
@@ -17,11 +18,11 @@ export class Buffer {
   @nu get tokens() { return $.of(this).source.tokens }
   @nu get lines() { return $.of(this).source.lines }
 
-  lineCol = $(new Point)
+  linecol = $(new Linecol)
   lineColClamped = $(new Point)
 
-  line = this.lineCol.$.line
-  col = this.lineCol.$.col // actual col
+  line = this.linecol.$.line
+  col = this.linecol.$.col // actual col
   coli = 0 // col intent
 
   bracketsPair = {
@@ -113,7 +114,7 @@ export class Buffer {
     )
   }
   @fx update_brackets() {
-    const { code, lineCol, line, col, bracketsPair: { open, close } } = $.of(this)
+    const { code, linecol: lineCol, line, col, bracketsPair: { open, close } } = $.of(this)
     $()
     const index = this.getIndexFromLineCol(lineCol)
     const brackets = findMatchingBrackets(code, index)

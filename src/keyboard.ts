@@ -419,11 +419,11 @@ export class Keyboard extends Comp {
               break
 
             case 'b':
-              selection.selectMatchingBrackets(b.lineCol)
+              selection.selectMatchingBrackets(b.linecol)
               break
 
             case 'B':
-              selection.selectMatchingBrackets(b.lineCol, true)
+              selection.selectMatchingBrackets(b.linecol, true)
               break
 
             case 'z':
@@ -468,7 +468,7 @@ export class Keyboard extends Comp {
                 b.col = b.coli
               }
               else {
-                const index = b.getIndexFromLineCol(b.lineCol)
+                const index = b.getIndexFromLineCol(b.linecol)
                 const match = findMatchingBrackets(code, index)
                 if (match) {
                   if (code[match[0] + 1] === ';') {
@@ -557,9 +557,9 @@ export class Keyboard extends Comp {
                 + deletedText
                 + c
                 + code.slice(right)
-              b.lineCol.line = line
-              b.lineCol.col = col
-              const index = b.getIndexFromLineCol(b.lineCol)
+              b.linecol.line = line
+              b.linecol.col = col
+              const index = b.getIndexFromLineCol(b.linecol)
               const p = b.getLineColFromIndex(index + 1)
               b.line = p.line
               b.col = b.coli = p.col
