@@ -30,7 +30,7 @@ export class Mouse extends Comp {
   @fn findItemsAtPoint(p: Point): Pointable.It[] {
     const { ctx } = $.of(this)
     const { pointables, text } = $.of(ctx)
-    const items: Pointable.It[] = [text]
+    const items: Pointable.It[] = []
 
     let item: Pointable.It | false | undefined
     for (const { pointable } of pointables) {
