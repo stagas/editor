@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'

@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx } from 'signal'
 import { Point, Rect } from 'std'
 import { Editor } from './editor.ts'

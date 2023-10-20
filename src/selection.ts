@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx } from 'signal'
 import { Line, Point, Rect } from 'std'
 import { debounce } from 'utils'

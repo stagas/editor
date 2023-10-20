@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fx, nu } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'

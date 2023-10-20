@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, init, nu } from 'signal'
 import { Render, RenderPosition } from './render.ts'
 import { Text } from './text.ts'

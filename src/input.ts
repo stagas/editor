@@ -1,4 +1,4 @@
-// log.active
+// // log.active
 import { $, fx, init } from 'signal'
 import { Rect } from 'std'
 import { dom, prevent } from 'utils'
