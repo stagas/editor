@@ -124,16 +124,13 @@ export class Editor extends Scene {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      @fx maybe_needDraw() {
-        console.log('MAYBE')
+      @fx trigger_needDraw() {
         const { renderables } = $.of(it)
-        console.log(renderables)
         let needSelfDraw = false
         for (const { renderable: r } of renderables) {
           const { needRender, needDraw } = r
           needSelfDraw ||= needRender || needDraw || false
         }
-        console.log('WHAT', needSelfDraw)
         if (needSelfDraw) {
           $()
           this.needDraw = true
@@ -170,7 +167,6 @@ export class Editor extends Scene {
         }
         this.needInit = false
       }
-      render() { }
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
