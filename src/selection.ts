@@ -55,6 +55,7 @@ export class Selection extends Render {
       top = selection.end
       bottom = selection.start
     }
+    $._()
     _sorted.top = top
     _sorted.bottom = bottom
     _sorted.forward = forward
