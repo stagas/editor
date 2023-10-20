@@ -70,12 +70,12 @@ export class Widget extends Comp {
   get widgetable() {
     $()
     const it = this
-    console.log('RUN')
     return $(new Widgetable(this))
   }
   get renderable() {
     $()
     const it = this
+    console.log('RUN')
     class WidgetRenderable extends Renderable {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { rect } = $.of(this)
