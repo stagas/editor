@@ -29,6 +29,14 @@ export class History extends Comp {
   }
   prevViewState?: EditorViewState
 
+  @fx update_prevViewState() {
+    const { viewState } = this
+    $()
+    this.prevViewState ??= viewState
+    return () => {
+      this.prevViewState = viewState
+    }
+  }
   @fn saveHistoryMeta() {
     const { ctx, viewState: vs } = this
     const { buffer, dims, selection } = $.of(ctx)
@@ -67,7 +75,7 @@ export class History extends Comp {
 
   historic<T extends (...args: any[]) => any>(fn: T): T & { sansHistory: T } {
     const self = this
-    return Object.assign(function (this: any, ...args: any[]) {
+    return $.fn(Object.assign(function (this: any, ...args: any[]) {
       try {
         self.saveHistory()
         return fn.apply(this, args)
@@ -81,7 +89,7 @@ export class History extends Comp {
       }
     } as T, {
       sansHistory: fn
-    })
+    }))
   }
 
   @fn applySnap(snap: Snapshot) {
@@ -116,13 +124,4 @@ export class History extends Comp {
       this.applySnap(snap)
     }
   })
-
-  @fx update_prevViewState() {
-    const { viewState } = this
-    $()
-    this.prevViewState ??= viewState
-    return () => {
-      this.prevViewState = viewState
-    }
-  }
 }
