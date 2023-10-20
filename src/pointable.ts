@@ -1,8 +1,10 @@
 import { Point } from 'std'
 import { Render } from './render.ts'
 
-export interface ItPointable {
-  pointable: Pointable
+export namespace Pointable {
+  export interface It {
+    pointable: Pointable
+  }
 }
 
 export class Pointable {
