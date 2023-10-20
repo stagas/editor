@@ -23,6 +23,7 @@ const colors = {
 }
 
 export class Elevation extends Range {
+  static create() { return $(new Elevation) }
   depth = 0
 }
 
@@ -102,8 +103,8 @@ export class Elevations extends Comp {
               const el = poolArrayGet(
                 elevationsPool,
                 elevations.length,
-                Elevation.create<Elevation>
-                )
+                Elevation.create
+              )
               el.start.col = start.col
               el.start.line = start.line
               el.end.col = end.col + 1
