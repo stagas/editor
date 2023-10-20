@@ -17,7 +17,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
-import { SkeletonDeco } from './skeleton-widgets.ts'
+import { SkeletonWidget } from './skeleton-widgets.ts'
 
 interface PointerItem { }
 
@@ -88,10 +88,10 @@ export class Editor extends Scene {
 
   sub: Widget.It[] = []
   deco: Widget.It[] = [
-    $(new SkeletonDeco(this), {
+    $(new SkeletonWidget(this), {
       dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
     }),
-    $(new SkeletonDeco(this), {
+    $(new SkeletonWidget(this), {
       dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
     }),
   ]
