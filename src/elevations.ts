@@ -162,14 +162,15 @@ export class Elevations extends Comp {
             colors.light,
             colors.dark,
           )
+          console.log('FILL!')
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         const { rect } = $.of(this)
         const { isTyping } = $.of(misc)
-        // if (clear) {
-        //   rect.clear(c)
-        // }
+        if (clear) {
+          rect.clear(c)
+        }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
@@ -184,7 +185,6 @@ export class Elevations extends Comp {
         const { canvas, rect, pr } = $.of(this)
         rect.drawImage(canvas.el, c, pr, true)
         this.needDraw = false
-        console.log(it.elevations)
       }
 
     }
