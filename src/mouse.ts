@@ -59,7 +59,7 @@ export class Mouse extends Comp {
 
     buffer.getLineColFromPoint(pos, true, lineCol)
 
-    log(PointerEventMap[type])
+    console.log(PointerEventMap[type])
 
     if (type === Move && downItem) {
       downItem[PointerEventMap[type]]?.()
