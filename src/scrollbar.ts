@@ -30,17 +30,14 @@ export class Scrollbar extends Render {
 
   get pointable(): $<Pointable> {
     $._()
-    const { world: { pointer: p }, dim, ctx } = $.of(this)
+    const { world: { pointer }, dim, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
     return $(new Pointable(this), {
       hitArea: this.rect,
-      // getItemAtPoint: fn((p: Point): false | $<Pointable> => {
-      //   return this.rect.isPointWithin(p) && this.pointable
-      // }),
       onDown: fn(() => {
         this.scrollBegin = scroll[dim]
-        this.pointerBegin = p.pos[dim]
+        this.pointerBegin = pointer.pos[dim]
       }),
       onMove: fn(() => {
         if (!this.isDown) return
@@ -52,7 +49,7 @@ export class Scrollbar extends Render {
         // scroll.pos[<Dim>dim] =
         scroll.targetScroll[<Dim>dim] =
           this.scrollBegin
-          - (p.pos[dim] - this.pointerBegin) / co
+          - (pointer.pos[dim] - this.pointerBegin) / co
 
         // $.flush()
 
@@ -80,9 +77,8 @@ export class Scrollbar extends Render {
     const { dim, ctx, rect: r } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { scrollSize } = $.of(scroll)
-    const { absSum: ab1 } = $.when(scrollSize)
+    const { hasSize } = $.when(scrollSize)
     const { rect, scrollbarSize } = $.of(dims)
-    // const { absSum: ab2 } = $.when(scrollbarSize)
 
     const s = sides[dim]
     const so = sidesOpp[dim]
