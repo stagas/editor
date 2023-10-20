@@ -7,6 +7,7 @@ import { Range } from './range.ts'
 import { Renderable } from './renderable.ts'
 import { SourceToken } from './source.ts'
 import { Open, openers } from './util.ts'
+import { Editor } from './editor.ts'
 
 const colors = {
   hover: {
@@ -39,6 +40,9 @@ export class Elevations extends Comp {
     const { ctx, drawnElevations } = $.of(it)
     const { misc, buffer, dims, scroll, input: { mouse }, brackets } = $.of(ctx)
     class ElevationsRenderable extends Renderable {
+      constructor(public ctx: Editor) {
+        super(ctx, ctx.renderable.rect)
+      }
       @fx trigger_needRender() {
         const { rect: r } = $.of(this)
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
@@ -182,7 +186,6 @@ export class Elevations extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = $.of(this)
-        console.log(rect.text)
         rect.drawImage(canvas.el, c, pr, true)
         this.needDraw = false
       }
