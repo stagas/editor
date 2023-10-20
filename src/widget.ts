@@ -86,6 +86,9 @@ export class Widget extends Comp {
     }
     return $(new WidgetRenderable(this.ctx))
   }
+  @init init_widgetable() {
+    this.widgetable
+  }
 }
 
 export namespace Widget {
