@@ -16,7 +16,6 @@ export class Widget extends Comp {
   dimWidthExclusive = false
   height = 25
   offsetX = 0
-  draw(t: number, c: CanvasRenderingContext2D): void {}
 }
 
 export namespace Widget {
@@ -80,11 +79,6 @@ export namespace Widget {
           break
       }
       this.needDraw = true
-    }
-    draw(t: number, c: CanvasRenderingContext2D) {
-      const { it } = this
-      it.draw(t, c)
-      this.needDraw = false
     }
   }
 
