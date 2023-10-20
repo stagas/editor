@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { Pointable } from './pointable.ts'
