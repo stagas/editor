@@ -17,6 +17,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
+import { SkeletonDeco } from './skeleton-widgets.ts'
 
 interface PointerItem { }
 
@@ -96,6 +97,9 @@ export class Editor extends Scene {
       t.brackets,
       t.caret,
       t.scrollbars,
+      $(new SkeletonDeco(this), {
+        renderable: { dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } } }
+      })
     ]
   }
   @nu get pointables(): (Renderable.It & Pointable.It)[] {
