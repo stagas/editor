@@ -143,7 +143,7 @@ export class Editor extends Scene {
           this.needDraw = true
         }
       }
-      @fx trigger_update_when_scroll() {
+      @fx trigger_needUpdate_on_scroll() {
         const { scroll } = $.of(it)
         const { pos: scrollPos, targetScroll } = $.of(scroll)
 
@@ -156,13 +156,13 @@ export class Editor extends Scene {
           this.needUpdate = true
         }
       }
-      @fx trigger_anim_on_needUpdateOrDraw() {
-        const { world, needInit, needUpdate, needDraw } = this
+      @fx trigger_anim_on_need() {
+        const { needInit, needUpdate, needDraw, world: { anim } } = this
 
         if (needInit || needUpdate || needDraw) {
-          if (!world.anim.isAnimating) {
+          if (!anim.isAnimating) {
             $()
-            world.anim.start()
+            anim.start()
           }
         }
       }
