@@ -4,6 +4,7 @@ import { Widget } from './widget.ts'
 
 export class SkeletonDeco extends Comp {
   get renderable() {
+    $()
     const it = this
     class SkeletonDecoRenderable extends Widget.Renderable {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
