@@ -48,6 +48,7 @@ export class Scrollbar extends Render {
         const co = rect[side] / innerSize[side]
 
         scroll.animScrollStrategy = AnimScrollStrategy.Fast
+        scroll.pos[<Dim>dim] =
         scroll.targetScroll[<Dim>dim] =
           this.scrollBegin
           - (p.pos[dim] - this.pointerBegin) / co
