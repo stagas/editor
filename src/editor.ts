@@ -129,7 +129,6 @@ export class Editor extends Render {
     const dy = (targetScroll.y - scrollPos.y)
     const dx = (targetScroll.x - scrollPos.x)
 
-    console.log(dy, dx)
     const ady = Math.abs(dy)
     const adx = Math.abs(dx)
 
