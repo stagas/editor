@@ -56,7 +56,7 @@ export class Mouse extends Comp {
       buffer.getLineColFromPoint(pos, true, linecol)
       misc.isTyping = false
     }
-    if (type === Move && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
+    if (type !== Wheel && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
       misc.wasScrolling = false
     }
 
