@@ -30,30 +30,30 @@ export class Scrollbar extends Render {
 
   get pointable(): $<Pointable> {
     $._()
+    const { world: { pointer: p }, dim, ctx } = $.of(this)
+    const { dims, scroll } = $.of(ctx)
+    const { rect, innerSize } = $.of(dims)
     return $(new Pointable(this), {
       getItemAtPoint: fn((p: Point): false | $<Pointable> => {
         return this.rect.isPointWithin(p) && this.pointable
       }),
       onDown: fn(() => {
-        const { world: { pointer: p }, dim, ctx: { scroll } } = $.of(this)
         this.scrollBegin = scroll[dim]
         this.pointerBegin = p.pos[dim]
       }),
       onMove: fn(() => {
         if (!this.isDown) return
 
-        const { world: { pointer: p }, dim, ctx } = $.of(this)
-        const { dims, scroll } = $.of(ctx)
-        const { rect, innerSize } = $.of(dims)
-
         const side = sides[dim]
         const co = rect[side] / innerSize[side]
 
-        scroll.pos[<Dim>dim] =
-          scroll.targetScroll[<Dim>dim] =
+        scroll.targetScroll[<Dim>dim] =
           this.scrollBegin
           - (p.pos[dim] - this.pointerBegin) / co
 
+        $.flush()
+
+        scroll.pos[<Dim>dim] = scroll.targetScroll[<Dim>dim]
         scroll.animScrollStrategy = AnimScrollStrategy.Fast
 
         // ctx.needUpdate = true
@@ -82,7 +82,7 @@ export class Scrollbar extends Render {
     r[s] = w
     r[so] = scrollbarSize[so]
   }
-  initCanvas() {   }
+  initCanvas() { }
   update() { return 0 }
   updateOne() { return 0 }
   @fn render() {
