@@ -122,11 +122,10 @@ export class Mouse extends Comp {
     }
 
     const handler = PointerEventMap[type]
-    while (currentItem && !currentItem[handler]) {
-      currentItem = items[--itemIndex]
-      console.log('TEST', currentItem)
+    let receiver: Pointable | undefined = currentItem
+    while (receiver && !receiver[handler]) {
+      receiver = items.at(--itemIndex)
     }
-    console.log(handler, currentItem, items)
-    currentItem?.[handler]?.()
+    receiver?.[handler]?.()
   }
 }
