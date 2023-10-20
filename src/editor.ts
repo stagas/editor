@@ -30,10 +30,13 @@ interface Skin {
 type Colors = Record<string, string>
 
 export class Editor extends Scene {
-  get renderable(){
+  get renderable() {
     $()
     const it = this
     class EditorRenderable extends Renderable {
+      @init init_Editor() {
+        this.canvas.fullWindow = true
+      }
       @fx update_hovering() {
         this.isHovering = it.scenes.some(s => s.renderable.isHovering)
       }
@@ -77,6 +80,7 @@ export class Editor extends Scene {
         }
         this.needInit = false
       }
+      render() {}
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
@@ -133,11 +137,9 @@ export class Editor extends Scene {
         // console.log(this.needUpdate)
         // return +this.needUpdate
       }
-      updateOne() { return 0 }
-      render() { }
       @fn draw(t: number) {
         const { scenes, scroll, skin, dims: { viewSpan } } = $.of(it)
-        const { rect,canvas} = $.of(this)
+        const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = RenderPosition
 
@@ -244,15 +246,12 @@ export class Editor extends Scene {
   selection = $(new Selection(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this), { renderable: { renderPosition: RenderPosition.Scroll } })
-  caret = $(new Caret(this), { blink: false, renderable: { renderPosition: RenderPosition.Scroll   } })
+  caret = $(new Caret(this), { blink: false, renderable: { renderPosition: RenderPosition.Scroll } })
   scrollbars = $(new Scrollbars(this))
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
   deco: WidgetLike[] = []
 
-  @init init_Editor() {
-    this.renderable.canvas.fullWindow = true
-  }
   @nu get scenes(): Renderable.It[] {
     const t = $.of(this)
     return [
