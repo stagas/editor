@@ -1,6 +1,6 @@
 import { $ } from 'signal'
 import { Line } from 'std'
-import { Linecol } from './linecol'
+import { Linecol } from './linecol.ts'
 
 export class Range extends Line {
   p1 = $(new Linecol)
