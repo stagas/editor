@@ -98,7 +98,7 @@ export class Editor extends Scene {
       t.caret,
       t.scrollbars,
       $(new SkeletonDeco(this), {
-        renderable: { dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } } }
+        renderable: { dim: { p1: { y: 0, x: 1 }, p2: { y: 0, x: 4 } } }
       })
     ]
   }
