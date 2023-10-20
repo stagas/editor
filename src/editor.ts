@@ -17,7 +17,6 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
-import { SkeletonWidget } from './skeleton-widget.ts'
 
 class Skin {
   get colors() {
@@ -63,6 +62,7 @@ class Skin {
 }
 
 export class Editor extends Scene {
+  // core
   misc = $(new Misc)
   skin = $(new Skin)
   history = $(new History(this))
@@ -84,6 +84,7 @@ export class Editor extends Scene {
   })
   scrollbars = $(new Scrollbars(this))
 
+  // widgets
   sub: Widget.It[] = [
     $(new Widget(this), {
       kind: Widget.Kind.Sub,
