@@ -44,7 +44,7 @@ export class Elevations extends Comp {
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
         const { line, col, code, hasBrackets, bracketsPair: { open } } = $.of(buffer)
         const { xy: oxy } = open
-        const { lineTops } = $.of(dims)
+        const { lineTops, charWidth } = $.of(dims)
         const { isScrolling } = $.of(misc)
         const { scroll: { xy } } = $.of(scroll)
         const { linecol: { line: _l, col: _c } } = $.of(mouse)
