@@ -52,7 +52,7 @@ export class Scrollbar extends Render {
           this.scrollBegin
           - (p.pos[dim] - this.pointerBegin) / co
 
-        $.flush()
+        // $.flush()
 
         scroll.pos[<Dim>dim] = scroll.targetScroll[<Dim>dim]
 
