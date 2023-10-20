@@ -48,7 +48,7 @@ export class Buffer {
     // $.code = lines.join('\n')
   }
 
-  getIndexFromCoords(
+  getIndexFromLineCol(
     { x, y }: PointLike): number {
     const { code } = this
     const lines = code
@@ -119,7 +119,7 @@ export class Buffer {
   @fx update_brackets() {
     const { code, lineCol, line, col, bracketsPair: { open, close } } = $.of(this)
     $()
-    const index = this.getIndexFromCoords(lineCol)
+    const index = this.getIndexFromLineCol(lineCol)
     const brackets = findMatchingBrackets(code, index)
 
     if (brackets) {

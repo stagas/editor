@@ -20,7 +20,7 @@ export class Clipboard extends Comp {
 
     if (selection.hasSelection) selection.deleteSelection.sansHistory()
 
-    const index = buffer.getIndexFromCoords(buffer.lineCol)
+    const index = buffer.getIndexFromLineCol(buffer.lineCol)
 
     // we use $.code here instead of using fn deps, because the
     // deleteSelection call above is potentially modifying it and we need the fresh one.

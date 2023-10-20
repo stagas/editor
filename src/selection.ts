@@ -124,8 +124,8 @@ export class Selection extends Comp {
   @fn getSelectionIndexes() {
     const { buffer } = $.of(this.ctx)
     const { top, bottom } = this.sorted
-    const a = buffer.getIndexFromCoords(top)
-    const b = buffer.getIndexFromCoords(bottom)
+    const a = buffer.getIndexFromLineCol(top)
+    const b = buffer.getIndexFromLineCol(bottom)
     tempPoint.left = a
     tempPoint.right = b
     return tempPoint
@@ -139,8 +139,8 @@ export class Selection extends Comp {
       if (selection.start.equals(selection.end)) return ''
 
       const { top, bottom } = this.sorted
-      const a = buffer.getIndexFromCoords(top)
-      const b = buffer.getIndexFromCoords(bottom)
+      const a = buffer.getIndexFromLineCol(top)
+      const b = buffer.getIndexFromLineCol(bottom)
       const removing = code.slice(a, b)
       const charRight = code[b]!
 
@@ -179,7 +179,7 @@ export class Selection extends Comp {
     const { buffer } = $.of(ctx)
     const { code } = $.of(buffer)
 
-    const index = buffer.getIndexFromCoords(p)
+    const index = buffer.getIndexFromLineCol(p)
     const match = findMatchingBrackets(code, index)
     if (match) {
       const exn = Number(exclusive ?? 0)
@@ -244,8 +244,8 @@ export class Selection extends Comp {
     const { source, code } = $.of(buffer)
     $()
     const { top, bottom } = this.sorted
-    const a = buffer.getIndexFromCoords(top)
-    const b = buffer.getIndexFromCoords(bottom)
+    const a = buffer.getIndexFromLineCol(top)
+    const b = buffer.getIndexFromLineCol(bottom)
     this.text = code.slice(a, b)
     // this.updateTextareaTextDebounced()
   }

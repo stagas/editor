@@ -397,8 +397,8 @@ export class Keyboard extends Comp {
               history.saveHistoryDebounced()
               if (hasSelection) {
                 const { top, bottom } = selection.sorted
-                const p1 = b.getIndexFromCoords(top)
-                const p2 = b.getIndexFromCoords(bottom)
+                const p1 = b.getIndexFromLineCol(top)
+                const p2 = b.getIndexFromLineCol(bottom)
                 b.code = code.slice(0, p2)
                   + code.slice(p1, p2)
                   + code.slice(p2)
@@ -444,8 +444,8 @@ export class Keyboard extends Comp {
 
               if (hasSelection) {
                 const { top, bottom } = selection.sorted
-                const p1 = b.getIndexFromCoords(top)
-                const p2 = b.getIndexFromCoords(bottom)
+                const p1 = b.getIndexFromLineCol(top)
+                const p2 = b.getIndexFromLineCol(bottom)
                 const dx = 2 + (top.y === bottom.y ? 2 : 0)
                 if (code.slice(p1, p1 + 2) === '/;'
                   && code.slice(p2 - 2, p2) === ';/'
@@ -468,7 +468,7 @@ export class Keyboard extends Comp {
                 b.col = b.coli
               }
               else {
-                const index = b.getIndexFromCoords({ x: b.col, y: b.line })
+                const index = b.getIndexFromLineCol({ x: b.col, y: b.line })
                 const match = findMatchingBrackets(code, index)
                 if (match) {
                   if (code[match[0] + 1] === ';') {
@@ -558,7 +558,7 @@ export class Keyboard extends Comp {
                 + code.slice(right)
               b.lineCol.line = line
               b.lineCol.col = col
-              const index = b.getIndexFromCoords(b.lineCol)
+              const index = b.getIndexFromLineCol(b.lineCol)
               const p = b.getLineColFromIndex(index + 1)
               b.line = p.line
               b.col = b.coli = p.col
