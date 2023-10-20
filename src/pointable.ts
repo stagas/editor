@@ -1,3 +1,4 @@
+import { $ } from 'signal'
 import { Point } from 'std'
 import { Renderable } from './renderable.ts'
 
@@ -22,6 +23,6 @@ export class Pointable {
 
 export namespace Pointable {
   export interface It {
-    pointable: Pointable
+    pointable: $<Pointable>
   }
 }

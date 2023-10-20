@@ -87,7 +87,7 @@ export class Editor extends Scene {
   scrollbars = $(new Scrollbars(this))
 
   // widgets
-  sub: Widget[] = [
+  sub: Widget.It[] = [
     $(new Widget(this), {
       widgetable: {
         kind: Widget.Kind.Sub,
@@ -101,7 +101,7 @@ export class Editor extends Scene {
       }
     }),
   ]
-  get deco(): Widget[] {
+  get deco(): Widget.It[] {
     $()
     return [
     $(new Widget(this), {
@@ -136,6 +136,7 @@ export class Editor extends Scene {
     return [
       this,
       t.text,
+      ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
       t.scrollbars,
     ]
   }
