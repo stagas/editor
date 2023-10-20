@@ -134,6 +134,7 @@ export class Text extends Comp {
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
+        console.log('moving')
         if (this.isDown) {
           selection.end.set(lineCol)
           buffer.lineCol.set(lineCol)
