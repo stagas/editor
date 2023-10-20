@@ -71,7 +71,6 @@ export class Widget extends Comp {
   get widgetable() {
     $()
     const it = this
-    console.log('YES')
     return $(new Widgetable(this))
   }
   get renderable() {
