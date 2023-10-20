@@ -115,7 +115,7 @@ export class Text extends Comp {
     const { ctx } = $.of(it)
     const { world, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
-    const { lineCol } = $.of(mouse)
+    const { linecol: lineCol } = $.of(mouse)
     const { pointer } = $.of(world)
     const { wheel } = pointer
 

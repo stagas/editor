@@ -16,7 +16,7 @@ const PointerEventMap = {
 } as const
 
 export class Mouse extends Comp {
-  lineCol = $(new Point)
+  linecol = $(new Point)
 
   downCount = 0
   downTime = 0
@@ -48,7 +48,7 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $()
     const { type, pos } = pointer
-    const { lineCol, downIt, hoverIt } = this
+    const { linecol: lineCol, downIt, hoverIt } = this
 
     buffer.getLineColFromPoint(pos, true, lineCol)
 
