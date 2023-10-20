@@ -28,7 +28,7 @@ export class Renderable extends Scene {
   }
 
   coeff = 1
-  place: RenderPosition = RenderPosition.Layout
+  position: RenderPosition = RenderPosition.Layout
   viewRect?: $<Rect>
 
   needInit?: boolean

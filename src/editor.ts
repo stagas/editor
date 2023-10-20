@@ -54,8 +54,8 @@ export class Editor extends Scene {
   // renderables
   selection = $(new Selection(this))
   text = $(new Text(this))
-  brackets = $(new Brackets(this), { renderable: { place: RenderPosition.Scroll } })
-  caret = $(new Caret(this), { blink: false, renderable: { place: RenderPosition.Scroll } })
+  brackets = $(new Brackets(this), { renderable: { position: RenderPosition.Scroll } })
+  caret = $(new Caret(this), { blink: false, renderable: { position: RenderPosition.Scroll } })
   scrollbars = $(new Scrollbars(this))
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
@@ -197,15 +197,15 @@ export class Editor extends Scene {
 
         // if (this.needDirectDraw) {
         for (const { renderable: r } of scenes) {
-          if (r.place !== position) {
-            if (r.place === Scroll) {
+          if (r.position !== position) {
+            if (r.position === Scroll) {
               c.save()
               scroll.pos.translate(c)
             }
             else {
               c.restore()
             }
-            position = r.place
+            position = r.position
           }
 
           const viewRect = r.viewRect ?? r.rect
