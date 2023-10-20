@@ -16,7 +16,7 @@ import { Scroll } from './scroll.ts'
 import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
-import { WidgetLike } from './widgets.ts'
+import { Widget } from './widgets.ts'
 
 interface PointerItem { }
 
@@ -85,8 +85,8 @@ export class Editor extends Scene {
   })
   scrollbars = $(new Scrollbars(this))
 
-  sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
-  deco: WidgetLike[] = []
+  sub: (Widget | (Widget & Pointable.It))[] = []
+  deco: Widget[] = []
 
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
