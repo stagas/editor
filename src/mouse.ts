@@ -76,7 +76,7 @@ export class Mouse extends Comp {
       downItem.it.isDown = false
     }
 
-    console.log(hoverItem?.it, currentItem.it)
+    console.log('HNMM', hoverItem?.it, currentItem.it)
     if (!downItem?.it.isDown && hoverItem !== currentItem) {
       this.hoverItem = currentItem
 
