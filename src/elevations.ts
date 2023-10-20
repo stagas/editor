@@ -146,6 +146,7 @@ export class Elevations extends Comp {
               colors.light,
               colors.dark,
             )
+            console.log('FILL!')
           }
         }
 
