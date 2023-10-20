@@ -17,7 +17,6 @@ export class Brackets extends Comp {
         const { dims } = $.of(ctx)
         const { lineHeight, charWidth } = $.of(dims)
         $()
-        if (!charWidth) return
         rect.w = rect1.w = rect2.w = Math.floor(charWidth + 6)
         rect.h = rect1.h = rect2.h = Math.floor(lineHeight + 6)
         this.needRender = true
