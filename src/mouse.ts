@@ -52,7 +52,7 @@ export class Mouse extends Comp {
     const { type, pos } = pointer
     const { linecol, downIt, hoverIt } = this
 
-    if (type !== Wheel && !misc.isScrolling && !misc.wasScrolling && ctx.pointable.isHovering) {
+    if (type === Down || (type !== Wheel && !misc.isScrolling && !misc.wasScrolling && ctx.pointable.isHovering)) {
       buffer.getLineColFromPoint(pos, true, linecol)
       misc.isTyping = false
     }
