@@ -88,9 +88,11 @@ export class Editor extends Scene {
 
   sub: Widget.It[] = [
     $(new SkeletonWidget(this), {
+      kind: Widget.Kind.Sub,
       dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
     }),
     $(new SkeletonWidget(this), {
+      kind: Widget.Kind.Sub,
       dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
     }),
   ]
