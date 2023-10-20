@@ -1,7 +1,7 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
 import { Scene } from 'std'
-import { clamp, luminate as lum, saturate as sat } from 'utils'
+import { clamp, luminate as lum, prevent, saturate as sat } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -108,11 +108,16 @@ export class Editor extends Scene {
   get pointable() {
     $()
     const it = this
+    const { world: { pointer } } = $.of(this)
     class EditorPointable extends Pointable {
       @fx update_hovering() {
         this.isHovering = it.pointables.some(s =>
           s.pointable.isHovering
         )
+      }
+      @fn onMenu() {
+        const { real } = $.of(pointer)
+        prevent(real)
       }
     }
     return $(new EditorPointable(this))
