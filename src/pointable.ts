@@ -4,6 +4,9 @@ import { Renderable } from './renderable.ts'
 export class Pointable {
   constructor(public it: Renderable.It) {}
   cursor= 'default'
+  isDown = false
+  isFocused = false
+  isHovering = false
   hitArea?: { isPointWithin(p: Point): boolean }
   getItemAtPoint(p: Point): Pointable | false | undefined {
     return this.hitArea?.isPointWithin(p) && this

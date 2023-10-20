@@ -25,10 +25,6 @@ export class Renderable extends Scene {
   needDirectDraw?: boolean
 
   isVisible = false
-  isDown = false
-  isFocused = false
-  isHovering = false
-
   initCanvas(c: CanvasRenderingContext2D): void {}
   update(deltaTime: number): number { return 0}
   updateOne(deltaTime: number): number { return 0}

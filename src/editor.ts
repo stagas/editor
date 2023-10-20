@@ -55,10 +55,12 @@ export class Editor extends Scene {
   selection = $(new Selection(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this), {
-    renderable: { position: Renderable.Position.Scroll } })
+    renderable: { position: Renderable.Position.Scroll }
+  })
   caret = $(new Caret(this), {
     blink: false,
-    renderable: { position: Renderable.Position.Scroll } })
+    renderable: { position: Renderable.Position.Scroll }
+  })
   scrollbars = $(new Scrollbars(this))
 
   sub: (WidgetLike | (WidgetLike & PointerItem))[] = []
@@ -86,7 +88,9 @@ export class Editor extends Scene {
     const it = this
     class EditorPointable extends Pointable {
       @fx update_hovering() {
-        this.isHovering = it.renderables.some(s => s.pointable.isHovering)
+        this.isHovering = it.pointables.some(s =>
+          s.pointable.isHovering
+        )
       }
     }
     return $(new EditorPointable(this))
@@ -138,7 +142,7 @@ export class Editor extends Scene {
         }
         this.needInit = false
       }
-      render() {}
+      render() { }
       @fn update() {
         const { misc, dims, scroll } = $.of(it)
         const { isTyping } = $.of(misc)

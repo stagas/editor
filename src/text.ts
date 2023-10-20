@@ -133,7 +133,7 @@ export class Text extends Comp {
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
-        if (it.renderable.isDown) {
+        if (this.isDown) {
           selection.end.set(lineCol)
           buffer.lineCol.set(lineCol)
           buffer.coli = lineCol.col
