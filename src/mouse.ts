@@ -1,12 +1,9 @@
-log.active
+// log.active
 import { $, fn, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
-import { prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
-import { AnimScrollStrategy } from './scroll.ts'
 import { Pointable } from './pointable.ts'
-import { Render } from './render.ts'
 
 const { Wheel, Down, Up, Leave, Move } = PointerEventType
 
@@ -120,4 +117,3 @@ export class Mouse extends Comp {
     currentItem[PointerEventMap[type]]?.()
   }
 }
-
