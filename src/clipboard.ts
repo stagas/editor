@@ -4,13 +4,13 @@ import { Comp } from './comp.ts'
 
 let lockPaste = false
 export class Clipboard extends Comp {
-  @fn handleCut = this.ctx.history.historic((e: ClipboardEvent) => {
+  handleCut = this.ctx.history.historic((e: ClipboardEvent) => {
     // timeout otherwise data are removed before they have time to be copied
     setTimeout(() => {
       this.ctx.selection.deleteSelection()
     })
   })
-  @fn handlePasteHistoric = this.ctx.history.historic((e: ClipboardEvent) => {
+  handlePasteHistoric = this.ctx.history.historic((e: ClipboardEvent) => {
     const { buffer, selection } = this.ctx
     const textToPaste = e.clipboardData!.getData("text")
 
