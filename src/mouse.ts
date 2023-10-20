@@ -49,15 +49,14 @@ export class Mouse extends Comp {
     const { pointer } = $.of(world)
     const { time, real } = $.of(pointer)
     $()
-    $.flush()
     const { type, pos } = pointer
-    const { linecol: lineCol, downIt, hoverIt } = this
+    const { linecol, downIt, hoverIt } = this
 
     if (type !== Wheel && !misc.isScrolling && !misc.wasScrolling && ctx.pointable.isHovering) {
-      buffer.getLineColFromPoint(pos, true, lineCol)
+      buffer.getLineColFromPoint(pos, true, linecol)
       misc.isTyping = false
     }
-    if (!misc.isScrolling && misc.wasScrolling) {
+    if (type === Move && !misc.isScrolling && misc.wasScrolling) {
       misc.wasScrolling = false
     }
 
