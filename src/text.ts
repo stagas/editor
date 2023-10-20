@@ -54,7 +54,7 @@ export class Text extends Render {
 
         buffer.lineCol.set(lineCol)
         buffer.coli = lineCol.col
-
+console.log('yo', lineCol.text)
         switch (downCount) {
           case 1:
             if (shift) {
