@@ -1,4 +1,4 @@
-import { $, fn, fx } from 'signal'
+import { $, fn, fx, init } from 'signal'
 import { Range } from './range.ts'
 import { Renderable } from './renderable.ts'
 import { Comp } from './comp.ts'
