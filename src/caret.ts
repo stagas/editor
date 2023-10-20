@@ -123,7 +123,6 @@ export class Caret extends Comp {
           c.restore()
         }
         this.needDraw = false
-        this.didDraw = true
       }
     }
     return $(new CaretRenderable(this.ctx))
