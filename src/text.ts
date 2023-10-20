@@ -40,7 +40,7 @@ export class Text extends Render {
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
       }),
       onMove: fn(() => {
-        if (ctx.isDown) {
+        if (this.isDown) {
           selection.end.set(lineCol)
           buffer.lineCol.set(lineCol)
           buffer.coli = lineCol.col
