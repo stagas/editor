@@ -51,13 +51,15 @@ export class Scrollbar extends Comp {
   get renderable() {
     $()
     const it = this
+    const { ctx } = $.of(it)
+    const { skin } = $.of(ctx)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
         const { rect } = $.of(this)
-        const { pointable } = $.of(it)
-        const {isHovering} = $.of(pointable)
         const { hasSize } = $.when(rect)
         const { w, h } = $.of(rect)
+        const { pointable } = $.of(it)
+        const { isHovering } = $.of(pointable)
         $()
         this.needRender = true
       }
@@ -69,15 +71,12 @@ export class Scrollbar extends Comp {
         this.needDraw = true
       }
       @fn render() {
-        const { canvas, pr, rect, ctx } = $.of(this)
-        const { pointable } = $.of(it)
-        const {isHovering} = $.of(pointable)
+        const { canvas, pr, rect } = $.of(this)
         const { c } = $.of(canvas)
-        const { skin } = $.of(ctx)
+        const { pointable } = $.of(it)
+        const { isHovering } = $.of(pointable)
+
         const alpha = '6'
-        // c.restore()
-        // c.save()
-        // c.scale(pr, pr)
         c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
           (isHovering
@@ -100,8 +99,6 @@ export class Scrollbar extends Comp {
         c.lineWidth = 3
         c.strokeStyle = skin.colors.bgBright25 + alpha
         c.stroke()
-
-        // c.restore()
 
         this.needRender = false
         this.needDraw = true
