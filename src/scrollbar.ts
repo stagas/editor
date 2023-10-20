@@ -112,7 +112,7 @@ export class Scrollbar extends Comp {
     }
     return $(new ScrollbarRenderable(this.ctx))
   }
-  get pointable(): $<Pointable> {
+  get pointable() {
     $()
     const it = this
     const { axis, ctx } = $.of(it)
