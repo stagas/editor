@@ -16,7 +16,7 @@ import { Scroll } from './scroll.ts'
 import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
-import { Widget } from './widgets.ts'
+import { Widget } from './widget.ts'
 
 interface PointerItem { }
 
