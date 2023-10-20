@@ -117,6 +117,7 @@ export class Mouse extends Comp {
         pointerTargets.forEach(t =>
           t.pointable.it.isHovering = false
         )
+        console.log('leave')
         break
     }
 
