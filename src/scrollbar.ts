@@ -28,10 +28,10 @@ export class Scrollbar extends Comp {
   pointerBegin = 0
   @fx update_scrollbar() {
     const { renderable, dim, ctx } = $.of(this)
-    const { rect: r } = $.of(renderable)
     const { dims, scroll } = $.of(ctx)
     const { scrollSize } = $.of(scroll)
     const { hasSize } = $.when(scrollSize)
+    const { rect: r } = $.of(renderable)
     const { rect, scrollbarSize } = $.of(dims)
 
     const s = sides[dim]
