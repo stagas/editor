@@ -101,7 +101,9 @@ export class Editor extends Scene {
     //   }
     // }),
   ]
-  get deco(): Widget[] { return [
+  get deco(): Widget[] {
+    $()
+    return [
     // $(new Widget(this), {
     //   widgetable: {
     //     kind: Widget.Kind.Deco,
