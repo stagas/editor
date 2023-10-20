@@ -6,7 +6,7 @@ import { Renderable } from './renderable.ts'
 export namespace Widget {
   export enum Kind {
     Deco,
-    Marker,
+    Mark,
     Sub,
   }
 
@@ -50,17 +50,17 @@ export namespace Widget {
           r.w -= dex * 2
           r.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
           break
+        case Widget.Kind.Mark:
+          r.h = Math.round(lineHeight)
+          r.y = Math.round(lineBaseTops[line] + 2)
+          r.x -= 1.5
+          r.w += 3.5
+          break
         case Widget.Kind.Sub:
           r.h = height - 2
           r.y = lineBaseBottoms[line] + 2
           r.x += 1.5
           r.w -= 1
-          break
-        case Widget.Kind.Marker:
-          r.h = Math.round(lineHeight)
-          r.y = Math.round(lineBaseTops[line] + 2)
-          r.x -= 1.5
-          r.w += 3.5
           break
       }
 
