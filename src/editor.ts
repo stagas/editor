@@ -86,7 +86,14 @@ export class Editor extends Scene {
   })
   scrollbars = $(new Scrollbars(this))
 
-  sub: Widget.It[] = []
+  sub: Widget.It[] = [
+    $(new SkeletonWidget(this), {
+      dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+    }),
+    $(new SkeletonWidget(this), {
+      dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
+    }),
+  ]
   deco: Widget.It[] = [
     $(new SkeletonWidget(this), {
       dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
