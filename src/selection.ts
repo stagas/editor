@@ -185,7 +185,7 @@ export class Selection extends Comp {
       const exn = Number(exclusive ?? 0)
       let start = match[0] + exn
       let end = match[1] - exn + 1
-      if (Math.abs(end - index) < Math.abs(start - index)) {
+      if (Math.abs(end - index) > Math.abs(start - index)) {
         [start, end] = [end, start]
       }
       buffer.getLineColFromIndex(start, selection.start)
