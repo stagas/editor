@@ -59,7 +59,6 @@ export class Brackets extends Comp {
       @fn render() {
         const { canvas, rect } = $.of(this)
         const { c } = $.of(canvas)
-
         rect.clear(c)
         c.strokeRect(
           3,
