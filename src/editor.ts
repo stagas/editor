@@ -132,9 +132,9 @@ export class Editor extends Scene {
         for (const { renderable: r } of renderables) {
           needDraw ||= r.needRender || r.needDraw || false
         }
+        console.log('WHAT', needDraw)
         if (needDraw) {
           $()
-          console.log('YES')
           this.needDraw = true
         }
       }
