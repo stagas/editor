@@ -34,6 +34,9 @@ export class Text extends Render {
       @fn onClick() {
         textarea.focus()
       }
+      @fn onUp() {
+        textarea.focus()
+      }
       @fn onWheel() {
         scroll.targetScroll.mulSub(wheel, 0.2)
         scroll.animScrollStrategy = AnimScrollStrategy.Medium
@@ -82,57 +85,6 @@ export class Text extends Render {
     }
 
     return $(new TextPointable(this))
-    // , {
-    //   cursor: 'text',
-    //   hitArea: this.rect,
-    //   onClick: () => {
-    //   },
-    //   onWheel: fn(() => {
-    //     scroll.targetScroll.mulSub(wheel, 0.2)
-    //     scroll.animScrollStrategy = AnimScrollStrategy.Medium
-    //   }),
-    //   onMove: fn(() => {
-    //     if (this.isDown) {
-    //       selection.end.set(lineCol)
-    //       buffer.lineCol.set(lineCol)
-    //       buffer.coli = lineCol.col
-    //     }
-    //   }),
-    //   onDown: fn((downCount: number) => {
-    //     const { real } = $.of(pointer)
-    //     const { shift } = pointer
-
-    //     prevent(real)
-
-    //     buffer.lineCol.set(lineCol)
-    //     buffer.coli = lineCol.col
-
-    //     switch (downCount) {
-    //       case 1:
-    //         if (shift) {
-    //           selection.end.set(lineCol)
-    //         }
-    //         else {
-    //           selection.resetTo(lineCol)
-    //         }
-    //         break
-
-    //       case 2:
-    //         if (selection.selectWordBoundary(lineCol, shift)) {
-    //           mouse.downCount = 2
-    //           break
-    //         }
-    //       case 3:
-    //         if (selection.selectMatchingBrackets(lineCol)) {
-    //           mouse.downCount = 3
-    //           break
-    //         }
-    //       case 4:
-    //         selection.selectLine(lineCol.line)
-    //         break
-    //     }
-    //   }),
-    // })
   }
 
   @fx measure_charWidth() {
