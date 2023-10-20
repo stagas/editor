@@ -1,5 +1,5 @@
 // log.active
-import { $, fx, nu } from 'signal'
+import { $, fn, fx, nu } from 'signal'
 import { Line, Point, PointLike, Rect } from 'std'
 import { clamp, poolArrayGet } from 'utils'
 import { Editor } from './editor.ts'
@@ -59,7 +59,7 @@ export class Buffer {
       // add the missing \n to the length when line >0
       + (lines.length ? 1 : 0)
   }
-  getLineColFromIndex(
+  @fn getLineColFromIndex(
     index: number, tp: Point = tempPoint): Point {
     const { code } = this
     const slice = code.slice(0, index)
@@ -70,7 +70,7 @@ export class Buffer {
     tp.col = col
     return tp
   }
-  getLineColFromPoint(
+  @fn getLineColFromPoint(
     p: Point, clampPos = true, tp?: Point): Point {
     const { lines, ctx } = $.of(this)
     const { dims } = $.of(ctx)
@@ -101,7 +101,7 @@ export class Buffer {
     tempPoint.y = y
     return tempPoint
   }
-  getPointFromLineCol(
+  @fn getPointFromLineCol(
     { line, col }: Point,
     tp: PointLike): PointLike {
     const { dims } = $.of(this.ctx)
@@ -110,7 +110,7 @@ export class Buffer {
     tp.y = lineBaseTops[line]
     return tp
   }
-  getPointFromIndex(index: number, tp: PointLike) {
+  @fn getPointFromIndex(index: number, tp: PointLike) {
     return this.getPointFromLineCol(
       this.getLineColFromIndex(index),
       tp
@@ -131,7 +131,7 @@ export class Buffer {
       this.hasBrackets = false
     }
   }
-  fillTextRange(
+  @fn fillTextRange(
     c: CanvasRenderingContext2D,
     range: Line,
     color: string,
