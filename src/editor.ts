@@ -127,7 +127,7 @@ export class Editor extends Scene {
   get renderable() {
     $()
     const it = this
-    const { misc, scroll } = $.of(it)
+    const { world: { anim }, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
     class EditorRenderable extends Renderable {
       @init init_Editor() {
@@ -156,8 +156,7 @@ export class Editor extends Scene {
         }
       }
       @fx trigger_anim_on_need() {
-        const { needInit, needUpdate, needDraw, world: { anim } } = this
-
+        const { needInit, needUpdate, needDraw } = this
         if (needInit || needUpdate || needDraw) {
           if (!anim.isAnimating) {
             $()
