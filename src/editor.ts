@@ -92,7 +92,7 @@ export class Editor extends Render {
       needDraw ||= scene.needRender || scene.needDraw || false
     }
     if (needDraw) {
-      $._()
+      $()
       this.needDraw = true
     }
   }
@@ -105,14 +105,14 @@ export class Editor extends Render {
       Math.round(scrollPos.left) !== targetScroll.left
 
     if (needUpdate) {
-      $._()
+      $()
       this.needUpdate = true
     }
   }
   @fx trigger_anim_on_needUpdateOrDraw() {
     if (this.needInit || this.needUpdate || this.needDraw) {
       if (!this.world.anim.isAnimating) {
-        $._()
+        $()
         this.world.anim.start()
       }
     }

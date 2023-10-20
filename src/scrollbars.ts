@@ -15,7 +15,7 @@ export class Scrollbars extends Render {
   items = [this.scrollbarY, this.scrollbarX]
 
   get pointable(): $<Pointable> {
-    $._()
+    $()
     return $(new Pointable(this), {
       getItemAtPoint: (p: Point) => {
         for (const item of this.items) {
@@ -37,7 +37,7 @@ export class Scrollbars extends Render {
         break
       }
     }
-    $._()
+    $()
     this.needRender = needRender
   }
   @fn render(t: number, c: CanvasRenderingContext2D) {

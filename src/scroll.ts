@@ -47,7 +47,7 @@ export class Scroll extends Comp {
     const { innerMatrix: m } = $.of(misc)
     const { scroll: { x, y } } = $.of(dims)
     const { pr } = $.of(world.screen)
-    $._()
+    $()
 
     m.e = x * pr
     m.f = y * pr
@@ -58,7 +58,7 @@ export class Scroll extends Comp {
     const { rect } = $.of(dims)
     const { line } = $.of(buffer)
     const { viewState } = $.of(history)
-    $._()
+    $()
 
     if (history.prevViewState !== viewState) return
 
@@ -95,7 +95,7 @@ export class Scroll extends Comp {
     const { rect, charWidth } = $.of(dims)
     const { col } = $.of(buffer)
     const { viewState } = $.of(history)
-    $._()
+    $()
 
     if (history.prevViewState !== viewState) return
 
@@ -135,7 +135,7 @@ export class Scroll extends Comp {
       )
     const left = -Math.max(0, (w - rect.w) + overscrollX)
 
-    $._()
+    $()
 
     minScroll.top = top
     minScroll.left = left

@@ -27,7 +27,7 @@ export class Scrollbar extends Render {
   pointerBegin = 0
 
   get pointable(): $<Pointable> {
-    $._()
+    $()
     const { world: { pointer }, dim, ctx } = $.of(this)
     const { dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
@@ -60,14 +60,14 @@ export class Scrollbar extends Render {
     const { rect, isHovering } = $.of(this)
     const { hasSize } = $.when(rect)
     const { w, h } = $.of(rect)
-    $._()
+    $()
     this.needRender = true
   }
   @fx trigger_needDraw() {
     const { rect } = $.of(this)
     const { hasSize } = $.when(rect)
     const { x, y } = $.of(rect)
-    $._()
+    $()
     this.needDraw = true
   }
   @fx update_scrollbar() {
@@ -83,7 +83,7 @@ export class Scrollbar extends Render {
     const x = -scroll[dim] * co
     const w = rect[s] * co
     const y = rect[so] - scrollbarSize[so]
-    $._()
+    $()
     if (this.isVisible = co < 1) {
       r[dim] = x
       r[dimOpp[dim]] = y
