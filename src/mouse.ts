@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
 import { Comp } from './comp.ts'
