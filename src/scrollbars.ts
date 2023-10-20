@@ -38,6 +38,7 @@ export class Scrollbars extends Render {
       }
     }
     $._()
+    console.log('need render eeee')
     this.needRender = needRender
   }
   @fn render(t: number, c: CanvasRenderingContext2D) {
