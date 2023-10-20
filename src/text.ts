@@ -47,7 +47,7 @@ export class Text extends Render {
         }
       }),
       onDown: fn((downCount: number) => {
-        const { real, shift } = $.of(pointer)
+        const { real, shift } = pointer
 
         prevent(real)
 
