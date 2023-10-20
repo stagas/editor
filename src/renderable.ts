@@ -28,7 +28,9 @@ export class Renderable extends Scene {
   initCanvas(c: CanvasRenderingContext2D): void { }
   update(dt: number): number { return 0 }
   updateOne(dt: number): number { return 0 }
-  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void { }
+  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {
+    this.draw(t, c)
+  }
   draw(t: number, c: CanvasRenderingContext2D): void { }
 
   @fx trigger_needInit_on_size() {

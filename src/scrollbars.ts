@@ -15,22 +15,19 @@ export class Scrollbars extends Comp {
     $()
     const it = this
     class ScrollbarsRenderable extends Renderable {
-      @fx trigger_needRender() {
-        let needRender = false
+      @fx trigger_needDraw() {
+        let needDraw = false
         for (const { renderable: r } of it.items) {
           if (r.needRender) {
-            needRender = true
+            needDraw = true
             break
           }
         }
         $()
-        this.needRender = needRender
-      }
-      @fn render(t: number, c: CanvasRenderingContext2D) {
-        this.draw(t, c)
+        this.needDraw = needDraw
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        for (const {renderable:r } of it.items) {
+        for (const { renderable: r } of it.items) {
           if (!r.isVisible) continue
 
           if (r.needRender) {
@@ -41,9 +38,7 @@ export class Scrollbars extends Comp {
             r.draw(t, c)
           }
         }
-        this.needRender
-          = this.needDraw
-          = false
+        this.needDraw = false
       }
 
     }
