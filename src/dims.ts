@@ -64,8 +64,8 @@ export class Dims extends Comp {
     const { deco, sub } = $.of(ctx)
     return Math.max(
       lines.length,
-      ...deco.map(wi => wi.dim.line),
-      ...sub.map(wi => wi.dim.line),
+      ...deco.map(wi => wi.renderable.dim.sorted.top.line),
+      ...sub.map(wi => wi.renderable.dim.sorted.top.line),
     ) + 1
   }
   get decoHeights() {
@@ -74,11 +74,11 @@ export class Dims extends Comp {
 
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const item of deco) {
-      if (item.dim.line >= decoHeights.length) continue
+      if (item.renderable.dim.sorted.top.line >= decoHeights.length) continue
 
-      decoHeights[item.dim.line] = Math.max(
-        decoHeights[item.dim.line],
-        item.height
+      decoHeights[item.renderable.dim.sorted.top.line] = Math.max(
+        decoHeights[item.renderable.dim.sorted.top.line],
+        item.renderable.height
       )
     }
     return decoHeights
@@ -89,11 +89,11 @@ export class Dims extends Comp {
 
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const item of sub) {
-      if (item.dim.line >= subHeights.length) continue
+      if (item.renderable.dim.sorted.top.line >= subHeights.length) continue
 
-      subHeights[item.dim.line] = Math.max(
-        subHeights[item.dim.line],
-        item.height + 4
+      subHeights[item.renderable.dim.sorted.top.line] = Math.max(
+        subHeights[item.renderable.dim.sorted.top.line],
+        item.renderable.height + 4
       )
     }
     return subHeights
