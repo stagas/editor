@@ -122,9 +122,9 @@ export class Mouse extends Comp {
     }
 
     const handler = PointerEventMap[type]
-    // while (currentItem && !(handler in currentItem)) {
-    //   currentItem = items[--itemIndex]
-    // }
+    while (currentItem && !(handler in currentItem)) {
+      currentItem = items[--itemIndex]
+    }
     currentItem?.[handler]?.()
   }
 }
