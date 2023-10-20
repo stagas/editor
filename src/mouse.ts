@@ -115,7 +115,7 @@ export class Mouse extends Comp {
       case PointerEventType.Leave:
         ctx.isHovering = false
         pointerTargets.forEach(t =>
-          t.isHovering = false
+          t.pointable.it.isHovering = false
         )
         break
     }
