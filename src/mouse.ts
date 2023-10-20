@@ -56,6 +56,9 @@ export class Mouse extends Comp {
       buffer.getLineColFromPoint(pos, true, lineCol)
       misc.isTyping = false
     }
+    if (!misc.isScrolling && misc.wasScrolling) {
+      misc.wasScrolling = false
+    }
 
     if (type === Move && downIt) {
       downIt.pointable[PointerEventMap[type]]?.()
