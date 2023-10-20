@@ -19,7 +19,6 @@ export class Widgetable {
   height = 25
   offsetX = 0
   @fx update_rect() {
-    return
     const { it } = $.of(this)
     const { renderable } = $.of(it)
     const { ctx, rect: r } = $.of(renderable)
@@ -86,9 +85,6 @@ export class Widget extends Comp {
       }
     }
     return $(new WidgetRenderable(this.ctx))
-  }
-  get pointable() {
-    return $(new Pointable(this.ctx))
   }
 }
 
