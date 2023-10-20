@@ -38,7 +38,6 @@ export class Buffer {
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
   }
-
   @fx trim_lines() {
     const { lines, line } = $.of(this)
     for (let i = 0; i < lines.length; i++) {
@@ -47,7 +46,6 @@ export class Buffer {
     }
     // $.code = lines.join('\n')
   }
-
   getIndexFromLineCol({ line, col }: Point): number {
     const { code } = this
     const lines = code
