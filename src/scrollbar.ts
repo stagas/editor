@@ -60,6 +60,21 @@ export class Scrollbar extends Render {
       })
     })
   }
+  @fx trigger_needRender() {
+    const { rect, isHovering } = $.of(this)
+    const { hasSize } = $.when(rect)
+    const { w, h } = $.of(rect)
+    $._()
+    this.needRender = true
+    console.log('need render yea')
+  }
+  @fx trigger_needDraw() {
+    const { rect } = $.of(this)
+    const { hasSize } = $.when(rect)
+    const { x, y } = $.of(rect)
+    $._()
+    this.needDraw = true
+  }
   @fx update_scrollbar() {
     const { dim, ctx, rect: r } = $.of(this)
     const { dims, scroll } = $.of(ctx)
@@ -125,19 +140,5 @@ export class Scrollbar extends Render {
     const { pr, canvas, rect } = this
     rect.drawImage(canvas.el, c, pr, true)
     this.needDraw = false
-  }
-  @fx trigger_needRender() {
-    const { rect, isHovering } = $.of(this)
-    const { hasSize } = $.when(rect)
-    const { w, h } = $.of(rect)
-    $._()
-    this.needRender = true
-  }
-  @fx trigger_needDraw() {
-    const { rect } = $.of(this)
-    const { hasSize } = $.when(rect)
-    const { x, y } = $.of(rect)
-    $._()
-    this.needDraw = true
   }
 }
