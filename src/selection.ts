@@ -183,9 +183,13 @@ export class Selection extends Comp {
     const match = findMatchingBrackets(code, index)
     if (match) {
       const exn = Number(exclusive ?? 0)
-
-      buffer.getLineColFromIndex(match[0] + exn, selection.start)
-      buffer.getLineColFromIndex(match[1] - exn + 1, selection.end)
+      let start = match[0] + exn
+      let end = match[1] - exn + 1
+      if (Math.abs(end - index) < Math.abs(start - index)) {
+        [start, end] = [end, start]
+      }
+      buffer.getLineColFromIndex(start, selection.start)
+      buffer.getLineColFromIndex(end, selection.end)
       return true
     }
     return false
