@@ -130,7 +130,8 @@ export class Editor extends Scene {
         console.log(renderables)
         let needDraw = false
         for (const { renderable: r } of renderables) {
-          needDraw ||= r.needRender || r.needDraw || false
+          const { needRender, needDraw } = r
+          needDraw ||= needRender || needDraw || false
         }
         console.log('WHAT', needDraw)
         if (needDraw) {
