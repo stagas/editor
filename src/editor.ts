@@ -175,7 +175,7 @@ export class Editor extends Scene {
         this.needInit = false
       }
       @fn update() {
-        const { misc, dims, scroll } = $.of(it)
+        const { misc, scroll } = $.of(it)
         const { isTyping } = $.of(misc)
         const { targetScroll, pos: scrollPos, animSettings } = $.of(scroll)
 
