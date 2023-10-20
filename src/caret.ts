@@ -133,7 +133,6 @@ export class Caret extends Comp {
         }
         this.needDraw = false
       }
-
     }
     return $(new CaretRenderable(this.ctx))
   }
