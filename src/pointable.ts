@@ -8,8 +8,8 @@ export class Pointable {
   isFocused = false
   isHovering = false
   hitArea?: { isPointWithin(p: Point): boolean }
-  getItemAtPoint(p: Point): Pointable | false | undefined {
-    return this.hitArea?.isPointWithin(p) && this
+  getItAtPoint(p: Point): Pointable.It | false | undefined {
+    return this.hitArea?.isPointWithin(p) && this.it as unknown as Pointable.It
   }
   onWheel?(): void
   onDown?(clicks: number): void

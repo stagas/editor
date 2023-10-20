@@ -48,9 +48,9 @@ export class Scrollbars extends Comp {
   get pointable(): $<Pointable> {
     $()
     return $(new Pointable(this), {
-      getItemAtPoint: (p: Point) => {
+      getItAtPoint: (p: Point) => {
         for (const item of this.items) {
-          if (item.renderable.isVisible && item.pointable.getItemAtPoint(p)) {
+          if (item.renderable.isVisible && item.pointable.getItAtPoint(p)) {
             return item.pointable
           }
         }
