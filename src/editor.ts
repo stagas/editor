@@ -132,6 +132,7 @@ export class Editor extends Scene {
         }
         if (needDraw) {
           $()
+          console.log('YES')
           this.needDraw = true
         }
       }
@@ -279,7 +280,6 @@ export class Editor extends Scene {
 
         this.needDirectDraw
         = this.needDraw
-        = this.needRender
           = false
       }
     }
