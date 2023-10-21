@@ -20,6 +20,7 @@ export class Pointable {
   isDown = false
   isFocused = false
   isHovering = false
+  canHover = false
   downPos = $(new Point)
   hitArea?: { isPointWithin(p: Point): boolean }
   getItAtPoint(p: Point): Pointable.It | false | undefined {
