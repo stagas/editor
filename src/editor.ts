@@ -36,9 +36,8 @@ class Skin {
       get bgBright35() { return lum(this.bg, 0.35)}
       sliderFill = '#f61'
       get sliderActiveFill() { return sat(lum(this.sliderFill, 0.5), 0.6)}
-      get sliderActiveStroke() { return sat(lum(this.sliderFill, 0.15), -0.05)}
-      get sliderActiveHover() { return sat(lum(this.sliderFill, 0.45), -0.25)}
-
+      get sliderActiveStroke() { return sat(lum(this.sliderFill, 0.5), 0.6)}
+      get sliderHoverStroke() { return this.fg }
       // black: '#080808',
       // white: theme.white,
       // grey: luminate(saturate(theme.white, -1), -0.39),
