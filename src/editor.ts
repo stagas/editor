@@ -36,11 +36,11 @@ export class Editor extends Scene {
   elevations = $(new Elevations(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this), {
-    renderable: { position: Renderable.Position.Scroll }
+    renderable: { position: Renderable.Position.Inner }
   })
   caret = $(new Caret(this), {
     blink: false, //true,
-    renderable: { position: Renderable.Position.Scroll }
+    renderable: { position: Renderable.Position.Inner }
   })
   scrollbars = $(new Scrollbars(this))
 
@@ -240,7 +240,7 @@ export class Editor extends Scene {
       }
       runDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = $.of(this)
-        const { Layout, Scroll } = Renderable.Position
+        const { Layout, Inner: Scroll } = Renderable.Position
         const { dims: { viewSpan } } = $.of(it)
 
         for (const it of renderables) {
@@ -308,7 +308,7 @@ export class Editor extends Scene {
       @fn draw(t: number) {
         const { rect, canvas } = $.of(this)
         const { c } = canvas
-        const { Scroll } = Renderable.Position
+        const { Inner: Scroll } = Renderable.Position
 
         rect.fill(c, skin.colors.bg)
 

@@ -54,6 +54,6 @@ export namespace Renderable {
     /** Layout position, remains fixed in space without scroll translations. */
     Layout,
     /** Scroll position, translations apply. */
-    Scroll
+    Inner
   }
 }
