@@ -175,6 +175,7 @@ export class Elevations extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         const { rect } = $.of(this)
+
         const { isTyping } = $.of(misc)
         if (clear) {
           rect.clear(c)
@@ -191,7 +192,10 @@ export class Elevations extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = $.of(this)
-        rect.drawImage(canvas.el, c, pr, true)
+        const { pointable: { isHovering } } = $.of(ctx)
+        if (isHovering) {
+          rect.drawImage(canvas.el, c, pr, true)
+        }
         this.needDraw = false
       }
 
