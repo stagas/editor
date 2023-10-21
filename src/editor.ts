@@ -1,7 +1,7 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Point, Scene } from 'std'
-import { clamp, luminate as lum, prevent, saturate as sat } from 'utils'
+import { Point, Scene, Skin } from 'std'
+import { clamp, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -11,6 +11,7 @@ import { Elevations } from './elevations.ts'
 import { History } from './history.ts'
 import { Input } from './input.ts'
 import { Misc } from './misc.ts'
+import { Mouse } from './mouse.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
@@ -18,49 +19,6 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
-import { Mouse } from './mouse.ts'
-
-class Skin {
-  get colors() {
-    const colors = $(new class {
-      fg = '#aaa'
-      bg = '#113'
-      get bgBright015() { return lum(this.bg, 0.015) }
-      get bgBright025() { return lum(this.bg, 0.025)}
-      get bgBright05() { return lum(this.bg, 0.05)}
-      get bgBright1() { return lum(this.bg, 0.1)}
-      get bgBright15() { return lum(this.bg, 0.15)}
-      get bgBright2() { return lum(this.bg, 0.2)}
-      get bgBright25() { return lum(this.bg, 0.25)}
-      get bgBright3() { return lum(this.bg, 0.3)}
-      get bgBright35() { return lum(this.bg, 0.35)}
-      sliderFill = '#f61'
-      get sliderActiveFill() {
-        return sat(lum(this.sliderFill, 0.05), 0.06)}
-      get sliderActiveStroke() {
-        return sat(lum(this.sliderFill, 0.05), 0.06)}
-      get sliderHoverStroke() { return this.fg }
-      // black: '#080808',
-      // white: theme.white,
-      // grey: luminate(saturate(theme.white, -1), -0.39),
-      // dark: luminate(saturate(theme.white, -1), -0.5),
-      // ...theme
-    })
-
-    return colors
-    // {
-    //   bg: '#111',
-    //   bgBright015: '#113',
-    //   bgBright1: '#337',
-    //   bgBright2: '#558',
-    //   bgBright25: '#669',
-    // }
-  }
-  fonts = {
-    sans: '"Jost", sans-serif',
-    mono: '"JetBrains Mono", monospace',
-  }
-}
 
 export class Editor extends Scene {
   // core
