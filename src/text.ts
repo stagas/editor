@@ -117,7 +117,7 @@ export class Text extends Comp {
     const { ctx } = $.of(it)
     const { world, misc, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
-
+    const { linecol } = $.of(mouse)
     const { pointer } = $.of(world)
     const { wheel } = pointer
     const { Wheel, Down, Up, Leave, Move, Menu, Click } = Mouse.EventKind
@@ -127,7 +127,6 @@ export class Text extends Comp {
       hitArea = it.renderable.rect
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse: { pos, btns }, isDown } = this
-        const { linecol } = $.of(mouse)
 
         if (kind !== Wheel) {
           buffer.getLineColFromPoint(pos, true, linecol)
