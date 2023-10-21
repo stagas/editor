@@ -79,7 +79,7 @@ export class Editor extends Scene {
     return [
       t.selection,
       // t.elevations,
-      ...t.sub,
+      // ...t.sub,
       ...t.deco,
       t.text,
       // t.brackets,
