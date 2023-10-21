@@ -76,7 +76,7 @@ export class Mouse extends Comp {
     $()
     const { type } = pointer
     const { pos, innerPos, linecol, downIt, hoverIt } = this
-
+console.log(type)
     const its = this.getItsUnderPointer()
     const kind = PointerEventMap[type]
     switch (kind) {
