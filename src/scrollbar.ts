@@ -78,7 +78,6 @@ export class Scrollbar extends Comp {
         const { c } = $.of(canvas)
         const { pointable } = $.of(it)
         const { isHovering, isDown } = $.of(pointable)
-        console.log('WHAT', isHovering, isDown)
 
         const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
