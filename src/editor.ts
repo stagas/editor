@@ -105,6 +105,7 @@ export class Editor extends Scene {
     return [
       t.scrollbars,
       ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
+      ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
       t.text,
     ]
   }
