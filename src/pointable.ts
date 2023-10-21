@@ -25,13 +25,13 @@ export class Pointable {
   getItAtPoint(p: Point): Pointable.It | false | undefined {
     return this.hitArea?.isPointWithin(p) && this.it as unknown as Pointable.It
   }
-  onMouseEvent(kind: Mouse.EventKind): true | undefined { return }
-  onDown?(clicks: number): void
-  onClick?(): void
-  onUp?(): void
-  onEnter?(): void
-  onLeave?(): void
-  onMove?(): void
+  onMouseEvent?(kind: Mouse.EventKind): true | undefined | void { }
+  // onDown?(clicks: number): void
+  // onClick?(): void
+  // onUp?(): void
+  // onEnter?(): void
+  // onLeave?(): void
+  // onMove?(): void
   @fx apply_downPos() {
     const { isDown } = $.when(this)
     $()

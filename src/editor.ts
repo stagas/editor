@@ -151,7 +151,7 @@ export class Editor extends Scene {
           s.pointable.isHovering
         )
       }
-      @fn onMenu() {
+      @fn onMouseEvent() {
         const { real } = $.of(pointer)
         prevent(real)
       }

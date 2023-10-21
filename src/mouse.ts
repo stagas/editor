@@ -64,12 +64,12 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $()
     const { type } = pointer
-    const { pos, innerPos, linecol, downIt, hoverIt } = this
+    // const { pos, innerPos, linecol, downIt, hoverIt } = this
 
     const its = this.getItsUnderPointer()
     const kind = PointerEventMap[type]
     for (const it of its) {
-      if (it.pointable.onMouseEvent(kind)) {
+      if (it.pointable.onMouseEvent?.(kind)) {
         return
       }
     }

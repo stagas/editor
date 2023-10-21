@@ -5,6 +5,7 @@ import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
+import { Mouse } from './mouse.ts'
 
 type Axis = 'x' | 'y'
 
@@ -118,23 +119,31 @@ export class Scrollbar extends Comp {
     const { axis, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
+    const { Down, Move } = Mouse.EventKind
+
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
-      @fn onDown() {
-        it.scrollBegin = scroll[axis]
-        it.pointerBegin = pointer.pos[axis]
-      }
-      @fn onMove() {
-        const { buttons } = pointer
-        if (this.isDown && (buttons & MouseButtons.Left)) {
-          const side = Sides[axis]
-          const co = rect[side] / innerSize[side]
+      @fn onMouseEvent(kind: Mouse.EventKind) {
+        const { mouse: { pos, btns }, isDown } = $.of(this)
+        switch (kind) {
+          case Down:
+            it.scrollBegin = scroll[axis]
+            it.pointerBegin = pointer.pos[axis]
+            return true
 
-          scroll.animSettings = Scroll.AnimSettings.Fast
+          case Move:
+            if (isDown && (btns & MouseButtons.Left)) {
+              const side = Sides[axis]
+              const co = rect[side] / innerSize[side]
 
-          scroll.targetScroll[<Axis>axis] =
-            it.scrollBegin
-            - (pointer.pos[axis] - it.pointerBegin) / co
+              scroll.animSettings = Scroll.AnimSettings.Fast
+
+              scroll.targetScroll[<Axis>axis] =
+                it.scrollBegin
+                - (pos[axis] - it.pointerBegin) / co
+              return true
+            }
+            break
         }
       }
     }
