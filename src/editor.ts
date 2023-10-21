@@ -1,7 +1,7 @@
 // log.active
 import { $, fn, fx, init } from 'signal'
 import { Point, Scene } from 'std'
-import { clamp, prevent } from 'utils'
+import { clamp, filterAs, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -85,7 +85,6 @@ export class Editor extends Scene {
       }
     }),
   ]
-
   get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
@@ -105,7 +104,7 @@ export class Editor extends Scene {
     const t = $.of(this)
     return [
       t.scrollbars,
-      ...(t.sub.filter(w => w.pointable?.it) as (Widget.It & Pointable.It)[]),
+      ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
       t.text,
     ]
   }

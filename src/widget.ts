@@ -96,9 +96,9 @@ export namespace Widget {
     Sub,
   }
 
-  export interface It {
-    widgetable: $<Widgetable>
-    renderable: $<Renderable>
-    pointable?: $<Pointable>
+  export type It = {
+    widgetable: Widgetable
   }
+    & Renderable.It
+    & Partial<Pointable.It>
 }
