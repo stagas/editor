@@ -126,7 +126,7 @@ export class Editor extends Scene {
       // t.elevations,
       // ...t.sub,
       // ...t.deco,
-      t.text,
+      // t.text,
       // t.brackets,
       // t.caret,
       t.scrollbars,
