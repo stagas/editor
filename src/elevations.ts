@@ -3,11 +3,11 @@ import { $, fn, fx } from 'signal'
 import { Point } from 'std'
 import { poolArrayGet } from 'utils'
 import { Comp } from './comp.ts'
+import { Editor } from './editor.ts'
 import { Range } from './range.ts'
 import { Renderable } from './renderable.ts'
 import { SourceToken } from './source.ts'
 import { Open, openers } from './util.ts'
-import { Editor } from './editor.ts'
 
 const colors = {
   hover: {
