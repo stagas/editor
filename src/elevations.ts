@@ -44,11 +44,6 @@ export class Elevations extends Comp {
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
       }
-      @fx trigger_needDraw() {
-        const { isHovering } = $.of(text.pointable)
-        $()
-        this.needDraw = true
-      }
       @fx trigger_needRender() {
         const { rect: r, pr } = $.of(this)
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
@@ -58,6 +53,7 @@ export class Elevations extends Comp {
         const { isScrolling } = $.of(misc)
         const { scroll: { xy } } = $.of(scroll)
         const { linecol: { line: _l, col: _c } } = $.of(mouse)
+        const { isHovering } = $.of(text.pointable)
 
         $()
 
@@ -180,8 +176,9 @@ export class Elevations extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         const { rect } = $.of(this)
-
         const { isTyping } = $.of(misc)
+        const { pointable: { isHovering } } = $.of(text)
+
         if (clear) {
           rect.clear(c)
         }
@@ -189,7 +186,7 @@ export class Elevations extends Comp {
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
         if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
-        if (!isTyping) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
+        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
         c.restore()
 
         this.needRender = false
@@ -197,10 +194,7 @@ export class Elevations extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = $.of(this)
-        const { pointable: { isHovering } } = $.of(text)
-        if (isHovering) {
           rect.drawImage(canvas.el, c, pr, true)
-        }
         this.needDraw = false
       }
 
