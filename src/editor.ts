@@ -87,12 +87,13 @@ export class Editor extends Scene {
       t.scrollbars,
     ]
   }
-  get pointables(): (Renderable.It & Pointable.It)[] {
+  get editorPointables(): (Renderable.It & Pointable.It)[] {
     const t = $.of(this)
     return [
       t.scrollbars,
       ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
       t.text,
+      this,
     ]
   }
   get pointable() {
@@ -103,7 +104,7 @@ export class Editor extends Scene {
     class EditorPointable extends Pointable {
       hitArea = it.renderable.rect
       @fx update_hovering() {
-        this.isHovering = it.pointables.some(s =>
+        this.isHovering = it.editorPointables.some(s =>
           s.pointable.isHovering
         )
       }

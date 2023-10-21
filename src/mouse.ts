@@ -72,7 +72,7 @@ export class Mouse extends Comp {
 
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
-    const { world, misc, buffer, pointables, dims } = $.of(ctx)
+    const { world, misc, buffer, dims } = $.of(ctx)
     const { charWidth } = $.of(dims)
     const { pointer } = $.of(world)
     const { time, real } = $.of(pointer)
@@ -107,7 +107,7 @@ export class Mouse extends Comp {
     }
 
     let i = 0
-    const its = this.getItsUnderPointer(pointables)
+    const its = this.getItsUnderPointer(ctx.editorPointables)
     for (const it of its) {
       if (!i && this.hoverIt !== it) {
         this.hoverIt = it
