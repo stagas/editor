@@ -1,11 +1,10 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
-import { Pointable } from './pointable.ts'
 import { Linecol } from './linecol.ts'
-import { Renderable } from './renderable.ts'
+import { Pointable } from './pointable.ts'
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
@@ -98,7 +97,6 @@ export class Mouse extends Comp {
           = null
         if (kind === Leave) return
         break
-
     }
 
     let i = 0
@@ -136,110 +134,6 @@ export class Mouse extends Comp {
 
       i++
     }
-
-    // let itIndex = -1
-    // let topIt = its.at(itIndex)
-    // if (!topIt) {
-    //   if (downIt) topIt = downIt
-    //   else return
-    // }
-
-    // if (type === Down) this.downIt = topIt
-
-    // if (!this.downIt) {
-    //   buffer.getLineColFromPoint(pos, true, linecol)
-    //   misc.isTyping = false
-    // }
-
-
-    // return
-
-
-
-
-
-
-
-
-
-    // if (type !== Up && downIt) its.push(downIt)
-
-    // if (type !== Up && downIt) {
-    //   downIt.pointable[PointerEventMap[type]]?.()
-    //   return
-    // }
-
-    // if (!downIt) {
-    //   buffer.getLineColFromPoint(pos, true, linecol)
-    //   misc.isTyping = false
-    // }
-
-    // if (type !== Wheel && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
-    //   misc.wasScrolling = false
-    // }
-
-    // let itemIndex = -1
-    // let currentIt = its.at(itemIndex)!
-
-    // if (type === Up && downIt) {
-    //   downIt.pointable.isDown = false
-    // }
-
-    // if (!downIt?.pointable.isDown && hoverIt !== currentIt) {
-    //   this.hoverIt = currentIt
-
-    //   if (hoverIt) {
-    //     hoverIt.pointable.isHovering = false
-    //     hoverIt.pointable.onLeave?.()
-    //   }
-
-    //   if (this.hoverIt) {
-    //     this.hoverIt.pointable.isHovering = true
-    //     world.screen.cursor = this.hoverIt.pointable.cursor
-    //     this.hoverIt.pointable.onEnter?.()
-    //   }
-    // }
-
-    // switch (type) {
-    //   case PointerEventType.Down:
-    //     if (time - this.downTime < DOUBLE_CLICK_MS) {
-    //       this.downCount++
-    //     }
-    //     else {
-    //       this.downCount = 1
-    //     }
-    //     this.downTime = time
-    //     this.downPos.set(pos)
-    //     this.downIt = currentIt
-    //     this.downIt.pointable.isDown = true
-    //     currentIt.pointable.onDown?.(this.downCount)
-    //     return
-
-    //   case PointerEventType.Up:
-    //     this.downIt = null
-    //     if (time - this.downTime < SINGLE_CLICK_MS) {
-    //       downIt?.pointable.onClick?.()
-    //       return
-    //     }
-    //     break
-
-    //   case PointerEventType.Leave:
-    //     if (this.hoverIt) {
-    //       this.hoverIt.pointable.isHovering = false
-    //       this.hoverIt = null
-    //     }
-    //     pointables.forEach(t =>
-    //       t.pointable.isHovering = false
-    //     )
-    //     break
-    // }
-
-    // const handler = PointerEventMap[type]
-    // let receiver: Pointable.It | undefined = currentIt
-    // while (receiver && !receiver.pointable[handler]) {
-    //   receiver = its.at(--itemIndex)
-    // }
-    // receiver?.pointable[handler]?.()
   }
 }
 
