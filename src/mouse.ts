@@ -61,6 +61,7 @@ export class Mouse extends Comp {
     const { hoverIt, ctx: { world } } = $.of(this)
     $()
     hoverIt.pointable.isHovering = true
+    console.log('SHOULD SET', hoverIt.pointable.cursor)
     world.screen.cursor = hoverIt.pointable.cursor
     return () => {
       hoverIt.pointable.isHovering = false
