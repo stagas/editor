@@ -74,7 +74,7 @@ export class Mouse extends Comp {
 
     const items = this.findItemsAtPoint(pos)
     if (type !== Up && downIt) items.push(downIt)
-
+console.log(items)
     let itemIndex = -1
     let currentIt = items.at(itemIndex)!
 
