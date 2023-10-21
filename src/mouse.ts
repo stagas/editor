@@ -29,19 +29,24 @@ export class Mouse extends Comp {
     return this._innerPos
   }
 
-  *getItsUnderPointer() {
-    const { ctx: { pointables } } = $.of(this)
-    let it: Pointable.It | false | undefined
+  *getItsUnderPointer(pointables: Pointable.It[]) {
+    let item: Pointable.It | false | undefined
 
     const { downIt } = this
 
     // the down It is always the first under the pointer.
     if (downIt) yield downIt
 
-    for (const { pointable: p } of pointables) {
+    for (const it of pointables) {
+      const { pointable: p } = it
       if (!p.it.renderable.isVisible) continue
-      if (it = p.getItAtPoint(p.mouse.pos)) {
-        yield it
+
+      if ('pointables' in it) {
+        yield* this.getItsUnderPointer(it.pointables)
+      }
+
+      if (item = p.getItAtPoint(p.mouse.pos)) {
+        yield item
       }
     }
   }
@@ -102,7 +107,7 @@ export class Mouse extends Comp {
     }
 
     let i = 0
-    const its = this.getItsUnderPointer()
+    const its = this.getItsUnderPointer(pointables)
     for (const it of its) {
       if (!i && this.hoverIt !== it) {
         this.hoverIt = it
