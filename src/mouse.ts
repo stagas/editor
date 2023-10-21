@@ -56,6 +56,16 @@ export class Mouse extends Comp {
     }
   }
 
+  @fx update_it_pointable_isHovering() {
+    const { hoverIt, ctx: { world } } = $.of(this)
+    $()
+    hoverIt.pointable.isHovering = true
+    world.screen.cursor = hoverIt.pointable.cursor
+    return () => {
+      hoverIt.pointable.isHovering = false
+    }
+  }
+
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
     const { world, misc, buffer, pointables, dims } = $.of(ctx)
@@ -64,7 +74,7 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $()
     const { type } = pointer
-    // const { pos, innerPos, linecol, downIt, hoverIt } = this
+    const { pos, innerPos, linecol, downIt, hoverIt } = this
 
     const its = this.getItsUnderPointer()
     const kind = PointerEventMap[type]
@@ -82,7 +92,10 @@ export class Mouse extends Comp {
         this.downIt = null
         break
     }
+
+    let i = 0
     for (const it of its) {
+      if (hoverIt !== it && !i) this.hoverIt = it
       if (it.pointable.onMouseEvent?.(kind)) {
         switch (kind) {
           case Mouse.EventKind.Down:
@@ -91,6 +104,7 @@ export class Mouse extends Comp {
         }
         return
       }
+      i++
     }
 
     // let itIndex = -1
