@@ -53,7 +53,7 @@ export class Selection extends Comp {
           }
           c.save()
           c.translate(scroll.x, scroll.y)
-          buffer.fillTextRange(c, sorted, skin.colors.selectionBackground, true)
+          buffer.fillTextRange(c, sorted, skin.colors.bgBright2, true)
           c.restore()
           this.needDraw = true
         }
