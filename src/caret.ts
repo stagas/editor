@@ -50,7 +50,7 @@ export class Caret extends Comp {
         const { pointable: { isFocused } } = $.of(ctx)
         const { lineHeight, charWidth } = $.of(dims)
         $()
-        const { hideWhenAway } = this
+        const { hideWhenAway } = it
         const { pointable: { isHovering } } = $.of(text)
         r.w = charWidth || 1
         r.h = lineHeight + 1
