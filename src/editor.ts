@@ -254,8 +254,8 @@ export class Editor extends Scene {
             }
             r.isVisible = true
 
-            console.log(r, r.canvas.c.lineWidth)
             r.needInit && r.initCanvas(r.canvas.c)
+            console.log(r, r.canvas.c.lineWidth)
             r.needRender && r.render(t, r.canvas.c, true)
             if (r.didDraw || r.needDraw) {
               r.draw(t, c)
