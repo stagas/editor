@@ -22,7 +22,7 @@ export class Scrollbars extends Comp {
       t.scrollbarX,
     ]
   }
-  get renderable(): $<Renderable> {
+  get renderable() {
     $()
     return $(new Renderable(
       this.ctx,
