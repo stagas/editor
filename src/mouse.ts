@@ -105,9 +105,6 @@ export class Mouse extends Comp {
               break
           }
         }
-        else {
-          this.downCount = 0
-        }
         break
 
       case Leave:
