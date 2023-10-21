@@ -5,7 +5,7 @@ import { Indicator } from './indicator.ts'
 import { Renderable } from './renderable.ts'
 
 export class Caret extends Comp {
-  linecol = this.ctx.buffer.$.linecol
+  linecol = this.ctx.buffer.linecol
   blink = false
   ind = $(new Indicator(this.ctx))
   isBlinking = false
