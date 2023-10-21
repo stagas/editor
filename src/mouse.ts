@@ -100,7 +100,10 @@ export class Mouse extends Comp {
     let i = 0
     const its = this.getItsUnderPointer()
     for (const it of its) {
-      if (hoverIt !== it && !i) this.hoverIt = it
+      if (hoverIt !== it && !i) {
+        console.log('SET', it)
+        this.hoverIt = it
+        }
 
       switch (kind) {
         case Up:
