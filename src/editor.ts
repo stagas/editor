@@ -122,6 +122,7 @@ export class Editor extends Scene {
     const it = this
     const { world: { anim, skin }, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
+    const { Layout, Inner } = Renderable.Position
 
     const d = $(new Point)
     const ad = $(new Point)
@@ -240,7 +241,6 @@ export class Editor extends Scene {
       }
       runDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = $.of(this)
-        const { Layout, Inner: Scroll } = Renderable.Position
         const { dims: { viewSpan } } = $.of(it)
 
         for (const it of renderables) {
@@ -251,7 +251,7 @@ export class Editor extends Scene {
           }
 
           if (r.position !== position) {
-            if (r.position === Scroll) {
+            if (r.position === Inner) {
               c.save()
               scroll.pos.translate(c)
             }
@@ -263,7 +263,7 @@ export class Editor extends Scene {
 
           const viewRect = r.viewRect ?? r.rect
 
-          if (position === Scroll) {
+          if (position === Inner) {
             if (
               viewRect.bottom < viewSpan.top
               || viewRect.top > viewSpan.bottom
@@ -308,13 +308,12 @@ export class Editor extends Scene {
       @fn draw(t: number) {
         const { rect, canvas } = $.of(this)
         const { c } = canvas
-        const { Inner: Scroll } = Renderable.Position
 
         rect.fill(c, skin.colors.bg)
 
         const position = this.runDraw(t, it.renderables)
 
-        if (position === Scroll) {
+        if (position === Inner) {
           c.restore()
         }
 
