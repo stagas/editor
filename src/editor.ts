@@ -18,6 +18,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
+import { Mouse } from './mouse.ts'
 
 class Skin {
   get colors() {
@@ -151,9 +152,11 @@ export class Editor extends Scene {
           s.pointable.isHovering
         )
       }
-      @fn onMouseEvent() {
-        const { real } = $.of(pointer)
-        prevent(real)
+      @fn onMouseEvent(type: Mouse.EventKind) {
+        if (type === Mouse.EventKind.Menu) {
+          const { real } = $.of(pointer)
+          prevent(real)
+        }
       }
     }
     return $(new EditorPointable(this))
