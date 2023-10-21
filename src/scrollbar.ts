@@ -128,13 +128,16 @@ export class Scrollbar extends Comp {
     const { axis, ctx } = $.of(it)
     const { world: { pointer }, dims, scroll } = $.of(ctx)
     const { rect, innerSize } = $.of(dims)
-    const { Down, Move } = Mouse.EventKind
+    const { Down, Move, Enter } = Mouse.EventKind
 
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse: { pos, btns }, isDown } = $.of(this)
         switch (kind) {
+          case Enter:
+            console.log('enter')
+            break
           case Down:
             it.scrollBegin = scroll[axis]
             it.pointerBegin = pointer.pos[axis]
