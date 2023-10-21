@@ -53,7 +53,7 @@ export namespace Renderable {
   export enum Position {
     /** Layout position, remains fixed in space without scroll translations. */
     Layout,
-    /** Scroll position, translations apply. */
+    /** Inner position, translations apply. */
     Inner
   }
 }
