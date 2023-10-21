@@ -36,7 +36,7 @@ export class Elevations extends Comp {
           hover: {
             fill: skin.colors.bgBright05,
             light: skin.colors.bgBright1,
-            dark: skin.colors.bgDark015,
+            dark: skin.colors.bgDark015 + '66',
           },
           caret: {
             fill: skin.colors.brand1,
