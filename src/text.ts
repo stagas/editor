@@ -1,13 +1,13 @@
 // log.active
 import { $, fn, fx } from 'signal'
-import { PointerEventType, Rect } from 'std'
+import { Rect } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
+import { Mouse } from './mouse.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
-import { Mouse } from './mouse.ts'
 
 export class Text extends Comp {
   get renderable(): $<Renderable> {
