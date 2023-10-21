@@ -71,6 +71,12 @@ export class Mouse extends Comp {
     for (const it of its) {
       switch (kind) {
         case Mouse.EventKind.Down:
+          if (time - this.downTime < DOUBLE_CLICK_MS) {
+            this.downCount++
+          }
+          else {
+            this.downCount = 1
+          }
           this.downIt = it
           break
         case Mouse.EventKind.Up:
