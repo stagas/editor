@@ -63,7 +63,6 @@ export class Scrollbar extends Comp {
         const { pointable } = $.of(it)
         const { isHovering, isDown } = $.of(pointable)
         $()
-        console.log('need render')
         this.needRender = true
       }
       @fx trigger_needDraw() {
