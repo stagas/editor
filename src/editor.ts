@@ -40,12 +40,12 @@ export class Editor extends Scene {
   brackets = $(new Brackets(this), {
     renderable: { position: Renderable.Position.Inner }
   })
-  caret = $(new Caret(this), {
+  caret = $(new Caret(this, this.buffer.linecol), {
+    renderable: { position: Renderable.Position.Inner },
     blink: false, //true,
-    linecol: this.buffer.linecol,
-    renderable: { position: Renderable.Position.Inner }
   })
-  dropCaret = $(new Caret(this), {
+  dropCaret = $(new Caret(this, this.input.mouse.linecol), {
+    renderable: { position: Renderable.Position.Inner },
     blink: false,
     hideWhenAway: true,
     hideWhenTyping: true,
@@ -53,8 +53,6 @@ export class Editor extends Scene {
     color2: '#555',
     color1Focused: '#666',
     color2Focused: '#666',
-    linecol: this.input.mouse.linecol,
-    renderable: { position: Renderable.Position.Inner }
   })
   scrollbars = $(new Scrollbars(this))
 

@@ -4,11 +4,17 @@ import { Comp } from './comp.ts'
 import { Indicator } from './indicator.ts'
 import { Renderable } from './renderable.ts'
 import { Linecol } from './linecol.ts'
+import { Editor } from './editor.ts'
 
 export class Caret extends Comp {
-  linecol?: $<Linecol>
+  constructor(
+    public ctx: Editor,
+    public linecol: $<Linecol>
+  ) {
+    super(ctx)
+  }
   blink = false
-  ind = $(new Indicator(this.ctx))
+  get ind() { return $(new Indicator(this.ctx)) }
   isBlinking = false
   isHidden = false
   hideWhenTyping = false
