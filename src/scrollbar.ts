@@ -86,7 +86,7 @@ export class Scrollbar extends Comp {
         c.save()
         //
         const alpha = '66'
-        c.clearRect(0, 0, rect.w, rect.h)
+        // c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
           (isHovering || isDown
             ? skin.colors.bgBright2
