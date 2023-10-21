@@ -100,7 +100,7 @@ export class Editor extends Scene {
     $()
     const it = this
     const { world: { pointer } } = $.of(it)
-    const {Menu} = Mouse.EventKind
+    const { Menu } = Mouse.EventKind
     class EditorPointable extends Pointable {
       hitArea = it.renderable.rect
       @fx update_hovering() {
