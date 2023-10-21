@@ -52,6 +52,11 @@ export class Mouse extends Comp {
     const { type, pos } = pointer
     const { linecol, downIt, hoverIt } = this
 
+    if (type !== Up && downIt) {
+      downIt.pointable[PointerEventMap[type]]?.()
+      return
+    }
+
     // we update the mouse.linecol, but not when we are scrolling
     // or some element has focus. We also prevent updating right after
     // scroll at the arbitrary new position, because it's surprising,
@@ -65,11 +70,6 @@ export class Mouse extends Comp {
     // unless it's a Wheel or user is pressing down on an item.
     if (type !== Wheel && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
       misc.wasScrolling = false
-    }
-
-    if (type !== Up && downIt) {
-      downIt.pointable[PointerEventMap[type]]?.()
-      return
     }
 
     const items = this.findItemsAtPoint(pos)
