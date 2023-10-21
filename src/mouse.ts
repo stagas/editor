@@ -95,7 +95,6 @@ export class Mouse extends Comp {
 
     let i = 0
     for (const it of its) {
-      console.log(it)
       if (hoverIt !== it && !i) this.hoverIt = it
       if (it.pointable.onMouseEvent?.(kind)) {
         switch (kind) {
