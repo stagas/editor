@@ -90,11 +90,6 @@ export class Mouse extends Comp {
         }
         this.downTime = time
         break
-      case Mouse.EventKind.Up:
-        if (downIt) {
-          this.downIt = null
-          return
-        }
     }
 
     let i = 0
@@ -105,6 +100,11 @@ export class Mouse extends Comp {
           case Mouse.EventKind.Down:
             this.downIt = it
             break
+          case Mouse.EventKind.Up:
+            if (downIt) {
+              this.downIt = null
+              return
+            }
         }
         return
       }
