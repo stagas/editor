@@ -1,12 +1,13 @@
 // log.active
 import { $, fn, fx } from 'signal'
-import { Rect } from 'std'
+import { PointerEventType, Rect } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
+import { Mouse } from './mouse.ts'
 
 export class Text extends Comp {
   get renderable(): $<Renderable> {
@@ -113,68 +114,81 @@ export class Text extends Comp {
     $()
     const it = this
     const { ctx } = $.of(it)
-    const { world, buffer, scroll, selection,
+    const { world, misc, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
     const { linecol } = $.of(mouse)
     const { pointer } = $.of(world)
     const { wheel } = pointer
+    const { Wheel, Down, Up, Leave, Move, Menu, Click } = Mouse.EventKind
 
     class TextPointable extends Pointable {
       cursor = 'text'
       hitArea = it.renderable.rect
-      @fn onClick() {
-        textarea.focus()
-      }
-      @fn onUp() {
-        textarea.focus()
-      }
-      @fn onWheel() {
-        scroll.targetScroll.mulSub(wheel, 0.2)
-        scroll.animSettings = Scroll.AnimSettings.Medium
-      }
-      @fn onMove() {
-        const { mousePos, mouseButtons: buttons } = this
-        buffer.getLineColFromPoint(mousePos, true, linecol)
-        if (this.isDown && (buttons & MouseButtons.Left)) {
-          selection.end.set(linecol)
-          buffer.linecol.set(linecol)
-          buffer.coli = linecol.col
+      @fn onMouseEvent(kind: Mouse.EventKind) {
+        const { mouse: { pos, btns } } = this
+
+        if (kind !== Wheel) {
+          buffer.getLineColFromPoint(pos, true, linecol)
         }
-      }
-      @fn onDown(downCount: number) {
-        const { real } = $.of(pointer)
-        const { shift, buttons } = pointer
 
-        if (!(buttons & MouseButtons.Left)) return
+        misc.isTyping = false
 
-        prevent(real)
+        switch (kind) {
+          case Click:
+          case Up:
+            textarea.focus()
+            return true
 
-        buffer.linecol.set(linecol)
-        buffer.coli = linecol.col
+          case Wheel:
+            scroll.targetScroll.mulSub(wheel, 0.2)
+            scroll.animSettings = Scroll.AnimSettings.Medium
+            return true
 
-        switch (downCount) {
-          case 1:
-            if (shift) {
+          case Move:
+            if (this.isDown && (btns & MouseButtons.Left)) {
               selection.end.set(linecol)
+              buffer.linecol.set(linecol)
+              buffer.coli = linecol.col
             }
-            else {
-              selection.resetTo(linecol)
-            }
-            break
+            return true
 
-          case 2:
-            if (selection.selectWordBoundary(linecol, shift)) {
-              mouse.downCount = 2
-              break
+          case Down:
+            const { real } = $.of(pointer)
+            const { shift, buttons } = pointer
+
+            if (!(buttons & MouseButtons.Left)) return
+
+            prevent(real)
+
+            const { downCount } = this
+            buffer.linecol.set(linecol)
+            buffer.coli = linecol.col
+
+            switch (downCount) {
+              case 1:
+                if (shift) {
+                  selection.end.set(linecol)
+                }
+                else {
+                  selection.resetTo(linecol)
+                }
+                break
+
+              case 2:
+                if (selection.selectWordBoundary(linecol, shift)) {
+                  mouse.downCount = 2
+                  break
+                }
+              case 3:
+                if (selection.selectMatchingBrackets(linecol)) {
+                  mouse.downCount = 3
+                  break
+                }
+              case 4:
+                selection.selectLine(linecol.line)
+                break
             }
-          case 3:
-            if (selection.selectMatchingBrackets(linecol)) {
-              mouse.downCount = 3
-              break
-            }
-          case 4:
-            selection.selectLine(linecol.line)
-            break
+            return true
         }
       }
     }
