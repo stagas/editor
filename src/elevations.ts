@@ -44,6 +44,11 @@ export class Elevations extends Comp {
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
       }
+      @fx trigger_needDraw() {
+        const { isHovering } = $.of(ctx.pointable)
+        $()
+        this.needDraw = true
+      }
       @fx trigger_needRender() {
         const { rect: r, pr } = $.of(this)
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
@@ -53,7 +58,7 @@ export class Elevations extends Comp {
         const { isScrolling } = $.of(misc)
         const { scroll: { xy } } = $.of(scroll)
         const { linecol: { line: _l, col: _c } } = $.of(mouse)
-        const { isHovering } = $.of(ctx.pointable)
+
         $()
 
         if (isScrolling) {
