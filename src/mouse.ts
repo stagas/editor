@@ -28,33 +28,6 @@ export class Mouse extends Comp {
     this._innerPos.set(pos).normalizeMatrixPr(m, pr, prRecip).round()
     return this._innerPos
   }
-
-  *getItPointable(it: Pointable.It): Generator<Pointable.It> {
-    let item: Pointable.It | false | undefined
-
-    if (item = it.pointable.getItAtPoint(it.pointable.mouse.pos)) {
-      yield item
-    }
-
-    if ('pointables' in it) {
-      for (const i of it.pointables) {
-        const { pointable: p } = i
-        if (!p.it.renderable.isVisible) continue
-
-        yield* this.getItPointable(i)
-      }
-    }
-  }
-
-  *getItsUnderPointer(it: Pointable.It) {
-    const { downIt } = this
-
-    // the down It is always the first under the pointer.
-    if (downIt) yield downIt
-
-    yield *this.getItPointable(it)
-  }
-
   @fx update_it_pointable_isDown() {
     const { downIt } = $.of(this)
     $()
@@ -73,7 +46,29 @@ export class Mouse extends Comp {
       hoverIt.pointable.isHovering = false
     }
   }
+  *getItTraversePointables(it: Pointable.It): Generator<Pointable.It> {
+    let item: Pointable.It | false | undefined
 
+    if (item = it.pointable.getItAtPoint(it.pointable.mouse.pos)) {
+      yield item
+    }
+
+    if ('pointables' in it) {
+      for (const i of it.pointables) {
+        if (!i.pointable.it.renderable.isVisible) continue
+
+        yield* this.getItTraversePointables(i)
+      }
+    }
+  }
+  *getItsUnderPointer(it: Pointable.It) {
+    const { downIt } = this
+
+    // the down It is always the first under the pointer.
+    if (downIt) yield downIt
+
+    yield *this.getItTraversePointables(it)
+  }
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
     const { world, misc, buffer, dims } = $.of(ctx)
