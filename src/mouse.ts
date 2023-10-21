@@ -18,6 +18,7 @@ const PointerEventMap = {
 } as const
 
 export class Mouse extends Comp {
+  pos = this.ctx.world.pointer.$.pos
   linecol = $(new Linecol)
 
   downCount = 0
