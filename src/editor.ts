@@ -136,7 +136,7 @@ export class Editor extends Scene {
     return [
       this,
       t.text,
-      ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
+      // ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
       t.scrollbars,
     ]
   }
