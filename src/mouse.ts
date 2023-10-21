@@ -5,7 +5,7 @@ import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Linecol } from './linecol.ts'
 import { Pointable } from './pointable.ts'
-import { MouseButtons } from 'utils'
+import { MouseButton, MouseButtons } from 'utils'
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
@@ -86,7 +86,7 @@ export class Mouse extends Comp {
     switch (kind) {
       case Down:
       case Up:
-        if (pointer.buttons & MouseButtons.Left) {
+        if (pointer.button === MouseButton.Left) {
           switch (kind) {
             case Down:
               if (time - this.downTime < DOUBLE_CLICK_MS) {
