@@ -42,7 +42,7 @@ export class Mouse extends Comp {
     const { ctx: { pointables }, pos, matPos } = $.of(this)
     const items: Pointable.It[] = []
     let item: Pointable.It | false | undefined
-
+console.log(matPos.text)
     for (const { pointable } of pointables) {
       if (item = pointable.getItAtPoint(
         pointable.it.renderable.position
