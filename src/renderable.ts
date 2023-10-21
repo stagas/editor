@@ -47,7 +47,8 @@ export class Renderable extends Scene {
 
 export namespace Renderable {
   export interface It {
-    renderable: $<Renderable>
+    renderables?: Renderable.It[]
+    renderable: Renderable
   }
   export enum Position {
     /** Layout position, remains fixed in space without scroll translations. */

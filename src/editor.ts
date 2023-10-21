@@ -120,22 +120,34 @@ export class Editor extends Scene {
   get renderable() {
     $()
     const it = this
-    const { world: { anim, skin }, misc, scroll } = $.of(it)
+    const { world: { anim, skin }, dims, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
+    const { viewSpan } = $.of(dims)
+
     const d = $(new Point)
     const ad = $(new Point)
+
     class EditorRenderable extends Renderable {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      @fx trigger_needDraw() {
-        const { renderables } = $.of(it)
-        let needSelfDraw = false
-        for (const { renderable: r } of renderables) {
+      getNeedDraw(renderables: Renderable.It[], pass = false) {
+        for (const it of renderables) {
+          const { renderable: r } = it
           const { needRender, needDraw } = r
-          needSelfDraw ||= needRender || needDraw || false
+          pass ||= needRender || needDraw || false
+          if ('renderables' in it) {
+            pass = this.getNeedDraw(
+              it.renderables,
+              pass
+            )
+          }
         }
-        if (needSelfDraw) {
+        return pass
+      }
+      @fx trigger_needDraw() {
+        const needDraw = this.getNeedDraw(it.renderables)
+        if (needDraw) {
           $()
           this.needDraw = true
         }
@@ -159,12 +171,17 @@ export class Editor extends Scene {
           }
         }
       }
+      runInitCanvas(renderables: Renderable.It[]) {
+        for (const it of renderables) {
+          const { renderable: r } = it
+          r.needInit && r.initCanvas(r.canvas.c)
+          if ('renderables' in it) this.runInitCanvas(it.renderables)
+        }
+      }
       @fn initCanvas() {
         const { c } = $.of(this.canvas)
         c.imageSmoothingEnabled = false
-        for (const { renderable: r } of it.renderables) {
-          r.needInit && r.initCanvas(r.canvas.c)
-        }
+        this.runInitCanvas(it.renderables)
         this.needInit = false
       }
       @fn update() {
@@ -219,17 +236,18 @@ export class Editor extends Scene {
         // console.log(this.needUpdate)
         // return +this.needUpdate
       }
-      @fn draw(t: number) {
-        const { renderables, scroll, dims: { viewSpan } } = $.of(it)
+      runDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = Renderable.Position
 
-        rect.fill(c, skin.colors.bg)
+        for (const it of renderables) {
+          const { renderable: r } = it
 
-        let position: Renderable.Position = Layout
+          if ('renderables' in it) {
+            position = this.runDraw(t, it.renderables, position)
+          }
 
-        for (const { renderable: r } of renderables) {
           if (r.position !== position) {
             if (r.position === Scroll) {
               c.save()
@@ -282,6 +300,18 @@ export class Editor extends Scene {
             }
           }
         }
+
+        return position
+      }
+      @fn draw(t: number) {
+        const { renderables, scroll, dims: { viewSpan } } = $.of(it)
+        const { rect, canvas } = $.of(this)
+        const { c } = canvas
+        const { Layout, Scroll } = Renderable.Position
+
+        rect.fill(c, skin.colors.bg)
+
+        const position = this.runDraw(t, renderables)
 
         if (position === Scroll) {
           c.restore()
