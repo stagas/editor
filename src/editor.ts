@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Colors, Point, Scene, Skin, World } from 'std'
+import { Point, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
@@ -20,14 +20,7 @@ import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
 
-export class Editor<TColors extends $<Colors>> extends Scene {
-  constructor(
-    public world: World,
-    public colors: TColors,
-    public skin = $(new Skin(colors))
-  ) {
-    super(world)
-  }
+export class Editor extends Scene {
   // core
   misc = $(new Misc)
   history = $(new History(this))
@@ -128,7 +121,7 @@ export class Editor<TColors extends $<Colors>> extends Scene {
   get renderable() {
     $()
     const it = this
-    const { world: { anim }, misc, scroll } = $.of(it)
+    const { world: { anim, skin }, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
     const d = $(new Point)
     const ad = $(new Point)
@@ -228,7 +221,7 @@ export class Editor<TColors extends $<Colors>> extends Scene {
         // return +this.needUpdate
       }
       @fn draw(t: number) {
-        const { renderables, scroll, skin, dims: { viewSpan } } = $.of(it)
+        const { renderables, scroll, dims: { viewSpan } } = $.of(it)
         const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = Renderable.Position
