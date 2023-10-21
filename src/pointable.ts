@@ -16,23 +16,21 @@ export class Pointable {
       downPos: $(new Point)
     }),
   ) { }
-  cursor = 'default'
-  isDown = false
-  isFocused = false
-  isHovering = false
-  canHover = true
-  downPos = $(new Point)
+
+  // settable by It
   hitArea?: { isPointWithin(p: Point): boolean }
+  canHover = true
+  cursor = 'default'
   getItAtPoint(p: Point): Pointable.It | false | undefined {
     return this.hitArea?.isPointWithin(p) && this.it as unknown as Pointable.It
   }
   onMouseEvent?(kind: Mouse.EventKind): true | undefined | void { }
-  // onDown?(clicks: number): void
-  // onClick?(): void
-  // onUp?(): void
-  // onEnter?(): void
-  // onLeave?(): void
-  // onMove?(): void
+
+  // internal
+  isDown = false
+  isFocused = false
+  isHovering = false
+  downPos = $(new Point)
   @fx apply_downPos() {
     const { isDown } = $.when(this)
     $()

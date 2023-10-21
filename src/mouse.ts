@@ -113,8 +113,10 @@ export class Mouse extends Comp {
     let i = 0
     const its = this.getItsUnderPointer(ctx)
     for (const it of its) {
-      if (!i && it.pointable.canHover && this.hoverIt !== it) {
-        this.hoverIt = it
+      if (it.pointable.canHover) {
+        if (!i++ && this.hoverIt !== it) {
+          this.hoverIt = it
+        }
       }
 
       // switch (kind) {
@@ -142,8 +144,6 @@ export class Mouse extends Comp {
             break
         }
       }
-
-      if (it.pointable.canHover) i++
     }
   }
 }
