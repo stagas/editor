@@ -91,7 +91,9 @@ export class Mouse extends Comp {
         this.downTime = time
         break
       case Up:
-        this.downIt = null
+        this.hoverIt
+          = this.downIt
+          = null
         break
     }
 
