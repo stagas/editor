@@ -122,11 +122,11 @@ export class Editor extends Scene {
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
-      t.selection,
+      // t.selection,
       // t.elevations,
       // ...t.sub,
       // ...t.deco,
-      // t.text,
+      t.text,
       // t.brackets,
       // t.caret,
       t.scrollbars,
