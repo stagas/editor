@@ -50,6 +50,7 @@ export class Caret extends Comp {
         const { pointable: { isFocused } } = $.of(ctx)
         const { lineHeight, charWidth } = $.of(dims)
         $()
+        const { hideWhenAway } = this
         const { pointable: { isHovering } } = $.of(text)
         r.w = charWidth || 1
         r.h = lineHeight + 1
@@ -59,7 +60,7 @@ export class Caret extends Comp {
         if (blink) {
           it.isBlinking = isFocused
         }
-        it.isHidden = !isHovering
+        it.isHidden = hideWhenAway ? !isHovering : false
         this.needRender = true
       }
       @fx hide_when_typing() {
