@@ -1,11 +1,11 @@
 // log.active
 import { $, fx } from 'signal'
 import { Point, PointerEventType } from 'std'
+import { MouseButton } from 'utils'
 import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Linecol } from './linecol.ts'
 import { Pointable } from './pointable.ts'
-import { MouseButton, MouseButtons } from 'utils'
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
