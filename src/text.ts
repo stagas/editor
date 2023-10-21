@@ -126,7 +126,7 @@ export class Text extends Comp {
       cursor = 'text'
       hitArea = it.renderable.rect
       @fn onMouseEvent(kind: Mouse.EventKind) {
-        const { mouse: { pos, btns } } = this
+        const { mouse: { pos, btns }, isDown } = this
 
         if (kind !== Wheel) {
           buffer.getLineColFromPoint(pos, true, linecol)
@@ -146,7 +146,7 @@ export class Text extends Comp {
             return true
 
           case Move:
-            if (this.isDown && (btns & MouseButtons.Left)) {
+            if (isDown && (btns & MouseButtons.Left)) {
               selection.end.set(linecol)
               buffer.linecol.set(linecol)
               buffer.coli = linecol.col
@@ -155,9 +155,9 @@ export class Text extends Comp {
 
           case Down:
             const { real } = $.of(pointer)
-            const { shift, buttons } = pointer
+            const { shift } = pointer
 
-            if (!(buttons & MouseButtons.Left)) return
+            if (!(btns & MouseButtons.Left)) return
 
             prevent(real)
 
