@@ -48,7 +48,7 @@ export class Mouse extends Comp {
     for (const { pointable } of pointables) {
       if (item = pointable.getItAtPoint(
         pointable.it.renderable.position
-        === Renderable.Position.Layout
+          === Renderable.Position.Layout
           ? pos
           : posTr
       )) {
