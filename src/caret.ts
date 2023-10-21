@@ -46,7 +46,7 @@ export class Caret extends Comp {
       }
       @fx update_caret() {
         const { pr, rect: r } = $.of(this)
-        const { blink } = $.of(it)
+        const { blink, linecol } = $.of(it)
         const { pointable: { isFocused } } = $.of(ctx)
         const { lineHeight, charWidth } = $.of(dims)
         $()
