@@ -23,7 +23,7 @@ export class Caret extends Comp {
     $()
     const it = this
     const { ctx, ind } = $.of(it)
-    const { misc, dims } = $.of(ctx)
+    const { misc, dims, text } = $.of(ctx)
     class CaretRenderable extends Renderable {
       @fx update_indicator_focused_color() {
         const {
@@ -69,7 +69,7 @@ export class Caret extends Comp {
       }
       @fx hide_when_away() {
         const { hideWhenAway } = $.when(it)
-        const { pointable: { isHovering } } = $.of(ctx)
+        const { pointable: { isHovering } } = $.of(text)
         $()
         it.isHidden = !isHovering
       }
