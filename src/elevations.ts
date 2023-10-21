@@ -9,19 +9,6 @@ import { Renderable } from './renderable.ts'
 import { SourceToken } from './source.ts'
 import { Open, openers } from './util.ts'
 
-const colors = {
-  hover: {
-    fill: '#ffffff15',
-    light: '#fff4',
-    dark: '#fff2',
-  },
-  caret: {
-    fill: '#7755ff28',
-    light: '#75f7',
-    dark: '#75f4',
-  }
-}
-
 export class Elevation extends Range {
   static create() { return $(new Elevation) }
   depth = 0
@@ -39,10 +26,24 @@ export class Elevations extends Comp {
     $()
     const it = this
     const { ctx, drawnElevations } = $.of(it)
-    const { misc, buffer, dims, scroll, input: { mouse }, text, brackets } = $.of(ctx)
+    const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = $.of(ctx)
     class ElevationsRenderable extends Renderable {
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
+      }
+      get colors() {
+        return {
+          hover: {
+            fill: skin.colors.brand1,
+            light: skin.colors.brand1,
+            dark: skin.colors.brand1,
+          },
+          caret: {
+            fill: skin.colors.bg,
+            light: skin.colors.bg,
+            dark: skin.colors.bg,
+          }
+        }
       }
       @fx trigger_needRender() {
         const { rect: r, pr } = $.of(this)
@@ -175,7 +176,7 @@ export class Elevations extends Comp {
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { rect } = $.of(this)
+        const { rect, colors } = $.of(this)
         const { isTyping } = $.of(misc)
         const { pointable: { isHovering } } = $.of(text)
 
