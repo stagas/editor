@@ -120,9 +120,8 @@ export class Editor extends Scene {
   get renderable() {
     $()
     const it = this
-    const { world: { anim, skin }, dims, misc, scroll } = $.of(it)
+    const { world: { anim, skin }, misc, scroll } = $.of(it)
     const { targetScroll, pos: scrollPos } = $.of(scroll)
-    const { viewSpan } = $.of(dims)
 
     const d = $(new Point)
     const ad = $(new Point)
@@ -240,6 +239,8 @@ export class Editor extends Scene {
         const { rect, canvas } = $.of(this)
         const { c } = canvas
         const { Layout, Scroll } = Renderable.Position
+        const { dims } = $.of(it)
+        const { viewSpan } = $.of(dims)
 
         for (const it of renderables) {
           const { renderable: r } = it
