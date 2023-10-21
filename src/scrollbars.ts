@@ -1,6 +1,5 @@
 // log.active
 import { $ } from 'signal'
-import { Point } from 'std'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
@@ -16,9 +15,16 @@ export class Scrollbars extends Comp {
       t.scrollbarX,
     ]
   }
+  get pointables() {
+    const t = $.of(this)
+    return [
+      t.scrollbarY,
+      t.scrollbarX,
+    ]
+  }
   get renderable(): $<Renderable> {
     $()
-    const it = this
+    // const it = this
     // class ScrollbarsRenderable extends Renderable {
     //   // @fx trigger_needDraw() {
     //   //   let needDraw = false
@@ -47,16 +53,16 @@ export class Scrollbars extends Comp {
 
   get pointable() {
     $()
-    const it = this
-    class ScrollbarsPointable extends Pointable {
-      getItAtPoint(p: Point) {
-        for (const item of it.items) {
-          if (item.renderable.isVisible && item.pointable.getItAtPoint(p)) {
-            return item
-          }
-        }
-      }
-    }
-    return $(new ScrollbarsPointable(this))
+    // const it = this
+    // class ScrollbarsPointable extends Pointable {
+    //   getItAtPoint(p: Point) {
+    //     for (const item of it.items) {
+    //       if (item.renderable.isVisible && item.pointable.getItAtPoint(p)) {
+    //         return item
+    //       }
+    //     }
+    //   }
+    // }
+    return $(new Pointable(this))
   }
 }
