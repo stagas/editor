@@ -44,6 +44,11 @@ export class Editor extends Scene {
     blink: false, //true,
     renderable: { position: Renderable.Position.Inner }
   })
+  dropCaret = $(new Caret(this), {
+    blink: false,
+    linecol: this.input.mouse.linecol,
+    renderable: { position: Renderable.Position.Inner }
+  })
   scrollbars = $(new Scrollbars(this))
 
   // widgets
