@@ -101,11 +101,11 @@ export class Editor extends Scene {
       t.scrollbars,
     ]
   }
-  get pointables(): (Renderable.It & Pointable.It)[] {
+  get pointables(): Pointable.It[] {
     const t = $.of(this)
     return [
       t.scrollbars,
-      ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
+      ...(t.sub.filter(w => w.pointable?.it) as (Widget.It & Pointable.It)[]),
       t.text,
     ]
   }

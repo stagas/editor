@@ -5,7 +5,7 @@ import { Renderable } from './renderable.ts'
 
 export class Pointable {
   constructor(
-    public it: Renderable.It,
+    public it: Pointable.It,
     public downCount = it.renderable.ctx.input.mouse.$.downCount,
     public downTime = it.renderable.ctx.input.mouse.$.downTime,
     public mouse = $({
@@ -22,7 +22,7 @@ export class Pointable {
   canHover = true
   cursor = 'default'
   getItAtPoint(p: Point): Pointable.It | false | undefined {
-    return this.hitArea?.isPointWithin(p) && this.it as unknown as Pointable.It
+    return this.hitArea?.isPointWithin(p) && this.it
   }
   onMouseEvent?(kind: Mouse.EventKind): true | undefined | void { }
 
@@ -40,7 +40,7 @@ export class Pointable {
 }
 
 export namespace Pointable {
-  export interface It {
+  export interface It extends Renderable.It {
     pointables?: Pointable.It[]
     pointable: Pointable
   }
