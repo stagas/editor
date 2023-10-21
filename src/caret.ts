@@ -59,7 +59,7 @@ export class Caret extends Comp {
         if (blink) {
           it.isBlinking = isFocused
         }
-        it.isHidden = isHovering
+        it.isHidden = !isHovering
         this.needRender = true
       }
       @fx hide_when_typing() {
