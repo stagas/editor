@@ -116,7 +116,9 @@ export class Scrollbar extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { pr, canvas, rect } = this
-        rect.drawImage(canvas.el, c, pr, true)
+        if (!this.isHidden) {
+          rect.drawImage(canvas.el, c, pr, true)
+        }
         this.needDraw = false
       }
     }
