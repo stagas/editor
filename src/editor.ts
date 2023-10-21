@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Point, Scene, World } from 'std'
+import { Point, Scene } from 'std'
 import { clamp, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
