@@ -59,6 +59,7 @@ export class Mouse extends Comp {
   @fx update_it_pointable_isHovering() {
     const { hoverIt, ctx: { world } } = $.of(this)
     $()
+    console.log('HOVER', hoverIt)
     hoverIt.pointable.isHovering = true
     world.screen.cursor = hoverIt.pointable.cursor
     return () => {
@@ -112,6 +113,7 @@ export class Mouse extends Comp {
         }
         return
       }
+
       i++
     }
 
