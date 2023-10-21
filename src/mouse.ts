@@ -28,7 +28,7 @@ export class Mouse extends Comp {
     const { pos } = $.of(this)
     const { x, y } = $.of(pos)
     $()
-    this._innerPos.set(pos).normalizeMatrix(m)
+    this._innerPos.set(pos).normalizeMatrix(m, pr, prRecip)
     console.log('YES', pos.text, this._innerPos.text)
     return this._innerPos
   }
