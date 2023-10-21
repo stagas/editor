@@ -88,11 +88,22 @@ export class Mouse extends Comp {
         }
         this.downTime = time
         break
+      case Up:
+        this.downIt = null
+        break
     }
 
     let i = 0
     for (const it of its) {
       if (hoverIt !== it && !i) this.hoverIt = it
+
+      switch (kind) {
+        case Up:
+          if (downIt && it !== downIt) {
+            return
+          }
+      }
+
       if (it.pointable.onMouseEvent?.(kind)) {
         switch (kind) {
           case Down:
@@ -100,13 +111,6 @@ export class Mouse extends Comp {
             break
         }
         return
-      }
-      switch (kind) {
-        case Up:
-          if (downIt) {
-            this.downIt = null
-            return
-          }
       }
       i++
     }
