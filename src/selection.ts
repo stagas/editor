@@ -14,7 +14,7 @@ export class Selection extends Comp {
     $()
     const it = this
     const { ctx, selection } = $.of(it)
-    const { buffer, dims, scroll, skin } = $.of(ctx)
+    const { buffer, dims, scroll, world: { skin } } = $.of(ctx)
     class SelectionRenderable extends Renderable {
       viewRect = $(new Rect)
       isHidden = false
