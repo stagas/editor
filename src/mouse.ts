@@ -77,7 +77,6 @@ export class Mouse extends Comp {
           this.downCount = 1
         }
         this.downTime = time
-        this.downIt = it
         break
       case Mouse.EventKind.Up:
         this.downIt = null
@@ -85,6 +84,11 @@ export class Mouse extends Comp {
     }
     for (const it of its) {
       if (it.pointable.onMouseEvent?.(kind)) {
+        switch (kind) {
+          case Mouse.EventKind.Down:
+            this.downIt = it
+            break
+        }
         return
       }
     }
