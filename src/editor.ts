@@ -23,7 +23,7 @@ import { Mouse } from './mouse.ts'
 class Skin {
   get colors() {
     const fg = '#aaa' //theme.brightWhite
-    const bg = '#111' //theme.background
+    const bg = '#113' //theme.background
     const colors = {
       fg,
       bg,
