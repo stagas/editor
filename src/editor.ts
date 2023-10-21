@@ -78,13 +78,13 @@ export class Editor extends Scene {
     const t = $.of(this)
     return [
       t.selection,
-      t.elevations,
+      // t.elevations,
       ...t.sub,
       ...t.deco,
       t.text,
-      t.brackets,
-      t.caret,
-      t.scrollbars,
+      // t.brackets,
+      // t.caret,
+      // t.scrollbars,
     ]
   }
   @nu get pointables(): (Renderable.It & Pointable.It)[] {
