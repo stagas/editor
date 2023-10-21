@@ -48,6 +48,7 @@ export class Editor extends Scene {
   dropCaret = $(new Caret(this), {
     blink: false,
     hideWhenAway: true,
+    hideWhenTyping: true,
     color1: '#555',
     color2: '#555',
     color1Focused: '#666',
