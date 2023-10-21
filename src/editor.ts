@@ -238,9 +238,6 @@ export class Editor extends Scene {
         misc.wasScrolling = misc.isScrolling
         misc.isScrolling = isScrolling
 
-        // check if we need further updates
-        // let needUpdate = isScrolling
-
         if (!isScrolling) {
           this.needUpdate = false
           this.needDraw = true
@@ -251,8 +248,6 @@ export class Editor extends Scene {
           this.needDraw = true
           return 1 // need next frame
         }
-        // console.log(this.needUpdate)
-        // return +this.needUpdate
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = $.of(this)
