@@ -73,7 +73,7 @@ export class Scrollbar extends Comp {
         this.needDraw = true
       }
       @fn initCanvas(c: CanvasRenderingContext2D) {
-        c.lineWidth = 3
+        // c.lineWidth = 3
         this.needInit = false
         this.needRender = true
       }
