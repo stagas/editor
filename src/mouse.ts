@@ -36,7 +36,6 @@ export class Mouse extends Comp {
       downIt.pointable.isDown = false
     }
   }
-
   @fx update_it_pointable_isHovering() {
     const { hoverIt, ctx: { world } } = $.of(this)
     $()
@@ -46,7 +45,7 @@ export class Mouse extends Comp {
       hoverIt.pointable.isHovering = false
     }
   }
-  *getItTraversePointables(it: Pointable.It): Generator<Pointable.It> {
+  *traverseGetItAtPoint(it: Pointable.It): Generator<Pointable.It> {
     let item: Pointable.It | false | undefined
 
     if (item = it.pointable.getItAtPoint(it.pointable.mouse.pos)) {
@@ -54,20 +53,20 @@ export class Mouse extends Comp {
     }
 
     if ('pointables' in it) {
-      for (const i of it.pointables) {
-        if (!i.pointable.it.renderable.isVisible) continue
+      for (const curr of it.pointables) {
+        if (!curr.pointable.it.renderable.isVisible) continue
 
-        yield* this.getItTraversePointables(i)
+        yield* this.traverseGetItAtPoint(curr)
       }
     }
   }
-  *getItsUnderPointer(it: Pointable.It) {
-    const { downIt } = this
+  *getItsUnderPointer() {
+    const { downIt, ctx } = this
 
     // the down It is always the first under the pointer.
     if (downIt) yield downIt
 
-    yield *this.getItTraversePointables(it)
+    yield *this.traverseGetItAtPoint(ctx)
   }
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
@@ -106,7 +105,7 @@ export class Mouse extends Comp {
     }
 
     let i = 0
-    const its = this.getItsUnderPointer(ctx)
+    const its = this.getItsUnderPointer()
     for (const it of its) {
       if (it.pointable.canHover) {
         if (!i++ && this.hoverIt !== it) {

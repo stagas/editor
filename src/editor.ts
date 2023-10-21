@@ -147,7 +147,7 @@ export class Editor extends Scene {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      getNeedDraw(renderables: Renderable.It[], pass = false) {
+      traverseNeedDraw(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
@@ -155,7 +155,7 @@ export class Editor extends Scene {
           const { needRender, needDraw } = r
           pass ||= needRender || needDraw || false
           if ('renderables' in it) {
-            pass = this.getNeedDraw(
+            pass = this.traverseNeedDraw(
               it.renderables,
               pass
             )
@@ -164,7 +164,7 @@ export class Editor extends Scene {
         return pass
       }
       @fx trigger_needDraw() {
-        const needDraw = this.getNeedDraw(it.renderables)
+        const needDraw = this.traverseNeedDraw(it.renderables)
         if (needDraw) {
           $()
           this.needDraw = true
@@ -189,17 +189,17 @@ export class Editor extends Scene {
           }
         }
       }
-      runInitCanvas(renderables: Renderable.It[]) {
+      @fn traverseInitCanvas(renderables: Renderable.It[]) {
         for (const it of renderables) {
           const { renderable: r } = it
           r.needInit && r.initCanvas(r.canvas.c)
-          if ('renderables' in it) this.runInitCanvas(it.renderables)
+          if ('renderables' in it) this.traverseInitCanvas(it.renderables)
         }
       }
       @fn initCanvas() {
         const { c } = $.of(this.canvas)
         c.imageSmoothingEnabled = false
-        this.runInitCanvas(it.renderables)
+        this.traverseInitCanvas(it.renderables)
         this.needInit = false
       }
       @fn update() {
@@ -254,7 +254,7 @@ export class Editor extends Scene {
         // console.log(this.needUpdate)
         // return +this.needUpdate
       }
-      runDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
+      traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = $.of(this)
         const { dims: { viewSpan } } = $.of(it)
 
@@ -262,7 +262,7 @@ export class Editor extends Scene {
           const { renderable: r } = it
 
           if ('renderables' in it) {
-            position = this.runDraw(t, it.renderables, position)
+            position = this.traverseDraw(t, it.renderables, position)
           }
 
           if (r.position !== position) {
@@ -326,7 +326,7 @@ export class Editor extends Scene {
 
         rect.fill(c, skin.colors.bg)
 
-        const position = this.runDraw(t, it.renderables)
+        const position = this.traverseDraw(t, it.renderables)
 
         if (position === Inner) {
           c.restore()
