@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, init, nu } from 'signal'
+import { $, fn, fx, init } from 'signal'
 import { Point, Scene } from 'std'
 import { clamp, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
@@ -87,7 +87,7 @@ export class Editor extends Scene {
       t.scrollbars,
     ]
   }
-  @nu get pointables(): (Renderable.It & Pointable.It)[] {
+  get pointables(): (Renderable.It & Pointable.It)[] {
     const t = $.of(this)
     return [
       t.scrollbars,
