@@ -42,6 +42,7 @@ export class Editor extends Scene {
   })
   caret = $(new Caret(this), {
     blink: false, //true,
+    linecol: this.buffer.linecol,
     renderable: { position: Renderable.Position.Inner }
   })
   dropCaret = $(new Caret(this), {
