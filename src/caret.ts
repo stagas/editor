@@ -21,7 +21,7 @@ export class Caret extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, linecol, ind } = $.of(it)
+    const { ctx, ind } = $.of(it)
     const { misc, dims } = $.of(ctx)
     class CaretRenderable extends Renderable {
       @fx update_indicator_focused_color() {
@@ -37,6 +37,7 @@ export class Caret extends Comp {
       @fx update_rect() {
         const { rect: r } = $.of(this)
         const { charWidth, lineBaseTops } = $.of(dims)
+        const { linecol } = $.of(it)
         const { line, col } = linecol
         $()
         r.x = col * charWidth
@@ -107,7 +108,7 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { isHidden } = $.of(it)
+        const { isHidden, linecol } = $.of(it)
         const { charWidth, lineBaseTops } = $.of(dims)
         const { line, col } = linecol
         if (!isHidden) {
