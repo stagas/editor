@@ -10,7 +10,7 @@ import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from
 const tempPoint = $(new Point)
 
 export class Selection extends Comp {
-  get renderable(): $<Renderable> {
+  get renderable() {
     $()
     const it = this
     const { ctx, selection } = $.of(it)
