@@ -85,14 +85,25 @@ export class Mouse extends Comp {
 
     switch (kind) {
       case Down:
+      case Up:
         if (pointer.buttons & MouseButtons.Left) {
-          if (time - this.downTime < DOUBLE_CLICK_MS) {
-            this.downCount++
+          switch (kind) {
+            case Down:
+              if (time - this.downTime < DOUBLE_CLICK_MS) {
+                this.downCount++
+              }
+              else {
+                this.downCount = 1
+              }
+              this.downTime = time
+              break
+
+            case Up:
+              this.hoverIt
+                = this.downIt
+                = null
+              break
           }
-          else {
-            this.downCount = 1
-          }
-          this.downTime = time
         }
         else {
           this.downCount = 0
@@ -101,13 +112,10 @@ export class Mouse extends Comp {
 
       case Leave:
         if (downIt) break
-
-      case Up:
         this.hoverIt
           = this.downIt
           = null
-        if (kind === Leave) return
-        break
+        return
     }
 
     let i = 0
