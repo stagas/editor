@@ -28,7 +28,7 @@ export class Mouse extends Comp {
     const { pos } = $.of(this)
     const { x, y } = $.of(pos)
     $()
-    this._innerPos.set(pos).normalizeMatrixPr(m, pr, prRecip)
+    this._innerPos.set(pos).normalizeMatrixPr(m, pr, prRecip).round()
     return this._innerPos
   }
 
@@ -62,10 +62,7 @@ export class Mouse extends Comp {
     const { hoverIt, ctx: { world } } = $.of(this)
     $()
     hoverIt.pointable.isHovering = true
-    setTimeout(() => {
-
-      world.screen.cursor = hoverIt.pointable.cursor
-    })
+    world.screen.cursor = hoverIt.pointable.cursor
     return () => {
       hoverIt.pointable.isHovering = false
     }
