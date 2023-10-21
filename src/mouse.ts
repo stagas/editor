@@ -70,6 +70,9 @@ export class Mouse extends Comp {
     const kind = PointerEventMap[type]
     for (const it of its) {
       if (it.pointable.onMouseEvent?.(kind)) {
+        if (kind === Mouse.EventKind.Down) {
+          this.downIt = it
+        }
         return
       }
     }
