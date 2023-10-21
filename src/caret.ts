@@ -6,7 +6,7 @@ import { Renderable } from './renderable.ts'
 import { Linecol } from './linecol.ts'
 
 export class Caret extends Comp {
-  linecol = this.ctx.buffer.linecol
+  linecol?: $<Linecol>
   blink = false
   ind = $(new Indicator(this.ctx))
   isBlinking = false
