@@ -25,15 +25,15 @@ class Skin {
     const colors = $(new class {
       fg = '#aaa'
       bg = '#113'
-      get bgBright015() { return lum(bg, 0.015) }
-      get bgBright025() { return lum(bg, 0.025)}
-      get bgBright05() { return lum(bg, 0.05)}
-      get bgBright1() { return lum(bg, 0.1)}
-      get bgBright15() { return lum(bg, 0.15)}
-      get bgBright2() { return lum(bg, 0.2)}
-      get bgBright25() { return lum(bg, 0.25)}
-      get bgBright3() { return lum(bg, 0.3)}
-      get bgBright35() { return lum(bg, 0.35)}
+      get bgBright015() { return lum(this.bg, 0.015) }
+      get bgBright025() { return lum(this.bg, 0.025)}
+      get bgBright05() { return lum(this.bg, 0.05)}
+      get bgBright1() { return lum(this.bg, 0.1)}
+      get bgBright15() { return lum(this.bg, 0.15)}
+      get bgBright2() { return lum(this.bg, 0.2)}
+      get bgBright25() { return lum(this.bg, 0.25)}
+      get bgBright3() { return lum(this.bg, 0.3)}
+      get bgBright35() { return lum(this.bg, 0.35)}
       sliderFill = '#f61'
       get sliderActiveFill() { return sat(lum(this.sliderFill, 0.5), 0.6)}
       get sliderActiveStroke() { return sat(lum(this.sliderFill, 0.15), -0.05)}
