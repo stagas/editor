@@ -102,6 +102,7 @@ export class Editor extends Scene {
     const { Menu } = Mouse.EventKind
     class EditorPointable extends Pointable {
       hitArea = it.renderable.rect
+      canHover = false
       @fx update_hovering() {
         this.isHovering = it.pointables.some(s =>
           s.pointable.isHovering
