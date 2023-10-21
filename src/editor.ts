@@ -291,7 +291,11 @@ export class Editor extends Scene {
             if (
               viewRect.bottom < viewSpan.top
               || viewRect.top > viewSpan.bottom
-            ) continue
+            ) {
+              r.isVisible = false
+              continue
+            }
+            r.isVisible = true
 
             r.needInit && r.initCanvas(r.canvas.c)
             r.needRender && r.render(t, r.canvas.c, true)
@@ -301,6 +305,8 @@ export class Editor extends Scene {
             }
           }
           else if (position === Layout) {
+            r.isVisible = true
+
             if (r.canDirectDraw && this.needDirectDraw) {
               c.save()
               r.initCanvas(c)
