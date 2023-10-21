@@ -38,9 +38,11 @@ export class Mouse extends Comp {
 
     const { downIt } = this
 
+    // the down It is always the first under the pointer.
     if (downIt) yield downIt
 
     for (const { pointable: p } of pointables) {
+      if (!p.it.renderable.isVisible) continue
       if (it = p.getItAtPoint(p.mouse.pos)) {
         yield it
       }
@@ -90,7 +92,7 @@ export class Mouse extends Comp {
         break
       case Mouse.EventKind.Up:
         this.downIt = null
-        break
+        return
     }
 
     let i = 0
