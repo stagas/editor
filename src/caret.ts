@@ -3,9 +3,10 @@ import $, { fn, fx } from 'signal'
 import { Comp } from './comp.ts'
 import { Indicator } from './indicator.ts'
 import { Renderable } from './renderable.ts'
+import { Linecol } from './linecol.ts'
 
 export class Caret extends Comp {
-  linecol = this.ctx.buffer.linecol
+  linecol?: $<Linecol> // = this.ctx.buffer.linecol
   blink = false
   ind = $(new Indicator(this.ctx))
   isBlinking = false
