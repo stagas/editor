@@ -61,7 +61,7 @@ export class Scrollbar extends Comp {
         const { hasSize } = $.when(rect)
         const { w, h } = $.of(rect)
         const { pointable } = $.of(it)
-        const { isHovering } = $.of(pointable)
+        const { isHovering, isDown } = $.of(pointable)
         $()
         this.needRender = true
       }
@@ -76,12 +76,12 @@ export class Scrollbar extends Comp {
         const { canvas, pr, rect } = $.of(this)
         const { c } = $.of(canvas)
         const { pointable } = $.of(it)
-        const { isHovering } = $.of(pointable)
+        const { isHovering, isDown } = $.of(pointable)
 
         const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
-          (isHovering
+          (isHovering || isDown
             ? skin.colors.bgBright2
             : skin.colors.bgBright1) + alpha
         c.fillRect(0, 0, rect.w, rect.h)
