@@ -29,6 +29,7 @@ export class Mouse extends Comp {
     const { x, y } = $.of(pos)
     $()
     this._innerPos.set(pos).transformMatrixPr(m, pr, prRecip)
+    console.log('YES', pos.text, this._innerPos.text)
     return this._innerPos
   }
 
