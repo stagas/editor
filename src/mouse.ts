@@ -92,11 +92,11 @@ export class Mouse extends Comp {
           else {
             this.downCount = 1
           }
+          this.downTime = time
         }
         else {
           this.downCount = 0
         }
-        this.downTime = time
         break
 
       case Leave:
