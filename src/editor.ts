@@ -24,6 +24,7 @@ class Skin {
   get colors() {
     const fg = '#aaa' //theme.brightWhite
     const bg = '#113' //theme.background
+    const sliderFill = '#f61'
     const colors = {
       fg,
       bg,
@@ -37,9 +38,9 @@ class Skin {
       bgBright3: lum(bg, 0.3),
       bgBright35: lum(bg, 0.35),
       sliderFill: '#f61',
-      sliderActiveFill: sat(lum(bg, 0.5), 0.6),
-      sliderActiveStroke: sat(lum(bg, 0.15), -0.05),
-      sliderActiveHover: sat(lum(bg, 0.45), -0.25),
+      sliderActiveFill: sat(lum(sliderFill, 0.5), 0.6),
+      sliderActiveStroke: sat(lum(sliderFill, 0.15), -0.05),
+      sliderActiveHover: sat(lum(sliderFill, 0.45), -0.25),
 
       // black: '#080808',
       // white: theme.white,
