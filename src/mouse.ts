@@ -41,9 +41,11 @@ export class Mouse extends Comp {
     const { hoverIt, ctx: { world } } = $.of(this)
     $()
     hoverIt.pointable.isHovering = true
+    hoverIt.pointable.onMouseEvent?.(Enter)
     world.screen.cursor = hoverIt.pointable.cursor
     return () => {
       hoverIt.pointable.isHovering = false
+      hoverIt.pointable.onMouseEvent?.(Leave)
     }
   }
   *traverseGetItAtPoint(it: Pointable.It): Generator<Pointable.It> {
