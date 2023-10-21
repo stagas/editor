@@ -25,7 +25,7 @@ export class Mouse extends Comp {
     const { ctx: { misc, renderable: { pr, prRecip } } } = $.of(this)
     const { innerMatrix: m } = $.of(misc)
     const { a, b, c, d, e, f } = m
-    const { pos, innerPos } = $.of(this)
+    const { pos } = $.of(this)
     const { x, y } = $.of(pos)
     $()
     this._innerPos.set(pos).transformMatrixPr(m, pr, prRecip)
