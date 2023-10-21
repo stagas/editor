@@ -90,21 +90,23 @@ export class Mouse extends Comp {
         }
         this.downTime = time
         break
+
       case Up:
+      case Leave:
         this.hoverIt
           = this.downIt
           = null
+        if (kind === Leave) return
         break
+
     }
 
     let i = 0
     const its = this.getItsUnderPointer()
     for (const it of its) {
-      console.log(it)
-      if (this.hoverIt !== it && !i) {
-        console.log('SET', it)
+      if (!i && this.hoverIt !== it) {
         this.hoverIt = it
-        }
+      }
 
       switch (kind) {
         case Up:
