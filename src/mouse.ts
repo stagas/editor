@@ -76,9 +76,11 @@ export class Mouse extends Comp {
     $()
     const { type } = pointer
     const { pos, innerPos, linecol, downIt, hoverIt } = this
-    const its = this.getItsUnderPointer()
+
     const kind = PointerEventMap[type]
-    console.log(Mouse.EventKind[kind])
+
+    log(Mouse.EventKind[kind])
+
     switch (kind) {
       case Down:
         if (time - this.downTime < DOUBLE_CLICK_MS) {
@@ -95,6 +97,7 @@ export class Mouse extends Comp {
     }
 
     let i = 0
+    const its = this.getItsUnderPointer()
     for (const it of its) {
       if (hoverIt !== it && !i) this.hoverIt = it
 
