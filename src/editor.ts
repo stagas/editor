@@ -22,6 +22,7 @@ import { Widget } from './widget.ts'
 
 export class Editor extends Scene {
   // core
+  get skin() { return this.world.skin }
   misc = $(new Misc)
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
