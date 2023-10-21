@@ -68,22 +68,22 @@ export class Mouse extends Comp {
 
     const its = this.getItsUnderPointer()
     const kind = PointerEventMap[type]
+    switch (kind) {
+      case Mouse.EventKind.Down:
+        if (time - this.downTime < DOUBLE_CLICK_MS) {
+          this.downCount++
+        }
+        else {
+          this.downCount = 1
+        }
+        this.downTime = time
+        this.downIt = it
+        break
+      case Mouse.EventKind.Up:
+        this.downIt = null
+        break
+    }
     for (const it of its) {
-      switch (kind) {
-        case Mouse.EventKind.Down:
-          if (time - this.downTime < DOUBLE_CLICK_MS) {
-            this.downCount++
-          }
-          else {
-            this.downCount = 1
-          }
-          this.downTime = time
-          this.downIt = it
-          break
-        case Mouse.EventKind.Up:
-          this.downIt = null
-          break
-      }
       if (it.pointable.onMouseEvent?.(kind)) {
         return
       }
