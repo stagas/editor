@@ -303,7 +303,6 @@ export class Editor extends Scene {
           else if (position === Layout) {
             if (r.canDirectDraw && this.needDirectDraw) {
               c.save()
-              console.log('yea', r)
               r.initCanvas(c)
               r.render(t, c, false)
               c.restore()
