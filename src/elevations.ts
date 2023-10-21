@@ -39,9 +39,9 @@ export class Elevations extends Comp {
             dark: skin.colors.brand1,
           },
           caret: {
-            fill: skin.colors.bg,
-            light: skin.colors.bg,
-            dark: skin.colors.bg,
+            fill: skin.colors.bgBright015,
+            light: skin.colors.bgBright1,
+            dark: skin.colors.dark,
           }
         }
       }
