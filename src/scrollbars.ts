@@ -17,6 +17,7 @@ export class Scrollbars extends Comp {
   }
   get pointables() {
     const t = $.of(this)
+    console.log('yay')
     return [
       t.scrollbarY,
       t.scrollbarX,
