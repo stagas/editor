@@ -10,7 +10,7 @@ export class ActiveLine extends Comp {
     const { ctx } = $.of(it)
     const { skin, buffer, dims } = $.of(ctx)
     class ActiveLineRenderable extends Renderable {
-      position = Renderable.Position.Scroll
+      position = Renderable.Position.Inner
       viewRect = $(new Rect)
       @fx update_rect() {
         const { rect: r, viewRect: vr } = this
