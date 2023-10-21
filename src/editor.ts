@@ -226,7 +226,8 @@ export class Editor extends Scene {
         const { Layout, Scroll } = Renderable.Position
 
         console.log(rect.text)
-        rect.fill(c, skin.colors.bg)
+        // rect.fill(c, skin.colors.bg)
+        canvas.clear()
 
         let position: Renderable.Position = Layout
 
