@@ -110,6 +110,7 @@ export class Editor extends Scene {
       }
       @fn onMouseEvent(type: Mouse.EventKind) {
         if (type === Menu) {
+          console.log('YO')
           const { real } = $.of(pointer)
           prevent(real)
         }
