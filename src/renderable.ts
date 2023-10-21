@@ -15,6 +15,7 @@ export class Renderable extends Scene {
   }
 
   position: Renderable.Position = Renderable.Position.Layout
+  get prRecip() { return 1 / this.pr }
   coeff = 1
   viewRect?: $<Rect>
   dirtyRect?: $<Rect>

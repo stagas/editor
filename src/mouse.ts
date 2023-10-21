@@ -20,7 +20,7 @@ const PointerEventMap = {
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
-  posTr = $(new Point)
+  matPos = $(new Point)
   linecol = $(new Linecol)
 
   downCount = 0
@@ -31,17 +31,15 @@ export class Mouse extends Comp {
   downIt?: Pointable.It | null | undefined
 
   @fx update_posTr() {
-    const { ctx: { misc, renderable: { pr } } } = $.of(this)
+    const { ctx: { misc, renderable: { pr, prRecip } } } = $.of(this)
     const { innerMatrix: m } = $.of(misc)
     const { a, b, c, d, e, f } = m
-    const { pos, posTr } = $.of(this)
+    const { pos, matPos } = $.of(this)
     $()
-    posTr.set(pos)
-      .mul(pr).transformMatrix(m)
-      .mul(1 / pr)
+    matPos.set(pos).transformMatrixPr(m, pr, prRecip)
   }
   @fn getItsUnderPointer(): Pointable.It[] {
-    const { ctx: { pointables }, pos, posTr } = $.of(this)
+    const { ctx: { pointables }, pos, matPos } = $.of(this)
     const items: Pointable.It[] = []
     let item: Pointable.It | false | undefined
 
@@ -50,7 +48,7 @@ export class Mouse extends Comp {
         pointable.it.renderable.position
           === Renderable.Position.Layout
           ? pos
-          : posTr
+          : matPos
       )) {
         items.push(item)
       }
@@ -67,9 +65,11 @@ export class Mouse extends Comp {
     const { time, real } = $.of(pointer)
     $()
     const { type } = pointer
-    const { pos, posTr, linecol, downIt, hoverIt } = this
+    const { pos, matPos: posTr, linecol, downIt, hoverIt } = this
 
     const its = this.getItsUnderPointer()
+    console.log(its)
+    return
 
 
 
