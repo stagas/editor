@@ -108,12 +108,12 @@ export class Mouse extends Comp {
         this.hoverIt = it
       }
 
-      switch (kind) {
-        case Up:
-          if (downIt && it !== downIt) {
-            return
-          }
-      }
+      // switch (kind) {
+      //   case Up:
+      //     if (downIt && it !== downIt) {
+      //       return
+      //     }
+      // }
 
       if (it.pointable.onMouseEvent?.(kind)) {
         switch (kind) {
