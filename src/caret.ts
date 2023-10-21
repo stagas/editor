@@ -94,7 +94,7 @@ export class Caret extends Comp {
         }
       }
       @fx trigger_draw() {
-        const { rect: { x, y } } = $.of(this)
+        const { rect: { x, y }, linecol } = $.of(this)
         const { isHidden } = $.of(it)
         const { charWidth } = $.of(dims)
         $()
