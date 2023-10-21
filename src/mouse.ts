@@ -67,7 +67,7 @@ export class Mouse extends Comp {
       misc.wasScrolling = false
     }
 
-    if (downIt) {
+    if (type !== Up && downIt) {
       downIt.pointable[PointerEventMap[type]]?.()
       return
     }
