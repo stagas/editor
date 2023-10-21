@@ -7,8 +7,6 @@ import { Pointable } from './pointable.ts'
 import { Linecol } from './linecol.ts'
 import { Renderable } from './renderable.ts'
 
-const { Wheel, Down, Up, Leave, Move, Menu } = PointerEventType
-
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
   linecol = $(new Linecol)
@@ -81,7 +79,7 @@ export class Mouse extends Comp {
     const its = this.getItsUnderPointer()
     const kind = PointerEventMap[type]
     switch (kind) {
-      case Mouse.EventKind.Down:
+      case Down:
         if (time - this.downTime < DOUBLE_CLICK_MS) {
           this.downCount++
         }
@@ -97,16 +95,18 @@ export class Mouse extends Comp {
       if (hoverIt !== it && !i) this.hoverIt = it
       if (it.pointable.onMouseEvent?.(kind)) {
         switch (kind) {
-          case Mouse.EventKind.Down:
+          case Down:
             this.downIt = it
             break
-          case Mouse.EventKind.Up:
-            if (downIt) {
-              this.downIt = null
-              return
-            }
         }
         return
+      }
+      switch (kind) {
+        case Up:
+          if (downIt) {
+            this.downIt = null
+            return
+          }
       }
       i++
     }
@@ -223,17 +223,20 @@ export namespace Mouse {
     Move,
     Down,
     Up,
+    Enter,
     Leave,
-    Menu,
     Click,
+    Menu,
   }
 }
 
+const { Wheel, Down, Up, Leave, Move, Menu, Click, Enter } = Mouse.EventKind
+
 const PointerEventMap = {
-  [Wheel]: Mouse.EventKind.Wheel,
-  [Down]: Mouse.EventKind.Down,
-  [Up]: Mouse.EventKind.Up,
-  [Leave]: Mouse.EventKind.Leave,
-  [Move]: Mouse.EventKind.Move,
-  [Menu]: Mouse.EventKind.Menu,
+  [PointerEventType.Wheel]: Wheel,
+  [PointerEventType.Down]: Down,
+  [PointerEventType.Up]: Up,
+  [PointerEventType.Leave]: Leave,
+  [PointerEventType.Move]: Move,
+  [PointerEventType.Menu]: Menu,
 } as const
