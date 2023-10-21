@@ -39,13 +39,13 @@ export class Elevations extends Comp {
     $()
     const it = this
     const { ctx, drawnElevations } = $.of(it)
-    const { misc, buffer, dims, scroll, input: { mouse }, brackets } = $.of(ctx)
+    const { misc, buffer, dims, scroll, input: { mouse }, text, brackets } = $.of(ctx)
     class ElevationsRenderable extends Renderable {
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
       }
       @fx trigger_needDraw() {
-        const { isHovering } = $.of(ctx.pointable)
+        const { isHovering } = $.of(text.pointable)
         $()
         this.needDraw = true
       }
@@ -197,7 +197,7 @@ export class Elevations extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = $.of(this)
-        const { pointable: { isHovering } } = $.of(ctx)
+        const { pointable: { isHovering } } = $.of(text)
         if (isHovering) {
           rect.drawImage(canvas.el, c, pr, true)
         }
