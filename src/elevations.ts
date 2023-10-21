@@ -34,14 +34,14 @@ export class Elevations extends Comp {
       get colors() {
         return {
           hover: {
-            fill: skin.colors.brand1,
-            light: skin.colors.brand1,
-            dark: skin.colors.brand1,
-          },
-          caret: {
             fill: skin.colors.bgBright015,
             light: skin.colors.bgBright1,
             dark: skin.colors.dark,
+          },
+          caret: {
+            fill: skin.colors.brand1,
+            light: skin.colors.brand1,
+            dark: skin.colors.brand1,
           }
         }
       }
