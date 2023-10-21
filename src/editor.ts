@@ -74,7 +74,7 @@ export class Editor extends Scene {
     }),
   ]
 
-  @nu get renderables(): Renderable.It[] {
+  get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
       t.selection,
