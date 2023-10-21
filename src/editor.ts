@@ -97,8 +97,8 @@ export class Editor extends Scene {
       ...t.deco,
       t.text,
       t.brackets,
-      t.caret,
       t.dropCaret,
+      t.caret,
       t.scrollbars,
     ]
   }
