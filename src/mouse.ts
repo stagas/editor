@@ -67,14 +67,14 @@ export class Mouse extends Comp {
       misc.wasScrolling = false
     }
 
-    if (type === Move && downIt) {
+    if (downIt) {
       downIt.pointable[PointerEventMap[type]]?.()
       return
     }
 
     const items = this.findItemsAtPoint(pos)
     if (type !== Up && downIt) items.push(downIt)
-console.log(items)
+
     let itemIndex = -1
     let currentIt = items.at(itemIndex)!
 
