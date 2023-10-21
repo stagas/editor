@@ -134,7 +134,8 @@ export class Editor extends Scene {
       getNeedDraw(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
-        if (!r.isVisible) continue
+          if (!r.isVisible) continue
+
           const { needRender, needDraw } = r
           pass ||= needRender || needDraw || false
           if ('renderables' in it) {
@@ -238,11 +239,9 @@ export class Editor extends Scene {
         // return +this.needUpdate
       }
       runDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
-        const { rect, canvas } = $.of(this)
-        const { c } = canvas
+        const { canvas: { c } } = $.of(this)
         const { Layout, Scroll } = Renderable.Position
-        const { dims } = $.of(it)
-        const { viewSpan } = $.of(dims)
+        const { dims: { viewSpan } } = $.of(it)
 
         for (const it of renderables) {
           const { renderable: r } = it
@@ -307,14 +306,13 @@ export class Editor extends Scene {
         return position
       }
       @fn draw(t: number) {
-        const { renderables, scroll, dims: { viewSpan } } = $.of(it)
         const { rect, canvas } = $.of(this)
         const { c } = canvas
-        const { Layout, Scroll } = Renderable.Position
+        const { Scroll } = Renderable.Position
 
         rect.fill(c, skin.colors.bg)
 
-        const position = this.runDraw(t, renderables)
+        const position = this.runDraw(t, it.renderables)
 
         if (position === Scroll) {
           c.restore()
