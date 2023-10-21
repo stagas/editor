@@ -2,10 +2,10 @@
 import { $, fn, fx } from 'signal'
 import { MouseButtons } from 'utils'
 import { Comp } from './comp.ts'
+import { Mouse } from './mouse.ts'
 import { Pointable } from './pointable.ts'
 import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
-import { Mouse } from './mouse.ts'
 
 type Axis = 'x' | 'y'
 
@@ -72,12 +72,19 @@ export class Scrollbar extends Comp {
         $()
         this.needDraw = true
       }
+      @fn initCanvas(c: CanvasRenderingContext2D) {
+        c.lineWidth = 3
+        this.needInit = false
+        this.needRender = true
+      }
       @fn render() {
         const { canvas, pr, rect } = $.of(this)
         const { c } = $.of(canvas)
         const { pointable } = $.of(it)
         const { isHovering, isDown } = $.of(pointable)
 
+        c.save()
+        //
         const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
@@ -90,7 +97,7 @@ export class Scrollbar extends Comp {
         c.moveTo(0, rect.h)
         c.lineTo(rect.w, rect.h)
         c.lineTo(rect.w, 0)
-        c.lineWidth = 3
+
         c.strokeStyle = skin.colors.bgBright015 //+ alpha
         c.stroke()
 
@@ -98,9 +105,11 @@ export class Scrollbar extends Comp {
         c.moveTo(0, rect.h)
         c.lineTo(0, 0)
         c.lineTo(rect.w, 0)
-        c.lineWidth = 3
+
         c.strokeStyle = skin.colors.bgBright25 + alpha
         c.stroke()
+        //
+        c.restore()
 
         this.needRender = false
         this.needDraw = true
