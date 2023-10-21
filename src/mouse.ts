@@ -101,7 +101,7 @@ export class Mouse extends Comp {
     const its = this.getItsUnderPointer()
     for (const it of its) {
       console.log(it)
-      if (hoverIt !== it && !i) {
+      if (this.hoverIt !== it && !i) {
         console.log('SET', it)
         this.hoverIt = it
         }
