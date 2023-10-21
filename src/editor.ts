@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, nu } from 'signal'
-import { Point, Scene, Skin } from 'std'
+import { Colors, Point, Scene, Skin, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
@@ -20,10 +20,16 @@ import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
 
-export class Editor extends Scene {
+export class Editor<TColors extends $<Colors>> extends Scene {
+  constructor(
+    public world: World,
+    public colors: TColors,
+    public skin = $(new Skin(colors))
+  ) {
+    super(world)
+  }
   // core
   misc = $(new Misc)
-  skin = $(new Skin)
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: {} }))
   scroll = $(new Scroll(this))
@@ -62,19 +68,20 @@ export class Editor extends Scene {
   get deco(): Widget.It[] {
     $()
     return [
-    $(new Widget(this), {
-      widgetable: {
-        kind: Widget.Kind.Deco,
-        dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
-      }
-    }),
-    $(new Widget(this), {
-      widgetable: {
-        kind: Widget.Kind.Deco,
-        dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
-      }
-    }),
-  ] }
+      $(new Widget(this), {
+        widgetable: {
+          kind: Widget.Kind.Deco,
+          dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+        }
+      }),
+      $(new Widget(this), {
+        widgetable: {
+          kind: Widget.Kind.Deco,
+          dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
+        }
+      }),
+    ]
+  }
 
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
