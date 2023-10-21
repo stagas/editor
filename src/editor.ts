@@ -122,13 +122,13 @@ export class Editor extends Scene {
   @nu get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
-      // t.selection,
-      // t.elevations,
-      // ...t.sub,
-      // ...t.deco,
+      t.selection,
+      t.elevations,
+      ...t.sub,
+      ...t.deco,
       t.text,
-      // t.brackets,
-      // t.caret,
+      t.brackets,
+      t.caret,
       t.scrollbars,
     ]
   }
@@ -301,7 +301,7 @@ export class Editor extends Scene {
             }
           }
           else if (position === Layout) {
-            if (this.needDirectDraw) {
+            if (r.canDirectDraw && this.needDirectDraw) {
               c.save()
               r.initCanvas(c)
               r.render(t, c, false)

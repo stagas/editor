@@ -14,8 +14,9 @@ export class Renderable extends Scene {
     super(world)
   }
 
-  position: Renderable.Position = Renderable.Position.Layout
   get prRecip() { return 1 / this.pr }
+  position: Renderable.Position = Renderable.Position.Layout
+  canDirectDraw?: boolean
   coeff = 1
   viewRect?: $<Rect>
   dirtyRect?: $<Rect>
