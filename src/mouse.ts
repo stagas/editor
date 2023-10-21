@@ -109,7 +109,6 @@ export class Mouse extends Comp {
         this.downPos.set(pos)
         this.downIt = currentIt
         this.downIt.pointable.isDown = true
-        console.log(currentIt)
         currentIt.pointable.onDown?.(this.downCount)
         return
 
