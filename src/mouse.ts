@@ -35,8 +35,8 @@ export class Mouse extends Comp {
     const { innerMatrix: m } = $.of(misc)
     const { a, b, c, d, e, f } = m
     const { pos, matPos } = $.of(this)
+    const { x, y } = $.of(pos)
     $()
-    console.log('HERE')
     matPos.set(pos).transformMatrixPr(m, pr, prRecip)
   }
   @fn getItsUnderPointer(): Pointable.It[] {
