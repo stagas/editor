@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fx } from 'signal'
 import { Point } from 'std'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
@@ -9,8 +9,13 @@ import { Scrollbar } from './scrollbar.ts'
 export class Scrollbars extends Comp {
   scrollbarY = $(new Scrollbar(this.ctx), { axis: 'y' })
   scrollbarX = $(new Scrollbar(this.ctx), { axis: 'x' })
-  items = [this.scrollbarY, this.scrollbarX]
-
+  get renderables() {
+    const t = $.of(this)
+    return [
+      t.scrollbarY,
+      t.scrollbarX,
+    ]
+  }
   get renderable(): $<Renderable> {
     $()
     const it = this
@@ -26,17 +31,16 @@ export class Scrollbars extends Comp {
         $()
         this.needDraw = needDraw
       }
-      @fn draw(t: number, c: CanvasRenderingContext2D) {
-        for (const { renderable: r } of it.items) {
-          if (!r.isVisible) continue
+      // @fn draw(t: number, c: CanvasRenderingContext2D) {
+      //   for (const { renderable: r } of it.items) {
+      //     if (!r.isVisible) continue
 
-          r.needInit && r.initCanvas(r.canvas.c)
-          r.needRender && r.render()
-          r.draw(t, c)
-        }
-        this.needDraw = false
-      }
-
+      //     r.needInit && r.initCanvas(r.canvas.c)
+      //     r.needRender && r.render()
+      //     r.draw(t, c)
+      //   }
+      //   this.needDraw = false
+      // }
     }
     return $(new ScrollbarsRenderable(this.ctx, this.ctx.renderable.rect, this.ctx.world.canvas))
   }
