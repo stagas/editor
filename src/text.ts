@@ -115,7 +115,7 @@ export class Text extends Comp {
     const { ctx } = $.of(it)
     const { world, buffer, scroll, selection,
       input: { textarea, mouse } } = $.of(ctx)
-    const { linecol: lineCol } = $.of(mouse)
+    const { linecol } = $.of(mouse)
     const { pointer } = $.of(world)
     const { wheel } = pointer
 
@@ -133,11 +133,12 @@ export class Text extends Comp {
         scroll.animSettings = Scroll.AnimSettings.Medium
       }
       @fn onMove() {
-        const { buttons } = pointer
+        const { mousePos, mouseButtons: buttons } = this
+        buffer.getLineColFromPoint(mousePos, true, linecol)
         if (this.isDown && (buttons & MouseButtons.Left)) {
-          selection.end.set(lineCol)
-          buffer.linecol.set(lineCol)
-          buffer.coli = lineCol.col
+          selection.end.set(linecol)
+          buffer.linecol.set(linecol)
+          buffer.coli = linecol.col
         }
       }
       @fn onDown(downCount: number) {
@@ -148,31 +149,31 @@ export class Text extends Comp {
 
         prevent(real)
 
-        buffer.linecol.set(lineCol)
-        buffer.coli = lineCol.col
+        buffer.linecol.set(linecol)
+        buffer.coli = linecol.col
 
         switch (downCount) {
           case 1:
             if (shift) {
-              selection.end.set(lineCol)
+              selection.end.set(linecol)
             }
             else {
-              selection.resetTo(lineCol)
+              selection.resetTo(linecol)
             }
             break
 
           case 2:
-            if (selection.selectWordBoundary(lineCol, shift)) {
+            if (selection.selectWordBoundary(linecol, shift)) {
               mouse.downCount = 2
               break
             }
           case 3:
-            if (selection.selectMatchingBrackets(lineCol)) {
+            if (selection.selectMatchingBrackets(linecol)) {
               mouse.downCount = 3
               break
             }
           case 4:
-            selection.selectLine(lineCol.line)
+            selection.selectLine(linecol.line)
             break
         }
       }
