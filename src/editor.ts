@@ -19,6 +19,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
+import { ActiveLine } from './active-line.ts'
 
 export class Editor extends Scene {
   // core
@@ -32,6 +33,7 @@ export class Editor extends Scene {
   clipboard = $(new Clipboard(this))
 
   // renderables
+  activeLine = $(new ActiveLine(this))
   selection = $(new Selection(this))
   elevations = $(new Elevations(this))
   text = $(new Text(this))
@@ -77,6 +79,7 @@ export class Editor extends Scene {
   get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
+      t.activeLine,
       t.selection,
       t.elevations,
       ...t.sub,
