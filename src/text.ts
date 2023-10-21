@@ -19,6 +19,7 @@ export class Text extends Comp {
     class TextRenderable extends Renderable {
       // TODO: where is this used??
       viewRect = $(new Rect)
+      canDirectDraw = true
       didInitCanvas = false
       @fx measure_charWidth() {
         const { didInitCanvas } = $.when(this)
