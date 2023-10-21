@@ -123,6 +123,16 @@ export class Mouse extends Comp {
         }
         return
       }
+      else {
+        switch (kind) {
+          case Up:
+            if (time - this.downTime < SINGLE_CLICK_MS && it === downIt) {
+              it.pointable.onMouseEvent?.(Click)
+              return
+            }
+            break
+        }
+      }
 
       i++
     }
