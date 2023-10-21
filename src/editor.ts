@@ -142,7 +142,6 @@ export class Editor extends Scene {
     const ad = $(new Point)
 
     class EditorRenderable extends Renderable {
-      isVisible = true
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
