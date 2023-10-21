@@ -123,12 +123,12 @@ export class Editor extends Scene {
     const t = $.of(this)
     return [
       t.selection,
-      t.elevations,
-      ...t.sub,
-      ...t.deco,
+      // t.elevations,
+      // ...t.sub,
+      // ...t.deco,
       t.text,
-      t.brackets,
-      t.caret,
+      // t.brackets,
+      // t.caret,
       t.scrollbars,
     ]
   }
