@@ -134,6 +134,7 @@ export class Editor extends Scene {
       getNeedDraw(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
+        if (!r.isVisible) continue
           const { needRender, needDraw } = r
           pass ||= needRender || needDraw || false
           if ('renderables' in it) {
@@ -281,7 +282,7 @@ export class Editor extends Scene {
             }
           }
           else if (position === Layout) {
-            r.isVisible = true
+            if (!r.isVisible) continue
 
             if (r.canDirectDraw && this.needDirectDraw) {
               c.save()

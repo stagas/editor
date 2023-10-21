@@ -28,7 +28,7 @@ export class Renderable extends Scene {
   needDraw?: boolean
   needDirectDraw?: boolean
 
-  isVisible = false
+  isVisible = true
   isHidden = false
   initCanvas(c: CanvasRenderingContext2D): void { }
   update(dt: number): number { return 0 }
