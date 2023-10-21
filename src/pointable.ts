@@ -1,7 +1,7 @@
 import { $, fx } from 'signal'
-import { Matrix, Point } from 'std'
-import { Renderable } from './renderable.ts'
+import { Point } from 'std'
 import { Mouse } from './mouse.ts'
+import { Renderable } from './renderable.ts'
 
 export class Pointable {
   constructor(
@@ -42,6 +42,7 @@ export class Pointable {
 
 export namespace Pointable {
   export interface It {
-    pointable: $<Pointable>
+    pointables?: Pointable.It[]
+    pointable: Pointable
   }
 }

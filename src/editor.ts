@@ -103,19 +103,19 @@ export class Editor extends Scene {
     const { Menu } = Mouse.EventKind
     class EditorPointable extends Pointable {
       hitArea = it.renderable.rect
-      getItAtPointInPointables(pointables: Pointable.It[]): Pointable.It | false | undefined {
-        for (const item of it.pointables) {
-          if ('pointables' in item) {
-            const res = this.getItAtPointInPointables(item.pointables)
+      getItAtPointInPointables(p: Point, pointables: Pointable.It[]): Pointable.It | false | undefined {
+        for (const it of pointables) {
+          if ('pointables' in it) {
+            const res = this.getItAtPointInPointables(p, it.pointables)
             if (res) return res
           }
-          if (item.renderable.isVisible && item.pointable.getItAtPoint(p)) {
-            return item
+          if (it.pointable.it.renderable.isVisible && it.pointable.getItAtPoint(p)) {
+            return it
           }
         }
       }
       getItAtPoint(p: Point) {
-        return this.getItAtPointInPointables(it.pointables)
+        return this.getItAtPointInPointables(p, it.pointables)
       }
       @fx update_hovering() {
         this.isHovering = it.pointables.some(s =>
