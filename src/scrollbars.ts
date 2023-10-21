@@ -24,7 +24,11 @@ export class Scrollbars extends Comp {
   }
   get renderable(): $<Renderable> {
     $()
-    return $(new Renderable(this.ctx, this.ctx.renderable.rect, this.ctx.world.canvas))
+    return $(new Renderable(
+      this.ctx,
+      this.ctx.renderable.rect,
+      this.ctx.world.canvas
+    ))
   }
 
   get pointable() {
