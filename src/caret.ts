@@ -111,6 +111,7 @@ export class Caret extends Comp {
         const { isHidden, linecol } = $.of(it)
         const { charWidth, lineBaseTops } = $.of(dims)
         const { line, col } = linecol
+        console.log(linecol.text)
         if (!isHidden) {
           // log('lineCol', line, col)
           c.save()
