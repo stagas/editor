@@ -5,6 +5,7 @@ import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Linecol } from './linecol.ts'
 import { Pointable } from './pointable.ts'
+import { MouseButtons } from 'utils'
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
@@ -66,7 +67,7 @@ export class Mouse extends Comp {
     // the down It is always the first under the pointer.
     if (downIt) yield downIt
 
-    yield *this.traverseGetItAtPoint(ctx)
+    yield* this.traverseGetItAtPoint(ctx)
   }
   @fx handle_pointer_event() {
     const { ctx } = $.of(this)
@@ -84,7 +85,8 @@ export class Mouse extends Comp {
 
     switch (kind) {
       case Down:
-        if (time - this.downTime < DOUBLE_CLICK_MS) {
+        if ((pointer.buttons & MouseButtons.Left)
+          && time - this.downTime < DOUBLE_CLICK_MS) {
           this.downCount++
         }
         else {
