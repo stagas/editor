@@ -14,8 +14,8 @@ export class Renderable extends Scene {
     super(world)
   }
 
-  coeff = 1
   position: Renderable.Position = Renderable.Position.Layout
+  coeff = 1
   viewRect?: $<Rect>
   dirtyRect?: $<Rect>
 

@@ -1,5 +1,5 @@
 import { $ } from 'signal'
-import { Point } from 'std'
+import { Matrix, Point } from 'std'
 import { Renderable } from './renderable.ts'
 
 export class Pointable {

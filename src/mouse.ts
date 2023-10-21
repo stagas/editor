@@ -5,6 +5,7 @@ import { Comp } from './comp.ts'
 import { DOUBLE_CLICK_MS, SINGLE_CLICK_MS } from './constants.ts'
 import { Pointable } from './pointable.ts'
 import { Linecol } from './linecol.ts'
+import { Renderable } from './renderable.ts'
 
 const { Wheel, Down, Up, Leave, Move, Menu } = PointerEventType
 
@@ -19,6 +20,7 @@ const PointerEventMap = {
 
 export class Mouse extends Comp {
   pos = this.ctx.world.pointer.$.pos
+  posTr = $(new Point)
   linecol = $(new Linecol)
 
   downCount = 0
@@ -28,14 +30,28 @@ export class Mouse extends Comp {
   hoverIt?: Pointable.It | null
   downIt?: Pointable.It | null | undefined
 
-  @fn findItemsAtPoint(p: Point): Pointable.It[] {
-    const { ctx } = $.of(this)
-    const { pointables, text } = $.of(ctx)
+  @fx update_posTr() {
+    const { ctx: { misc, renderable: { pr } } } = $.of(this)
+    const { innerMatrix: m } = $.of(misc)
+    const { a, b, c, d, e, f } = m
+    const { pos, posTr } = $.of(this)
+    $()
+    posTr.set(pos)
+      .mul(pr).transformMatrix(m)
+      .mul(1 / pr)
+  }
+  @fn getItsUnderPointer(): Pointable.It[] {
+    const { ctx: { pointables }, pos, posTr } = $.of(this)
     const items: Pointable.It[] = []
-
     let item: Pointable.It | false | undefined
+
     for (const { pointable } of pointables) {
-      if (item = pointable.getItAtPoint(p)) {
+      if (item = pointable.getItAtPoint(
+        pointable.it.renderable.position
+        === Renderable.Position.Layout
+          ? pos
+          : posTr
+      )) {
         items.push(item)
       }
     }
@@ -50,34 +66,37 @@ export class Mouse extends Comp {
     const { pointer } = $.of(world)
     const { time, real } = $.of(pointer)
     $()
-    const { type, pos } = pointer
-    const { linecol, downIt, hoverIt } = this
+    const { type } = pointer
+    const { pos, posTr, linecol, downIt, hoverIt } = this
+
+    const its = this.getItsUnderPointer()
+
+
+
+
+
+
+
+
+
+    if (type !== Up && downIt) its.push(downIt)
 
     if (type !== Up && downIt) {
       downIt.pointable[PointerEventMap[type]]?.()
       return
     }
 
-    // we update the mouse.linecol, but not when we are scrolling
-    // or some element has focus. We also prevent updating right after
-    // scroll at the arbitrary new position, because it's surprising,
-    // so instead we see if we were scrolling and skip it, except when
-    // it is Down, which means the user clicked.
-    if (type === Down || (type !== Wheel && !misc.isScrolling && !misc.wasScrolling && ctx.pointable.isHovering)) {
+    if (!downIt) {
       buffer.getLineColFromPoint(pos, true, linecol)
       misc.isTyping = false
     }
-    // We return the state to normal at the next events,
-    // unless it's a Wheel or user is pressing down on an item.
+
     if (type !== Wheel && !misc.isScrolling && misc.wasScrolling && !downIt?.pointable.isDown) {
       misc.wasScrolling = false
     }
 
-    const items = this.findItemsAtPoint(pos)
-    if (type !== Up && downIt) items.push(downIt)
-
     let itemIndex = -1
-    let currentIt = items.at(itemIndex)!
+    let currentIt = its.at(itemIndex)!
 
     if (type === Up && downIt) {
       downIt.pointable.isDown = false
@@ -135,7 +154,7 @@ export class Mouse extends Comp {
     const handler = PointerEventMap[type]
     let receiver: Pointable.It | undefined = currentIt
     while (receiver && !receiver.pointable[handler]) {
-      receiver = items.at(--itemIndex)
+      receiver = its.at(--itemIndex)
     }
     receiver?.pointable[handler]?.()
   }
