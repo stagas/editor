@@ -93,7 +93,6 @@ export class Editor extends Scene {
       t.scrollbars,
       ...(t.sub.filter(w => w.pointable) as (Widget.It & Pointable.It)[]),
       t.text,
-      this,
     ]
   }
   get pointable() {
