@@ -30,13 +30,9 @@ export class Scrollbars extends Comp {
         for (const { renderable: r } of it.items) {
           if (!r.isVisible) continue
 
-          if (r.needRender) {
-            r.render()
-            r.draw(t, c)
-          }
-          else {
-            r.draw(t, c)
-          }
+          r.needInit && r.initCanvas(r.canvas.c)
+          r.needRender && r.render()
+          r.draw(t, c)
         }
         this.needDraw = false
       }
