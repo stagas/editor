@@ -161,6 +161,7 @@ export class Text extends Comp {
             prevent(real)
 
             const { downCount } = this
+            console.log(downCount)
             buffer.linecol.set(linecol)
             buffer.coli = linecol.col
 
