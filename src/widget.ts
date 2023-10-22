@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx, init } from 'signal'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Range } from './range.ts'
@@ -18,6 +18,9 @@ export class Widgetable {
   dimWidthExclusive = false
   height = 25
   offsetX = 0
+  @init init_widget() {
+    this.it.renderable.position = Renderable.Position.Inner
+  }
   @fx update_rect() {
     const { it } = $.of(this)
     const { renderable } = $.of(it)
