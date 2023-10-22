@@ -2,6 +2,7 @@
 import { $, fn, fx, init } from 'signal'
 import { Point, Scene } from 'std'
 import { clamp, filterAs, prevent } from 'utils'
+import { ActiveLine } from './active-line.ts'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -19,7 +20,6 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
-import { ActiveLine } from './active-line.ts'
 
 export class Editor extends Scene {
   // core
@@ -165,11 +165,34 @@ export class Editor extends Scene {
         }
         return pass
       }
+      traverseNeedUpdate(renderables: Renderable.It[], pass = false) {
+        for (const it of renderables) {
+          const { renderable: r } = it
+          if (!r.isVisible) continue
+
+          const { needUpdate } = r
+          pass ||= needUpdate || false
+          if ('renderables' in it) {
+            pass = this.traverseNeedUpdate(
+              it.renderables,
+              pass
+            )
+          }
+        }
+        return pass
+      }
       @fx trigger_needDraw() {
-        const needDraw = this.traverseNeedDraw(it.renderables)
-        if (needDraw) {
+        const pass = this.traverseNeedDraw(it.renderables)
+        if (pass) {
           $()
           this.needDraw = true
+        }
+      }
+      @fx trigger_needUpdate() {
+        const pass = this.traverseNeedUpdate(it.renderables)
+        if (pass) {
+          $()
+          this.needUpdate = true
         }
       }
       @fx trigger_needUpdate_on_scroll() {
@@ -182,7 +205,7 @@ export class Editor extends Scene {
           this.needUpdate = true
         }
       }
-      @fx trigger_anim_on_need() {
+      @fx trigger_anim_when_needed() {
         const { needInit, needUpdate, needDraw } = this
         if (needInit || needUpdate || needDraw) {
           if (!anim.isAnimating) {
@@ -191,20 +214,33 @@ export class Editor extends Scene {
           }
         }
       }
-      @fn traverseInitCanvas(renderables: Renderable.It[]) {
+      @fn traverse_update(dt: number, renderables: Renderable.It[], pass = 0) {
+        for (const it of renderables) {
+          const { renderable: r } = it
+          if (r.needUpdate) {
+            const needUpdate = r.update(dt)
+            pass ||= needUpdate
+          }
+          if ('renderables' in it) {
+            pass = this.traverse_update(dt, renderables, pass)
+          }
+        }
+        return pass
+      }
+      @fn traverse_initCanvas(renderables: Renderable.It[]) {
         for (const it of renderables) {
           const { renderable: r } = it
           r.needInit && r.initCanvas(r.canvas.c)
-          if ('renderables' in it) this.traverseInitCanvas(it.renderables)
+          if ('renderables' in it) this.traverse_initCanvas(it.renderables)
         }
       }
       @fn initCanvas() {
         const { c } = $.of(this.canvas)
         c.imageSmoothingEnabled = false
-        this.traverseInitCanvas(it.renderables)
+        this.traverse_initCanvas(it.renderables)
         this.needInit = false
       }
-      @fn update() {
+      @fn update(dt: number) {
         const { isTyping } = $.of(misc)
         const { animSettings } = $.of(scroll)
 
@@ -240,13 +276,16 @@ export class Editor extends Scene {
         misc.wasScrolling = misc.isScrolling
         misc.isScrolling = isScrolling
 
-        if (!isScrolling) {
+        let pass = +isScrolling
+        pass = this.traverse_update(dt, it.renderables, pass)
+
+        if (!pass) {
           this.needUpdate = false
           this.needDraw = true
           return 0 // does not need next frame
         }
         else {
-          this.needDirectDraw = true
+          this.needDirectDraw = isScrolling
           this.needDraw = true
           return 1 // need next frame
         }
