@@ -1,4 +1,4 @@
-import { $, fn , of } from 'signal'
+import { $, fn, of } from 'signal'
 import { Comp } from './comp.ts'
 import { Scroll } from './scroll.ts'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'

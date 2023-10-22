@@ -1,5 +1,5 @@
 // log.active
-import { $, fn , of } from 'signal'
+import { $, fn, of } from 'signal'
 import { Comp } from './comp.ts'
 
 let lockPaste = false

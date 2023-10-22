@@ -1,5 +1,5 @@
 // log.active
-import { $, fx , of } from 'signal'
+import { $, fx, of } from 'signal'
 import { Point, PointerEventType } from 'std'
 import { MouseButton } from 'utils'
 import { Comp } from './comp.ts'

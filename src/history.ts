@@ -1,4 +1,4 @@
-import { $, fn, fx , of } from 'signal'
+import { $, fn, fx, of } from 'signal'
 import { Line, Point } from 'std'
 import { debounce, deepMerge } from 'utils'
 import { Comp } from './comp.ts'

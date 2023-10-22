@@ -1,4 +1,4 @@
-import { alias , of } from 'signal'
+import { alias, of } from 'signal'
 import { Point } from 'std'
 
 export class Linecol extends Point {

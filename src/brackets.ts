@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx , of } from 'signal'
+import { $, fn, fx, of } from 'signal'
 import { Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Renderable } from './renderable.ts'
