@@ -332,16 +332,15 @@ export class Editor extends Scene {
               if (r.didDraw || r.needDraw) {
                 r.draw(t, c)
                 r.didDraw = true
-                r.dirtyRect?.stroke(c, '#0f0')
               }
             }
             else {
               r.needInit && r.initCanvas(r.canvas.c)
               r.needRender && r.render(t, r.canvas.c, true)
+              r.dirtyRect?.whenSized?.clear(c) //stroke(c, '#0f0')
               if (r.needDraw) {
                 r.draw(t, c)
                 r.didDraw = true
-                r.dirtyRect?.stroke(c, '#0f0')
               }
             }
           }
