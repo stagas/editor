@@ -1,10 +1,10 @@
 // log.active
-import $, { fn, fx , of } from 'signal'
+import $, { fn, fx, of, when } from 'signal'
 import { Comp } from './comp.ts'
-import { Indicator } from './indicator.ts'
-import { Renderable } from './renderable.ts'
-import { Linecol } from './linecol.ts'
 import { Editor } from './editor.ts'
+import { Indicator } from './indicator.ts'
+import { Linecol } from './linecol.ts'
+import { Renderable } from './renderable.ts'
 
 export class Caret extends Comp {
   constructor(
