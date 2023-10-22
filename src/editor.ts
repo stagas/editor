@@ -350,7 +350,6 @@ export class Editor extends Scene {
                         r.draw(t, c)
                         r.didDraw = true
                       }
-
                       continue
                     }
 
