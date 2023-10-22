@@ -222,7 +222,7 @@ export class Editor extends Scene {
             pass ||= needUpdate
           }
           if ('renderables' in it) {
-            pass = this.traverse_update(dt, renderables, pass)
+            pass = this.traverse_update(dt, it.renderables, pass)
           }
         }
         return pass
