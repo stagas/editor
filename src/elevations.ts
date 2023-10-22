@@ -199,6 +199,7 @@ export class Elevations extends Comp {
         dirtyRect.pos.add(scroll)
         c.restore()
 
+        console.log(dirtyRect.text)
         this.needRender = false
         this.needDraw = true
       }
