@@ -19,6 +19,7 @@ export class Widgetable {
   height = 25
   offsetX = 0
   @init init_widget() {
+    console.log('YES', this.it)
     this.it.renderable.position = Renderable.Position.Inner
   }
   @fx update_rect() {
