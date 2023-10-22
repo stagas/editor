@@ -344,7 +344,15 @@ export class Editor extends Scene {
 
                   for (const it of renderables) {
                     const ir = it.renderable
-                    if (it.renderable === ir) continue
+                    if (ir === r) {
+                      r.needRender && r.render(t, r.canvas.c, true)
+                      if (r.needDraw) {
+                        r.draw(t, c)
+                        r.didDraw = true
+                      }
+
+                      continue
+                    }
 
                     if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
                       dr.intersectionRect(
@@ -360,13 +368,13 @@ export class Editor extends Scene {
 
                   dr.zero()
                 }
-              }
-
-              r.needRender && r.render(t, r.canvas.c, true)
-
-              if (r.needDraw) {
-                r.draw(t, c)
-                r.didDraw = true
+                else {
+                  r.needRender && r.render(t, r.canvas.c, true)
+                  if (r.needDraw) {
+                    r.draw(t, c)
+                    r.didDraw = true
+                  }
+                }
               }
             }
           }
@@ -401,7 +409,15 @@ export class Editor extends Scene {
 
                     for (const it of renderables) {
                       const ir = it.renderable
-                      if (it.renderable === ir) continue
+                      if (ir === r) {
+                        r.needRender && r.render(t, r.canvas.c, true)
+                        if (r.needDraw) {
+                          r.draw(t, c)
+                          r.didDraw = true
+                        }
+
+                        continue
+                      }
 
                       if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
                         dr.intersectionRect(
@@ -417,13 +433,13 @@ export class Editor extends Scene {
 
                     dr.zero()
                   }
-                }
-
-                r.needRender && r.render(t, r.canvas.c, true)
-
-                if (r.needDraw) {
-                  r.draw(t, c)
-                  r.didDraw = true
+                  else {
+                    r.needRender && r.render(t, r.canvas.c, true)
+                    if (r.needDraw) {
+                      r.draw(t, c)
+                      r.didDraw = true
+                    }
+                  }
                 }
               }
             }
