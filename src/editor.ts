@@ -336,12 +336,13 @@ export class Editor extends Scene {
             }
             else {
               r.needInit && r.initCanvas(r.canvas.c)
-              if (r.needRender) {
+              if (r.needRender || r.needDraw) {
                 r.dirtyRect?.whenSized
                   ?.fill(c, skin.colors.bg)
-                // .stroke(c, '#0f0')
-                r.render(t, r.canvas.c, true)
+                  // .stroke(c, '#0f0')
               }
+              if (r.needRender) r.render(t, r.canvas.c, true)
+
               if (r.needDraw) {
                 r.draw(t, c)
                 r.didDraw = true
