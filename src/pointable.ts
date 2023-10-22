@@ -16,9 +16,6 @@ export class Pointable {
           ? r.ctx.input.mouse.pos
           : r.ctx.input.mouse.innerPos
       },
-      // pos: it.renderable.position === Renderable.Position.Layout
-      //   ? it.renderable.ctx.input.mouse.pos
-      //   : it.renderable.ctx.input.mouse.innerPos,
       downPos: $(new Point)
     }),
   ) { }
