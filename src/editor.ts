@@ -361,7 +361,7 @@ export class Editor extends Scene {
         const { rect, canvas } = of(this)
         const { c } = canvas
 
-        rect.fill(c, skin.colors.bg)
+        if (this.needDirectDraw) rect.fill(c, skin.colors.bg)
 
         const position = this.traverseDraw(t, it.renderables)
 
