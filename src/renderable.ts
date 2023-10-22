@@ -3,6 +3,7 @@ import { $, fx } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 
+// TODO: we should use new Renderable(it) like the other components
 export class Renderable extends Scene {
   constructor(
     public ctx: Editor,
