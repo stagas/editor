@@ -182,7 +182,7 @@ export class Elevations extends Comp {
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
 
-        paintRect.zero()
+        // paintRect.zero()
         if (clear) {
           rect.clear(c)
         }
