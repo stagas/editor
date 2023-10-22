@@ -48,6 +48,7 @@ export class Caret extends Comp {
         const { charWidth, lineBaseTops } = of(dims)
         const { linecol } = of(it)
         const { line, col } = linecol
+        // ????
         const { [line]: y } = of(lineBaseTops)
         $()
         r.x = Math.floor(col * charWidth)
