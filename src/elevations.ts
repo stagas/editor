@@ -161,7 +161,6 @@ export class Elevations extends Comp {
               colors.dark,
             )
             if (dr) dirtyRect.combine(dr)
-            $.flush()
           }
         }
 
@@ -179,7 +178,6 @@ export class Elevations extends Comp {
             colors.dark,
           )
           if (dr) dirtyRect.combine(dr)
-          $.flush()
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
