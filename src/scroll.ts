@@ -1,5 +1,5 @@
 // log.active
-import { $, alias, fx } from 'signal'
+import { $, alias, fx , of } from 'signal'
 import { Point } from 'std'
 import { clamp } from 'utils'
 import { Comp } from './comp.ts'

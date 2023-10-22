@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx , of } from 'signal'
 import { Point } from 'std'
 import { poolArrayGet } from 'utils'
 import { Comp } from './comp.ts'

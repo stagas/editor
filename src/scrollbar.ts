@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx , of } from 'signal'
 import { MouseButtons } from 'utils'
 import { Comp } from './comp.ts'
 import { Mouse } from './mouse.ts'

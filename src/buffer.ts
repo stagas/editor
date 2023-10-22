@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, nu, of } from 'signal'
+import { $, fn, fx, nu, of , of } from 'signal'
 import { Point, PointLike, Rect } from 'std'
 import { clamp, poolArrayGet } from 'utils'
 import { Editor } from './editor.ts'

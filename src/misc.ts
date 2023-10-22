@@ -1,4 +1,4 @@
-import { $ } from 'signal'
+import { $ , of } from 'signal'
 import { Matrix } from 'std'
 
 export class Misc {

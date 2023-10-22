@@ -1,5 +1,5 @@
 // log.active
-import { $, fx, nu } from 'signal'
+import { $, fx, nu , of } from 'signal'
 import { Point, Rect } from 'std'
 import { arraysEqual } from 'utils'
 import { Comp } from './comp.ts'

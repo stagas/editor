@@ -1,5 +1,5 @@
 // log.active
-import { $, fx } from 'signal'
+import { $, fx , of } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 

@@ -1,4 +1,4 @@
-import { $, fx } from 'signal'
+import { $, fx , of } from 'signal'
 import { Point } from 'std'
 import { Mouse } from './mouse.ts'
 import { Renderable } from './renderable.ts'

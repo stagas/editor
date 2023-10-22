@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx , of } from 'signal'
 import { Point, Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Linecol } from './linecol.ts'

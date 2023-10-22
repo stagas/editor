@@ -1,4 +1,4 @@
-import { $, fx } from 'signal'
+import { $, fx , of } from 'signal'
 import { World } from 'std'
 import { dom } from 'utils'
 import { Editor } from '../src/editor.ts'

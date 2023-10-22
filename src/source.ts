@@ -1,4 +1,4 @@
-import { $, fn, fx, init } from 'signal'
+import { $, fn, fx, init , of } from 'signal'
 
 export type Tokenize = (
   source: { code: string }

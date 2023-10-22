@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, init } from 'signal'
+import { $, fn, fx, init , of } from 'signal'
 import { Comp } from './comp.ts'
 import { Pointable } from './pointable.ts'
 import { Range } from './range.ts'
