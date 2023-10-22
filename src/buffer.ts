@@ -1,12 +1,12 @@
 // log.active
-import { $, fn, fx, nu } from 'signal'
-import { Line, Point, PointLike, Rect } from 'std'
+import { $, fn, fx, nu, of } from 'signal'
+import { Point, PointLike, Rect } from 'std'
 import { clamp, poolArrayGet } from 'utils'
 import { Editor } from './editor.ts'
-import { Source } from './source.ts'
-import { findMatchingBrackets } from './util.ts'
 import { Linecol } from './linecol.ts'
 import { Range } from './range.ts'
+import { Source } from './source.ts'
+import { findMatchingBrackets } from './util.ts'
 
 const tempPoint = $(new Point)
 const tempLinecol = $(new Linecol)
