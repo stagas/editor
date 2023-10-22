@@ -131,19 +131,11 @@ export class Text extends Comp {
           if (y > viewSpan.top && y < viewSpan.bottom) {
             x = t.col * charWidth + 1
 
-            // const color = (
-            //   colors?.[t.text]
-            //   ?? colors?.[Token.Type[t.type]]
-            // ) as keyof typeof skin.colors
-
             c.fillStyle
               = c.strokeStyle
               = colors?.[t.text]
               ?? colors?.[Token.Type[t.type]]
               ?? '#fff'
-
-              // '#fff'
-            // = skin.colors[color] ?? '#fff'
 
             c.strokeText(t.text, x, y)
             c.fillText(t.text, x, y)
