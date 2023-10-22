@@ -202,7 +202,6 @@ export class Elevations extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        console.warn('what')
         const { canvas, rect, pr } = of(this)
         rect.drawImage(canvas.el, c, pr, true)
         this.needDraw = false
