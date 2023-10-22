@@ -134,8 +134,8 @@ export class Caret extends Comp {
           )
           ind.renderable.draw(t, c)
           c.restore()
-          dr.x = rect.x
-          dr.y = rect.y
+          dr.x = rect.x + ind.renderable.offset.x
+          dr.y = rect.y + ind.renderable.offset.y
           dr.w = ind.renderable.rect.w
           dr.h = ind.renderable.rect.h
         }

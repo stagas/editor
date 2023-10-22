@@ -9,6 +9,7 @@ export class Indicator extends Comp {
     $()
     const it = this
     class IndicatorRenderable extends Renderable {
+      offset = { x: -7, y: -5.5 }
       @fx trigger_needRender() {
         const { pr, rect: { w, h } } = of(this)
         const { color1 ,color2} = of(it)
@@ -44,9 +45,9 @@ export class Indicator extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = of(this)
+        const { pr, canvas, rect, offset } = of(this)
         c.save()
-        c.translate(-7, -5.5)
+        c.translate(offset.x, offset.y)
         rect.drawImage(canvas.el, c, pr, true)
         c.restore()
         this.needDraw = false
