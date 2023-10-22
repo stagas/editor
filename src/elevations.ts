@@ -29,6 +29,7 @@ export class Elevations extends Comp {
     const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
       dirtyRect= $(new Rect)
+      paintRect = $(new Rect)
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
       }
@@ -177,11 +178,11 @@ export class Elevations extends Comp {
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { rect, colors, dirtyRect } = of(this)
+        const { rect, colors, paintRect } = of(this)
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
 
-        dirtyRect.zero()
+        paintRect.zero()
         if (clear) {
           rect.clear(c)
         }
@@ -191,11 +192,11 @@ export class Elevations extends Comp {
         let dr: Rect | undefined
         if (it.caretElevationPoint) {
           dr = this.drawElevation(c, it.caretElevationPoint, colors.caret)
-          if (dr) dirtyRect.combine(dr)
+          if (dr) paintRect.combine(dr)
         }
         if (!isTyping && isHovering) {
           dr = this.drawElevation(c, it.hoverElevationPoint, colors.hover)
-          if (dr) dirtyRect.combine(dr)
+          if (dr) paintRect.combine(dr)
         }
         c.restore()
 
@@ -205,6 +206,7 @@ export class Elevations extends Comp {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = of(this)
           rect.drawImage(canvas.el, c, pr, true)
+        this.dirtyRect.set(this.paintRect)
         this.needDraw = false
       }
 
