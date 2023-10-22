@@ -70,19 +70,19 @@ export class Caret extends Comp {
         this.needRender = true
       }
       @fx hide_when_typing() {
-        const { hideWhenTyping } = $.when(it)
+        const { hideWhenTyping } = when(it)
         const { isTyping } = of(misc)
         $()
         it.isHidden = isTyping
       }
       @fx hide_when_away() {
-        const { hideWhenAway } = $.when(it)
+        const { hideWhenAway } = when(it)
         const { pointable: { isHovering } } = of(text)
         $()
         it.isHidden = !isHovering
       }
       @fx start_blinking() {
-        const { blink, isBlinking } = $.when(it)
+        const { blink, isBlinking } = when(it)
         const { linecol: { line, col } } = of(it)
         const { blinkDelay } = of(dims)
 

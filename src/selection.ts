@@ -190,7 +190,7 @@ export class Selection extends Comp {
     const { buffer, input } = of(ctx)
     const { line, col } = of(buffer)
     const { keyboard } = of(input)
-    const { shiftKey } = $.when(keyboard)
+    const { shiftKey } = when(keyboard)
     $()
     selection.end.set({ x: col, y: line })
   }

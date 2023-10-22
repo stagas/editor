@@ -32,7 +32,7 @@ export class Scrollbar extends Comp {
     const { renderable, axis, ctx } = of(this)
     const { dims, scroll } = of(ctx)
     const { scrollSize, targetScroll } = of(scroll)
-    const { hasSize } = $.when(scrollSize)
+    const { hasSize } = when(scrollSize)
     const { rect: r } = of(renderable)
     const { rect, scrollbarSize } = of(dims)
 
@@ -58,7 +58,7 @@ export class Scrollbar extends Comp {
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
         const { rect, pr } = of(this)
-        const { hasSize } = $.when(rect)
+        const { hasSize } = when(rect)
         const { w, h } = of(rect)
         const { pointable } = of(it)
         const { isHovering, isDown } = of(pointable)
@@ -67,7 +67,7 @@ export class Scrollbar extends Comp {
       }
       @fx trigger_needDraw() {
         const { rect } = of(this)
-        const { hasSize } = $.when(rect)
+        const { hasSize } = when(rect)
         const { x, y } = of(rect)
         $()
         this.needDraw = true
