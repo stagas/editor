@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx } from 'signal'
+import { $, fn, fx, of } from 'signal'
 import { Rect } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
@@ -13,8 +13,8 @@ export class Text extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx } = $.of(it)
-    const { buffer, dims, skin } = $.of(ctx)
+    const { ctx } = of(it)
+    const { buffer, dims, skin } = of(ctx)
 
     class TextRenderable extends Renderable {
       get colors(): Record<string, string> {
@@ -71,9 +71,9 @@ export class Text extends Comp {
       canDirectDraw = true
       didInitCanvas = false
       @fx measure_charWidth() {
-        const { didInitCanvas } = $.when(this)
-        const { canvas } = $.of(this)
-        const { c } = $.of(canvas)
+        const { didInitCanvas } = when(this)
+        const { canvas } = of(this)
+        const { c } = of(canvas)
         const em = c.measureText('M')
         dims.charWidth = em.width
       }
@@ -88,8 +88,8 @@ export class Text extends Comp {
           viewSpan,
           innerSize: { wh },
           scroll: { xy },
-        } = $.of(dims)
-        const { source, tokens, Token } = $.of(buffer)
+        } = of(dims)
+        const { source, tokens, Token } = of(buffer)
         $()
         this.viewRect.setSize(wh)
 
@@ -110,9 +110,9 @@ export class Text extends Comp {
         this.didInitCanvas = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
-        const { rect, colors } = $.of(this)
-        const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
-        const { tokens, Token } = $.of(buffer)
+        const { rect, colors } = of(this)
+        const { lineBaseBottoms, charWidth, viewSpan, scroll } = of(dims)
+        const { tokens, Token } = of(buffer)
 
         // log('tokens', tokens)
         if (clear) {
@@ -147,7 +147,7 @@ export class Text extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = $.of(this)
+        const { pr, canvas, rect } = of(this)
         rect.drawImage(canvas.el, c, pr, true)
 
         this.needDraw = false
@@ -159,11 +159,11 @@ export class Text extends Comp {
   get pointable() {
     $()
     const it = this
-    const { ctx } = $.of(it)
+    const { ctx } = of(it)
     const { world, misc, buffer, scroll, selection,
-      input: { textarea, mouse } } = $.of(ctx)
-    const { linecol } = $.of(mouse)
-    const { pointer } = $.of(world)
+      input: { textarea, mouse } } = of(ctx)
+    const { linecol } = of(mouse)
+    const { pointer } = of(world)
     const { wheel } = pointer
     const { Wheel, Down, Up, Leave, Move, Menu, Click } = Mouse.EventKind
 
@@ -199,7 +199,7 @@ export class Text extends Comp {
             return true
 
           case Down:
-            const { real } = $.of(pointer)
+            const { real } = of(pointer)
             const { shift } = pointer
 
             if (!(btns & MouseButtons.Left)) return
