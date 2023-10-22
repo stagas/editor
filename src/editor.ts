@@ -340,7 +340,7 @@ export class Editor extends Scene {
                 if (r.dirtyRects) for (const dr of r.dirtyRects) {
                   dr.whenSized
                     ?.fill(c, skin.colors.bg)
-                    // .stroke(c, '#0f0')
+                  // .stroke(c, '#0f0')
 
                   if (r.dirtyRects) for (const dr2 of r.dirtyRects) {
                     dr.intersectionRect(
@@ -398,12 +398,12 @@ export class Editor extends Scene {
                       if (r.dirtyRects) for (const dr2 of r.dirtyRects) {
                         dr.intersectionRect(
                           dr2
-                        )?.drawImage(r.canvas.el, c, pr)
+                        )?.stroke(c, '#f00') //drawImage(r.canvas.el, c, pr)
                       }
                       else {
                         dr.intersectionRect(
                           r.rect
-                        )?.drawImage(r.canvas.el, c, pr)
+                        )?.stroke(c, '#f0f') //drawImage(r.canvas.el, c, pr)
                       }
                     }
                   }
