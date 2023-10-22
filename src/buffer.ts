@@ -12,7 +12,7 @@ const tempPoint = $(new Point)
 const tempLinecol = $(new Linecol)
 
 export class Buffer {
-  constructor(public ctx: Editor, public Token: { Type: Record<string, string> }) { }
+  constructor(public ctx: Editor, public Token: { Type: Record<string | number, string | number> }) { }
 
   source?: $<Source>
   @nu get code() { return $.of(this).source.code }
