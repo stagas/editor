@@ -202,13 +202,13 @@ export class Elevations extends Comp {
         }
         c.restore()
 
+        console.log(dirtyRect.text)
         this.needRender = false
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr } = of(this)
         rect.drawImage(canvas.el, c, pr, true)
-
         this.needDraw = false
       }
 
