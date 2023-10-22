@@ -219,6 +219,7 @@ export class Editor extends Scene {
           const { renderable: r } = it
           if (r.needUpdate) {
             const needUpdate = r.update(dt)
+            if (needUpdate) r.needUpdate = true
             pass ||= needUpdate
           }
           if ('renderables' in it) {
