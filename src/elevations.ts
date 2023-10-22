@@ -124,6 +124,7 @@ export class Elevations extends Comp {
       }
 
       @fn drawElevation(c: CanvasRenderingContext2D, p: Point, colors: any) {
+        const { dirtyRect } = this
         const { elevations } = of(it)
 
         const eligible: $<Elevation>[] = []
@@ -150,7 +151,7 @@ export class Elevations extends Comp {
           if (earliest.isLineWithin(el)) {
             if (drawnElevations.has(el)) continue
             drawnElevations.add(el)
-            buffer.fillTextRange(
+            const dr = buffer.fillTextRange(
               c,
               el,
               colors.fill,
@@ -159,6 +160,7 @@ export class Elevations extends Comp {
               colors.light,
               colors.dark,
             )
+            if (dr) dirtyRect.combine(dr)
           }
         }
 
@@ -166,7 +168,7 @@ export class Elevations extends Comp {
 
         if (latest && !drawnElevations.has(latest)) {
           drawnElevations.add(latest)
-          return buffer.fillTextRange(
+          const dr = buffer.fillTextRange(
             c,
             latest,
             colors.fill,
@@ -175,6 +177,7 @@ export class Elevations extends Comp {
             colors.light,
             colors.dark,
           )
+          if (dr) dirtyRect.combine(dr)
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
@@ -192,14 +195,8 @@ export class Elevations extends Comp {
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
         let dr: Rect | undefined
-        if (it.caretElevationPoint) {
-          dr = this.drawElevation(c, it.caretElevationPoint, colors.caret)
-          if (dr) dirtyRect.combine(dr)
-        }
-        if (!isTyping && isHovering) {
-          dr = this.drawElevation(c, it.hoverElevationPoint, colors.hover)
-          if (dr) dirtyRect.combine(dr)
-        }
+        if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
+        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
         c.restore()
 
         console.log(dirtyRect.text)
