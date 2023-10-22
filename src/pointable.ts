@@ -10,9 +10,15 @@ export class Pointable {
     public downTime = it.renderable.ctx.input.mouse.$.downTime,
     public mouse = $({
       btns: it.renderable.ctx.world.pointer.$.buttons,
-      pos: it.renderable.position === Renderable.Position.Layout
-        ? it.renderable.ctx.input.mouse.pos
-        : it.renderable.ctx.input.mouse.innerPos,
+      get pos() {
+        const r = it.renderable
+        return r.position === Renderable.Position.Layout
+          ? r.ctx.input.mouse.pos
+          : r.ctx.input.mouse.innerPos
+      },
+      // pos: it.renderable.position === Renderable.Position.Layout
+      //   ? it.renderable.ctx.input.mouse.pos
+      //   : it.renderable.ctx.input.mouse.innerPos,
       downPos: $(new Point)
     }),
   ) { }
