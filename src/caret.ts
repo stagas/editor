@@ -1,5 +1,6 @@
 // log.active
 import $, { fn, fx, of, when } from 'signal'
+import { Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
 import { Indicator } from './indicator.ts'
@@ -31,6 +32,7 @@ export class Caret extends Comp {
     const { ctx, ind } = of(it)
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
+      dirtyRect = $(new Rect)
       @fx update_indicator_focused_color() {
         const {
           color1, color2,
@@ -47,8 +49,8 @@ export class Caret extends Comp {
         const { linecol } = of(it)
         const { line, col } = linecol
         $()
-        r.x = col * charWidth
-        r.y = lineBaseTops[line]
+        r.x = Math.floor(col * charWidth)
+        r.y = Math.floor(lineBaseTops[line] + 1)
       }
       @fx update_caret() {
         const { pr, rect: r } = of(this)
@@ -117,20 +119,22 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { isHidden, linecol } = of(it)
-        const { charWidth, lineBaseTops } = of(dims)
-        const { line, col } = linecol
+        const { rect, dirtyRect } = of(this)
+        const { isHidden } = of(it)
+        // const { charWidth, lineBaseTops } = of(dims)
+        // const { line, col } = linecol
         if (!isHidden) {
           // log('lineCol', line, col)
           c.save()
           c.translate(
-            Math.floor(col * charWidth),
+            rect.x, //Math.floor(col * charWidth),
             // TODO: this can be undefined, how to deal with these
             // lineDims getter
-            Math.floor(lineBaseTops[line] + 1)
+            rect.y, //Math.floor(lineBaseTops[line] + 1)
           )
           ind.renderable.draw(t, c)
           c.restore()
+          dirtyRect.set(rect)
         }
         this.needDraw = false
       }
