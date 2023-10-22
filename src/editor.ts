@@ -366,6 +366,7 @@ export class Editor extends Scene {
                 }
               }
               else {
+                r.dirtyRect?.whenSized?.fill(c, '#0f0').stroke(c, '#0f0')
                 r.needInit && r.initCanvas(r.canvas.c)
                 r.needRender && r.render(t, r.canvas.c, true)
                 if (r.needDraw) {
