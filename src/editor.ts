@@ -357,6 +357,8 @@ export class Editor extends Scene {
                       )?.drawImage(ir.canvas.el, c, pr)
                     }
                   }
+
+                  dr.zero()
                 }
               }
 
@@ -412,6 +414,8 @@ export class Editor extends Scene {
                         )?.drawImage(ir.canvas.el, c, pr)
                       }
                     }
+
+                    dr.zero()
                   }
                 }
 
