@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, of, when , of } from 'signal'
+import { $, fn, fx, of, when } from 'signal'
 import { Rect } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
