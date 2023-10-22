@@ -57,20 +57,6 @@ export class Editor extends Scene {
   scrollbars = $(new Scrollbars(this))
 
   // widgets
-  sub: Widget.It[] = [
-    $(new Widget(this), {
-      widgetable: {
-        kind: Widget.Kind.Sub,
-        dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
-      }
-    }),
-    $(new Widget(this), {
-      widgetable: {
-        kind: Widget.Kind.Sub,
-        dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
-      }
-    }),
-  ]
   deco: Widget.It[] = [
     $(new Widget(this), {
       widgetable: {
@@ -85,14 +71,31 @@ export class Editor extends Scene {
       }
     }),
   ]
+  mark: Widget.It[] = []
+  sub: Widget.It[] = [
+    $(new Widget(this), {
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
+      }
+    }),
+    $(new Widget(this), {
+      widgetable: {
+        kind: Widget.Kind.Sub,
+        dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
+      }
+    }),
+  ]
+
   get renderables(): Renderable.It[] {
     const t = $.of(this)
     return [
       t.activeLine,
       t.selection,
       t.elevations,
-      ...t.sub,
       ...t.deco,
+      ...t.mark,
+      ...t.sub,
       t.text,
       t.brackets,
       t.dropCaret,
@@ -104,8 +107,9 @@ export class Editor extends Scene {
     const t = $.of(this)
     return [
       t.scrollbars,
-      ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
       ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
+      ...filterAs(t.mark)<Pointable.It>(w => w.pointable?.it),
+      ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
       t.text,
     ]
   }
