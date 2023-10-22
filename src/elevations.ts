@@ -194,7 +194,6 @@ export class Elevations extends Comp {
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
-        let dr: Rect | undefined
         if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
         if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
         c.restore()
