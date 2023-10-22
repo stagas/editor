@@ -196,7 +196,7 @@ export class Elevations extends Comp {
         it.drawnElevations.clear()
         if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
         if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
-        dirtyRect.add(scroll)
+        dirtyRect.pos.add(scroll)
         c.restore()
 
         this.needRender = false
