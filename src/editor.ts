@@ -331,7 +331,7 @@ export class Editor extends Scene {
             if (r.needDraw) {
               r.draw(t, c)
               r.didDraw = true
-              r.dirtyRect.stroke(c, '#0f0')
+              r.dirtyRect?.stroke(c, '#0f0')
             }
           }
           else if (position === Layout) {
