@@ -370,7 +370,7 @@ export class Editor extends Scene {
                 if (r.needRender) {
                   r.dirtyRect?.whenSized
                     ?.fill(c, skin.colors.bg)
-                    .stroke(c, '#0f0')
+                    // .stroke(c, '#0f0')
                   r.render(t, r.canvas.c, true)
                 }
                 if (r.needDraw) {
