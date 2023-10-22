@@ -34,6 +34,7 @@ export class Buffer {
   hasBrackets = false
 
   fillRects: Rect[] = []
+  dirtyRect = $(new Rect)
 
   @fx clamp_lineCol() {
     const { lines, line, coli } = of(this)
@@ -139,7 +140,7 @@ export class Buffer {
     strokeLight?: string,
     strokeDark?: string,
   ) {
-    const { fillRects, ctx } = of(this)
+    const { fillRects, dirtyRect, ctx } = of(this)
     const { dims } = of(ctx)
     const {
       lineHeight,
@@ -226,5 +227,7 @@ export class Buffer {
       c.stroke()
     }
     c.restore()
+
+    return dirtyRect.combineRects(fillRects, i)
   }
 }

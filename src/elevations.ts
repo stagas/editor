@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of } from 'signal'
-import { Point } from 'std'
+import { Point, Rect } from 'std'
 import { poolArrayGet } from 'utils'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
@@ -28,6 +28,7 @@ export class Elevations extends Comp {
     const { ctx, drawnElevations } = of(it)
     const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
+      dirtyRect= $(new Rect)
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
       }
@@ -164,7 +165,7 @@ export class Elevations extends Comp {
 
         if (latest && !drawnElevations.has(latest)) {
           drawnElevations.add(latest)
-          buffer.fillTextRange(
+          return buffer.fillTextRange(
             c,
             latest,
             colors.fill,
@@ -176,18 +177,26 @@ export class Elevations extends Comp {
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { rect, colors } = of(this)
+        const { rect, colors, dirtyRect } = of(this)
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
 
+        dirtyRect.zero()
         if (clear) {
           rect.clear(c)
         }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
-        if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
-        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
+        let dr: Rect | undefined
+        if (it.caretElevationPoint) {
+          dr = this.drawElevation(c, it.caretElevationPoint, colors.caret)
+          if (dr) dirtyRect.combine(dr)
+        }
+        if (!isTyping && isHovering) {
+          dr = this.drawElevation(c, it.hoverElevationPoint, colors.hover)
+          if (dr) dirtyRect.combine(dr)
+        }
         c.restore()
 
         this.needRender = false
