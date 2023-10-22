@@ -54,7 +54,7 @@ export class Widgetable {
         r.h = Math.round(lineHeight)
         r.y = Math.round(lineBaseTops[line] + 2)
         r.x -= .5
-        r.w += 4
+        r.w += 3.5
         break
       case Widget.Kind.Sub:
         r.h = height - 2
