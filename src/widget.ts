@@ -22,18 +22,18 @@ export class Widgetable {
     this.it.renderable.position = Renderable.Position.Inner
   }
   @fx update_rect() {
-    const { it } = $.of(this)
-    const { renderable } = $.of(it)
-    const { ctx, rect: r } = $.of(renderable)
-    const { kind, dim, dimWidthExclusive, height, offsetX } = $.of(this)
-    const { buffer, dims } = $.of(ctx)
-    const { lines } = $.of(buffer)
+    const { it } = of(this)
+    const { renderable } = of(it)
+    const { ctx, rect: r } = of(renderable)
+    const { kind, dim, dimWidthExclusive, height, offsetX } = of(this)
+    const { buffer, dims } = of(ctx)
+    const { lines } = of(buffer)
     const { lineTops, lineBaseTops, lineBaseBottoms,
       decoHeights, extraDecoHeights,
-      charWidth, lineHeight } = $.of(dims)
-    const { sorted: { top, bottom } } = $.of(dim)
-    const { line, col } = $.of(top)
-    const { col: right } = $.of(bottom)
+      charWidth, lineHeight } = of(dims)
+    const { sorted: { top, bottom } } = of(dim)
+    const { line, col } = of(top)
+    const { col: right } = of(bottom)
     $()
 
     // TODO: this can't be solved with a flush because dims can be late/async
@@ -83,7 +83,7 @@ export class Widget extends Comp {
     class WidgetRenderable extends Renderable {
       position = Renderable.Position.Inner
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { rect } = $.of(this)
+        const { rect } = of(this)
         rect.fill(c, '#666')
         this.needDraw = false
       }

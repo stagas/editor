@@ -10,15 +10,15 @@ export class Indicator extends Comp {
     const it = this
     class IndicatorRenderable extends Renderable {
       @fx trigger_needRender() {
-        const { pr, rect: { w, h } } = $.of(this)
-        const { color1 ,color2} = $.of(it)
+        const { pr, rect: { w, h } } = of(this)
+        const { color1 ,color2} = of(it)
         $()
         this.needRender = true
       }
       @fn render() {
-        const { canvas, rect } = $.of(this)
-        const { color1 ,color2} = $.of(it)
-        const { c } = $.of(canvas)
+        const { canvas, rect } = of(this)
+        const { color1 ,color2} = of(it)
+        const { c } = of(canvas)
         const { w, h } = rect
         const x = 0
         const y = 0
@@ -44,7 +44,7 @@ export class Indicator extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = $.of(this)
+        const { pr, canvas, rect } = of(this)
         c.save()
         c.translate(-7, -5.5)
         rect.drawImage(canvas.el, c, pr, true)

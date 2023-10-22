@@ -39,9 +39,9 @@ export class History extends Comp {
   }
   @fn saveHistoryMeta() {
     const { ctx, viewState: vs } = this
-    const { buffer, dims, selection } = $.of(ctx)
-    const { coli, linecol: lineCol } = $.of(buffer)
-    const { scroll } = $.of(dims)
+    const { buffer, dims, selection } = of(ctx)
+    const { coli, linecol: lineCol } = of(buffer)
+    const { scroll } = of(dims)
 
     const snapshot: Partial<Snapshot> = {
       coli,
@@ -59,8 +59,8 @@ export class History extends Comp {
 
   @fn saveHistory() {
     const { ctx, viewState: vs } = this
-    const { buffer } = $.of(ctx)
-    const { code } = $.of(buffer)
+    const { buffer } = of(ctx)
+    const { code } = of(buffer)
 
     const snapshot = this.saveHistoryMeta()
     if (!snapshot) return
@@ -94,7 +94,7 @@ export class History extends Comp {
 
   @fn applySnap(snap: Snapshot) {
     const { ctx, viewState: vs } = this
-    const { buffer, scroll, selection } = $.of(ctx)
+    const { buffer, scroll, selection } = of(ctx)
 
     const copy = JSON.parse(JSON.stringify(snap)) as any
     buffer.code = snap.code

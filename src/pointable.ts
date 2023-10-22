@@ -37,7 +37,7 @@ export class Pointable {
   @fx apply_downPos() {
     const { isDown } = $.when(this)
     $()
-    const { mouse: { pos, downPos } } = $.of(this)
+    const { mouse: { pos, downPos } } = of(this)
     downPos.set(pos)
   }
 }

@@ -24,11 +24,11 @@ export class Keyboard extends Comp {
   }
 
   @fn handleKey(event: Key) {
-    const { ctx, /* onKeyDown,  */specialKeys } = $.of(this)
-    const { misc, history, buffer: b, dims, scroll, selection } = $.of(ctx)
-    const { rect } = $.of(dims)
-    const { hasSelection } = $.of(selection)
-    let { code, lines } = $.of(b)
+    const { ctx, /* onKeyDown,  */specialKeys } = of(this)
+    const { misc, history, buffer: b, dims, scroll, selection } = of(ctx)
+    const { rect } = of(dims)
+    const { hasSelection } = of(selection)
+    let { code, lines } = of(b)
 
     // if (onKeyDown(event)) return true
 
@@ -627,7 +627,7 @@ export class Keyboard extends Comp {
     }
   }
   handleOnInput = (e: InputEvent) => {
-    const { input } = $.of(this.ctx)
+    const { input } = of(this.ctx)
     const key = e.data!.at(-1)
     if (key) {
       this.handleKey({ key })
@@ -644,7 +644,7 @@ export class Keyboard extends Comp {
       }
     }
 
-    const { misc } = $.of(this.ctx)
+    const { misc } = of(this.ctx)
     misc.isTyping = true
 
     // if (this.handleKey(e)) return
@@ -653,7 +653,7 @@ export class Keyboard extends Comp {
     e.preventDefault()
   }
   handleKeyUp = (e: KeyboardEvent) => {
-    const { scroll } = $.of(this.ctx)
+    const { scroll } = of(this.ctx)
 
     if (!e.key.startsWith('Page')
       && e.key !== 'v') {

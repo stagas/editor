@@ -28,36 +28,36 @@ export class Caret extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, ind } = $.of(it)
-    const { misc, dims, text } = $.of(ctx)
+    const { ctx, ind } = of(it)
+    const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
       @fx update_indicator_focused_color() {
         const {
           color1, color2,
           color1Focused, color2Focused,
-        } = $.of(it)
-        const { pointable: { isFocused } } = $.of(ctx)
+        } = of(it)
+        const { pointable: { isFocused } } = of(ctx)
         $()
         ind.color1 = isFocused ? color1Focused : color1
         ind.color2 = isFocused ? color2Focused : color2
       }
       @fx update_rect() {
-        const { rect: r } = $.of(this)
-        const { charWidth, lineBaseTops } = $.of(dims)
-        const { linecol } = $.of(it)
+        const { rect: r } = of(this)
+        const { charWidth, lineBaseTops } = of(dims)
+        const { linecol } = of(it)
         const { line, col } = linecol
         $()
         r.x = col * charWidth
         r.y = lineBaseTops[line]
       }
       @fx update_caret() {
-        const { pr, rect: r } = $.of(this)
-        const { blink } = $.of(it)
-        const { pointable: { isFocused } } = $.of(ctx)
-        const { lineHeight, charWidth } = $.of(dims)
+        const { pr, rect: r } = of(this)
+        const { blink } = of(it)
+        const { pointable: { isFocused } } = of(ctx)
+        const { lineHeight, charWidth } = of(dims)
         $()
         const { hideWhenAway } = it
-        const { pointable: { isHovering } } = $.of(text)
+        const { pointable: { isHovering } } = of(text)
         r.w = charWidth || 1
         r.h = lineHeight + 1
         ind.renderable.rect.w = r.w + 10
@@ -71,20 +71,20 @@ export class Caret extends Comp {
       }
       @fx hide_when_typing() {
         const { hideWhenTyping } = $.when(it)
-        const { isTyping } = $.of(misc)
+        const { isTyping } = of(misc)
         $()
         it.isHidden = isTyping
       }
       @fx hide_when_away() {
         const { hideWhenAway } = $.when(it)
-        const { pointable: { isHovering } } = $.of(text)
+        const { pointable: { isHovering } } = of(text)
         $()
         it.isHidden = !isHovering
       }
       @fx start_blinking() {
         const { blink, isBlinking } = $.when(it)
-        const { linecol: { line, col } } = $.of(it)
-        const { blinkDelay } = $.of(dims)
+        const { linecol: { line, col } } = of(it)
+        const { blinkDelay } = of(dims)
 
         let iv: any
         // TODO: better debounce here so we don't create/dispose tons of setTimeouts
@@ -102,14 +102,14 @@ export class Caret extends Comp {
         }
       }
       @fx trigger_draw() {
-        const { rect: { x, y } } = $.of(this)
-        const { isHidden, linecol } = $.of(it)
-        const { charWidth } = $.of(dims)
+        const { rect: { x, y } } = of(this)
+        const { isHidden, linecol } = of(it)
+        const { charWidth } = of(dims)
         $()
         this.needDraw = true
       }
       @fn render() {
-        const { ind } = $.of(it)
+        const { ind } = of(it)
         if (ind.renderable.needRender) {
           ind.renderable.render()
         }
@@ -117,8 +117,8 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { isHidden, linecol } = $.of(it)
-        const { charWidth, lineBaseTops } = $.of(dims)
+        const { isHidden, linecol } = of(it)
+        const { charWidth, lineBaseTops } = of(dims)
         const { line, col } = linecol
         if (!isHidden) {
           // log('lineCol', line, col)

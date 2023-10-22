@@ -9,14 +9,14 @@ export class Scrollbars extends Comp {
   scrollbarY = $(new Scrollbar(this.ctx), { axis: 'y' })
   scrollbarX = $(new Scrollbar(this.ctx), { axis: 'x' })
   get renderables() {
-    const t = $.of(this)
+    const t = of(this)
     return [
       t.scrollbarY,
       t.scrollbarX,
     ]
   }
   get pointables() {
-    const t = $.of(this)
+    const t = of(this)
     return [
       t.scrollbarY,
       t.scrollbarX,

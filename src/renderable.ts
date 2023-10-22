@@ -40,8 +40,8 @@ export class Renderable extends Scene {
   draw(t: number, c: CanvasRenderingContext2D): void { }
 
   @fx trigger_needInit_on_size() {
-    const { pr, canvas } = $.of(this)
-    const { size: { x, y } } = $.of(canvas)
+    const { pr, canvas } = of(this)
+    const { size: { x, y } } = of(canvas)
     this.needInit = true
   }
 }

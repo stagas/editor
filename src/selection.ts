@@ -13,17 +13,17 @@ export class Selection extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, selection } = $.of(it)
-    const { buffer, dims, scroll, skin } = $.of(ctx)
+    const { ctx, selection } = of(it)
+    const { buffer, dims, scroll, skin } = of(ctx)
     class SelectionRenderable extends Renderable {
       viewRect = $(new Rect)
       isHidden = false
       topPx = $(new Point)
       bottomPx = $(new Point)
       @fx triggerRender() {
-        const { viewRect: vr, topPx, bottomPx } = $.of(this)
-        const { selection: { start: { xy: sxy }, end: { xy: exy } } } = $.of(it)
-        const { charWidth } = $.of(dims)
+        const { viewRect: vr, topPx, bottomPx } = of(this)
+        const { selection: { start: { xy: sxy }, end: { xy: exy } } } = of(it)
+        const { charWidth } = of(dims)
         $()
         const top = buffer.getPointFromLineCol(selection.sorted.top, topPx)
         const bottom = buffer.getPointFromLineCol(selection.sorted.bottom, bottomPx)
@@ -36,15 +36,15 @@ export class Selection extends Comp {
         this.needRender = true
       }
       @fx triggerRenderOnScroll() {
-        const { scroll: { xy }, charWidth } = $.of(dims)
+        const { scroll: { xy }, charWidth } = of(dims)
         $()
         this.needRender = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { canvas, rect } = $.of(this)
-        const { selection, hasSelection, ctx } = $.of(it)
+        const { canvas, rect } = of(this)
+        const { selection, hasSelection, ctx } = of(it)
         const { sorted } = selection
-        const { charWidth } = $.of(dims)
+        const { charWidth } = of(dims)
 
         if (hasSelection) {
           log('top', sorted.top.text, 'bottom', sorted.bottom.text)
@@ -61,8 +61,8 @@ export class Selection extends Comp {
         this.needRender = false
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = $.of(this)
-        const { hasSelection } = $.of(it)
+        const { pr, canvas, rect } = of(this)
+        const { hasSelection } = of(it)
 
         if (hasSelection) {
           rect.drawImage(canvas.el, c, pr, true)
@@ -84,7 +84,7 @@ export class Selection extends Comp {
     return !this.start.equals(this.end)
   }
   @fn getSelectionIndexes() {
-    const { buffer } = $.of(this.ctx)
+    const { buffer } = of(this.ctx)
     const { top, bottom } = this.selection.sorted
     const a = buffer.getIndexFromLineCol(top)
     const b = buffer.getIndexFromLineCol(bottom)
@@ -93,8 +93,8 @@ export class Selection extends Comp {
     return tempPoint
   }
   get deleteSelection() {
-    const { history, buffer, input } = $.of(this.ctx)
-    const { keyboard } = $.of(input)
+    const { history, buffer, input } = of(this.ctx)
+    const { keyboard } = of(input)
     return history.historic(() => {
       const { code } = buffer
       const { selection } = this
@@ -128,18 +128,18 @@ export class Selection extends Comp {
     this.end.set(p)
   }
   @fn selectLine(line: number) {
-    const { ctx, selection } = $.of(this)
-    const { buffer } = $.of(ctx)
-    const { lines } = $.of(buffer)
+    const { ctx, selection } = of(this)
+    const { buffer } = of(ctx)
+    const { lines } = of(buffer)
 
     selection.start.set({ x: 0, y: line })
     selection.end.set({ x: lines[line].length, y: line })
     return true
   }
   @fn selectMatchingBrackets(p: Linecol, exclusive?: boolean) {
-    const { ctx, selection } = $.of(this)
-    const { buffer } = $.of(ctx)
-    const { code } = $.of(buffer)
+    const { ctx, selection } = of(this)
+    const { buffer } = of(ctx)
+    const { code } = of(buffer)
 
     const index = buffer.getIndexFromLineCol(p)
     const match = findMatchingBrackets(code, index)
@@ -158,10 +158,10 @@ export class Selection extends Comp {
     return false
   }
   @fn selectWordBoundary(p: Linecol, expand?: boolean) {
-    const { ctx, selection } = $.of(this)
+    const { ctx, selection } = of(this)
     const { sorted: { forward } } = selection.sorted
-    const { buffer } = $.of(ctx)
-    const { code, lines } = $.of(buffer)
+    const { buffer } = of(ctx)
+    const { code, lines } = of(buffer)
     const { line, col } = p
     const words = parseWords(TOKEN, lines[line])
     for (let i = 0, word: any, next: any; i < words.length; i++) {
@@ -186,26 +186,26 @@ export class Selection extends Comp {
     return false
   }
   @fx shiftKeyPressedExtendsSelection() {
-    const { ctx, selection } = $.of(this)
-    const { buffer, input } = $.of(ctx)
-    const { line, col } = $.of(buffer)
-    const { keyboard } = $.of(input)
+    const { ctx, selection } = of(this)
+    const { buffer, input } = of(ctx)
+    const { line, col } = of(buffer)
+    const { keyboard } = of(input)
     const { shiftKey } = $.when(keyboard)
     $()
     selection.end.set({ x: col, y: line })
   }
   @fn updateTextareaText = () => {
-    const { ctx, text } = $.of(this)
-    const { input } = $.of(ctx)
+    const { ctx, text } = of(this)
+    const { input } = of(ctx)
     input.textarea.value = text
     input.textarea.select()
   }
   // updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
   @fx update_text() {
-    const { ctx, selection } = $.of(this)
+    const { ctx, selection } = of(this)
     const { start: { xy: sxy }, end: { xy: exy } } = selection
-    const { buffer, input } = $.of(ctx)
-    const { source, code } = $.of(buffer)
+    const { buffer, input } = of(ctx)
+    const { source, code } = of(buffer)
     $()
     const { top, bottom } = selection.sorted
     const a = buffer.getIndexFromLineCol(top)

@@ -25,8 +25,8 @@ export class Elevations extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, drawnElevations } = $.of(it)
-    const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = $.of(ctx)
+    const { ctx, drawnElevations } = of(it)
+    const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
       constructor(public ctx: Editor) {
         super(ctx, ctx.renderable.rect)
@@ -46,15 +46,15 @@ export class Elevations extends Comp {
         }
       }
       @fx trigger_needRender() {
-        const { rect: r, pr } = $.of(this)
+        const { rect: r, pr } = of(this)
         // TODO: replace 'code' dependency with 'currentLineLength' when implemented
-        const { line, col, code, hasBrackets, bracketsPair: { open } } = $.of(buffer)
+        const { line, col, code, hasBrackets, bracketsPair: { open } } = of(buffer)
         const { xy: oxy } = open
-        const { lineTops, charWidth } = $.of(dims)
-        const { isScrolling } = $.of(misc)
-        const { scroll: { xy } } = $.of(scroll)
-        const { linecol: { line: _l, col: _c } } = $.of(mouse)
-        const { isHovering } = $.of(text.pointable)
+        const { lineTops, charWidth } = of(dims)
+        const { isScrolling } = of(misc)
+        const { scroll: { xy } } = of(scroll)
+        const { linecol: { line: _l, col: _c } } = of(mouse)
+        const { isHovering } = of(text.pointable)
 
         $()
 
@@ -70,8 +70,8 @@ export class Elevations extends Comp {
       }
 
       @fx update_elevations() {
-        const { elevationsPool, elevationsStack: stack } = $.of(it)
-        const { tokens } = $.of(buffer)
+        const { elevationsPool, elevationsStack: stack } = of(it)
+        const { tokens } = of(buffer)
         $()
 
         let top: SourceToken | undefined
@@ -122,7 +122,7 @@ export class Elevations extends Comp {
       }
 
       @fn drawElevation(c: CanvasRenderingContext2D, p: Point, colors: any) {
-        const { elevations } = $.of(it)
+        const { elevations } = of(it)
 
         const eligible: $<Elevation>[] = []
 
@@ -176,9 +176,9 @@ export class Elevations extends Comp {
         }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { rect, colors } = $.of(this)
-        const { isTyping } = $.of(misc)
-        const { pointable: { isHovering } } = $.of(text)
+        const { rect, colors } = of(this)
+        const { isTyping } = of(misc)
+        const { pointable: { isHovering } } = of(text)
 
         if (clear) {
           rect.clear(c)
@@ -194,7 +194,7 @@ export class Elevations extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { canvas, rect, pr } = $.of(this)
+        const { canvas, rect, pr } = of(this)
           rect.drawImage(canvas.el, c, pr, true)
         this.needDraw = false
       }

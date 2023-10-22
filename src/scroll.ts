@@ -15,25 +15,25 @@ export class Scroll extends Comp {
   animSettings: Scroll.AnimSettings = Scroll.AnimSettings.Fast
 
   @fx update_innerMatrix_translation() {
-    const { misc, dims, world } = $.of(this.ctx)
-    const { innerMatrix: m } = $.of(misc)
-    const { scroll: { x, y } } = $.of(dims)
-    const { pr } = $.of(world.screen)
+    const { misc, dims, world } = of(this.ctx)
+    const { innerMatrix: m } = of(misc)
+    const { scroll: { x, y } } = of(dims)
+    const { pr } = of(world.screen)
     $()
     m.e = x * pr
     m.f = y * pr
   }
 
   @fx update_targetScroll_top() {
-    const { history, buffer, dims } = $.of(this.ctx)
-    const { rect } = $.of(dims)
-    const { line } = $.of(buffer)
-    const { viewState } = $.of(history)
+    const { history, buffer, dims } = of(this.ctx)
+    const { rect } = of(dims)
+    const { line } = of(buffer)
+    const { viewState } = of(history)
     $()
     if (history.prevViewState !== viewState) return
 
-    const { lineTops, lineBottoms, lineHeight, scrollbarSize } = $.of(dims)
-    const { targetScroll } = $.of(this)
+    const { lineTops, lineBottoms, lineHeight, scrollbarSize } = of(dims)
+    const { targetScroll } = of(this)
 
     const viewTop = -targetScroll.top
     const viewBottom = viewTop + rect.h + lineHeight
@@ -61,15 +61,15 @@ export class Scroll extends Comp {
   }
 
   @fx update_targetScroll_left() {
-    const { history, buffer, dims } = $.of(this.ctx)
-    const { rect, charWidth } = $.of(dims)
-    const { col } = $.of(buffer)
-    const { viewState } = $.of(history)
+    const { history, buffer, dims } = of(this.ctx)
+    const { rect, charWidth } = of(dims)
+    const { col } = of(buffer)
+    const { viewState } = of(history)
     $()
 
     if (history.prevViewState !== viewState) return
 
-    const { targetScroll } = $.of(this)
+    const { targetScroll } = of(this)
 
     const viewLeft = -targetScroll.left
     const viewRight = viewLeft + rect.w
@@ -93,10 +93,10 @@ export class Scroll extends Comp {
     }
   }
   @fx update_minScroll() {
-    const { ctx, minScroll } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { rect, innerSize, lineBottoms, lineHeight, overscrollX } = $.of(dims)
-    const { w, h } = $.of(innerSize)
+    const { ctx, minScroll } = of(this)
+    const { dims } = of(ctx)
+    const { rect, innerSize, lineBottoms, lineHeight, overscrollX } = of(dims)
+    const { w, h } = of(innerSize)
 
     const top = -h
       + Math.min(
@@ -114,7 +114,7 @@ export class Scroll extends Comp {
   // that the targetScroll animates to.
   // That will also make the edge bouncy.
   @fx clamp_targetScroll_top() {
-    const { targetScroll, minScroll } = $.of(this)
+    const { targetScroll, minScroll } = of(this)
     targetScroll.top = Math.round(
       clamp(
         minScroll.top,
@@ -124,7 +124,7 @@ export class Scroll extends Comp {
     )
   }
   @fx clamp_targetScroll_left() {
-    const { targetScroll, minScroll } = $.of(this)
+    const { targetScroll, minScroll } = of(this)
     targetScroll.left = Math.round(
       clamp(
         minScroll.left,
@@ -134,17 +134,17 @@ export class Scroll extends Comp {
     )
   }
   @fx clamp_scroll_top() {
-    const { scroll } = $.of(this)
+    const { scroll } = of(this)
     scroll.top = Math.min(0, scroll.top)
   }
   @fx clamp_scroll_left() {
-    const { scroll } = $.of(this)
+    const { scroll } = of(this)
     scroll.left = Math.min(0, scroll.left)
   }
   @fx update_scrollSize() {
-    const { ctx, scrollSize } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { innerSize, overscrollX } = $.of(dims)
+    const { ctx, scrollSize } = of(this)
+    const { dims } = of(ctx)
+    const { innerSize, overscrollX } = of(dims)
     const w = innerSize.w + overscrollX
     const h = innerSize.h
     $()

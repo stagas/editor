@@ -88,7 +88,7 @@ export class Editor extends Scene {
   ]
 
   get renderables(): Renderable.It[] {
-    const t = $.of(this)
+    const t = of(this)
     return [
       t.activeLine,
       t.selection,
@@ -104,7 +104,7 @@ export class Editor extends Scene {
     ]
   }
   get pointables(): Pointable.It[] {
-    const t = $.of(this)
+    const t = of(this)
     return [
       t.scrollbars,
       ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
@@ -116,7 +116,7 @@ export class Editor extends Scene {
   get pointable() {
     $()
     const it = this
-    const { world: { pointer } } = $.of(it)
+    const { world: { pointer } } = of(it)
     const { Menu } = Mouse.EventKind
     class EditorPointable extends Pointable {
       hitArea = it.renderable.rect
@@ -128,7 +128,7 @@ export class Editor extends Scene {
       }
       @fn onMouseEvent(type: Mouse.EventKind) {
         if (type === Menu) {
-          const { real } = $.of(pointer)
+          const { real } = of(pointer)
           prevent(real)
         }
       }
@@ -138,8 +138,8 @@ export class Editor extends Scene {
   get renderable() {
     $()
     const it = this
-    const { world: { anim, skin }, misc, scroll } = $.of(it)
-    const { targetScroll, pos: scrollPos } = $.of(scroll)
+    const { world: { anim, skin }, misc, scroll } = of(it)
+    const { targetScroll, pos: scrollPos } = of(scroll)
     const { Layout, Inner } = Renderable.Position
 
     const d = $(new Point)
@@ -236,14 +236,14 @@ export class Editor extends Scene {
         }
       }
       @fn initCanvas() {
-        const { c } = $.of(this.canvas)
+        const { c } = of(this.canvas)
         c.imageSmoothingEnabled = false
         this.traverse_initCanvas(it.renderables)
         this.needInit = false
       }
       @fn update(dt: number) {
-        const { isTyping } = $.of(misc)
-        const { animSettings } = $.of(scroll)
+        const { isTyping } = of(misc)
+        const { animSettings } = of(scroll)
 
         d.set(targetScroll).sub(scrollPos)
         ad.set(d).abs()
@@ -292,8 +292,8 @@ export class Editor extends Scene {
         }
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
-        const { canvas: { c } } = $.of(this)
-        const { dims: { viewSpan } } = $.of(it)
+        const { canvas: { c } } = of(this)
+        const { dims: { viewSpan } } = of(it)
 
         for (const it of renderables) {
           const { renderable: r } = it
@@ -358,7 +358,7 @@ export class Editor extends Scene {
         return position
       }
       @fn draw(t: number) {
-        const { rect, canvas } = $.of(this)
+        const { rect, canvas } = of(this)
         const { c } = canvas
 
         rect.fill(c, skin.colors.bg)

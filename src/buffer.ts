@@ -15,10 +15,10 @@ export class Buffer {
   constructor(public ctx: Editor, public Token: { Type: Record<string | number, string | number> }) { }
 
   source?: $<Source>
-  @nu get code() { return $.of(this).source.code }
-  set code(v: string) { $.of(this).source.code = v }
-  @nu get tokens() { return $.of(this).source.tokens }
-  @nu get lines() { return $.of(this).source.lines }
+  @nu get code() { return of(this).source.code }
+  set code(v: string) { of(this).source.code = v }
+  @nu get tokens() { return of(this).source.tokens }
+  @nu get lines() { return of(this).source.lines }
 
   linecol = $(new Linecol)
   linecolClamped = $(new Linecol)
@@ -36,13 +36,13 @@ export class Buffer {
   fillRects: Rect[] = []
 
   @fx clamp_lineCol() {
-    const { lines, line, coli } = $.of(this)
+    const { lines, line, coli } = of(this)
     $()
     this.col = Math.min(coli, lines[line]?.length ?? 0)
     this.line = Math.min(line, lines.length)
   }
   @fx trim_lines() {
-    const { lines, line } = $.of(this)
+    const { lines, line } = of(this)
     for (let i = 0; i < lines.length; i++) {
       if (i === line) continue
       lines[i] = lines[i].trimEnd()
@@ -71,9 +71,9 @@ export class Buffer {
   }
   @fn getLineColFromPoint(
     p: Point, clampPos = true, tp?: Linecol): Linecol {
-    const { lines, ctx } = $.of(this)
-    const { dims } = $.of(ctx)
-    const { lineTops, scroll, rect, charWidth } = $.of(dims)
+    const { lines, ctx } = of(this)
+    const { dims } = of(ctx)
+    const { lineTops, scroll, rect, charWidth } = of(dims)
 
     const py = p.y - scroll.y - rect.y
     const px = p.x - scroll.x - rect.x
@@ -103,8 +103,8 @@ export class Buffer {
   @fn getPointFromLineCol(
     { line, col }: Linecol,
     tp: PointLike): PointLike {
-    const { dims } = $.of(this.ctx)
-    const { lineBaseTops, charWidth } = $.of(dims)
+    const { dims } = of(this.ctx)
+    const { lineBaseTops, charWidth } = of(dims)
     tp.x = charWidth * col
     tp.y = lineBaseTops[line]
     return tp
@@ -116,7 +116,7 @@ export class Buffer {
     )
   }
   @fx update_brackets() {
-    const { code, linecol: lineCol, line, col, bracketsPair: { open, close } } = $.of(this)
+    const { code, linecol: lineCol, line, col, bracketsPair: { open, close } } = of(this)
     $()
     const index = this.getIndexFromLineCol(lineCol)
     const brackets = findMatchingBrackets(code, index)
@@ -139,8 +139,8 @@ export class Buffer {
     strokeLight?: string,
     strokeDark?: string,
   ) {
-    const { fillRects, ctx } = $.of(this)
-    const { dims } = $.of(ctx)
+    const { fillRects, ctx } = of(this)
+    const { dims } = of(ctx)
     const {
       lineHeight,
       charWidth,
@@ -149,7 +149,7 @@ export class Buffer {
       lineBaseTops,
       lineHeights,
       viewSpan,
-    } = $.of(dims)
+    } = of(dims)
 
     const { top, bottom } = range
     let i = 0

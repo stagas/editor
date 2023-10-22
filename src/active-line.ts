@@ -7,15 +7,15 @@ export class ActiveLine extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx } = $.of(it)
-    const { skin, buffer, dims } = $.of(ctx)
+    const { ctx } = of(it)
+    const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
       position = Renderable.Position.Inner
       viewRect = $(new Rect)
       @fx update_rect() {
         const { rect: r, viewRect: vr } = this
-        const { line } = $.of(buffer)
-        const { lineHeight, lineBaseTops, innerSize, overscrollX } = $.of(dims)
+        const { line } = of(buffer)
+        const { lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
         const { w } = innerSize
         $()
         r.h = vr.h = lineHeight + 2

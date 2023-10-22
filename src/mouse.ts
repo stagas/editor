@@ -20,17 +20,17 @@ export class Mouse extends Comp {
 
   _innerPos = $(new Point)
   get innerPos() {
-    const { ctx: { misc, renderable: { pr, prRecip } } } = $.of(this)
-    const { innerMatrix: m } = $.of(misc)
+    const { ctx: { misc, renderable: { pr, prRecip } } } = of(this)
+    const { innerMatrix: m } = of(misc)
     const { a, b, c, d, e, f } = m
-    const { pos } = $.of(this)
-    const { x, y } = $.of(pos)
+    const { pos } = of(this)
+    const { x, y } = of(pos)
     $()
     this._innerPos.set(pos).normalizeMatrixPr(m, pr, prRecip).round()
     return this._innerPos
   }
   @fx update_it_pointable_isDown() {
-    const { downIt } = $.of(this)
+    const { downIt } = of(this)
     $()
     downIt.pointable.isDown = true
     return () => {
@@ -38,7 +38,7 @@ export class Mouse extends Comp {
     }
   }
   @fx update_it_pointable_isHovering() {
-    const { hoverIt, ctx: { world } } = $.of(this)
+    const { hoverIt, ctx: { world } } = of(this)
     $()
     hoverIt.pointable.isHovering = true
     hoverIt.pointable.onMouseEvent?.(Enter)
@@ -72,11 +72,11 @@ export class Mouse extends Comp {
     yield* this.traverseGetItAtPoint(ctx)
   }
   @fx handle_pointer_event() {
-    const { ctx } = $.of(this)
-    const { world, misc, buffer, dims } = $.of(ctx)
-    const { charWidth } = $.of(dims)
-    const { pointer } = $.of(world)
-    const { time, real } = $.of(pointer)
+    const { ctx } = of(this)
+    const { world, misc, buffer, dims } = of(ctx)
+    const { charWidth } = of(dims)
+    const { pointer } = of(world)
+    const { time, real } = of(pointer)
     $()
     const { type } = pointer
     const { pos, innerPos, linecol, downIt, hoverIt } = this

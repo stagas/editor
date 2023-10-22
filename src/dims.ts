@@ -27,7 +27,7 @@ export class Dims extends Comp {
     return this.ctx.buffer?.source?.lines
   }
   @nu get longestLine() {
-    const { lines } = $.of(this)
+    const { lines } = of(this)
     let longest = 0
     for (let i = 0, len = 0; i < lines.length; i++) {
       len = lines[i].length
@@ -39,29 +39,29 @@ export class Dims extends Comp {
     return this.ctx.scroll.pos
   }
   @nu get overscrollX() {
-    return $.of(this).charWidth * 2
+    return of(this).charWidth * 2
   }
   @nu get innerSizeWidth() {
-    const { longestLine, charWidth, scrollbarSize } = $.of(this)
+    const { longestLine, charWidth, scrollbarSize } = of(this)
     return longestLine * charWidth + scrollbarSize.w
   }
   get innerSize() {
     return $(new Point, { x: $(this).$.innerSizeWidth })
   }
   get viewSpanTop() {
-    const { scroll } = $.of(this)
+    const { scroll } = of(this)
     return -scroll.y
   }
   get viewSpanBottom() {
-    const { rect, lineHeight, viewSpanTop } = $.of(this)
+    const { rect, lineHeight, viewSpanTop } = of(this)
     return viewSpanTop + rect.h + lineHeight
   }
   get viewSpan() {
     return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
   }
   get lastVisibleLine() {
-    const { lines, ctx } = $.of(this)
-    const { deco, sub } = $.of(ctx)
+    const { lines, ctx } = of(this)
+    const { deco, sub } = of(ctx)
     return Math.max(
       lines.length,
       ...deco.map(({ widgetable: wi }) => wi.line),
@@ -69,8 +69,8 @@ export class Dims extends Comp {
     ) + 1
   }
   get decoHeights() {
-    const { lastVisibleLine, ctx } = $.of(this)
-    const { deco } = $.of(ctx)
+    const { lastVisibleLine, ctx } = of(this)
+    const { deco } = of(ctx)
 
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const { widgetable: item } of deco) {
@@ -84,8 +84,8 @@ export class Dims extends Comp {
     return decoHeights
   }
   get subHeights() {
-    const { lastVisibleLine, ctx } = $.of(this)
-    const { sub } = $.of(ctx)
+    const { lastVisibleLine, ctx } = of(this)
+    const { sub } = of(ctx)
 
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
     for (const { widgetable: item } of sub) {
@@ -100,7 +100,7 @@ export class Dims extends Comp {
   }
   /** Stores deco extra height when there are empty lines above. */
   get extraDecoHeights() {
-    const { lines, lineHeight, lastVisibleLine } = $.of(this)
+    const { lines, lineHeight, lastVisibleLine } = of(this)
     let eh = 0
     return Array.from({ length: lastVisibleLine }, (_, i) => {
       let curr = eh
@@ -125,7 +125,7 @@ export class Dims extends Comp {
   lineHeights: number[] = [0]
 
   @fx update_lineDims() {
-    const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = $.of(this)
+    const { innerSize, lines, lineHeight, decoHeights, subHeights, lastVisibleLine } = of(this)
     $()
     const lineTops = Array.from<number>({ length: lastVisibleLine }).fill(0)
     const lineBaseTops = Array.from<number>({ length: lastVisibleLine }).fill(0)

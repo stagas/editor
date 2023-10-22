@@ -17,12 +17,12 @@ export class Source {
   code: string = ''
 
   get tokens() {
-    const { code, tokenize } = $.of(this)
+    const { code, tokenize } = of(this)
     return [...tokenize(this as any)]
   }
 
   get lines() {
-    const { code } = $.of(this)
+    const { code } = of(this)
     return code.split('\n')
   }
 }

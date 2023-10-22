@@ -10,28 +10,28 @@ export class Brackets extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, r1, r2 } = $.of(it)
-    const { buffer, dims } = $.of(ctx)
+    const { ctx, r1, r2 } = of(it)
+    const { buffer, dims } = of(ctx)
     class BracketsRenderable extends Renderable {
       viewRect = $(new Rect)
       @fx update_rect() {
-        const { pr, rect } = $.of(this)
-        const { lineHeight, charWidth } = $.of(dims)
+        const { pr, rect } = of(this)
+        const { lineHeight, charWidth } = of(dims)
         $()
         rect.w = r1.w = r2.w = Math.floor(charWidth + 6)
         rect.h = r1.h = r2.h = Math.floor(lineHeight + 6)
         this.needRender = true
       }
       @fx update_brackets() {
-        const { viewRect } = $.of(this)
-        const { lineBaseTops, charWidth } = $.of(dims)
+        const { viewRect } = of(this)
+        const { lineBaseTops, charWidth } = of(dims)
         const {
           hasBrackets,
           bracketsPair: {
             open,
             close
           }
-        } = $.of(buffer)
+        } = of(buffer)
         const { x: ox, y: oy } = open
         const { x: cx, y: cy } = close
         $()
@@ -57,8 +57,8 @@ export class Brackets extends Comp {
         this.needRender = true
       }
       @fn render() {
-        const { canvas, rect } = $.of(this)
-        const { c } = $.of(canvas)
+        const { canvas, rect } = of(this)
+        const { c } = of(canvas)
         rect.clear(c)
         c.strokeRect(
           3,
@@ -70,7 +70,7 @@ export class Brackets extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, isHidden } = $.of(this)
+        const { pr, canvas, isHidden } = of(this)
         if (!isHidden) {
           r1.drawImage(canvas.el, c, pr, true)
           r2.drawImage(canvas.el, c, pr, true)

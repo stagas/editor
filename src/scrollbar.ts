@@ -29,12 +29,12 @@ export class Scrollbar extends Comp {
   scrollBegin = 0
   pointerBegin = 0
   @fx update_scrollbar() {
-    const { renderable, axis, ctx } = $.of(this)
-    const { dims, scroll } = $.of(ctx)
-    const { scrollSize, targetScroll } = $.of(scroll)
+    const { renderable, axis, ctx } = of(this)
+    const { dims, scroll } = of(ctx)
+    const { scrollSize, targetScroll } = of(scroll)
     const { hasSize } = $.when(scrollSize)
-    const { rect: r } = $.of(renderable)
-    const { rect, scrollbarSize } = $.of(dims)
+    const { rect: r } = of(renderable)
+    const { rect, scrollbarSize } = of(dims)
 
     const s = Sides[axis]
     const so = SidesOpp[axis]
@@ -53,22 +53,22 @@ export class Scrollbar extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx } = $.of(it)
-    const { skin } = $.of(ctx)
+    const { ctx } = of(it)
+    const { skin } = of(ctx)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
-        const { rect, pr } = $.of(this)
+        const { rect, pr } = of(this)
         const { hasSize } = $.when(rect)
-        const { w, h } = $.of(rect)
-        const { pointable } = $.of(it)
-        const { isHovering, isDown } = $.of(pointable)
+        const { w, h } = of(rect)
+        const { pointable } = of(it)
+        const { isHovering, isDown } = of(pointable)
         $()
         this.needRender = true
       }
       @fx trigger_needDraw() {
-        const { rect } = $.of(this)
+        const { rect } = of(this)
         const { hasSize } = $.when(rect)
-        const { x, y } = $.of(rect)
+        const { x, y } = of(rect)
         $()
         this.needDraw = true
       }
@@ -78,10 +78,10 @@ export class Scrollbar extends Comp {
         this.needRender = true
       }
       @fn render() {
-        const { canvas, pr, rect } = $.of(this)
-        const { c } = $.of(canvas)
-        const { pointable } = $.of(it)
-        const { isHovering, isDown } = $.of(pointable)
+        const { canvas, pr, rect } = of(this)
+        const { c } = of(canvas)
+        const { pointable } = of(it)
+        const { isHovering, isDown } = of(pointable)
 
         c.save()
         //
@@ -125,15 +125,15 @@ export class Scrollbar extends Comp {
   get pointable() {
     $()
     const it = this
-    const { axis, ctx } = $.of(it)
-    const { world: { pointer }, dims, scroll } = $.of(ctx)
-    const { rect, innerSize } = $.of(dims)
+    const { axis, ctx } = of(it)
+    const { world: { pointer }, dims, scroll } = of(ctx)
+    const { rect, innerSize } = of(dims)
     const { Down, Move } = Mouse.EventKind
 
     class ScrollbarPointable extends Pointable {
       hitArea = it.renderable.rect
       @fn onMouseEvent(kind: Mouse.EventKind) {
-        const { mouse: { pos, btns }, isDown } = $.of(this)
+        const { mouse: { pos, btns }, isDown } = of(this)
         switch (kind) {
           case Down:
             it.scrollBegin = scroll[axis]
