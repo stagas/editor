@@ -342,15 +342,19 @@ export class Editor extends Scene {
                     ?.fill(c, skin.colors.bg)
                   // .stroke(c, '#0f0')
 
-                  if (r.dirtyRects) for (const dr2 of r.dirtyRects) {
-                    dr.intersectionRect(
-                      dr2
-                    )?.drawImage(r.canvas.el, c, pr)
-                  }
-                  else {
-                    dr.intersectionRect(
-                      r.rect
-                    )?.drawImage(r.canvas.el, c, pr)
+                  for (const it of renderables) {
+                    if (it.renderable === r) continue
+
+                    if (r.dirtyRects) for (const dr2 of r.dirtyRects) {
+                      dr.intersectionRect(
+                        dr2
+                      )?.drawImage(r.canvas.el, c, pr)
+                    }
+                    else {
+                      dr.intersectionRect(
+                        r.rect
+                      )?.drawImage(r.canvas.el, c, pr)
+                    }
                   }
                 }
               }
@@ -393,17 +397,17 @@ export class Editor extends Scene {
                     // .stroke(c, '#0f0')
 
                     for (const it of renderables) {
-                      if (it.renderable === r) break
+                      if (it.renderable === r) continue
 
                       if (r.dirtyRects) for (const dr2 of r.dirtyRects) {
                         dr.intersectionRect(
                           dr2
-                        )?.stroke(c, '#f00') //drawImage(r.canvas.el, c, pr)
+                        )?.drawImage(r.canvas.el, c, pr)
                       }
                       else {
                         dr.intersectionRect(
                           r.rect
-                        )?.stroke(c, '#f0f') //drawImage(r.canvas.el, c, pr)
+                        )?.drawImage(r.canvas.el, c, pr)
                       }
                     }
                   }
