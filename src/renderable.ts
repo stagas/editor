@@ -20,7 +20,7 @@ export class Renderable extends Scene {
   canDirectDraw?: boolean
   coeff = 1
   viewRect?: $<Rect>
-  dirtyRect?: $<Rect>
+  dirtyRects?: $<Rect>[]
 
   didDraw?: boolean
   needInit = true

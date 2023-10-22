@@ -32,7 +32,7 @@ export class Caret extends Comp {
     const { ctx, ind } = of(it)
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
-      dirtyRect = $(new Rect)
+      dirtyRects = [$(new Rect)]
       @fx update_indicator_focused_color() {
         const {
           color1, color2,
@@ -120,7 +120,7 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { rect, dirtyRect: dr } = of(this)
+        const { rect, dirtyRects: [dr] } = of(this)
         const { isHidden } = of(it)
         // const { charWidth, lineBaseTops } = of(dims)
         // const { line, col } = linecol

@@ -28,8 +28,7 @@ export class Elevations extends Comp {
     const { ctx, drawnElevations } = of(it)
     const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
-      dirtyRect = $(new Rect)
-      paintRect = $(new Rect)
+      dirtyRects = [$(new Rect),$(new Rect)]
       constructor(public ctx: Editor) { super(ctx, ctx.renderable.rect) }
       get colors() {
         return {
@@ -121,8 +120,7 @@ export class Elevations extends Comp {
         )
       }
 
-      @fn drawElevation(c: CanvasRenderingContext2D, p: Point, colors: any) {
-        const { dirtyRect } = this
+      @fn drawElevation(c: CanvasRenderingContext2D, p: Point, dirtyRect: Rect, colors: any) {
         const { elevations } = of(it)
 
         const eligible: $<Elevation>[] = []
@@ -181,29 +179,31 @@ export class Elevations extends Comp {
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         if (this.needDraw) return
 
-        const { rect, colors, dirtyRect } = of(this)
+        const { rect, colors, dirtyRects } = of(this)
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
 
-        dirtyRect.zero()
+        dirtyRects[0].zero()
+        dirtyRects[1].zero()
         if (clear) {
           rect.clear(c)
         }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
-        if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
-        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
+        if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, dirtyRects[0], colors.caret)
+        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, dirtyRects[1], colors.hover)
         // dirtyRect.pos.add(scroll)
         c.restore()
 
-        console.log(dirtyRect.text)
         this.needRender = false
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { canvas, rect, pr, dirtyRect } = of(this)
-        dirtyRect.drawImage(canvas.el, c, pr)
+        const { canvas, rect, pr, dirtyRects } = of(this)
+        for (const dr of dirtyRects) {
+          dr.drawImage(canvas.el, c, pr)
+        }
         this.needDraw = false
       }
 
