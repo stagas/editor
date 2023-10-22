@@ -326,12 +326,17 @@ export class Editor extends Scene {
             }
             r.isVisible = true
 
-            r.needInit && r.initCanvas(r.canvas.c)
-            r.needRender && r.render(t, r.canvas.c, true)
-            if (r.needDraw) {
-              r.draw(t, c)
-              r.didDraw = true
-              r.dirtyRect?.stroke(c, '#0f0')
+            if (this.needDirectDraw) {
+              r.needInit && r.initCanvas(r.canvas.c)
+              r.needRender && r.render(t, r.canvas.c, true)
+              if (r.didDraw || r.needDraw) {
+                r.draw(t, c)
+                r.didDraw = true
+                r.dirtyRect?.stroke(c, '#0f0')
+              }
+            }
+            else {
+
             }
           }
           else if (position === Layout) {
@@ -347,11 +352,16 @@ export class Editor extends Scene {
               r.needInit = r.needRender = true
             }
             else {
-              r.needInit && r.initCanvas(r.canvas.c)
-              r.needRender && r.render(t, r.canvas.c, true)
-              if (r.needDraw) {
-                r.draw(t, c)
-                r.didDraw = true
+              if (this.needDirectDraw) {
+                r.needInit && r.initCanvas(r.canvas.c)
+                r.needRender && r.render(t, r.canvas.c, true)
+                if (r.didDraw || r.needDraw) {
+                  r.draw(t, c)
+                  r.didDraw = true
+                }
+              }
+              else {
+
               }
             }
           }
