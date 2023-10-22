@@ -10,14 +10,14 @@ import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 
 export class Text extends Comp {
-  get renderable(): $<Renderable> {
+  get renderable() {
     $()
     const it = this
     const { ctx } = $.of(it)
     const { buffer, dims, skin } = $.of(ctx)
 
     class TextRenderable extends Renderable {
-      get colors() {
+      get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
         const c = skin.colors
@@ -156,7 +156,7 @@ export class Text extends Comp {
     return $(new TextRenderable(this.ctx, this.ctx.renderable.rect))
   }
 
-  get pointable(): $<Pointable> {
+  get pointable() {
     $()
     const it = this
     const { ctx } = $.of(it)
