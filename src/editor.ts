@@ -293,7 +293,7 @@ export class Editor extends Scene {
         }
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
-        const { canvas: { c } } = of(this)
+        const { pr, canvas: { c } } = of(this)
         const { dims: { viewSpan } } = of(it)
 
         for (const it of renderables) {
@@ -340,7 +340,14 @@ export class Editor extends Scene {
                 if (r.dirtyRects) for (const dr of r.dirtyRects) {
                   dr.whenSized
                     ?.fill(c, skin.colors.bg)
-                    // .stroke(c, '#0f0')
+
+                  for (const it of renderables) {
+                    if (it.renderable === r) break
+                    dr.intersectionRect(
+                      r.rect
+                    )?.drawImage(r.canvas.el, c, pr)
+                  }
+                  // .stroke(c, '#0f0')
                 }
               }
 
@@ -379,7 +386,14 @@ export class Editor extends Scene {
                   if (r.dirtyRects) for (const dr of r.dirtyRects) {
                     dr.whenSized
                       ?.fill(c, skin.colors.bg)
-                      // .stroke(c, '#0f0')
+                    // .stroke(c, '#0f0')
+
+                    for (const it of renderables) {
+                      if (it.renderable === r) break
+                      dr.intersectionRect(
+                        r.rect
+                      )?.drawImage(r.canvas.el, c, pr)
+                    }
                   }
                 }
 
