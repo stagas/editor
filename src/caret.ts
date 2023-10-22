@@ -49,8 +49,9 @@ export class Caret extends Comp {
         const { linecol } = of(it)
         const { line, col } = linecol
         $()
+        const { [line]: y } = of(lineBaseTops)
         r.x = Math.floor(col * charWidth)
-        r.y = Math.floor(lineBaseTops[line] + 1)
+        r.y = Math.floor(y + 1)
       }
       @fx update_caret() {
         const { pr, rect: r } = of(this)
@@ -127,10 +128,8 @@ export class Caret extends Comp {
           // log('lineCol', line, col)
           c.save()
           c.translate(
-            rect.x, //Math.floor(col * charWidth),
-            // TODO: this can be undefined, how to deal with these
-            // lineDims getter
-            rect.y, //Math.floor(lineBaseTops[line] + 1)
+            rect.x,
+            rect.y,
           )
           ind.renderable.draw(t, c)
           c.restore()
