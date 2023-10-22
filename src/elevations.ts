@@ -30,9 +30,7 @@ export class Elevations extends Comp {
     class ElevationsRenderable extends Renderable {
       dirtyRect = $(new Rect)
       paintRect = $(new Rect)
-      constructor(public ctx: Editor) {
-        super(ctx, ctx.renderable.rect)
-      }
+      constructor(public ctx: Editor) { super(ctx, ctx.renderable.rect) }
       get colors() {
         return {
           hover: {
@@ -196,7 +194,7 @@ export class Elevations extends Comp {
         it.drawnElevations.clear()
         if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, colors.caret)
         if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, colors.hover)
-        dirtyRect.pos.add(scroll)
+        // dirtyRect.pos.add(scroll)
         c.restore()
 
         console.log(dirtyRect.text)
