@@ -17,6 +17,55 @@ export class Text extends Comp {
     const { buffer, dims, skin } = $.of(ctx)
 
     class TextRenderable extends Renderable {
+      get colors() {
+        const op = 'red'
+        const brace = 'yellow'
+        const c = skin.colors
+        return {
+          Id: c.brightRed,
+          Number: c.white,
+          String: c.brightYellow,
+          Comment: c.brightBlack,
+          BlockComment: c.brightBlack,
+          '[': brace,
+          ']': brace,
+          '{': brace,
+          '}': brace,
+          '(': brace,
+          ')': brace,
+          '+': op,
+          '-': op,
+          '*': op,
+          '^': op,
+          '%': op,
+          '!': op,
+          '/': op,
+          'L': c.brightCyan,
+          'R': c.brightCyan,
+          'LR': c.brightCyan,
+          '=': op,
+          '+=': op,
+          '*=': op,
+          '-=': op,
+          '/=': op,
+          '%=': op,
+          '^=': op,
+          ':=': op,
+          '\\': c.brightPurple,
+          '@': c.brightPurple,
+          '@~': c.brightPurple,
+          ':': c.red,
+          '.': c.red,
+          ',': c.brightPurple,
+          't': c.brightPurple,
+          'M': c.brightRed,
+          'S': c.brightCyan,
+          'pick': c.brightPurple,
+          'floor': c.brightPurple,
+          'slide': c.brightPurple,
+          'to_audio': c.brightPurple,
+        }
+      }
       // TODO: where is this used??
       viewRect = $(new Rect)
       canDirectDraw = true
@@ -61,7 +110,7 @@ export class Text extends Comp {
         this.didInitCanvas = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
-        const { rect } = $.of(this)
+        const { rect, colors } = $.of(this)
         const { lineBaseBottoms, charWidth, viewSpan, scroll } = $.of(dims)
         const { tokens, Token } = $.of(buffer)
 
@@ -89,7 +138,11 @@ export class Text extends Comp {
 
             c.fillStyle
               = c.strokeStyle
-              = '#fff'
+              = colors?.[t.text]
+              ?? colors?.[Token.Type[t.type]]
+              ?? '#fff'
+
+              // '#fff'
             // = skin.colors[color] ?? '#fff'
 
             c.strokeText(t.text, x, y)
