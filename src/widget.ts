@@ -53,7 +53,7 @@ export class Widgetable {
       case Widget.Kind.Mark:
         r.h = Math.round(lineHeight)
         r.y = Math.round(lineBaseTops[line] + 2)
-        r.x -= 1.5
+        r.x -= 0.5
         r.w += 3.5
         break
       case Widget.Kind.Sub:
