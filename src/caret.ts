@@ -119,7 +119,7 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { rect, dirtyRect } = of(this)
+        const { rect, dirtyRect: dr } = of(this)
         const { isHidden } = of(it)
         // const { charWidth, lineBaseTops } = of(dims)
         // const { line, col } = linecol
@@ -134,7 +134,10 @@ export class Caret extends Comp {
           )
           ind.renderable.draw(t, c)
           c.restore()
-          dirtyRect.set(rect)
+          dr.x = rect.x
+          dr.y = rect.y
+          dr.w = ind.renderable.rect.w
+          dr.h = ind.renderable.rect.h
         }
         this.needDraw = false
       }
