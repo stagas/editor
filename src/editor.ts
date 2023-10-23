@@ -338,12 +338,7 @@ export class Editor extends Scene {
                   // if OTHER dirtyRect intersects with THIS dirtyRect
                   otherDr.hasSize && otherDr.intersectionRect(dr)
                     // then render that portion of the image again on top
-                    ?.drawImage(
-                      other.canvas.el,
-                      c,
-                      pr,
-                      // true
-                    )
+                    ?.drawImage(other.canvas.el,c,pr)
 
               // zero dirtyRect because we will draw something new
               dr.zero()
@@ -370,12 +365,7 @@ export class Editor extends Scene {
                 // if OTHER dirtyRect intersects with THIS dirtyRect
                 otherDr.hasSize && otherDr.intersectionRect(dr)
                   // then render that portion of the image again on top
-                  ?.drawImage(
-                    r.canvas.el,
-                    c,
-                    pr,
-                    // true
-                  )
+                  ?.drawImage(r.canvas.el,c,pr)
 
           }
         }
