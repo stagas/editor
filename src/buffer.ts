@@ -140,6 +140,7 @@ export class Buffer {
     strokeLight?: string,
     strokeDark?: string,
   ) {
+    console.log('FILL', range.text)
     const { fillRects, dirtyRect, ctx } = of(this)
     const { dims } = of(ctx)
     const {

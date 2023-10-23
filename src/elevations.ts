@@ -53,7 +53,7 @@ export class Elevations extends Comp {
         const { isScrolling } = of(misc)
         const { scroll: { xy } } = of(scroll)
         const { linecol: { line: _l, col: _c } } = of(mouse)
-        // const { isHovering } = of(text.pointable)
+        const { isHovering } = of(text.pointable)
 
         $()
 
