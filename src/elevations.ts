@@ -140,25 +140,25 @@ export class Elevations extends Comp {
             : a.start.y - b.start.y
         )
 
-        // const [earliest] = eligible
+        const [earliest] = eligible
 
-        // if (earliest) for (let i = 0; i < elevations.length; i++) {
-        //   const el = elevations[i]
-        //   if (earliest.isLineWithin(el)) {
-        //     if (drawnElevations.has(el)) continue
-        //     drawnElevations.add(el)
-        //     const dr = buffer.fillTextRange(
-        //       c,
-        //       el,
-        //       colors.fill,
-        //       true,
-        //       2,
-        //       colors.light,
-        //       colors.dark,
-        //     )
-        //     if (dr) dirtyRect.combine(dr)
-        //   }
-        // }
+        if (earliest) for (let i = 0; i < elevations.length; i++) {
+          const el = elevations[i]
+          if (earliest.isLineWithin(el)) {
+            if (drawnElevations.has(el)) continue
+            drawnElevations.add(el)
+            const dr = buffer.fillTextRange(
+              c,
+              el,
+              colors.fill,
+              true,
+              2,
+              colors.light,
+              colors.dark,
+            )
+            if (dr) dirtyRect.combine(dr)
+          }
+        }
 
         const latest = eligible.at(-1)
 
