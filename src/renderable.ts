@@ -9,38 +9,27 @@ export class Renderable {
     public rect = $(new Rect),
     public canvas = $(new Canvas(it.ctx.world), { size: rect.$.size }),
     public pr = it.ctx.world.screen.$.pr,
-  ) {}
-
-  // constructor(
-  //   public ctx: Editor,
-  //   public rect = $(new Rect),
-  //   public canvas = $(new Canvas(ctx.world), { size: rect.$.size }),
-  //   public world: World = ctx.world,
-  //   public pr = world.screen.$.pr,
-  // ) {
-  //   super(world)
-  // }
-
+  ) { }
   get prRecip() { return 1 / this.pr }
-  position: Renderable.Position = Renderable.Position.Layout
-  canDirectDraw?: boolean
-  canComposite?: boolean
-
   viewRect?: $<Rect>
   dirtyRects: $<Rect>[] = []
 
-  didDraw?: boolean
-  needInit = true
-  needUpdate?: boolean
-  needRender?: boolean
-  needDraw?: boolean
-  needDirectDraw?: boolean
+  // position
+  position = Renderable.Position.Layout
 
-  isVisible = true
-  isHidden = false
+  // state flags
+  isVisible?: boolean
+  isHidden?: boolean
+  didDraw?: boolean
+
+  // need
+  need = Renderable.Need.Idle
+
+  // features
+  canDirectDraw?: boolean
 
   init(c: CanvasRenderingContext2D): void { }
-  render(c: CanvasRenderingContext2D, t: number, clear: boolean): void {}
+  render(c: CanvasRenderingContext2D, t: number, clear: boolean): void { }
   draw(c: CanvasRenderingContext2D, t: number): void { }
 
   @init set_initial_dirtyRects() {
@@ -48,10 +37,10 @@ export class Renderable {
       this.dirtyRects.push(this.viewRect ?? this.rect)
     }
   }
-  @fx trigger_needInit_on_size() {
+  @fx trigger_need_Init_on_size() {
     const { pr, canvas } = of(this)
     const { size: { x, y } } = of(canvas)
-    this.needInit = true
+    this.need |= Renderable.Need.Init
   }
 }
 
@@ -68,5 +57,8 @@ export namespace Renderable {
   }
   export enum Need {
     Idle = 0,
+    Init = 1 << 0,
+    Render = 1 << 1,
+    Draw = 1 << 2,
   }
 }

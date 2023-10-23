@@ -27,6 +27,8 @@ export class Caret extends Comp {
     const it = this
     const { ctx } = of(it)
     const { misc, dims, text } = of(ctx)
+    const { Need: { Render, Draw } } = Renderable
+
     class CaretRenderable extends Renderable {
       @fx update_rect() {
         const { rect: r } = of(this)
@@ -53,7 +55,7 @@ export class Caret extends Comp {
           it.isBlinking = isFocused
         }
         this.isHidden = hideWhenAway ? !isHovering : false
-        this.needRender = true
+        this.need |= Render
       }
       @fx hide_when_typing() {
         const { hideWhenTyping } = when(it)
@@ -92,7 +94,7 @@ export class Caret extends Comp {
         const { linecol } = of(it)
         const { charWidth } = of(dims)
         $()
-        this.needDraw = true
+        this.need |= Draw
       }
       @fn render(c: CanvasRenderingContext2D) {
         const { rect } = of(this)
