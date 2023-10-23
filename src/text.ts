@@ -18,6 +18,7 @@ export class Text extends Comp {
 
     class TextRenderable extends Renderable {
       canComposite = true
+      dirtyRects = [$(new Rect)]
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
@@ -148,9 +149,9 @@ export class Text extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = of(this)
+        const { pr, canvas, rect, dirtyRects: [dr] } = of(this)
         rect.drawImage(canvas.el, c, pr, true)
-
+        dr.set(rect)
         this.needDraw = false
       }
     }
