@@ -186,6 +186,7 @@ console.log('---')
         dirtyRects[0].zero()
         dirtyRects[1].zero()
         if (clear) {
+          console.log('CLEAR')
           rect.clear(c)
         }
         c.save()
