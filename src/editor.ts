@@ -457,7 +457,7 @@ export class Editor extends Scene {
         // since we have to redraw everything.
         // This is the case in events like scrolling.
         if (this.needDirectDraw) {
-        rect.fill(c, skin.colors.bg)
+          rect.fill(c, skin.colors.bg)
         }
 
         const position = this.traverse_draw(t, it.renderables)

@@ -17,6 +17,7 @@ export class Text extends Comp {
     const { buffer, dims, skin } = of(ctx)
 
     class TextRenderable extends Renderable {
+      canComposite = true
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
