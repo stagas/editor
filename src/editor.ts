@@ -403,39 +403,42 @@ export class Editor extends Scene {
             position = r.position
           }
 
-          const itRect = r.viewRect ?? r.rect
+          const rect = r.viewRect ?? r.rect
 
-          if (position === Inner) {
-            if (
-              itRect.bottom < visibleSpan.top
-              || itRect.top > visibleSpan.bottom
-            ) {
-              r.isVisible = false
-              continue
-            }
-            r.isVisible = true
+          switch (position) {
+            case Inner:
+              if (
+                rect.bottom < visibleSpan.top
+                || rect.top > visibleSpan.bottom
+              ) {
+                r.isVisible = false
+                continue
+              }
+              r.isVisible = true
 
-            if (this.needDirectDraw || !r.canComposite) {
-              this.drawSimple(t, r)
-            }
-            else {
-              this.drawComposite(t, r, renderables)
-            }
-          }
-          else if (position === Layout) {
-            if (!r.isVisible) continue
-
-            if (r.canDirectDraw && this.needDirectDraw) {
-              this.drawDirectLayout(t, r)
-            }
-            else {
               if (this.needDirectDraw || !r.canComposite) {
                 this.drawSimple(t, r)
               }
               else {
                 this.drawComposite(t, r, renderables)
               }
-            }
+              break
+
+            case Layout:
+              if (!r.isVisible) continue
+
+              if (r.canDirectDraw && this.needDirectDraw) {
+                this.drawDirectLayout(t, r)
+              }
+              else {
+                if (this.needDirectDraw || !r.canComposite) {
+                  this.drawSimple(t, r)
+                }
+                else {
+                  this.drawComposite(t, r, renderables)
+                }
+              }
+              break
           }
         }
 
@@ -447,9 +450,9 @@ export class Editor extends Scene {
         // We do a full background fill on direct draws
         // since we have to redraw everything.
         // This is the case in events like scrolling.
-        if (this.needDirectDraw) {
+        // if (this.needDirectDraw) {
           rect.fill(c, skin.colors.bg)
-        }
+        // }
 
         const position = this.traverseDraw(t, it.renderables)
 
