@@ -128,10 +128,7 @@ export class Caret extends Comp {
         if (!isHidden) {
           // log('lineCol', line, col)
           c.save()
-          c.translate(
-            rect.x,
-            rect.y,
-          )
+          rect.pos.translate(c)
           ind.renderable.draw(t, c)
           c.restore()
           dr.x = rect.x + ind.renderable.offset.x
