@@ -35,9 +35,7 @@ export class Renderable extends Scene {
   initCanvas(c: CanvasRenderingContext2D): void { }
   update(dt: number): number { return 0 }
   updateOne(dt: number): number { return 0 }
-  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {
-    this.draw(t, c)
-  }
+  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {}
   draw(t: number, c: CanvasRenderingContext2D): void { }
 
   @init set_initial_dirtyRects() {
