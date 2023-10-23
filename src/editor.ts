@@ -520,6 +520,7 @@ export class Editor extends Scene {
           rect.fill(c, skin.colors.bg)
         }
 
+        dirty.clear()
         const position = this.traverse_draw(t, it.renderables)
 
         // If we ended in another position than Layout,
