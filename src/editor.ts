@@ -316,70 +316,75 @@ export class Editor extends Scene {
         const { pr, canvas: { c } } = this
 
         r.needInit && r.initCanvas(r.canvas.c)
-
-        if (r.needRender || r.needDraw) {
-          if (r.dirtyRects) for (const dr of r.dirtyRects) {
-            dr.whenSized
-              ?.fill(c, skin.colors.bg)
-            // .stroke(c, '#0f0')
-
-            for (const it of renderables) {
-              const ir = it.renderable
-              if (ir === r) {
-                break
-              }
-
-              if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
-                dr.intersectionRect(
-                  dr2
-                )?.drawImage(ir.canvas.el, c, pr)
-              }
-              else {
-                dr.intersectionRect(
-                  ir.rect
-                )?.drawImage(ir.canvas.el, c, pr)
-              }
-            }
-
-            dr.zero()
-
-            r.needRender && r.render(t, r.canvas.c, true)
-            if (r.needDraw) {
-              r.draw(t, c)
-              r.didDraw = true
-            }
-
-            let pass = false
-            for (const it of renderables) {
-              const ir = it.renderable
-              if (ir === r) {
-                pass = true
-                continue
-              }
-              else if (!pass) continue
-
-              if (!ir.needRender && !ir.needDraw) {
-                if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
-                  dr.intersectionRect(
-                    dr2
-                  )?.drawImage(ir.canvas.el, c, pr)
-                }
-                else {
-                  dr.intersectionRect(
-                    ir.rect
-                  )?.drawImage(ir.canvas.el, c, pr)
-                }
-              }
-            }
-          }
-          else {
-            r.needRender && r.render(t, r.canvas.c, true)
-            if (r.needDraw) {
-              r.draw(t, c)
-              r.didDraw = true
-            }
-          }
+        r.needInit && r.initCanvas(r.canvas.c)
+        r.needRender && r.render(t, r.canvas.c, true)
+        if (r.didDraw || r.needDraw) {
+          r.draw(t, c)
+          r.didDraw = true
         }
+        // if (r.needRender || r.needDraw) {
+        //   if (r.dirtyRects) for (const dr of r.dirtyRects) {
+        //     dr.whenSized
+        //       ?.fill(c, skin.colors.bg)
+        //     // .stroke(c, '#0f0')
+
+        //     for (const it of renderables) {
+        //       const ir = it.renderable
+        //       if (ir === r) {
+        //         break
+        //       }
+
+        //       if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
+        //         dr.intersectionRect(
+        //           dr2
+        //         )?.drawImage(ir.canvas.el, c, pr)
+        //       }
+        //       else {
+        //         dr.intersectionRect(
+        //           ir.rect
+        //         )?.drawImage(ir.canvas.el, c, pr)
+        //       }
+        //     }
+
+        //     dr.zero()
+
+        //     r.needRender && r.render(t, r.canvas.c, true)
+        //     if (r.needDraw) {
+        //       r.draw(t, c)
+        //       r.didDraw = true
+        //     }
+
+        //     let pass = false
+        //     for (const it of renderables) {
+        //       const ir = it.renderable
+        //       if (ir === r) {
+        //         pass = true
+        //         continue
+        //       }
+        //       else if (!pass) continue
+
+        //       if (!ir.needRender && !ir.needDraw) {
+        //         if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
+        //           dr.intersectionRect(
+        //             dr2
+        //           )?.drawImage(ir.canvas.el, c, pr)
+        //         }
+        //         else {
+        //           dr.intersectionRect(
+        //             ir.rect
+        //           )?.drawImage(ir.canvas.el, c, pr)
+        //         }
+        //       }
+        //     }
+        //   }
+        //   else {
+        //     r.needRender && r.render(t, r.canvas.c, true)
+        //     if (r.needDraw) {
+        //       r.draw(t, c)
+        //       r.didDraw = true
+        //     }
+        //   }
+        // }
       }
       @fn traverse_draw(
         t: number,
