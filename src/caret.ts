@@ -15,7 +15,7 @@ export class Caret extends Comp {
     super(ctx)
   }
   blink = false
-  get ind() { return $(new Indicator(this.ctx)) }
+  // get ind() { return $(new Indicator(this.ctx)) }
   isBlinking = false
   isHidden = false
   hideWhenTyping = false
@@ -29,20 +29,21 @@ export class Caret extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx, ind } = of(it)
+    const { ctx } = of(it)
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
       dirtyRects = [$(new Rect)]
-      @fx update_indicator_focused_color() {
-        const {
-          color1, color2,
-          color1Focused, color2Focused,
-        } = of(it)
-        const { pointable: { isFocused } } = of(ctx)
-        $()
-        ind.color1 = isFocused ? color1Focused : color1
-        ind.color2 = isFocused ? color2Focused : color2
-      }
+      // @fx update_indicator_focused_color() {
+      //   const {
+      //     color1, color2,
+      //     color1Focused, color2Focused,
+      //   } = of(it)
+      //   const { pointable: { isFocused } } = of(ctx)
+      //   $()
+
+      //   ind.color1 = isFocused ? color1Focused : color1
+      //   ind.color2 = isFocused ? color2Focused : color2
+      // }
       @fx update_rect() {
         const { rect: r } = of(this)
         const { charWidth, lineBaseTops } = of(dims)
@@ -64,8 +65,8 @@ export class Caret extends Comp {
         const { pointable: { isHovering } } = of(text)
         r.w = charWidth || 1
         r.h = lineHeight + 1
-        ind.renderable.rect.w = r.w + 10
-        ind.renderable.rect.h = r.h + 5.5
+        // ind.renderable.rect.w = r.w + 10
+        // ind.renderable.rect.h = r.h + 5.5
         $.flush()
         if (blink) {
           it.isBlinking = isFocused
@@ -113,24 +114,49 @@ export class Caret extends Comp {
         this.needDraw = true
       }
       @fn render() {
-        const { ind } = of(it)
-        if (ind.renderable.needRender) {
-          ind.renderable.render()
-        }
+        const { canvas, rect } = of(this)
+        const { pointable: { isFocused } } = of(ctx)
+        const { color1, color2, color1Focused, color2Focused } = of(it)
+        const c1 = isFocused ? color1Focused : color1
+        const c2 = isFocused ? color2Focused : color2
+        const { c } = of(canvas)
+        const { w, h } = rect
+        const x = 0
+        const y = 0
+        c.save()
+        c.translate(8.5, 5)
+        c.fillStyle = c1
+        c.beginPath()
+        const a = 2.5
+        c.moveTo(x, y + a)
+        c.lineTo(x - w, y - w)
+        c.lineTo(x + w, y - w)
+        c.lineTo(x, y + a)
+        c.fill()
+        c.beginPath()
+        c.moveTo(x + .5, y + a)
+        c.lineTo(x + .5, y + h)
+        c.lineTo(x - .5, y + h)
+        c.lineTo(x - .5, y + a)
+        c.fillStyle = c2
+        c.fill()
+        c.restore()
+
         this.needRender = false
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { rect, dirtyRects: [dr] } = of(this)
+        const { pr, canvas, rect, dirtyRects: [dr] } = of(this)
         const { isHidden } = of(it)
 
         if (!isHidden) {
-          c.save()
-          rect.pos.translate(c)
-          ind.renderable.draw(t, c)
-          dr.set(ind.renderable.rect).translate(rect.pos)
-          c.restore()
-          dr.stroke(c,'#0f0')
+          rect.drawImage(canvas.el, c, pr, true)
+          // c.save()
+          // rect.pos.translate(c)
+          // ind.renderable.draw(t, c)
+          // dr.set(ind.renderable.rect).translate(rect.pos)
+          // c.restore()
+          // dr.stroke(c,'#0f0')
           // dr.x = rect.x //+ ind.renderable.offset.x
           // dr.y = rect.y //+ ind.renderable.offset.y
           // dr.w = ind.renderable.rect.w
