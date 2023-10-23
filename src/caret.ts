@@ -52,8 +52,8 @@ export class Caret extends Comp {
         // ????
         const { [line]: y } = of(lineBaseTops)
         $()
-        r.x = Math.floor(col * charWidth)
-        r.y = Math.floor(y + 1)
+        r.x = Math.floor(col * charWidth) - 7
+        r.y = Math.floor(y + 1) - 5.5
       }
       @fx update_caret() {
         const { pr, rect: r } = of(this)
