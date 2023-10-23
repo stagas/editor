@@ -33,23 +33,11 @@ export class Caret extends Comp {
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
       dirtyRects = [$(new Rect)]
-      // @fx update_indicator_focused_color() {
-      //   const {
-      //     color1, color2,
-      //     color1Focused, color2Focused,
-      //   } = of(it)
-      //   const { pointable: { isFocused } } = of(ctx)
-      //   $()
-
-      //   ind.color1 = isFocused ? color1Focused : color1
-      //   ind.color2 = isFocused ? color2Focused : color2
-      // }
       @fx update_rect() {
         const { rect: r } = of(this)
         const { charWidth, lineBaseTops } = of(dims)
         const { linecol } = of(it)
         const { line, col } = linecol
-        // ????
         const { [line]: y } = of(lineBaseTops)
         $()
         r.x = Math.floor(col * charWidth) - 7
@@ -65,8 +53,6 @@ export class Caret extends Comp {
         const { pointable: { isHovering } } = of(text)
         r.w = charWidth + 10
         r.h = lineHeight + 6.5
-        // ind.renderable.rect.w = r.w + 10
-        // ind.renderable.rect.h = r.h + 5.5
         $.flush()
         if (blink) {
           it.isBlinking = isFocused
@@ -115,12 +101,12 @@ export class Caret extends Comp {
       }
       @fn render() {
         const { canvas, rect } = of(this)
+        const { c } = of(canvas)
+        const { w, h } = rect
         const { pointable: { isFocused } } = of(ctx)
         const { color1, color2, color1Focused, color2Focused } = of(it)
         const c1 = isFocused ? color1Focused : color1
         const c2 = isFocused ? color2Focused : color2
-        const { c } = of(canvas)
-        const { w, h } = rect
         const x = 0
         const y = 0
         c.save()
@@ -151,6 +137,7 @@ export class Caret extends Comp {
 
         if (!isHidden) {
           rect.drawImage(canvas.el, c, pr, true)
+          dr.set(rect).stroke(c,'#0f0')
           // c.save()
           // rect.pos.translate(c)
           // ind.renderable.draw(t, c)
