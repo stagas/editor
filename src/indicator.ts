@@ -1,6 +1,7 @@
 import { $, fn, fx, of } from 'signal'
 import { Renderable } from './renderable.ts'
 import { Comp } from './comp.ts'
+import { Rect } from 'std'
 
 export class Indicator extends Comp {
   color1?= '#f0f'
@@ -9,7 +10,8 @@ export class Indicator extends Comp {
     $()
     const it = this
     class IndicatorRenderable extends Renderable {
-      offset = { x: -7, y: -5.5 }
+      // offset = { x: -7, y: -5.5 }
+      rect = $(new Rect, { x: -7, y: -5.5 })
       @fx trigger_needRender() {
         const { pr, rect: { w, h } } = of(this)
         const { color1 ,color2} = of(it)
@@ -46,11 +48,11 @@ export class Indicator extends Comp {
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { pr, canvas, rect, offset } = of(this)
-        c.save()
-        c.translate(offset.x, offset.y)
-        console.log(rect.x, rect.y)
+        // c.save()
+        // c.translate(offset.x, offset.y)
+        // console.log(rect.x, rect.y)
         rect.drawImage(canvas.el, c, pr, true)
-        c.restore()
+        // c.restore()
         this.needDraw = false
       }
     }
