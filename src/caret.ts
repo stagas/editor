@@ -1,6 +1,5 @@
 // log.active
 import $, { fn, fx, of, when } from 'signal'
-import { Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
 import { Linecol } from './linecol.ts'
@@ -14,9 +13,7 @@ export class Caret extends Comp {
     super(ctx)
   }
   blink = false
-  // get ind() { return $(new Indicator(this.ctx)) }
   isBlinking = false
-  isHidden = false
   hideWhenTyping = false
   hideWhenAway = false
   color1 = '#727'
@@ -31,8 +28,6 @@ export class Caret extends Comp {
     const { ctx } = of(it)
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
-      canComposite = true
-      dirtyRects = [$(new Rect)]
       @fx update_rect() {
         const { rect: r } = of(this)
         const { charWidth, lineBaseTops } = of(dims)
@@ -57,20 +52,20 @@ export class Caret extends Comp {
         if (blink) {
           it.isBlinking = isFocused
         }
-        it.isHidden = hideWhenAway ? !isHovering : false
+        this.isHidden = hideWhenAway ? !isHovering : false
         this.needRender = true
       }
       @fx hide_when_typing() {
         const { hideWhenTyping } = when(it)
         const { isTyping } = of(misc)
         $()
-        it.isHidden = isTyping
+        this.isHidden = isTyping
       }
       @fx hide_when_away() {
         const { hideWhenAway } = when(it)
         const { pointable: { isHovering } } = of(text)
         $()
-        it.isHidden = !isHovering
+        this.isHidden = !isHovering
       }
       @fx start_blinking() {
         const { blink, isBlinking } = when(it)
@@ -82,26 +77,25 @@ export class Caret extends Comp {
         // TODO: we need a better setTimeout
         const st = setTimeout(() => {
           iv = setInterval(() =>
-            it.isHidden = !it.isHidden,
+            this.isHidden = !this.isHidden,
             blinkDelay
           )
         }, 1250)
         return () => {
-          it.isHidden = false
+          this.isHidden = false
           clearTimeout(st)
           clearInterval(iv)
         }
       }
       @fx trigger_draw() {
-        const { rect: { x, y } } = of(this)
-        const { isHidden, linecol } = of(it)
+        const { rect: { x, y }, isHidden } = of(this)
+        const { linecol } = of(it)
         const { charWidth } = of(dims)
         $()
         this.needDraw = true
       }
-      @fn render() {
-        const { canvas, rect } = of(this)
-        const { c } = of(canvas)
+      @fn render(c: CanvasRenderingContext2D) {
+        const { rect } = of(this)
         const { w, h } = rect
         const { pointable: { isFocused } } = of(ctx)
         const { color1, color2, color1Focused, color2Focused } = of(it)
@@ -127,22 +121,12 @@ export class Caret extends Comp {
         c.fillStyle = c2
         c.fill()
         c.restore()
-
-        this.needRender = false
-        this.needDraw = true
       }
-      @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect, dirtyRects: [dr] } = of(this)
-        const { isHidden } = of(it)
-
-        if (!isHidden) {
-          rect.drawImage(canvas.el, c, pr, true)
-          dr.set(rect)
-        }
-
-        this.needDraw = false
+      @fn draw(c: CanvasRenderingContext2D) {
+        const { pr, canvas, rect } = of(this)
+        rect.drawImage(canvas.el, c, pr, true)
       }
     }
-    return $(new CaretRenderable(this.ctx))
+    return $(new CaretRenderable(this))
   }
 }

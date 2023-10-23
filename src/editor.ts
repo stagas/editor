@@ -90,27 +90,27 @@ export class Editor extends Scene {
   get renderables(): Renderable.It[] {
     const t = of(this)
     return [
-      t.activeLine,
-      t.selection,
-      t.elevations,
-      ...t.deco,
-      ...t.mark,
-      ...t.sub,
-      t.text,
-      t.brackets,
-      t.dropCaret,
+      // t.activeLine,
+      // t.selection,
+      // t.elevations,
+      // ...t.deco,
+      // ...t.mark,
+      // ...t.sub,
+      // t.text,
+      // t.brackets,
+      // t.dropCaret,
       t.caret,
-      t.scrollbars,
+      // t.scrollbars,
     ]
   }
   get pointables(): Pointable.It[] {
     const t = of(this)
     return [
-      t.scrollbars,
-      ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
-      ...filterAs(t.mark)<Pointable.It>(w => w.pointable?.it),
-      ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
-      t.text,
+      // t.scrollbars,
+      // ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
+      // ...filterAs(t.mark)<Pointable.It>(w => w.pointable?.it),
+      // ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
+      // t.text,
     ]
   }
   get pointable() {
@@ -558,7 +558,7 @@ export class Editor extends Scene {
 
         return position
       }
-      @fn draw(t: number) {
+      @fn draw() {
         const { rect, canvas: { c } } = this
 
         // We do a full background fill on direct draws

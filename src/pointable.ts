@@ -6,15 +6,14 @@ import { Renderable } from './renderable.ts'
 export class Pointable {
   constructor(
     public it: Pointable.It,
-    public downCount = it.renderable.ctx.input.mouse.$.downCount,
-    public downTime = it.renderable.ctx.input.mouse.$.downTime,
+    public downCount = it.ctx.input.mouse.$.downCount,
+    public downTime = it.ctx.input.mouse.$.downTime,
     public mouse = $({
-      btns: it.renderable.ctx.world.pointer.$.buttons,
+      btns: it.ctx.world.pointer.$.buttons,
       get pos() {
-        const r = it.renderable
-        return r.position === Renderable.Position.Layout
-          ? r.ctx.input.mouse.pos
-          : r.ctx.input.mouse.innerPos
+        return it.renderable.position === Renderable.Position.Layout
+          ? it.ctx.input.mouse.pos
+          : it.ctx.input.mouse.innerPos
       },
       downPos: $(new Point)
     }),

@@ -41,7 +41,7 @@ export class Renderable {
 
   initCanvas(c: CanvasRenderingContext2D): void { }
   tick(dt: number): number { return 0 }
-  updateOne(dt: number): number { return 0 }
+  tickOne(dt: number): number { return 0 }
   render(c: CanvasRenderingContext2D, t: number, clear: boolean): void {}
   draw(c: CanvasRenderingContext2D, t: number): void { }
 
