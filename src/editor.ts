@@ -333,13 +333,13 @@ export class Editor extends Scene {
               // and redraw what had been drawn at that
               // location bottom up again:
               // for each dirty renderable that has been drawn so far
-              // for (const other of dirty)
-              //   // for each of its dirtyRects
-              //   for (const otherDr of other.dirtyRects)
-              //     // if OTHER dirtyRect intersects with THIS dirtyRect
-              //     otherDr.hasSize && otherDr.intersectionRect(dr)
-              //       // then render that portion of the image again on top
-              //       ?.drawImage(other.canvas.el,c,pr)
+              for (const other of dirty)
+                // for each of its dirtyRects
+                for (const otherDr of other.dirtyRects)
+                  // if OTHER dirtyRect intersects with THIS dirtyRect
+                  otherDr.hasSize && otherDr.intersectionRect(dr)
+                    // then render that portion of the image again on top
+                    ?.drawImage(other.canvas.el,c,pr)
 
               // zero dirtyRect because we will draw something new
               dr.zero()
