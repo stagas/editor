@@ -342,7 +342,7 @@ export class Editor extends Scene {
                     ?.drawImage(other.canvas.el,c,pr)
 
               // zero dirtyRect because we will draw something new
-              dr.zero()
+              // dr.zero()
             }
           }
 
