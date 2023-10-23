@@ -3,7 +3,6 @@ import $, { fn, fx, of, when } from 'signal'
 import { Rect } from 'std'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
-import { Indicator } from './indicator.ts'
 import { Linecol } from './linecol.ts'
 import { Renderable } from './renderable.ts'
 
