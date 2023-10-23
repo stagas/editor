@@ -10,6 +10,7 @@ export class ActiveLine extends Comp {
     const { ctx } = of(it)
     const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
+      dirtyRects = [$(new Rect)]
       position = Renderable.Position.Inner
       viewRect = $(new Rect)
       @fx update_rect() {
@@ -30,8 +31,9 @@ export class ActiveLine extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, viewRect } = this
+        const { pr, canvas, viewRect, dirtyRects: [dr] } = this
         viewRect.drawImage(canvas.el, c, pr, true)
+        dr.set(viewRect)
         this.needDraw = false
       }
     }
