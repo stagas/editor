@@ -20,6 +20,7 @@ import { Scrollbars } from './scrollbars.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widget } from './widget.ts'
+import { Animatable } from 'std/src/animatable.ts'
 
 export class Editor extends Scene {
   // core
@@ -154,15 +155,13 @@ export class Editor extends Scene {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      @fn traverse_needDraw(renderables: Renderable.It[], pass = false) {
+      @fn traverse_need(renderables: Renderable.It[], pass = 0) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
-
-          const { needRender, needDraw } = r
-          pass ||= needRender || needDraw || false
+          pass |= r.need
           if ('renderables' in it) {
-            pass = this.traverse_needDraw(
+            pass = this.traverse_need(
               it.renderables,
               pass
             )
@@ -170,68 +169,66 @@ export class Editor extends Scene {
         }
         return pass
       }
-      @fn traverse_needUpdate(renderables: Renderable.It[], pass = false) {
-        for (const it of renderables) {
-          const { renderable: r } = it
-          if (!r.isVisible) continue
+      // @fn traverse_needUpdate(animatables: Animatable.It[], pass = false) {
+      //   for (const it of renderables) {
+      //     const { renderable: r } = it
+      //     if (!r.isVisible) continue
 
-          const { needUpdate } = r
-          pass ||= needUpdate || false
-          if ('renderables' in it) {
-            pass = this.traverse_needUpdate(
-              it.renderables,
-              pass
-            )
-          }
-        }
-        return pass
-      }
+      //     const { needUpdate } = r
+      //     pass |= r.need & Animatable.Need.Update
+      //     if ('renderables' in it) {
+      //       pass = this.traverse_needUpdate(
+      //         it.renderables,
+      //         pass
+      //       )
+      //     }
+      //   }
+      //   return pass
+      // }
       @fx trigger_needDraw() {
-        const pass = this.traverse_needDraw(it.renderables)
-        if (pass) {
-          $()
-          this.needDraw = true
-        }
+        const pass = this.traverse_need(it.renderables)
+        $()
+        this.need |= pass
       }
-      @fx trigger_needUpdate() {
-        const pass = this.traverse_needUpdate(it.renderables)
-        if (pass) {
-          $()
-          this.needUpdate = true
-        }
-      }
-      @fx trigger_needUpdate_on_scroll() {
-        const needUpdate =
-          Math.round(scrollPos.top) !== targetScroll.top ||
-          Math.round(scrollPos.left) !== targetScroll.left
+      // @fx trigger_needUpdate() {
+      //   const pass = this.traverse_needUpdate(it.renderables)
+      //   if (pass) {
+      //     $()
+      //     this.needUpdate = true
+      //   }
+      // }
+      // @fx trigger_need_Update_on_scroll() {
+      //   const needUpdate =
+      //     Math.round(scrollPos.top) !== targetScroll.top ||
+      //     Math.round(scrollPos.left) !== targetScroll.left
 
-        if (needUpdate) {
-          $()
-          this.needUpdate = true
-        }
-      }
-      @fx anim_start_when_needed() {
-        if (anim.isAnimating) return
-        const { needInit, needUpdate, needDraw } = this
-        if (needInit || needUpdate || needDraw) {
-          $()
-          anim.start()
-        }
-      }
-      @fn traverse_update(dt: number, renderables: Renderable.It[], pass = 0) {
-        for (const it of renderables) {
-          const { renderable: r } = it
-          if (r.needUpdate) {
-            const needUpdate = r.tick(dt)
-            if (needUpdate) r.needUpdate = true
-            pass ||= needUpdate
-          }
-          if ('renderables' in it) {
-            pass = this.traverse_update(dt, it.renderables, pass)
-          }
-        }
-        return pass
-      }
+      //   if (needUpdate) {
+      //     $()
+      //     this.needUpdate = true
+      //   }
+      // }
+      // @fx anim_start_when_needed() {
+      //   if (anim.isAnimating) return
+      //   const { needInit, needUpdate, needDraw } = this
+      //   if (needInit || needUpdate || needDraw) {
+      //     $()
+      //     anim.start()
+      //   }
+      // }
+      // @fn traverse_update(dt: number, renderables: Renderable.It[], pass = 0) {
+      //   for (const it of renderables) {
+      //     const { renderable: r } = it
+      //     if (r.needUpdate) {
+      //       const needUpdate = r.tick(dt)
+      //       if (needUpdate) r.needUpdate = true
+      //       pass ||= needUpdate
+      //     }
+      //     if ('renderables' in it) {
+      //       pass = this.traverse_update(dt, it.renderables, pass)
+      //     }
+      //   }
+      //   return pass
+      // }
       @fn traverse_initCanvas(renderables: Renderable.It[]) {
         for (const it of renderables) {
           const { renderable: r } = it
