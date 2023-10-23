@@ -85,7 +85,7 @@ export class Text extends Comp {
           lineBaseBottoms,
           lineHeight,
           charWidth,
-          viewSpan,
+          visibleSpan: viewSpan,
           innerSize: { wh },
           scroll: { xy },
         } = of(dims)
@@ -111,7 +111,7 @@ export class Text extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
         const { rect, colors } = of(this)
-        const { lineBaseBottoms, charWidth, viewSpan, scroll } = of(dims)
+        const { lineBaseBottoms, charWidth, visibleSpan: viewSpan, scroll } = of(dims)
         const { tokens, Token } = of(buffer)
 
         // log('tokens', tokens)

@@ -382,7 +382,7 @@ export class Editor extends Scene {
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = this
-        const { dims: { viewSpan } } = of(it)
+        const { dims: { visibleSpan: viewSpan } } = of(it)
 
         for (const it of renderables) {
           const { renderable: r } = it
@@ -391,6 +391,7 @@ export class Editor extends Scene {
             position = this.traverseDraw(t, it.renderables, position)
           }
 
+          // Change transforms depending on the object Position.
           if (r.position !== position) {
             if (r.position === Inner) {
               c.save()
@@ -402,12 +403,12 @@ export class Editor extends Scene {
             position = r.position
           }
 
-          const viewRect = r.viewRect ?? r.rect
+          const itRect = r.viewRect ?? r.rect
 
           if (position === Inner) {
             if (
-              viewRect.bottom < viewSpan.top
-              || viewRect.top > viewSpan.bottom
+              itRect.bottom < viewSpan.top
+              || itRect.top > viewSpan.bottom
             ) {
               r.isVisible = false
               continue

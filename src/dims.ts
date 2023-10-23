@@ -56,7 +56,7 @@ export class Dims extends Comp {
     const { rect, lineHeight, viewSpanTop } = of(this)
     return viewSpanTop + rect.h + lineHeight
   }
-  get viewSpan() {
+  get visibleSpan() {
     return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
   }
   get lastVisibleLine() {

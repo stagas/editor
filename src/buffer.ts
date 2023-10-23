@@ -149,7 +149,7 @@ export class Buffer {
       lineTops,
       lineBaseTops,
       lineHeights,
-      viewSpan,
+      visibleSpan: viewSpan,
     } = of(dims)
 
     const { top, bottom } = range
