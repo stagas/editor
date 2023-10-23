@@ -47,12 +47,8 @@ export class Indicator extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = of(this)
-        // c.save()
-        // c.translate(offset.x, offset.y)
-        // console.log(rect.x, rect.y)
+        const { canvas, rect } = of(this)
         rect.drawImage(canvas.el, c, 1,  true)
-        // c.restore()
         this.needDraw = false
       }
     }
