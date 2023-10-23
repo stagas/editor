@@ -28,6 +28,7 @@ export class Elevations extends Comp {
     const { ctx, drawnElevations } = of(it)
     const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
+      canComposite = true
       dirtyRects = [$(new Rect), $(new Rect)]
       constructor(public ctx: Editor) { super(ctx, ctx.renderable.rect) }
       get colors() {
