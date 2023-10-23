@@ -297,7 +297,6 @@ export class Editor extends Scene {
       }
       @fn drawSimple(t: number, r: Renderable) {
         const { canvas: { c } } = this
-        console.log(r)
         r.needInit && r.initCanvas(r.canvas.c)
         r.needRender && r.render(t, r.canvas.c, true)
         if (r.didDraw || r.needDraw) {
