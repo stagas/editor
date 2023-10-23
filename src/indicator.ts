@@ -48,6 +48,7 @@ export class Indicator extends Comp {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect } = of(this)
         rect.drawImage(canvas.el, c, 1,  true)
+        .stroke(c,'#0f0')
         this.needDraw = false
       }
     }
