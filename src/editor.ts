@@ -235,11 +235,11 @@ export class Editor extends Scene {
       @fn traverse_initCanvas(renderables: Renderable.It[]) {
         for (const it of renderables) {
           const { renderable: r } = it
-          r.needInit && r.initCanvas(r.canvas.c)
+          r.needInit && r.init(r.canvas.c)
           if ('renderables' in it) this.traverse_initCanvas(it.renderables)
         }
       }
-      @fn initCanvas() {
+      @fn init() {
         const { c } = of(this.canvas)
         c.imageSmoothingEnabled = false
         this.traverse_initCanvas(it.renderables)
@@ -297,7 +297,7 @@ export class Editor extends Scene {
       }
       @fn drawSimple(t: number, r: Renderable) {
         const { canvas: { c } } = this
-        r.needInit && r.initCanvas(r.canvas.c)
+        r.needInit && r.init(r.canvas.c)
         r.needRender && r.render(t, r.canvas.c, true)
         if (r.didDraw || r.needDraw) {
           r.draw(t, c)
@@ -308,7 +308,7 @@ export class Editor extends Scene {
       @fn drawDirectLayout(t: number, r: Renderable) {
         const { canvas: { c } } = this
         c.save()
-        r.initCanvas(c)
+        r.init(c)
         r.render(t, c, false)
         c.restore()
         // when we finish the direct layout draws,
@@ -353,7 +353,7 @@ export class Editor extends Scene {
       @fn drawComposite(t: number, r: Renderable, renderables: Renderable.It[], position: Renderable.Position) {
         const { pr, canvas: { c } } = this
 
-        r.needInit && r.initCanvas(r.canvas.c)
+        r.needInit && r.init(r.canvas.c)
 
         // we will render something new
         if (r.needRender || r.needDraw) {

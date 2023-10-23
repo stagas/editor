@@ -39,9 +39,7 @@ export class Renderable {
   isVisible = true
   isHidden = false
 
-  initCanvas(c: CanvasRenderingContext2D): void { }
-  tick(dt: number): number { return 0 }
-  tickOne(dt: number): number { return 0 }
+  init(c: CanvasRenderingContext2D): void { }
   render(c: CanvasRenderingContext2D, t: number, clear: boolean): void {}
   draw(c: CanvasRenderingContext2D, t: number): void { }
 
@@ -67,5 +65,8 @@ export namespace Renderable {
     Layout,
     /** Inner position, translations apply. */
     Inner
+  }
+  export enum Need {
+    Idle = 0,
   }
 }

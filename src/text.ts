@@ -97,7 +97,7 @@ export class Text extends Comp {
 
         this.needRender = true
       }
-      @fn initCanvas(c: CanvasRenderingContext2D) {
+      @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
         c.miterLimit = 3
         c.lineJoin = 'round'

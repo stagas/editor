@@ -50,7 +50,7 @@ export class Brackets extends Comp {
         }
         this.needDraw = true
       }
-      @fn initCanvas(c: CanvasRenderingContext2D) {
+      @fn init(c: CanvasRenderingContext2D) {
         c.translate(.5, .5)
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
