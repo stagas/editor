@@ -398,17 +398,17 @@ export class Editor extends Scene {
         // only rerender those that have been touched
         else {
           // if we did a draw, for each dirtyRect of THIS renderable
-          if (r.didDraw) for (const dr of r.dirtyRects) {
-            // and for each dirty renderable that has been drawn so far
-            for (const other of dirty)
-              // for each of its dirtyRects
-              for (const otherDr of other.dirtyRects)
-                // if OTHER dirtyRect intersects with THIS dirtyRect
-                otherDr.hasSize && otherDr.intersectionRect(dr)
-                  // then render that portion of the image again on top
-                  ?.drawImage(r.canvas.el, c, pr)
+          // if (r.didDraw) for (const dr of r.dirtyRects) {
+          //   // and for each dirty renderable that has been drawn so far
+          //   for (const other of dirty)
+          //     // for each of its dirtyRects
+          //     for (const otherDr of other.dirtyRects)
+          //       // if OTHER dirtyRect intersects with THIS dirtyRect
+          //       otherDr.hasSize && otherDr.intersectionRect(dr)
+          //         // then render that portion of the image again on top
+          //         ?.drawImage(r.canvas.el, c, pr)
 
-          }
+          // }
         }
 
         return position
