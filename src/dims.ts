@@ -48,16 +48,16 @@ export class Dims extends Comp {
   get innerSize() {
     return $(new Point, { x: $(this).$.innerSizeWidth })
   }
-  get viewSpanTop() {
+  get visibleSpanTop() {
     const { scroll } = of(this)
     return -scroll.y
   }
-  get viewSpanBottom() {
-    const { rect, lineHeight, viewSpanTop } = of(this)
-    return viewSpanTop + rect.h + lineHeight
+  get visibleSpanBottom() {
+    const { rect, lineHeight, visibleSpanTop } = of(this)
+    return visibleSpanTop + rect.h + lineHeight
   }
   get visibleSpan() {
-    return $(new Point, { y: $(this).$.viewSpanTop, x: $(this).$.viewSpanBottom })
+    return $(new Point, { y: $(this).$.visibleSpanTop, x: $(this).$.visibleSpanBottom })
   }
   get lastVisibleLine() {
     const { lines, ctx } = of(this)

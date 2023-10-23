@@ -382,7 +382,7 @@ export class Editor extends Scene {
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = this
-        const { dims: { visibleSpan: viewSpan } } = of(it)
+        const { dims: { visibleSpan } } = of(it)
 
         for (const it of renderables) {
           const { renderable: r } = it
@@ -407,8 +407,8 @@ export class Editor extends Scene {
 
           if (position === Inner) {
             if (
-              itRect.bottom < viewSpan.top
-              || itRect.top > viewSpan.bottom
+              itRect.bottom < visibleSpan.top
+              || itRect.top > visibleSpan.bottom
             ) {
               r.isVisible = false
               continue

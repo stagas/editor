@@ -149,7 +149,7 @@ export class Buffer {
       lineTops,
       lineBaseTops,
       lineHeights,
-      visibleSpan: viewSpan,
+      visibleSpan,
     } = of(dims)
 
     const { top, bottom } = range
@@ -179,7 +179,7 @@ export class Buffer {
         ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
         : lineHeight + 0.5
 
-      if (y + h < viewSpan.top || y > viewSpan.bottom) continue
+      if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
 
       r = poolArrayGet(fillRects, i++, Rect.create)
 

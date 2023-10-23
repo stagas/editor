@@ -85,7 +85,7 @@ export class Text extends Comp {
           lineBaseBottoms,
           lineHeight,
           charWidth,
-          visibleSpan: viewSpan,
+          visibleSpan,
           innerSize: { wh },
           scroll: { xy },
         } = of(dims)
@@ -111,7 +111,7 @@ export class Text extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
         const { rect, colors } = of(this)
-        const { lineBaseBottoms, charWidth, visibleSpan: viewSpan, scroll } = of(dims)
+        const { lineBaseBottoms, charWidth, visibleSpan, scroll } = of(dims)
         const { tokens, Token } = of(buffer)
 
         // log('tokens', tokens)
@@ -128,7 +128,7 @@ export class Text extends Comp {
 
           y = lineBaseBottoms[t.line]
 
-          if (y > viewSpan.top && y < viewSpan.bottom) {
+          if (y > visibleSpan.top && y < visibleSpan.bottom) {
             x = t.col * charWidth + 1
 
             c.fillStyle
