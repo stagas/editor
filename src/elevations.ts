@@ -178,7 +178,7 @@ export class Elevations extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         if (this.needDraw) return
-
+console.log('---')
         const { rect, colors, dirtyRects } = of(this)
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
