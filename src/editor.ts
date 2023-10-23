@@ -415,7 +415,7 @@ export class Editor extends Scene {
             }
             r.isVisible = true
 
-            if (this.needDirectDraw) {
+            if (this.needDirectDraw || !r.canComposite) {
               this.drawSimple(t, r)
             }
             else {
@@ -429,7 +429,7 @@ export class Editor extends Scene {
               this.drawDirectLayout(t, r)
             }
             else {
-              if (this.needDirectDraw) {
+              if (this.needDirectDraw || !r.canComposite) {
                 this.drawSimple(t, r)
               }
               else {

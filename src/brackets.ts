@@ -14,6 +14,7 @@ export class Brackets extends Comp {
     const { buffer, dims } = of(ctx)
     class BracketsRenderable extends Renderable {
       viewRect = $(new Rect)
+      dirtyRects = [$(new Rect), $(new Rect)]
       @fx update_rect() {
         const { pr, rect } = of(this)
         const { lineHeight, charWidth } = of(dims)
@@ -70,10 +71,12 @@ export class Brackets extends Comp {
         this.needDraw = true
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, isHidden } = of(this)
+        const { pr, canvas, isHidden, dirtyRects: [d1,d2] } = of(this)
         if (!isHidden) {
           r1.drawImage(canvas.el, c, pr, true)
           r2.drawImage(canvas.el, c, pr, true)
+          d1.set(r1)
+          d2.set(r2)
         }
         this.needDraw = false
       }
