@@ -292,6 +292,70 @@ export class Editor extends Scene {
           return 1 // need next frame
         }
       }
+      drawSimple(t: number, r: Renderable) {
+        const { pr, canvas: { c } } = of(this)
+        r.needInit && r.initCanvas(r.canvas.c)
+        r.needRender && r.render(t, r.canvas.c, true)
+        if (r.didDraw || r.needDraw) {
+          r.draw(t, c)
+          r.didDraw = true
+        }
+      }
+      drawDirectLayout(t: number, r: Renderable) {
+        const { pr, canvas: { c } } = of(this)
+
+        c.save()
+        r.initCanvas(c)
+        r.render(t, c, false)
+        c.restore()
+        // when we finish the direct layout draws,
+        // we need the items to also render their own canvas.
+        r.needInit = r.needRender = true
+      }
+      drawComposite(t: number, r: Renderable, renderables: Renderable.It[]) {
+        const { pr, canvas: { c } } = of(this)
+
+        r.needInit && r.initCanvas(r.canvas.c)
+        if (r.needRender || r.needDraw) {
+          if (r.dirtyRects) for (const dr of r.dirtyRects) {
+            dr.whenSized
+              ?.fill(c, skin.colors.bg)
+            // .stroke(c, '#0f0')
+
+            for (const it of renderables) {
+              const ir = it.renderable
+              if (ir === r) {
+                r.needRender && r.render(t, r.canvas.c, true)
+                if (r.needDraw) {
+                  r.draw(t, c)
+                  r.didDraw = true
+                }
+                continue
+              }
+
+              if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
+                dr.intersectionRect(
+                  dr2
+                )?.drawImage(ir.canvas.el, c, pr)
+              }
+              else {
+                dr.intersectionRect(
+                  ir.rect
+                )?.drawImage(ir.canvas.el, c, pr)
+              }
+            }
+
+            dr.zero()
+          }
+          else {
+            r.needRender && r.render(t, r.canvas.c, true)
+            if (r.needDraw) {
+              r.draw(t, c)
+              r.didDraw = true
+            }
+          }
+        }
+      }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { pr, canvas: { c } } = of(this)
         const { dims: { viewSpan } } = of(it)
@@ -327,119 +391,24 @@ export class Editor extends Scene {
             r.isVisible = true
 
             if (this.needDirectDraw) {
-              r.needInit && r.initCanvas(r.canvas.c)
-              r.needRender && r.render(t, r.canvas.c, true)
-              if (r.didDraw || r.needDraw) {
-                r.draw(t, c)
-                r.didDraw = true
-              }
+              this.drawSimple(t, r)
             }
             else {
-              r.needInit && r.initCanvas(r.canvas.c)
-              if (r.needRender || r.needDraw) {
-                if (r.dirtyRects) for (const dr of r.dirtyRects) {
-                  dr.whenSized
-                    ?.fill(c, skin.colors.bg)
-                  // .stroke(c, '#0f0')
-
-                  for (const it of renderables) {
-                    const ir = it.renderable
-                    if (ir === r) {
-                      r.needRender && r.render(t, r.canvas.c, true)
-                      if (r.needDraw) {
-                        r.draw(t, c)
-                        r.didDraw = true
-                      }
-                      continue
-                    }
-
-                    if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
-                      dr.intersectionRect(
-                        dr2
-                      )?.drawImage(ir.canvas.el, c, pr)
-                    }
-                    else {
-                      dr.intersectionRect(
-                        ir.rect
-                      )?.drawImage(ir.canvas.el, c, pr)
-                    }
-                  }
-
-                  dr.zero()
-                }
-                else {
-                  r.needRender && r.render(t, r.canvas.c, true)
-                  if (r.needDraw) {
-                    r.draw(t, c)
-                    r.didDraw = true
-                  }
-                }
-              }
+              this.drawComposite(t, r, renderables)
             }
           }
           else if (position === Layout) {
             if (!r.isVisible) continue
 
             if (r.canDirectDraw && this.needDirectDraw) {
-              c.save()
-              r.initCanvas(c)
-              r.render(t, c, false)
-              c.restore()
-              // when we finish the direct layout draws,
-              // we need the items to also render their own canvas.
-              r.needInit = r.needRender = true
+              this.drawDirectLayout(t, r)
             }
             else {
               if (this.needDirectDraw) {
-                r.needInit && r.initCanvas(r.canvas.c)
-                r.needRender && r.render(t, r.canvas.c, true)
-                if (r.didDraw || r.needDraw) {
-                  r.draw(t, c)
-                  r.didDraw = true
-                }
+                this.drawSimple(t, r)
               }
               else {
-                r.needInit && r.initCanvas(r.canvas.c)
-                if (r.needRender || r.needDraw) {
-                  if (r.dirtyRects) for (const dr of r.dirtyRects) {
-                    dr.whenSized
-                      ?.fill(c, skin.colors.bg)
-                    // .stroke(c, '#0f0')
-
-                    for (const it of renderables) {
-                      const ir = it.renderable
-                      if (ir === r) {
-                        r.needRender && r.render(t, r.canvas.c, true)
-                        if (r.needDraw) {
-                          r.draw(t, c)
-                          r.didDraw = true
-                        }
-
-                        continue
-                      }
-
-                      if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
-                        dr.intersectionRect(
-                          dr2
-                        )?.drawImage(ir.canvas.el, c, pr)
-                      }
-                      else {
-                        dr.intersectionRect(
-                          ir.rect
-                        )?.drawImage(ir.canvas.el, c, pr)
-                      }
-                    }
-
-                    dr.zero()
-                  }
-                  else {
-                    r.needRender && r.render(t, r.canvas.c, true)
-                    if (r.needDraw) {
-                      r.draw(t, c)
-                      r.didDraw = true
-                    }
-                  }
-                }
+                this.drawComposite(t, r, renderables)
               }
             }
           }
