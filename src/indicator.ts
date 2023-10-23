@@ -10,7 +10,6 @@ export class Indicator extends Comp {
     $()
     const it = this
     class IndicatorRenderable extends Renderable {
-      // offset = { x: -7, y: -5.5 }
       rect = $(new Rect, { x: -7, y: -5.5 })
       @fx trigger_needRender() {
         const { pr, rect: { w, h } } = of(this)
