@@ -316,6 +316,7 @@ export class Editor extends Scene {
         const { pr, canvas: { c } } = of(this)
 
         r.needInit && r.initCanvas(r.canvas.c)
+
         if (r.needRender || r.needDraw) {
           if (r.dirtyRects) for (const dr of r.dirtyRects) {
             dr.whenSized
@@ -325,12 +326,7 @@ export class Editor extends Scene {
             for (const it of renderables) {
               const ir = it.renderable
               if (ir === r) {
-                r.needRender && r.render(t, r.canvas.c, true)
-                if (r.needDraw) {
-                  r.draw(t, c)
-                  r.didDraw = true
-                }
-                continue
+                break
               }
 
               if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
@@ -346,6 +342,35 @@ export class Editor extends Scene {
             }
 
             dr.zero()
+
+            r.needRender && r.render(t, r.canvas.c, true)
+            if (r.needDraw) {
+              r.draw(t, c)
+              r.didDraw = true
+            }
+
+            let pass = false
+            for (const it of renderables) {
+              const ir = it.renderable
+              if (ir === r) {
+                pass = true
+                continue
+              }
+              else if (!pass) continue
+
+              if (!ir.needRender && !ir.needDraw) {
+                if (ir.dirtyRects) for (const dr2 of ir.dirtyRects) {
+                  dr.intersectionRect(
+                    dr2
+                  )?.drawImage(ir.canvas.el, c, pr)
+                }
+                else {
+                  dr.intersectionRect(
+                    ir.rect
+                  )?.drawImage(ir.canvas.el, c, pr)
+                }
+              }
+            }
           }
           else {
             r.needRender && r.render(t, r.canvas.c, true)
