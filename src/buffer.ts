@@ -206,6 +206,8 @@ export class Buffer {
 
     if (!i) return
 
+    dirtyRect.zero()
+
     c.beginPath()
     Rect.pathAround(c, fillRects, i)
     c.fillStyle = color
