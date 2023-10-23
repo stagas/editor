@@ -146,11 +146,13 @@ export class Editor extends Scene {
     const ad = $(new Point)
 
     class EditorRenderable extends Renderable {
+      // do a direct draw initially
       needDirectDraw = true
+
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      @fn traverseNeedDraw(renderables: Renderable.It[], pass = false) {
+      @fn traverse_needDraw(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
@@ -158,7 +160,7 @@ export class Editor extends Scene {
           const { needRender, needDraw } = r
           pass ||= needRender || needDraw || false
           if ('renderables' in it) {
-            pass = this.traverseNeedDraw(
+            pass = this.traverse_needDraw(
               it.renderables,
               pass
             )
@@ -166,7 +168,7 @@ export class Editor extends Scene {
         }
         return pass
       }
-      @fn traverseNeedUpdate(renderables: Renderable.It[], pass = false) {
+      @fn traverse_needUpdate(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
@@ -174,7 +176,7 @@ export class Editor extends Scene {
           const { needUpdate } = r
           pass ||= needUpdate || false
           if ('renderables' in it) {
-            pass = this.traverseNeedUpdate(
+            pass = this.traverse_needUpdate(
               it.renderables,
               pass
             )
@@ -183,14 +185,14 @@ export class Editor extends Scene {
         return pass
       }
       @fx trigger_needDraw() {
-        const pass = this.traverseNeedDraw(it.renderables)
+        const pass = this.traverse_needDraw(it.renderables)
         if (pass) {
           $()
           this.needDraw = true
         }
       }
       @fx trigger_needUpdate() {
-        const pass = this.traverseNeedUpdate(it.renderables)
+        const pass = this.traverse_needUpdate(it.renderables)
         if (pass) {
           $()
           this.needUpdate = true
@@ -206,13 +208,12 @@ export class Editor extends Scene {
           this.needUpdate = true
         }
       }
-      @fx trigger_anim_when_needed() {
+      @fx anim_start_when_needed() {
+        if (anim.isAnimating) return
         const { needInit, needUpdate, needDraw } = this
         if (needInit || needUpdate || needDraw) {
-          if (!anim.isAnimating) {
-            $()
-            anim.start()
-          }
+          $()
+          anim.start()
         }
       }
       @fn traverse_update(dt: number, renderables: Renderable.It[], pass = 0) {
@@ -380,15 +381,20 @@ export class Editor extends Scene {
           }
         }
       }
-      @fn traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
+      @fn traverse_draw(
+        t: number,
+        renderables: Renderable.It[],
+        position: Renderable.Position = Renderable.Position.Layout
+      ) {
         const { canvas: { c } } = this
         const { dims: { visibleSpan } } = of(it)
 
         for (const it of renderables) {
           const { renderable: r } = it
 
+          // depth first
           if ('renderables' in it) {
-            position = this.traverseDraw(t, it.renderables, position)
+            position = this.traverse_draw(t, it.renderables, position)
           }
 
           // Change transforms depending on the object Position.
@@ -451,10 +457,10 @@ export class Editor extends Scene {
         // since we have to redraw everything.
         // This is the case in events like scrolling.
         // if (this.needDirectDraw) {
-          rect.fill(c, skin.colors.bg)
+        rect.fill(c, skin.colors.bg)
         // }
 
-        const position = this.traverseDraw(t, it.renderables)
+        const position = this.traverse_draw(t, it.renderables)
 
         // If we ended in another position than Layout,
         // it means the canvas has transforms, so we need to restore.
