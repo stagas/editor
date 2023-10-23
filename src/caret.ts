@@ -128,8 +128,8 @@ export class Caret extends Comp {
           c.save()
           rect.pos.translate(c)
           ind.renderable.draw(t, c)
-          c.restore()
           dr.set(ind.renderable.rect)
+          c.restore()
           // dr.x = rect.x //+ ind.renderable.offset.x
           // dr.y = rect.y //+ ind.renderable.offset.y
           // dr.w = ind.renderable.rect.w
