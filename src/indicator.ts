@@ -48,6 +48,7 @@ export class Indicator extends Comp {
         const { pr, canvas, rect, offset } = of(this)
         c.save()
         c.translate(offset.x, offset.y)
+        console.log(rect.x, rect.y)
         rect.drawImage(canvas.el, c, pr, true)
         c.restore()
         this.needDraw = false
