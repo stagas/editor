@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx, init, of } from 'signal'
 import { Point, Scene } from 'std'
 import { clamp, filterAs, prevent } from 'utils'
@@ -150,7 +150,7 @@ export class Editor extends Scene {
       @init init_Editor() {
         this.canvas.fullWindow = true
       }
-      traverseNeedDraw(renderables: Renderable.It[], pass = false) {
+      @fn traverseNeedDraw(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
@@ -166,7 +166,7 @@ export class Editor extends Scene {
         }
         return pass
       }
-      traverseNeedUpdate(renderables: Renderable.It[], pass = false) {
+      @fn traverseNeedUpdate(renderables: Renderable.It[], pass = false) {
         for (const it of renderables) {
           const { renderable: r } = it
           if (!r.isVisible) continue
@@ -292,7 +292,7 @@ export class Editor extends Scene {
           return 1 // need next frame
         }
       }
-      drawSimple(t: number, r: Renderable) {
+      @fn drawSimple(t: number, r: Renderable) {
         const { canvas: { c } } = this
         r.needInit && r.initCanvas(r.canvas.c)
         r.needRender && r.render(t, r.canvas.c, true)
@@ -301,7 +301,7 @@ export class Editor extends Scene {
           r.didDraw = true
         }
       }
-      drawDirectLayout(t: number, r: Renderable) {
+      @fn drawDirectLayout(t: number, r: Renderable) {
         const { canvas: { c } } = this
         c.save()
         r.initCanvas(c)
@@ -311,7 +311,7 @@ export class Editor extends Scene {
         // we need the items to also render their own canvas.
         r.needInit = r.needRender = true
       }
-      drawComposite(t: number, r: Renderable, renderables: Renderable.It[]) {
+      @fn drawComposite(t: number, r: Renderable, renderables: Renderable.It[]) {
         const { pr, canvas: { c } } = this
 
         r.needInit && r.initCanvas(r.canvas.c)
@@ -380,7 +380,7 @@ export class Editor extends Scene {
           }
         }
       }
-      traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
+      @fn traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
         const { canvas: { c } } = this
         const { dims: { visibleSpan } } = of(it)
 
