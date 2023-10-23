@@ -366,7 +366,7 @@ export class Editor extends Scene {
                 // if OTHER dirtyRect intersects with THIS dirtyRect
                 otherDr.hasSize && otherDr.intersectionRect(dr)
                   // then render that portion of the image again on top
-                  ?.fill(c, skin.colors.bg).drawImage(r.canvas.el,c,pr)
+                  ?.drawImage(r.canvas.el,c,pr)
 
           }
         }
