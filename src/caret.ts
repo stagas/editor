@@ -31,6 +31,7 @@ export class Caret extends Comp {
     const { ctx } = of(it)
     const { misc, dims, text } = of(ctx)
     class CaretRenderable extends Renderable {
+      canComposite = true
       dirtyRects = [$(new Rect)]
       @fx update_rect() {
         const { rect: r } = of(this)
