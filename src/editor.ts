@@ -222,7 +222,7 @@ export class Editor extends Scene {
         for (const it of renderables) {
           const { renderable: r } = it
           if (r.needUpdate) {
-            const needUpdate = r.update(dt)
+            const needUpdate = r.tick(dt)
             if (needUpdate) r.needUpdate = true
             pass ||= needUpdate
           }
@@ -245,7 +245,7 @@ export class Editor extends Scene {
         this.traverse_initCanvas(it.renderables)
         this.needInit = false
       }
-      @fn update(dt: number) {
+      @fn tick(dt: number) {
         const { isTyping } = of(misc)
         const { animSettings } = of(scroll)
 

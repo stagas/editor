@@ -1,25 +1,31 @@
 // log.active
 import { $, fx, init, of } from 'signal'
-import { Canvas, Rect, Scene, World } from 'std'
-import { Editor } from './editor'
+import { Canvas, Rect } from 'std'
+import { Comp } from './comp.ts'
 
-// TODO: we should use new Renderable(it) like the other components
-export class Renderable extends Scene {
+export class Renderable {
   constructor(
-    public ctx: Editor,
+    public it: Renderable.It,
     public rect = $(new Rect),
-    public canvas = $(new Canvas(ctx.world), { size: rect.$.size }),
-    public world: World = ctx.world,
-    public pr = world.screen.$.pr,
-  ) {
-    super(world)
-  }
+    public canvas = $(new Canvas(it.ctx.world), { size: rect.$.size }),
+    public pr = it.ctx.world.screen.$.pr,
+  ) {}
+
+  // constructor(
+  //   public ctx: Editor,
+  //   public rect = $(new Rect),
+  //   public canvas = $(new Canvas(ctx.world), { size: rect.$.size }),
+  //   public world: World = ctx.world,
+  //   public pr = world.screen.$.pr,
+  // ) {
+  //   super(world)
+  // }
 
   get prRecip() { return 1 / this.pr }
   position: Renderable.Position = Renderable.Position.Layout
   canDirectDraw?: boolean
   canComposite?: boolean
-  coeff = 1
+
   viewRect?: $<Rect>
   dirtyRects: $<Rect>[] = []
 
@@ -32,11 +38,12 @@ export class Renderable extends Scene {
 
   isVisible = true
   isHidden = false
+
   initCanvas(c: CanvasRenderingContext2D): void { }
-  update(dt: number): number { return 0 }
+  tick(dt: number): number { return 0 }
   updateOne(dt: number): number { return 0 }
-  render(t: number, c: CanvasRenderingContext2D, clear: boolean): void {}
-  draw(t: number, c: CanvasRenderingContext2D): void { }
+  render(c: CanvasRenderingContext2D, t: number, clear: boolean): void {}
+  draw(c: CanvasRenderingContext2D, t: number): void { }
 
   @init set_initial_dirtyRects() {
     if (!this.dirtyRects.length) {
@@ -51,7 +58,7 @@ export class Renderable extends Scene {
 }
 
 export namespace Renderable {
-  export interface It {
+  export interface It extends Comp {
     renderables?: Renderable.It[]
     renderable: Renderable
   }
