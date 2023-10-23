@@ -158,6 +158,7 @@ export class Elevations extends Comp {
             )
             if (dr) dirtyRect.combine(dr)
           }
+        return
         }
 
         const latest = eligible.at(-1)
