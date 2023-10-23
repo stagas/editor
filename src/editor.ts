@@ -445,7 +445,12 @@ export class Editor extends Scene {
         const { rect, canvas } = of(this)
         const { c } = canvas
 
-        if (this.needDirectDraw) rect.fill(c, skin.colors.bg)
+        // We do a full background fill on direct draws
+        // since we have to redraw everything.
+        // This is the case in events like scrolling.
+        if (this.needDirectDraw) {
+          rect.fill(c, skin.colors.bg)
+        }
 
         const position = this.traverseDraw(t, it.renderables)
 
