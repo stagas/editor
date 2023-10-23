@@ -16,6 +16,8 @@ export class Selection extends Comp {
     const { ctx, selection } = of(it)
     const { buffer, dims, scroll, skin } = of(ctx)
     class SelectionRenderable extends Renderable {
+      canComposite = true
+      dirtyRects = [$(new Rect)]
       viewRect = $(new Rect)
       isHidden = false
       topPx = $(new Point)
@@ -41,7 +43,7 @@ export class Selection extends Comp {
         this.needRender = true
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
-        const { canvas, rect } = of(this)
+        const { canvas, rect, dirtyRects: [dr] } = of(this)
         const { selection, hasSelection, ctx } = of(it)
         const { sorted } = selection
         const { charWidth } = of(dims)
@@ -53,7 +55,8 @@ export class Selection extends Comp {
           }
           c.save()
           c.translate(scroll.x, scroll.y)
-          buffer.fillTextRange(c, sorted, skin.colors.bgBright2, true)
+          const br = buffer.fillTextRange(c, sorted, skin.colors.bgBright2, true)
+          if (br) dr.set(br)
           c.restore()
           this.needDraw = true
         }
@@ -61,11 +64,11 @@ export class Selection extends Comp {
         this.needRender = false
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = of(this)
+        const { pr, canvas, rect, dirtyRects: [dr] } = of(this)
         const { hasSelection } = of(it)
 
         if (hasSelection) {
-          rect.drawImage(canvas.el, c, pr, true)
+          dr.drawImage(canvas.el, c, pr, true)
         }
 
         this.needDraw = false
