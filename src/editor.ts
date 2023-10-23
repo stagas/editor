@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, init, of } from 'signal'
 import { Point, Rect, Scene } from 'std'
 import { clamp, filterAs, prevent } from 'utils'
