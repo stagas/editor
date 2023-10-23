@@ -212,7 +212,7 @@ export class Elevations extends Comp {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr, dirtyRects } = of(this)
         for (const dr of dirtyRects) {
-          dr.drawImage(canvas.el, c, pr).stroke(c, '#0f0')
+          dr.drawImage(canvas.el, c, pr)
         }
         this.needDraw = false
       }

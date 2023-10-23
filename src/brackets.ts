@@ -73,8 +73,8 @@ export class Brackets extends Comp {
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { pr, canvas, isHidden, dirtyRects: [d1,d2] } = of(this)
         if (!isHidden) {
-          r1.drawImage(canvas.el, c, pr, true)
-          r2.drawImage(canvas.el, c, pr, true)
+          r1.drawImage(canvas.el, c, pr, true).stroke(c, '#0f0')
+          r2.drawImage(canvas.el, c, pr, true).stroke(c, '#0f0')
           d1.set(r1)
           d2.set(r2)
         }
