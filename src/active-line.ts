@@ -10,6 +10,7 @@ export class ActiveLine extends Comp {
     const { ctx } = of(it)
     const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
+      canComposite = true
       dirtyRects = [$(new Rect)]
       position = Renderable.Position.Inner
       viewRect = $(new Rect)
