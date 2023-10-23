@@ -1,6 +1,6 @@
 log.active
 import { $, fn, fx, init, of } from 'signal'
-import { Point, Scene } from 'std'
+import { Point, Rect, Scene } from 'std'
 import { clamp, filterAs, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
 import { Brackets } from './brackets.ts'
@@ -316,7 +316,42 @@ export class Editor extends Scene {
         // we need the items to also render their own canvas.
         r.needInit = r.needRender = true
       }
-      @fn drawComposite(t: number, r: Renderable, renderables: Renderable.It[]) {
+      traverse_drawIntersection(
+        r: Renderable,
+        dr: Rect,
+        renderables: Renderable.It[],
+        position: Renderable.Position) {
+        const { pr, canvas: { c } } = this
+
+        for (const it of renderables) {
+          const { renderable: other } = it
+          if (other === r) return position
+
+          if ('renderables' in it) {
+            position = this.traverse_drawIntersection(
+              r,
+              dr,
+              it.renderables,
+              position
+            )
+          }
+
+          for (const otherDr of other.dirtyRects) {
+            // if OTHER dirtyRect intersects with THIS dirtyRect
+            if (otherDr.hasSize) {
+              const ir = otherDr.intersectionRect(dr)
+              if (ir) {
+                position = this.fixPosition(other, position)
+                // then render that portion of the image again on top
+                ir.drawImage(other.canvas.el, c, pr)
+              }
+
+            }
+          }
+          return position
+        }
+      }
+      @fn drawComposite(t: number, r: Renderable, renderables: Renderable.It[], position: Renderable.Position) {
         const { pr, canvas: { c } } = this
 
         r.needInit && r.initCanvas(r.canvas.c)
@@ -330,16 +365,22 @@ export class Editor extends Scene {
               // clear that old part
               dr.fill(c, skin.colors.bg)
 
+              this.traverse_drawIntersection(
+                r,
+                dr,
+                renderables,
+                position
+              )
               // and redraw what had been drawn at that
               // location bottom up again:
-              // for each dirty renderable that has been drawn so far
-              for (const other of dirty)
-                // for each of its dirtyRects
-                for (const otherDr of other.dirtyRects)
-                  // if OTHER dirtyRect intersects with THIS dirtyRect
-                  otherDr.hasSize && otherDr.intersectionRect(dr)
-                    // then render that portion of the image again on top
-                    ?.drawImage(other.canvas.el,c,pr)
+              // // for each dirty renderable that has been drawn so far
+              // for (const other of dirty)
+              //   // for each of its dirtyRects
+              //   for (const otherDr of other.dirtyRects)
+              //     // if OTHER dirtyRect intersects with THIS dirtyRect
+              //     otherDr.hasSize && otherDr.intersectionRect(dr)
+              //       // then render that portion of the image again on top
+              //       ?.drawImage(other.canvas.el, c, pr)
 
               // zero dirtyRect because we will draw something new
               dr.zero()
@@ -366,10 +407,13 @@ export class Editor extends Scene {
                 // if OTHER dirtyRect intersects with THIS dirtyRect
                 otherDr.hasSize && otherDr.intersectionRect(dr)
                   // then render that portion of the image again on top
-                  ?.drawImage(r.canvas.el,c,pr)
+                  ?.drawImage(r.canvas.el, c, pr)
 
           }
         }
+
+        return position
+
         // r.needRender && r.render(t, r.canvas.c, true)
         // if (r.didDraw || r.needDraw) {
         //   r.draw(t, c)
@@ -441,6 +485,20 @@ export class Editor extends Scene {
         //   }
         // }
       }
+      fixPosition(r: Renderable, position: Renderable.Position) {
+        const { canvas: { c } } = this
+        if (r.position !== position) {
+          if (r.position === Inner) {
+            c.save()
+            scroll.pos.translate(c)
+          }
+          else {
+            c.restore()
+          }
+          position = r.position
+        }
+        return position
+      }
       @fn traverse_draw(
         t: number,
         renderables: Renderable.It[],
@@ -458,16 +516,7 @@ export class Editor extends Scene {
           }
 
           // Change transforms depending on the object Position.
-          if (r.position !== position) {
-            if (r.position === Inner) {
-              c.save()
-              scroll.pos.translate(c)
-            }
-            else {
-              c.restore()
-            }
-            position = r.position
-          }
+          position = this.fixPosition(r, position)
 
           const rect = r.viewRect ?? r.rect
 
@@ -486,7 +535,7 @@ export class Editor extends Scene {
                 this.drawSimple(t, r)
               }
               else {
-                this.drawComposite(t, r, renderables)
+                position = this.drawComposite(t, r, renderables, position)
               }
               break
 
@@ -501,7 +550,7 @@ export class Editor extends Scene {
                   this.drawSimple(t, r)
                 }
                 else {
-                  this.drawComposite(t, r, renderables)
+                  position = this.drawComposite(t, r, renderables, position)
                 }
               }
               break
