@@ -137,17 +137,7 @@ export class Caret extends Comp {
 
         if (!isHidden) {
           rect.drawImage(canvas.el, c, pr, true)
-          dr.set(rect).stroke(c,'#0f0')
-          // c.save()
-          // rect.pos.translate(c)
-          // ind.renderable.draw(t, c)
-          // dr.set(ind.renderable.rect).translate(rect.pos)
-          // c.restore()
-          // dr.stroke(c,'#0f0')
-          // dr.x = rect.x //+ ind.renderable.offset.x
-          // dr.y = rect.y //+ ind.renderable.offset.y
-          // dr.w = ind.renderable.rect.w
-          // dr.h = ind.renderable.rect.h
+          dr.set(rect)
         }
 
         this.needDraw = false
