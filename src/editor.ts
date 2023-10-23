@@ -145,6 +145,8 @@ export class Editor extends Scene {
     const d = $(new Point)
     const ad = $(new Point)
 
+    const dirty = new Set<Renderable>()
+
     class EditorRenderable extends Renderable {
       // do a direct draw initially
       needDirectDraw = true
@@ -300,6 +302,7 @@ export class Editor extends Scene {
         if (r.didDraw || r.needDraw) {
           r.draw(t, c)
           r.didDraw = true
+          dirty.add(r)
         }
       }
       @fn drawDirectLayout(t: number, r: Renderable) {
@@ -316,12 +319,73 @@ export class Editor extends Scene {
         const { pr, canvas: { c } } = this
 
         r.needInit && r.initCanvas(r.canvas.c)
-        r.needRender && r.render(t, r.canvas.c, true)
-        if (r.didDraw || r.needDraw) {
-          r.clear(c)
-          r.draw(t, c)
-          r.didDraw = true
+
+        // we will render something new
+        if (r.needRender || r.needDraw) {
+          // for each of our previous dirtyRects
+          for (const dr of r.dirtyRects) {
+            // if that dirty rect had size
+            if (dr.hasSize) {
+              // clear that old part
+              dr.fill(c, skin.colors.bg)
+
+              // and redraw what had been drawn at that
+              // location bottom up again:
+              // for each dirty renderable that has been drawn so far
+              for (const other of dirty)
+                // for each of its dirtyRects
+                for (const otherDr of other.dirtyRects)
+                  // if OTHER dirtyRect intersects with THIS dirtyRect
+                  otherDr.hasSize && otherDr.intersectionRect(dr)
+                    // then render that portion of the image again on top
+                    ?.drawImage(
+                      other.canvas.el,
+                      c,
+                      pr,
+                      true
+                    )
+
+              // zero dirtyRect because we will draw something new
+              dr.zero()
+            }
+          }
+
+          // ready to draw something new
+          r.needRender && r.render(t, r.canvas.c, true)
+          if (r.didDraw || r.needDraw) {
+            r.draw(t, c)
+            r.didDraw = true
+            dirty.add(r)
+          }
         }
+        // we will render the same, so we
+        // only rerender those that have been touched
+        else {
+          // if we did a draw, for each dirtyRect of THIS renderable
+          if (r.didDraw) for (const dr of r.dirtyRects) {
+            // and for each dirty renderable that has been drawn so far
+            for (const other of dirty)
+              // for each of its dirtyRects
+              for (const otherDr of other.dirtyRects)
+                // if OTHER dirtyRect intersects with THIS dirtyRect
+                otherDr.hasSize && otherDr.intersectionRect(dr)
+                  // then render that portion of the image again on top
+                  ?.drawImage(
+                    r.canvas.el,
+                    c,
+                    pr,
+                    true
+                  )
+
+          }
+        }
+        // r.needRender && r.render(t, r.canvas.c, true)
+        // if (r.didDraw || r.needDraw) {
+        //   r.draw(t, c)
+        //   r.didDraw = true
+        // }
+
+
         // if (r.needRender || r.needDraw) {
         //   if (r.dirtyRects) for (const dr of r.dirtyRects) {
         //     dr.whenSized

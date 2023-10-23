@@ -1,5 +1,5 @@
 // log.active
-import { $, fx, of } from 'signal'
+import { $, fx, init, of } from 'signal'
 import { Canvas, Rect, Scene, World } from 'std'
 import { Editor } from './editor'
 
@@ -21,7 +21,7 @@ export class Renderable extends Scene {
   canComposite?: boolean
   coeff = 1
   viewRect?: $<Rect>
-  dirtyRects?: $<Rect>[]
+  dirtyRects: $<Rect>[] = []
 
   didDraw?: boolean
   needInit = true
@@ -40,6 +40,11 @@ export class Renderable extends Scene {
   }
   draw(t: number, c: CanvasRenderingContext2D): void { }
 
+  @init set_initial_dirtyRects() {
+    if (!this.dirtyRects.length) {
+      this.dirtyRects.push(this.viewRect ?? this.rect)
+    }
+  }
   @fx trigger_needInit_on_size() {
     const { pr, canvas } = of(this)
     const { size: { x, y } } = of(canvas)
