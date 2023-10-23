@@ -28,7 +28,7 @@ export class Elevations extends Comp {
     const { ctx, drawnElevations } = of(it)
     const { skin, misc, buffer, dims, scroll, input: { mouse }, text, brackets } = of(ctx)
     class ElevationsRenderable extends Renderable {
-      dirtyRects = [$(new Rect),$(new Rect)]
+      dirtyRects = [$(new Rect), $(new Rect)]
       constructor(public ctx: Editor) { super(ctx, ctx.renderable.rect) }
       get colors() {
         return {
@@ -178,7 +178,7 @@ export class Elevations extends Comp {
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         if (this.needDraw) return
-console.log('---')
+
         const { rect, colors, dirtyRects } = of(this)
         const { isTyping } = of(misc)
         const { pointable: { isHovering } } = of(text)
@@ -186,14 +186,23 @@ console.log('---')
         dirtyRects[0].zero()
         dirtyRects[1].zero()
         if (clear) {
-          console.log('CLEAR')
           rect.clear(c)
         }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
-        if (it.caretElevationPoint) this.drawElevation(c, it.caretElevationPoint, dirtyRects[0], colors.caret)
-        if (!isTyping && isHovering) this.drawElevation(c, it.hoverElevationPoint, dirtyRects[1], colors.hover)
+        if (it.caretElevationPoint) this.drawElevation(
+          c,
+          it.caretElevationPoint,
+          dirtyRects[0],
+          colors.caret
+        )
+        if (!isTyping && isHovering) this.drawElevation(
+          c,
+          it.hoverElevationPoint,
+          dirtyRects[1],
+          colors.hover
+        )
         // dirtyRect.pos.add(scroll)
         c.restore()
 
@@ -202,9 +211,7 @@ console.log('---')
       }
       @fn draw(t: number, c: CanvasRenderingContext2D) {
         const { canvas, rect, pr, dirtyRects } = of(this)
-        console.log('===')
         for (const dr of dirtyRects) {
-          console.log('DRAW', dr.text)
           dr.drawImage(canvas.el, c, pr).stroke(c, '#0f0')
         }
         this.needDraw = false
