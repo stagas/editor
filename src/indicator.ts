@@ -51,7 +51,7 @@ export class Indicator extends Comp {
         // c.save()
         // c.translate(offset.x, offset.y)
         // console.log(rect.x, rect.y)
-        rect.drawImage(canvas.el, c,  true)
+        rect.drawImage(canvas.el, c, 1,  true)
         // c.restore()
         this.needDraw = false
       }
