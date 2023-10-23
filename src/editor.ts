@@ -293,7 +293,7 @@ export class Editor extends Scene {
         }
       }
       drawSimple(t: number, r: Renderable) {
-        const { pr, canvas: { c } } = of(this)
+        const { canvas: { c } } = this
         r.needInit && r.initCanvas(r.canvas.c)
         r.needRender && r.render(t, r.canvas.c, true)
         if (r.didDraw || r.needDraw) {
@@ -302,8 +302,7 @@ export class Editor extends Scene {
         }
       }
       drawDirectLayout(t: number, r: Renderable) {
-        const { pr, canvas: { c } } = of(this)
-
+        const { canvas: { c } } = this
         c.save()
         r.initCanvas(c)
         r.render(t, c, false)
@@ -313,7 +312,7 @@ export class Editor extends Scene {
         r.needInit = r.needRender = true
       }
       drawComposite(t: number, r: Renderable, renderables: Renderable.It[]) {
-        const { pr, canvas: { c } } = of(this)
+        const { pr, canvas: { c } } = this
 
         r.needInit && r.initCanvas(r.canvas.c)
 
@@ -382,7 +381,7 @@ export class Editor extends Scene {
         }
       }
       traverseDraw(t: number, renderables: Renderable.It[], position: Renderable.Position = Renderable.Position.Layout) {
-        const { pr, canvas: { c } } = of(this)
+        const { canvas: { c } } = this
         const { dims: { viewSpan } } = of(it)
 
         for (const it of renderables) {
@@ -442,8 +441,7 @@ export class Editor extends Scene {
         return position
       }
       @fn draw(t: number) {
-        const { rect, canvas } = of(this)
-        const { c } = canvas
+        const { rect, canvas: { c } } = this
 
         // We do a full background fill on direct draws
         // since we have to redraw everything.
@@ -454,7 +452,9 @@ export class Editor extends Scene {
 
         const position = this.traverseDraw(t, it.renderables)
 
-        if (position === Inner) {
+        // If we ended in another position than Layout,
+        // it means the canvas has transforms, so we need to restore.
+        if (position !== Layout) {
           c.restore()
         }
 
