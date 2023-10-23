@@ -59,12 +59,12 @@ export class Caret extends Comp {
         const { pr, rect: r } = of(this)
         const { blink } = of(it)
         const { pointable: { isFocused } } = of(ctx)
-        const { lineHeight, charWidth } = of(dims)
+        const { lineHeight, charWidth } = when(dims)
         $()
         const { hideWhenAway } = it
         const { pointable: { isHovering } } = of(text)
-        r.w = charWidth || 1
-        r.h = lineHeight + 1
+        r.w = charWidth + 10
+        r.h = lineHeight + 6.5
         // ind.renderable.rect.w = r.w + 10
         // ind.renderable.rect.h = r.h + 5.5
         $.flush()
