@@ -364,7 +364,7 @@ export class Editor extends Scene {
               // clear that old part
               dr.fill(c, skin.colors.bg)
 
-              this.traverse_drawIntersection(
+              position = this.traverse_drawIntersection(
                 r,
                 dr,
                 renderables,
