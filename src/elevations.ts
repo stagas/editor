@@ -160,21 +160,21 @@ export class Elevations extends Comp {
           }
         }
 
-        // const latest = eligible.at(-1)
+        const latest = eligible.at(-1)
 
-        // if (latest && !drawnElevations.has(latest)) {
-        //   drawnElevations.add(latest)
-        //   const dr = buffer.fillTextRange(
-        //     c,
-        //     latest,
-        //     colors.fill,
-        //     true,
-        //     2,
-        //     colors.light,
-        //     colors.dark,
-        //   )
-        //   if (dr) dirtyRect.combine(dr)
-        // }
+        if (latest && !drawnElevations.has(latest)) {
+          drawnElevations.add(latest)
+          const dr = buffer.fillTextRange(
+            c,
+            latest,
+            colors.fill,
+            true,
+            2,
+            colors.light,
+            colors.dark,
+          )
+          if (dr) dirtyRect.combine(dr)
+        }
       }
       @fn render(t: number, c: CanvasRenderingContext2D, clear?: boolean) {
         if (this.needDraw) return
@@ -185,9 +185,9 @@ export class Elevations extends Comp {
 
         dirtyRects[0].zero()
         dirtyRects[1].zero()
-        if (clear) {
+        // if (clear) {
           rect.clear(c)
-        }
+        // }
         c.save()
         c.translate(scroll.x, scroll.y)
         it.drawnElevations.clear()
