@@ -13,6 +13,7 @@ export class Brackets extends Comp {
     const { ctx, r1, r2 } = of(it)
     const { buffer, dims } = of(ctx)
     class BracketsRenderable extends Renderable {
+      canComposite = true
       viewRect = $(new Rect)
       dirtyRects = [$(new Rect), $(new Rect)]
       @fx update_rect() {
