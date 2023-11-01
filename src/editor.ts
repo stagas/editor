@@ -20,6 +20,7 @@ import { Widgetable } from './widget.ts'
 import { Outer } from './outer.ts'
 import { Inner } from './inner.ts'
 import { Caret } from './caret.ts'
+import { Brackets } from './brackets.ts'
 
 export class Editor extends Scene
   implements Renderable.It, Mouseable.It, Animable.It {
@@ -42,7 +43,7 @@ export class Editor extends Scene
   selection = $(new Selection(this))
   // elevations = $(new Elevations(this))
   text = $(new Text(this))
-  // brackets = $(new Brackets(this))
+  brackets = $(new Brackets(this))
   caret = $(new Caret(this, this.buffer.linecol), {
     blink: false,
   })

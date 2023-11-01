@@ -14,6 +14,7 @@ export class Inner extends Comp
       get its() {
         const { ctx } = it
         return [
+          ctx.brackets,
           ctx.dropCaret,
           ctx.caret,
         ]
