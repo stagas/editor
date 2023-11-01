@@ -12,6 +12,7 @@ export class Brackets extends Comp {
     const it = this
     const { ctx, r1, r2 } = of(it)
     const { buffer, dims } = of(ctx)
+    const { Need: { Draw, Render }} = Renderable
     class BracketsRenderable extends Renderable {
       canComposite = true
       viewRect = $(new Rect)
@@ -22,7 +23,7 @@ export class Brackets extends Comp {
         $()
         rect.w = r1.w = r2.w = Math.floor(charWidth + 6)
         rect.h = r1.h = r2.h = Math.floor(lineHeight + 6)
-        this.needRender = true
+        this.need |= Render
       }
       @fx update_brackets() {
         const { viewRect } = of(this)
@@ -48,15 +49,13 @@ export class Brackets extends Comp {
           viewRect.zero().combine(r1).combine(r2)
           this.isHidden = false
         }
-        this.needDraw = true
+        this.need |= Draw
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.translate(.5, .5)
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
-
-        this.needInit = false
-        this.needRender = true
+        this.need |= Render
       }
       @fn render() {
         const { canvas, rect } = of(this)

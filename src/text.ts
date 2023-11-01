@@ -1,24 +1,130 @@
-// log.active
+log.active
 import { $, fn, fx, of, when } from 'signal'
-import { Rect } from 'std'
+import { Keyboard, Keyboardable, Mouse, Mouseable, Point, Renderable } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
-import { Mouse } from './mouse.ts'
-import { Pointable } from './pointable.ts'
-import { Renderable } from './renderable.ts'
+import { Linecol } from './linecol.ts'
 import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 
-export class Text extends Comp {
+export class Text extends Comp
+  implements Keyboardable.It, Mouseable.It, Renderable.It {
+  linecol = $(new Linecol)
+  get keyboardable() {
+    $()
+    const it = this
+    const { Down, Up, Copy, Cut, Paste } = Keyboard.EventKind
+    const { Char, Special } = Keyboard.KeyKind
+    class TextKeyboardable extends Keyboardable {
+      onKeyboardEvent(kind: Keyboard.EventKind): string | true | void | undefined {
+        const { key, char, special, alt, ctrl, shift } = this.kbd
+        switch (kind) {
+          case Down:
+            break
+          case Up:
+            break
+          case Copy:
+            break
+          case Cut:
+            break
+          case Paste:
+            break
+        }
+      }
+    }
+    return $(new TextKeyboardable(it as Keyboardable.It))
+  }
+  get mouseable(): Mouseable {
+    $()
+    const it = this
+    const { ctx, linecol } = of(it)
+    const { misc, buffer, scroll, selection, keyboard } = of(ctx)
+    const { Wheel, Down, Up, Move, Click } = Mouse.EventKind
+
+    class TextMouseable extends Mouseable {
+      cursor = 'text'
+      @fn onMouseEvent(kind: Mouse.EventKind) {
+        const { mouse, isDown } = this
+
+        if (kind !== Wheel) {
+          buffer.getLineColFromPoint(
+            mouse.pos,
+            true,
+            linecol
+          )
+        }
+
+        misc.isTyping = false
+
+        switch (kind) {
+          case Click:
+          case Up:
+            keyboard.textarea.focus()
+            return true
+
+          case Wheel:
+            scroll.targetScroll.mulSub(mouse.wheel, 0.28)
+            scroll.animSettings = Scroll.AnimSettings.Medium
+            return true
+
+          case Move:
+            if (isDown && (mouse.buttons & MouseButtons.Left)) {
+              selection.end.set(linecol)
+              buffer.linecol.set(linecol)
+              buffer.coli = linecol.col
+            }
+            return true
+
+          case Down:
+            if (!(mouse.buttons & MouseButtons.Left)) return
+
+            prevent(of(mouse).real)
+
+            const { downCount } = mouse
+
+            buffer.linecol.set(linecol)
+            buffer.coli = linecol.col
+
+            switch (downCount) {
+              case 1:
+                if (mouse.shift) {
+                  selection.end.set(linecol)
+                }
+                else {
+                  selection.resetTo(linecol)
+                }
+                break
+
+              case 2:
+                if (selection.selectWordBoundary(linecol, mouse.shift)) {
+                  mouse.downCount = 2
+                  break
+                }
+              case 3:
+                if (selection.selectMatchingBrackets(linecol)) {
+                  mouse.downCount = 3
+                  break
+                }
+              case 4:
+                selection.selectLine(linecol.line)
+                break
+            }
+            return true
+        }
+      }
+    }
+    return $(new TextMouseable(it as Mouseable.It))
+  }
   get renderable() {
     $()
     const it = this
     const { ctx } = of(it)
-    const { buffer, dims, skin } = of(ctx)
-
+    const { buffer, dims, skin, scroll } = of(ctx)
+    const { visibleSpan } = dims
+    const { Token } = buffer
     class TextRenderable extends Renderable {
-      canComposite = true
-      dirtyRects = [$(new Rect)]
+      canDirectDraw = true
+      didInitCanvas = false
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
@@ -68,10 +174,6 @@ export class Text extends Comp {
           'to_audio': c.brightPurple,
         }
       }
-      // TODO: where is this used??
-      viewRect = $(new Rect)
-      canDirectDraw = true
-      didInitCanvas = false
       @fx measure_charWidth() {
         const { didInitCanvas } = when(this)
         const { canvas } = of(this)
@@ -79,7 +181,12 @@ export class Text extends Comp {
         const em = c.measureText('M')
         dims.charWidth = em.width
       }
-      @fx trigger_render() {
+      @fx trigger_render_when_scroll() {
+        const { charWidth, scroll: { x, y } } = of(dims)
+        $()
+        this.need |= Renderable.Need.Render
+      }
+      @fx trigger_render_when_misc() {
         const { pr, rect } = this
         const { size: { wh: size_wh } } = rect
         const {
@@ -87,34 +194,36 @@ export class Text extends Comp {
           lineBaseBottoms,
           lineHeight,
           charWidth,
-          visibleSpan,
           innerSize: { wh },
-          scroll: { xy },
         } = of(dims)
         const { source, tokens, Token } = of(buffer)
         $()
-        this.viewRect.setSize(wh)
-
-        this.needRender = true
+        // this.viewRect.setSize(wh)
+        this.need |= Renderable.Need.Render
+      }
+      get font() {
+        return `100 ${dims.fontSize}px ${skin.fonts.mono}`
+      }
+      get lineWidth() {
+        return dims.fontSize / 100
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
         c.miterLimit = 3
         c.lineJoin = 'round'
         c.lineCap = 'round'
-
-        c.font = `100 ${dims.fontSize}px ${skin.fonts.mono}`
         c.textAlign = 'left'
         c.textBaseline = 'bottom'
-        c.lineWidth = dims.fontSize / 100
-
-        this.needInit = false
+        c.font = this.font
+        c.lineWidth = this.lineWidth
+        this.need ^= Renderable.Need.Init
         this.didInitCanvas = true
       }
-      @fn render(t: number, c: CanvasRenderingContext2D, clear: boolean) {
-        const { rect, colors } = of(this)
-        const { lineBaseBottoms, charWidth, visibleSpan, scroll } = of(dims)
-        const { tokens, Token } = of(buffer)
+      @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
+        const { rect, colors } = this
+        const { charWidth } = of(dims)
+        const { lineBaseBottoms } = dims
+        const { tokens } = buffer
 
         // log('tokens', tokens)
         if (clear) {
@@ -122,7 +231,7 @@ export class Text extends Comp {
         }
 
         c.save()
-        c.translate(scroll.x, scroll.y)
+        c.translate(Math.round(scroll.x), Math.round(scroll.y))
         for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
           t = tokens![i]
 
@@ -135,8 +244,10 @@ export class Text extends Comp {
 
             c.fillStyle
               = c.strokeStyle
-              = colors?.[t.text]
-              ?? colors?.[Token.Type[t.type]]
+              =
+              // colors?.[t.text]
+              // ??
+              colors?.[Token.Type[t.type]]
               ?? '#fff'
 
             c.strokeText(t.text, x, y)
@@ -145,103 +256,24 @@ export class Text extends Comp {
         }
         c.restore()
 
-        this.needRender = false
-        this.needDraw = true
+        this.need ^= Renderable.Need.Render
+        this.need |= Renderable.Need.Draw
       }
-      @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect, dirtyRects: [dr] } = of(this)
-        rect.drawImage(canvas.el, c, pr, true)
-        dr.set(rect)
-        this.needDraw = false
-      }
-    }
-    return $(new TextRenderable(this.ctx, this.ctx.renderable.rect))
-  }
-
-  get pointable() {
-    $()
-    const it = this
-    const { ctx } = of(it)
-    const { world, misc, buffer, scroll, selection,
-      input: { textarea, mouse } } = of(ctx)
-    const { linecol } = of(mouse)
-    const { pointer } = of(world)
-    const { wheel } = pointer
-    const { Wheel, Down, Up, Leave, Move, Menu, Click } = Mouse.EventKind
-
-    class TextPointable extends Pointable {
-      cursor = 'text'
-      hitArea = it.renderable.rect
-      @fn onMouseEvent(kind: Mouse.EventKind) {
-        const { mouse: { pos, btns }, isDown } = this
-
-        if (kind !== Wheel) {
-          buffer.getLineColFromPoint(pos, true, linecol)
-        }
-
-        misc.isTyping = false
-
-        switch (kind) {
-          case Click:
-          case Up:
-            textarea.focus()
-            return true
-
-          case Wheel:
-            scroll.targetScroll.mulSub(wheel, 0.2)
-            scroll.animSettings = Scroll.AnimSettings.Medium
-            return true
-
-          case Move:
-            if (isDown && (btns & MouseButtons.Left)) {
-              selection.end.set(linecol)
-              buffer.linecol.set(linecol)
-              buffer.coli = linecol.col
-            }
-            return true
-
-          case Down:
-            const { real } = of(pointer)
-            const { shift } = pointer
-
-            if (!(btns & MouseButtons.Left)) return
-
-            prevent(real)
-
-            const { downCount } = this
-
-            buffer.linecol.set(linecol)
-            buffer.coli = linecol.col
-
-            switch (downCount) {
-              case 1:
-                if (shift) {
-                  selection.end.set(linecol)
-                }
-                else {
-                  selection.resetTo(linecol)
-                }
-                break
-
-              case 2:
-                if (selection.selectWordBoundary(linecol, shift)) {
-                  mouse.downCount = 2
-                  break
-                }
-              case 3:
-                if (selection.selectMatchingBrackets(linecol)) {
-                  mouse.downCount = 3
-                  break
-                }
-              case 4:
-                selection.selectLine(linecol.line)
-                break
-            }
-            return true
-        }
+      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
+        const { pr, canvas, rect } = of(this)
+        rect.round().drawImageTranslated(
+          canvas.el,
+          c,
+          pr,
+          true,
+          scroll
+        )
+        this.need ^= Renderable.Need.Draw
       }
     }
-
-    return $(new TextPointable(this))
+    return $(new TextRenderable(
+      it as Renderable.It,
+      it.ctx.renderable.rect
+    ))
   }
 }

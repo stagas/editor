@@ -7,7 +7,7 @@ export class Renderable {
   constructor(
     public it: Renderable.It,
     public rect = $(new Rect),
-    public canvas = $(new Canvas(it.ctx.world), { size: rect.$.size }),
+    public canvas = $(new Canvas(it.ctx.world), { rect: { size: rect.$.size } }),
     public pr = it.ctx.world.screen.$.pr,
   ) { }
   get prRecip() { return 1 / this.pr }

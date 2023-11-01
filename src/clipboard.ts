@@ -5,13 +5,13 @@ import { Comp } from './comp.ts'
 let lockPaste = false
 export class Clipboard extends Comp {
   @fn handleCopy = (e: ClipboardEvent) => {
-    this.ctx.selection.updateTextareaText()
+    // this.ctx.selection.updateTextareaText()
   }
   handleCut = this.ctx.history.historic((e: ClipboardEvent) => {
-    this.ctx.selection.updateTextareaText()
+    // this.ctx.selection.updateTextareaText()
     // timeout otherwise data are removed before they have time to be copied
     setTimeout(() => {
-      this.ctx.selection.deleteSelection()
+      // this.ctx.selection.deleteSelection()
     })
   })
   handlePasteHistoric = this.ctx.history.historic((e: ClipboardEvent) => {
@@ -57,7 +57,7 @@ export class Clipboard extends Comp {
     e.preventDefault()
 
     // we check for hover to ensure our intention to paste is in the editor
-    if (!this.ctx.pointable.isHovering) {
+    if (!this.ctx.mouseable.isHovering) {
       return false
     }
 

@@ -114,17 +114,18 @@ export class Scroll extends Comp {
   // that the targetScroll animates to.
   // That will also make the edge bouncy.
   @fx clamp_targetScroll_top() {
-    const { targetScroll, minScroll } = of(this)
-    targetScroll.top = Math.round(
+    const { targetScroll: { top }, minScroll: { top: minTop } } = this
+    $()
+    this.targetScroll.top = Math.round(
       clamp(
-        minScroll.top,
+        minTop,
         0,
-        targetScroll.top
+        top
       )
     )
   }
   @fx clamp_targetScroll_left() {
-    const { targetScroll, minScroll } = of(this)
+    const { targetScroll, minScroll } = this
     targetScroll.left = Math.round(
       clamp(
         minScroll.left,
@@ -134,11 +135,11 @@ export class Scroll extends Comp {
     )
   }
   @fx clamp_scroll_top() {
-    const { scroll } = of(this)
+    const { scroll } = this
     scroll.top = Math.min(0, scroll.top)
   }
   @fx clamp_scroll_left() {
-    const { scroll } = of(this)
+    const { scroll } = this
     scroll.left = Math.min(0, scroll.left)
   }
   @fx update_scrollSize() {

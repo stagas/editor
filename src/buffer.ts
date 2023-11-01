@@ -8,7 +8,6 @@ import { Range } from './range.ts'
 import { Source } from './source.ts'
 import { findMatchingBrackets } from './util.ts'
 
-const tempPoint = $(new Point)
 const tempLinecol = $(new Linecol)
 
 export class Buffer {
