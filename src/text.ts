@@ -43,6 +43,9 @@ export class Text extends Comp
 
     class TextMouseable extends Mouseable {
       cursor = 'text'
+      @fx check_isFocused() {
+        console.log('IS FOCUSED', this.isFocused)
+      }
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse, isDown } = this
 
@@ -245,10 +248,10 @@ export class Text extends Comp
             c.fillStyle
               = c.strokeStyle
               =
-              // colors?.[t.text]
-              // ??
-              colors?.[Token.Type[t.type]]
-              ?? '#fff'
+              (t.text.length <= 2
+                && colors?.[t.text]) // TODO: this is slow
+              ||
+              (colors?.[Token.Type[t.type]] ?? '#fff')
 
             c.strokeText(t.text, x, y)
             c.fillText(t.text, x, y)
@@ -259,15 +262,10 @@ export class Text extends Comp
         this.need ^= Renderable.Need.Render
         this.need |= Renderable.Need.Draw
       }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
+      @fn draw(c: CanvasRenderingContext2D) {
         const { pr, canvas, rect } = of(this)
-        rect.round().drawImageTranslated(
-          canvas.el,
-          c,
-          pr,
-          true,
-          scroll
-        )
+        rect.round().drawImage(
+          canvas.el, c, pr, true)
         this.need ^= Renderable.Need.Draw
       }
     }

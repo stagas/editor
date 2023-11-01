@@ -13,7 +13,8 @@ export class Outer extends Comp
       get its() {
         const { ctx } = it
         return [
-          ctx.text
+          ctx.text,
+          ctx.inner,
         ]
       }
     }

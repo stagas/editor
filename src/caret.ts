@@ -1,9 +1,9 @@
-// log.active
+log.active
 import $, { fn, fx, of, when } from 'signal'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
 import { Linecol } from './linecol.ts'
-import { Renderable } from './renderable.ts'
+import { Point, Renderable } from 'std'
 
 export class Caret extends Comp {
   constructor(
@@ -27,7 +27,6 @@ export class Caret extends Comp {
     const it = this
     const { ctx } = of(it)
     const { misc, dims, text } = of(ctx)
-    const { Need: { Render, Draw } } = Renderable
 
     class CaretRenderable extends Renderable {
       @fx update_rect() {
@@ -43,11 +42,11 @@ export class Caret extends Comp {
       @fx update_caret() {
         const { pr, rect: r } = of(this)
         const { blink } = of(it)
-        const { pointable: { isFocused } } = of(ctx)
+        const { mouseable: { isFocused } } = of(ctx)
         const { lineHeight, charWidth } = when(dims)
         $()
         const { hideWhenAway } = it
-        const { pointable: { isHovering } } = of(text)
+        const { mouseable: { isHovering } } = of(text)
         r.w = charWidth + 10
         r.h = lineHeight + 6.5
         $.flush()
@@ -55,7 +54,7 @@ export class Caret extends Comp {
           it.isBlinking = isFocused
         }
         this.isHidden = hideWhenAway ? !isHovering : false
-        this.need |= Render
+        this.need |= Renderable.Need.Render
       }
       @fx hide_when_typing() {
         const { hideWhenTyping } = when(it)
@@ -65,7 +64,7 @@ export class Caret extends Comp {
       }
       @fx hide_when_away() {
         const { hideWhenAway } = when(it)
-        const { pointable: { isHovering } } = of(text)
+        const { mouseable: { isHovering } } = of(text)
         $()
         this.isHidden = !isHovering
       }
@@ -94,12 +93,12 @@ export class Caret extends Comp {
         const { linecol } = of(it)
         const { charWidth } = of(dims)
         $()
-        this.need |= Draw
+        this.need |= Renderable.Need.Draw
       }
       @fn render(c: CanvasRenderingContext2D) {
         const { rect } = of(this)
         const { w, h } = rect
-        const { pointable: { isFocused } } = of(ctx)
+        const { mouseable: { isFocused } } = of(ctx)
         const { color1, color2, color1Focused, color2Focused } = of(it)
         const c1 = isFocused ? color1Focused : color1
         const c2 = isFocused ? color2Focused : color2
@@ -123,12 +122,16 @@ export class Caret extends Comp {
         c.fillStyle = c2
         c.fill()
         c.restore()
+        this.need ^= Renderable.Need.Render
+        this.need |= Renderable.Need.Draw
       }
-      @fn draw(c: CanvasRenderingContext2D) {
+      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
         const { pr, canvas, rect } = of(this)
-        rect.drawImage(canvas.el, c, pr, true)
+        rect.round().drawImageTranslated(
+          canvas.el, c, pr, true, scroll)
+          this.need ^= Renderable.Need.Draw
       }
     }
-    return $(new CaretRenderable(this))
+    return $(new CaretRenderable(it as Renderable.It))
   }
 }

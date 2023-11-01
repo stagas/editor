@@ -19,6 +19,7 @@ import { Text } from './text.ts'
 import { Widgetable } from './widget.ts'
 import { Outer } from './outer.ts'
 import { Inner } from './inner.ts'
+import { Caret } from './caret.ts'
 
 export class Editor extends Scene
   implements Renderable.It, Mouseable.It, Animable.It {
@@ -42,19 +43,18 @@ export class Editor extends Scene
   // elevations = $(new Elevations(this))
   text = $(new Text(this))
   // brackets = $(new Brackets(this))
-  // caret = $(new Caret(this, this.buffer.linecol), {
-  //   blink: false,
-  // })
-  // dropCaret = $(new Caret(this, this.text.linecol), {
-  //   // renderable: { position: Renderable.Position.Inner },
-  //   blink: false,
-  //   hideWhenAway: true,
-  //   hideWhenTyping: true,
-  //   color1: '#555',
-  //   color2: '#555',
-  //   color1Focused: '#666',
-  //   color2Focused: '#666',
-  // })
+  caret = $(new Caret(this, this.buffer.linecol), {
+    blink: false,
+  })
+  dropCaret = $(new Caret(this, this.text.linecol), {
+    blink: false,
+    hideWhenAway: true,
+    hideWhenTyping: true,
+    color1: '#555',
+    color2: '#555',
+    color1Focused: '#666',
+    color2Focused: '#666',
+  })
   // scrollbars = $(new Scrollbars(this))
 
   outer = $(new Outer(this))
@@ -123,9 +123,14 @@ export class Editor extends Scene
     const { Menu } = Mouse.EventKind
     class EditorMouseable extends Mouseable {
       canHover = false
-      @fx update_hovering() {
-        this.isHovering = this.its.some(s =>
-          s.mouseable.isHovering
+      @fx update_isFocused_from_its() {
+        this.isFocused = Mouseable.some(this.its, it =>
+          it.mouseable.isFocused
+        )
+      }
+      @fx update_isHovering_from_its() {
+        this.isHovering = Mouseable.some(this.its, it =>
+          it.mouseable.isHovering
         )
       }
       @fn onMouseEvent(kind: Mouse.EventKind) {
@@ -229,8 +234,8 @@ export class Editor extends Scene
           it.world.render.needDirect = false
         }
       }
-      @fn tickOne(dt: number): void {
-
+      @fn draw() {
+        this.need ^= Animable.Need.Draw
       }
     }
     return $(new EditorAnimable(it as Animable.It))
