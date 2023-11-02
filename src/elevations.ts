@@ -20,7 +20,7 @@ export class ElevationFill extends Comp
     public point: $<Point>,
   ) { super(elevations.ctx) }
 
-  ownElevations: $<Elevation>[] = []
+  ownElevations = new Set<$<Elevation>>()
 
   other?: ElevationFill
 
@@ -37,7 +37,7 @@ export class ElevationFill extends Comp
         const { x: px, y: py } = p
         $()
 
-        ownElevations.splice(0)
+        ownElevations.clear()
 
         // ownElevations.clear()
         // this.updated++
@@ -48,12 +48,13 @@ export class ElevationFill extends Comp
         for (let i = 0, el: $<Elevation>; i < elevations.count; i++) {
           el = elevations.array[i]
 
-          if (!it.other?.ownElevations.includes(el) && el.isPointWithin(p)) {
+          if (!it.other?.ownElevations.has(el) && el.isPointWithin(p)) {
             eligible[x++] = el
           }
         }
 
-        if (!x) return ownElevations
+        // return early
+        if (!x) return []
 
         partialSort(eligible, x, (a, b) =>
           a.start.y === b.start.y
@@ -65,49 +66,28 @@ export class ElevationFill extends Comp
 
         if (earliest) for (let i = 0; i < elevations.count; i++) {
           const el = elevations.array[i]
-          if (earliest.isLineWithin(el)) {
-            if (it.other?.ownElevations.includes(el)) continue
-            // drawnElevations.add(el)
-            ownElevations.push(el)
-
-            // const dr = buffer.fillTextRange(
-            //   c,
-            //   el,
-            //   colors.fill,
-            //   true,
-            //   2,
-            //   colors.light,
-            //   colors.dark,
-            // )
-            // if (dr) dirtyRect.combine(dr)
+          if (earliest.isLineWithin(el)
+            && !it.other?.ownElevations.has(el)
+            && !ownElevations.has(el)
+          ) {
+            ownElevations.add(el)
           }
         }
 
         const latest = eligible[x - 1] //at(-1)
 
         if (latest
-          && !it.other?.ownElevations.includes(latest)
-          && !ownElevations.includes(latest)
-          ) {
-          // drawnElevations.add(latest)
-          ownElevations.push(latest)
-          // const dr = buffer.fillTextRange(
-          //   c,
-          //   latest,
-          //   colors.fill,
-          //   true,
-          //   2,
-          //   colors.light,
-          //   colors.dark,
-          // )
-          // if (dr) dirtyRect.combine(dr)
+          && !it.other?.ownElevations.has(latest)
+          && !ownElevations.has(latest)
+        ) {
+          ownElevations.add(latest)
         }
 
         ownElevations.forEach(el => {
           el.colors = colors
         })
 
-        return ownElevations
+        return [...ownElevations]
       }
       // @fn before() {
       //   const { colors } = of(it)
@@ -324,7 +304,7 @@ export class Elevations extends Comp
           its.push(it.hover.fill)
         }
 
-        return its
+        return [...new Set([...its.flatMap(x => x.renderable.its)])]
       }
     }
     return $(new ElevationsRenderable(

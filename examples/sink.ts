@@ -71,8 +71,8 @@ function setup() {
       world.render
         .add(editor)
 
-      // world.anim.fps = 20
-      // world.anim.speed = .2
+      // world.anim.fps = 60
+      // world.anim.speed = 1
       world.anim
         .add(editor)
         .add(world.render)

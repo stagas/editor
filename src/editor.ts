@@ -179,6 +179,8 @@ export class Editor extends Scene
     let d = $(new Point)
     let ad = $(new Point)
     class EditorAnimable extends Animable {
+      get coeff() { return it.ctx.world.anim.coeff }
+
       // need = Animable.Need.Draw
       @fx trigger_need_tick_when_scroll() {
         const need =
@@ -192,6 +194,7 @@ export class Editor extends Scene
         }
       }
       @fn tick(dt: number) {
+        const { coeff } = this
         const { isTyping } = misc
         const { animSettings } = scroll
 
@@ -201,7 +204,7 @@ export class Editor extends Scene
         // TODO: bezier? need to save eventTime to make the normal t
         // will need a lerped t to smooth out changes
         const { distance, tension, amount, min } =
-          (ad.x + ad.y > 55)
+          (ad.x + ad.y > 255)
             || isTyping
             // || $.isHandlingScrollbar
             ? animSettings
@@ -209,7 +212,7 @@ export class Editor extends Scene
 
         let isScrolling = false
         if (ad.y > 1) {
-          scrollPos.y += d.y * (clamp(0, 1, (ad.y / distance)) ** tension * amount + min)
+          scrollPos.y += coeff * d.y * (clamp(0, 1, (ad.y / distance)) ** tension * amount + min)
           isScrolling = true
         }
         else if (d.y) {
@@ -217,7 +220,7 @@ export class Editor extends Scene
         }
 
         if (ad.x > 1) {
-          scrollPos.x += d.x * (clamp(0, 1, (ad.x / distance)) ** tension * amount + min)
+          scrollPos.x += coeff * d.x * (clamp(0, 1, (ad.x / distance)) ** tension * amount + min)
           isScrolling = true
         }
         else if (d.x) {
@@ -235,9 +238,6 @@ export class Editor extends Scene
           this.need = Animable.Need.Draw
           it.world.render.needDirect = false
         }
-      }
-      @fn draw() {
-        this.need &= ~Animable.Need.Draw
       }
     }
     return $(new EditorAnimable(it as Animable.It))

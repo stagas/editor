@@ -161,7 +161,7 @@ export namespace Scroll {
     amount: number
     min: number
   }
-  export const AnimSettings: Record<string, AnimSettings> = {
+  export const AnimSettings = {
     "Fast": {
       "tension": 1,
       "distance": 100,
@@ -176,9 +176,9 @@ export namespace Scroll {
     },
     "Slow": {
       "tension": 0.015,
-      "distance": 1000,
+      "distance": 600,
       "amount": 0.29,
       "min": 0.01
     }
-  }
+  } satisfies Record<string, AnimSettings>
 }

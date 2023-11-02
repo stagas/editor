@@ -103,7 +103,7 @@ export class FillRange extends Range
 class FillRangeRenderable extends Renderable {
   constructor(public it: FillRange) { super(it) }
   // canDirectDraw = true
-  view = $(new Rect)
+  // view = $(new Rect)
   @fx update_rect_dims() {
     const { rect, view } = this
     const { rects, colors } = of(this.it)
