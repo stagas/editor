@@ -199,7 +199,7 @@ export class Selection extends Comp {
           this.need |= Renderable.Need.Draw
         }
 
-        this.need ^= Renderable.Need.Render
+        this.need &= ~Renderable.Need.Render
       }
       @fn draw(c: CanvasRenderingContext2D,t: number) {
         const { pr, canvas, rect, dirtyRect: dr } = of(this)
@@ -209,7 +209,7 @@ export class Selection extends Comp {
           dr.drawImage(canvas.el, c, pr, true)
         }
 
-        this.need ^= Renderable.Need.Draw
+        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new SelectionRenderable(this.ctx, this.ctx.renderable.rect))

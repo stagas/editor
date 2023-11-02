@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, of } from 'signal'
 import { Point, Rect, Renderable } from 'std'
 import { Comp } from './comp.ts'
@@ -13,23 +13,25 @@ export class Bracket extends Comp {
     class BracketRenderable extends Renderable {
       isHidden = true
       @fn init(c: CanvasRenderingContext2D) {
-        c.translate(.5, .5)
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
-        this.need ^= Renderable.Need.Init
+        this.need &= ~Renderable.Need.Init
         this.need |= Renderable.Need.Render
       }
       @fn render() {
         const { canvas, rect } = of(this)
         const { c } = of(canvas)
         rect.clear(c)
+        c.save()
+        c.translate(.5, .5)
         c.strokeRect(
           3,
           4,
           rect.w - 6,
           rect.h - 6
         )
-        this.need ^= Renderable.Need.Render
+        c.restore()
+        this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
       }
       @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
@@ -38,7 +40,7 @@ export class Bracket extends Comp {
           rect.drawImageTranslated(
             canvas.el, c, pr, true, scroll)
         }
-        this.need ^= Renderable.Need.Draw
+        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new BracketRenderable(it as Renderable.It, it.rect))

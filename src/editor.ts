@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, init, of } from 'signal'
 import { Animable, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
@@ -21,6 +21,7 @@ import { Outer } from './outer.ts'
 import { Inner } from './inner.ts'
 import { Caret } from './caret.ts'
 import { Brackets } from './brackets.ts'
+import { Elevations } from './elevations.ts'
 
 export class Editor extends Scene
   implements Renderable.It, Mouseable.It, Animable.It {
@@ -41,7 +42,7 @@ export class Editor extends Scene
   // renderables
   // activeLine = $(new ActiveLine(this))
   selection = $(new Selection(this))
-  // elevations = $(new Elevations(this))
+  elevations = $(new Elevations(this))
   text = $(new Text(this))
   brackets = $(new Brackets(this))
   caret = $(new Caret(this, this.buffer.linecol), {
@@ -155,14 +156,14 @@ export class Editor extends Scene
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
-        this.need ^= Renderable.Need.Init
+        this.need &= ~Renderable.Need.Init
         this.need |= Renderable.Need.Render
       }
       // @fn render() {
-      //   // this.need ^= Need.Render | Need.DirectDraw
+      //   // this.need &= ~Need.Render | Need.DirectDraw
       // }
       // @fn draw() {
-      //   // this.need ^= Need.Draw
+      //   // this.need &= ~Need.Draw
       // }
       get its() {
         return [it.outer]
@@ -236,7 +237,7 @@ export class Editor extends Scene
         }
       }
       @fn draw() {
-        this.need ^= Animable.Need.Draw
+        this.need &= ~Animable.Need.Draw
       }
     }
     return $(new EditorAnimable(it as Animable.It))

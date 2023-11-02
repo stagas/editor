@@ -1,4 +1,4 @@
-log.active
+// log.active
 import $, { fn, fx, of, when } from 'signal'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
@@ -122,14 +122,16 @@ export class Caret extends Comp {
         c.fillStyle = c2
         c.fill()
         c.restore()
-        this.need ^= Renderable.Need.Render
+        this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
+        // console.log('RENDER', rect.text)
       }
       @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
         const { pr, canvas, rect } = of(this)
         rect.round().drawImageTranslated(
           canvas.el, c, pr, true, scroll)
-          this.need ^= Renderable.Need.Draw
+        this.need &= ~Renderable.Need.Draw
+        // console.log('DRAW')
       }
     }
     return $(new CaretRenderable(it as Renderable.It))

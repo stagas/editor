@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, of, when } from 'signal'
 import { Keyboard, Keyboardable, Mouse, Mouseable, Point, Renderable } from 'std'
 import { MouseButtons, prevent } from 'utils'
@@ -43,9 +43,6 @@ export class Text extends Comp
 
     class TextMouseable extends Mouseable {
       cursor = 'text'
-      @fx check_isFocused() {
-        console.log('IS FOCUSED', this.isFocused)
-      }
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse, isDown } = this
 
@@ -57,6 +54,7 @@ export class Text extends Comp
           )
         }
 
+        log('linecol', linecol.text)
         misc.isTyping = false
 
         switch (kind) {
@@ -202,6 +200,7 @@ export class Text extends Comp
         const { source, tokens, Token } = of(buffer)
         $()
         // this.viewRect.setSize(wh)
+        // console.log('TRIGGER RENDER')
         this.need |= Renderable.Need.Render
       }
       get font() {
@@ -219,7 +218,7 @@ export class Text extends Comp
         c.textBaseline = 'bottom'
         c.font = this.font
         c.lineWidth = this.lineWidth
-        this.need ^= Renderable.Need.Init
+        this.need &= ~Renderable.Need.Init
         this.didInitCanvas = true
       }
       @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
@@ -259,14 +258,15 @@ export class Text extends Comp
         }
         c.restore()
 
-        this.need ^= Renderable.Need.Render
+        this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
       }
       @fn draw(c: CanvasRenderingContext2D) {
-        const { pr, canvas, rect } = of(this)
-        rect.round().drawImage(
+        const { pr, canvas, view } = of(this)
+        view.round().drawImage(
           canvas.el, c, pr, true)
-        this.need ^= Renderable.Need.Draw
+        this.need &= ~Renderable.Need.Draw
+        // console.log('WHAAAAAAAAAAAT', this, this.need)
       }
     }
     return $(new TextRenderable(

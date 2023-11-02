@@ -80,7 +80,7 @@ export class Widget extends Comp
       @fn draw(c: CanvasRenderingContext2D, t: number) {
         const { rect } = of(this)
         rect.fill(c, '#666')
-        this.need ^= Need.Draw
+        this.need &= ~Need.Draw
       }
     }
     return $(new WidgetRenderable(it as Renderable.It))

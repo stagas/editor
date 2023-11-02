@@ -86,3 +86,7 @@ export function lineBegin(line: string) {
 export function escapeRegExp(string: string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+export function byDepth(a: { depth: number }, b: { depth: number }) {
+  return a.depth - b.depth
+}

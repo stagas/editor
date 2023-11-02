@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, of } from 'signal'
 import { Mouseable, Renderable } from 'std'
 import { Comp } from './comp.ts'
@@ -14,6 +14,7 @@ export class Inner extends Comp
       get its() {
         const { ctx } = it
         return [
+          ctx.elevations,
           ctx.brackets,
           ctx.dropCaret,
           ctx.caret,

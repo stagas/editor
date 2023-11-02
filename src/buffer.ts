@@ -157,6 +157,7 @@ export class Buffer {
 
     const manyLines = top.line !== bottom.line
 
+    // iterate each line and produce its fill rect
     for (let line = top.line; line <= bottom.line; line++) {
       const x = line === top.y
         ? top.x * charWidth
