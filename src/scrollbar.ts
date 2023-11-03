@@ -1,13 +1,14 @@
 // log.active
 import { $, fn, fx, of, when } from 'signal'
+import { Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons } from 'utils'
 import { Comp } from './comp.ts'
-import { Mouse } from './mouse.ts'
-import { Pointable } from './pointable.ts'
-import { Renderable } from './renderable.ts'
 import { Scroll } from './scroll.ts'
 
-type Axis = 'x' | 'y'
+export enum Axis {
+  X = 'x',
+  Y = 'y',
+}
 
 const AxisOpp = {
   x: 'y',
@@ -24,7 +25,8 @@ const SidesOpp = {
   y: 'w',
 } as const
 
-export class Scrollbar extends Comp {
+export class Scrollbar extends Comp
+  implements Renderable.It {
   axis?: Axis
   scrollBegin = 0
   pointerBegin = 0
@@ -43,7 +45,8 @@ export class Scrollbar extends Comp {
     const w = rect[s] * co
     const y = rect[so] - scrollbarSize[so]
     $()
-    if (renderable.isVisible = co < 1) {
+    renderable.isHidden = co >= 1
+    if (!renderable.isHidden) {
       r[axis] = x
       r[AxisOpp[axis]] = y
     }
@@ -60,28 +63,28 @@ export class Scrollbar extends Comp {
         const { rect, pr } = of(this)
         const { hasSize } = when(rect)
         const { w, h } = of(rect)
-        const { pointable } = of(it)
-        const { isHovering, isDown } = of(pointable)
+        const { mouseable } = of(it)
+        const { isHovering, isDown } = of(mouseable)
         $()
-        this.needRender = true
+        this.need |= Renderable.Need.Render
       }
       @fx trigger_needDraw() {
         const { rect } = of(this)
         const { hasSize } = when(rect)
         const { x, y } = of(rect)
         $()
-        this.needDraw = true
+        this.need |= Renderable.Need.Draw
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.lineWidth = 3
-        this.needInit = false
-        this.needRender = true
+        this.need &= ~Renderable.Need.Init
+        this.need |= Renderable.Need.Render
       }
       @fn render() {
         const { canvas, pr, rect } = of(this)
         const { c } = of(canvas)
-        const { pointable } = of(it)
-        const { isHovering, isDown } = of(pointable)
+        const { mouseable } = of(it)
+        const { isHovering, isDown } = of(mouseable)
 
         c.save()
         //
@@ -111,37 +114,36 @@ export class Scrollbar extends Comp {
         //
         c.restore()
 
-        this.needRender = false
-        this.needDraw = true
+        this.need &= ~Renderable.Need.Render
+        this.need |= Renderable.Need.Draw
       }
-      @fn draw(t: number, c: CanvasRenderingContext2D) {
+      @fn draw(c: CanvasRenderingContext2D) {
         const { pr, canvas, rect } = this
         rect.drawImage(canvas.el, c, pr, true)
-        this.needDraw = false
+        this.need &= ~Renderable.Need.Draw
       }
     }
-    return $(new ScrollbarRenderable(this.ctx))
+    return $(new ScrollbarRenderable(it as Renderable.It))
   }
-  get pointable() {
+  get mouseable() {
     $()
     const it = this
     const { axis, ctx } = of(it)
-    const { world: { pointer }, dims, scroll } = of(ctx)
+    const { dims, scroll } = of(ctx)
     const { rect, innerSize } = of(dims)
     const { Down, Move } = Mouse.EventKind
 
-    class ScrollbarPointable extends Pointable {
-      hitArea = it.renderable.rect
-      @fn onMouseEvent(kind: Mouse.EventKind) {
-        const { mouse: { pos, btns }, isDown } = of(this)
+    class ScrollbarMouseable extends Mouseable {
+      onMouseEvent(kind: Mouse.EventKind) {
+        const { mouse: { pos, buttons }, isDown } = of(this)
         switch (kind) {
           case Down:
             it.scrollBegin = scroll[axis]
-            it.pointerBegin = pointer.pos[axis]
+            it.pointerBegin = pos[axis]
             return true
 
           case Move:
-            if (isDown && (btns & MouseButtons.Left)) {
+            if (isDown && (buttons & MouseButtons.Left)) {
               const side = Sides[axis]
               const co = rect[side] / innerSize[side]
 
@@ -156,6 +158,6 @@ export class Scrollbar extends Comp {
         }
       }
     }
-    return $(new ScrollbarPointable(this))
+    return $(new ScrollbarMouseable(it as Mouseable.It))
   }
 }

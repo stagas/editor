@@ -16,6 +16,7 @@ export class Outer extends Comp
           ctx.innerBelow,
           ctx.text,
           ctx.innerAbove,
+          ctx.scrollbars,
         ]
       }
     }
@@ -32,7 +33,8 @@ export class Outer extends Comp
       get its() {
         const { ctx } = it
         return [
-          ctx.text
+          ctx.scrollbars,
+          ctx.text,
         ]
       }
     }

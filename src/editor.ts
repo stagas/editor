@@ -13,7 +13,7 @@ import { History } from './history.ts'
 // import { Input } from './input.ts'
 import { Misc } from './misc.ts'
 import { Scroll } from './scroll.ts'
-// import { Scrollbars } from './scrollbars.ts'
+import { Scrollbars } from './scrollbars.ts'
 import { Brackets } from './brackets.ts'
 import { Caret } from './caret.ts'
 import { Elevations } from './elevations.ts'
@@ -58,11 +58,11 @@ export class Editor extends Scene
     color1Focused: '#666',
     color2Focused: '#666',
   })
-  // scrollbars = $(new Scrollbars(this))
+  scrollbars = $(new Scrollbars(this))
 
+  outer = $(new Outer(this))
   innerBelow = $(new InnerBelow(this))
   innerAbove = $(new InnerAbove(this))
-  outer = $(new Outer(this))
 
   // widgets
   deco: Widgetable.It[] = [

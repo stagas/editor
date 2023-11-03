@@ -8,6 +8,8 @@ import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from
 const tempPoint = $(new Point)
 
 export class Selection extends FillRange {
+  drawDirect = true
+
   colors = prop(() => ({
     color: this.ctx.skin.colors.bgBright2
   }))

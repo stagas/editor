@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, of } from 'signal'
 import { FixedArray, Point, Rect, Renderable } from 'std'
 import { poolArrayGet } from 'utils'
@@ -8,7 +8,8 @@ import { Range } from './range.ts'
 
 export class FillRange extends Range
   implements Comp, Renderable.It {
-  full: boolean = false
+  drawDirect = false
+  full = false
   padBottom = 0
   colors?: {
     color: string,
@@ -21,7 +22,7 @@ export class FillRange extends Range
   fillRects = $(new FixedArray<$<Rect>>)
 
   get rects() {
-    const { full, sorted: { top, bottom }, fillRects, padBottom, ctx } = of(this)
+    const { drawDirect, full, sorted: { top, bottom }, fillRects, padBottom, ctx } = of(this)
     const { dims } = of(ctx)
     const {
       lineHeight,
@@ -33,6 +34,9 @@ export class FillRange extends Range
       visibleSpan,
     } = of(dims)
 
+    if (drawDirect) {
+      const { top: vt, bottom: vb } = visibleSpan
+    }
     const { line: tl, col: tc } = top
     const { line: bl, col: bc } = bottom
 
@@ -102,7 +106,10 @@ export class FillRange extends Range
 }
 
 class FillRangeRenderable extends Renderable {
-  constructor(public it: FillRange) { super(it) }
+  constructor(public it: FillRange) {
+    super(it)
+    this.canDirectDraw = it.drawDirect
+  }
   // canDirectDraw = true
   // view = $(new Rect)
   @fx update_rect_dims() {
@@ -124,7 +131,6 @@ class FillRangeRenderable extends Renderable {
       rects
     } = of(this.it)
 
-    log('RENDER', rects, view.text)
     c.save()
     view.pos.translateNegative(c)
     if (clear) {
@@ -156,18 +162,15 @@ class FillRangeRenderable extends Renderable {
       c.restore()
     }
 
-    if (clear) {
-    }
     c.restore()
 
     this.need &= ~Renderable.Need.Render
     this.need |= Renderable.Need.Draw
   }
   @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-    log('DRAW')
     const { pr, canvas, rect, view } = of(this)
     view.round().drawImageTranslated(
-      canvas.el, c, pr, true, scroll) //, viewRect.round())
+      canvas.el, c, pr, true, scroll)
     this.need &= ~Renderable.Need.Draw
   }
 }

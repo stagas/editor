@@ -1,38 +1,44 @@
 // log.active
 import { $, of } from 'signal'
+import { Mouseable, Renderable } from 'std'
 import { Comp } from './comp.ts'
-import { Pointable } from './pointable.ts'
-import { Renderable } from './renderable.ts'
-import { Scrollbar } from './scrollbar.ts'
+import { Axis, Scrollbar } from './scrollbar.ts'
 
-export class Scrollbars extends Comp {
-  scrollbarY = $(new Scrollbar(this.ctx), { axis: 'y' })
-  scrollbarX = $(new Scrollbar(this.ctx), { axis: 'x' })
-  get renderables() {
-    const t = of(this)
-    return [
-      t.scrollbarY,
-      t.scrollbarX,
-    ]
-  }
-  get pointables() {
-    const t = of(this)
-    return [
-      t.scrollbarY,
-      t.scrollbarX,
-    ]
-  }
+export class Scrollbars extends Comp
+  implements Renderable.It {
+  scrollbarY = $(new Scrollbar(this.ctx), { axis: Axis.Y })
+  scrollbarX = $(new Scrollbar(this.ctx), { axis: Axis.X })
+
   get renderable() {
     $()
-    return $(new Renderable(
-      this.ctx,
-      this.ctx.renderable.rect,
-      this.ctx.world.canvas
+    const it = this
+    const { canvas } = of(it.ctx)
+    class ScrollbarsRenderable extends Renderable {
+      get its() {
+        return [
+          it.scrollbarY,
+          it.scrollbarX,
+        ]
+      }
+    }
+    return $(new ScrollbarsRenderable(
+      it as Renderable.It,
+      canvas.rect,
+      canvas
     ))
   }
-
-  get pointable() {
+  get mouseable() {
     $()
-    return $(new Pointable(this))
+    const it = this
+    class ScrollbarsMouseable extends Mouseable {
+      canHover = false
+      get its() {
+        return [
+          it.scrollbarY,
+          it.scrollbarX,
+        ]
+      }
+    }
+    return $(new ScrollbarsMouseable(it as Mouseable.It))
   }
 }
