@@ -10,11 +10,12 @@ export class Outer extends Comp
     const it = this
     const { canvas } = of(it.ctx)
     class OuterRenderable extends Renderable {
-      get its() {
+      get its(): Renderable.It[] {
         const { ctx } = it
         return [
+          ctx.innerBelow,
           ctx.text,
-          ctx.inner,
+          ctx.innerAbove,
         ]
       }
     }

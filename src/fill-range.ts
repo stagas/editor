@@ -2,11 +2,12 @@ log.active
 import { $, fn, fx, of } from 'signal'
 import { FixedArray, Point, Rect, Renderable } from 'std'
 import { poolArrayGet } from 'utils'
+import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
 import { Range } from './range.ts'
 
 export class FillRange extends Range
-  implements Renderable.It {
+  implements Comp, Renderable.It {
   full: boolean = false
   padBottom = 0
   colors?: {
@@ -20,7 +21,7 @@ export class FillRange extends Range
   fillRects = $(new FixedArray<$<Rect>>)
 
   get rects() {
-    const { full, top, bottom, fillRects, padBottom, ctx } = of(this)
+    const { full, sorted: { top, bottom }, fillRects, padBottom, ctx } = of(this)
     const { dims } = of(ctx)
     const {
       lineHeight,
@@ -106,6 +107,7 @@ class FillRangeRenderable extends Renderable {
   // view = $(new Rect)
   @fx update_rect_dims() {
     const { rect, view } = this
+    const { charWidth } = of(this.it.ctx.dims)
     const { rects, colors } = of(this.it)
     const { updated } = rects
     $()

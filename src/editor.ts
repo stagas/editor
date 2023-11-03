@@ -14,14 +14,15 @@ import { History } from './history.ts'
 import { Misc } from './misc.ts'
 import { Scroll } from './scroll.ts'
 // import { Scrollbars } from './scrollbars.ts'
+import { Brackets } from './brackets.ts'
+import { Caret } from './caret.ts'
+import { Elevations } from './elevations.ts'
+import { InnerAbove } from './inner-above.ts'
+import { InnerBelow } from './inner-below.ts'
+import { Outer } from './outer.ts'
 import { Selection } from './selection.ts'
 import { Text } from './text.ts'
 import { Widgetable } from './widget.ts'
-import { Outer } from './outer.ts'
-import { Inner } from './inner.ts'
-import { Caret } from './caret.ts'
-import { Brackets } from './brackets.ts'
-import { Elevations } from './elevations.ts'
 
 export class Editor extends Scene
   implements Renderable.It, Mouseable.It, Animable.It {
@@ -59,8 +60,9 @@ export class Editor extends Scene
   })
   // scrollbars = $(new Scrollbars(this))
 
+  innerBelow = $(new InnerBelow(this))
+  innerAbove = $(new InnerAbove(this))
   outer = $(new Outer(this))
-  inner = $(new Inner(this))
 
   // widgets
   deco: Widgetable.It[] = [
@@ -157,14 +159,7 @@ export class Editor extends Scene
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
         this.need &= ~Renderable.Need.Init
-        this.need |= Renderable.Need.Render
       }
-      // @fn render() {
-      //   // this.need &= ~Need.Render | Need.DirectDraw
-      // }
-      // @fn draw() {
-      //   // this.need &= ~Need.Draw
-      // }
       get its() {
         return [it.outer]
       }
@@ -232,6 +227,7 @@ export class Editor extends Scene
 
         if (isScrolling) {
           this.need = Animable.Need.Tick | Animable.Need.Draw
+          // TODO: better way to request direct?
           it.world.render.needDirect = true
         }
         else {

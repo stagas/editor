@@ -1,19 +1,18 @@
 // log.active
-import { $, fn, fx, of, when } from 'signal'
-import { Point, Rect, Renderable } from 'std'
-import { Comp } from './comp.ts'
+import { $, fn, fx, of, prop, when } from 'signal'
+import { Point } from 'std'
+import { FillRange } from './fill-range.ts'
 import { Linecol } from './linecol.ts'
-import { Range } from './range.ts'
 import { BRACKET, Close, TOKEN, closers, findMatchingBrackets, parseWords } from './util.ts'
 
 const tempPoint = $(new Point)
 
-export class Selection extends Comp {
-  selection = $(new Range)
-  sorted = this.selection.$.sorted
-  start = this.selection.$.start
-  end = this.selection.$.end
-  text = ''
+export class Selection extends FillRange {
+  colors = prop(() => ({
+    color: this.ctx.skin.colors.bgBright2
+  }))
+
+  selectionText = ''
 
   _deleteKeyEvent = new KeyboardEvent('keydown', { key: 'Delete' })
 
@@ -22,7 +21,7 @@ export class Selection extends Comp {
   }
   @fn getSelectionIndexes() {
     const { buffer } = of(this.ctx)
-    const { top, bottom } = this.selection.sorted
+    const { top, bottom } = this.sorted
     const a = buffer.getIndexFromLineCol(top)
     const b = buffer.getIndexFromLineCol(bottom)
     tempPoint.left = a
@@ -33,7 +32,7 @@ export class Selection extends Comp {
     const { history, buffer, keyboard } = of(this.ctx)
     return history.historic(() => {
       const { code } = buffer
-      const { selection } = this
+      const selection = this
       if (selection.start.equals(selection.end)) return ''
 
       const { top, bottom } = selection.sorted
@@ -64,7 +63,8 @@ export class Selection extends Comp {
     this.end.set(p)
   }
   @fn selectLine(line: number) {
-    const { ctx, selection } = of(this)
+    const selection = this
+    const { ctx } = of(this)
     const { buffer } = of(ctx)
     const { lines } = of(buffer)
 
@@ -73,7 +73,8 @@ export class Selection extends Comp {
     return true
   }
   @fn selectMatchingBrackets(p: Linecol, exclusive?: boolean) {
-    const { ctx, selection } = of(this)
+    const selection = this
+    const { ctx } = of(this)
     const { buffer } = of(ctx)
     const { code } = of(buffer)
 
@@ -94,7 +95,8 @@ export class Selection extends Comp {
     return false
   }
   @fn selectWordBoundary(p: Linecol, expand?: boolean) {
-    const { ctx, selection } = of(this)
+    const selection = this
+    const { ctx } = of(this)
     const { sorted: { forward } } = selection.sorted
     const { buffer } = of(ctx)
     const { code, lines } = of(buffer)
@@ -122,7 +124,8 @@ export class Selection extends Comp {
     return false
   }
   @fx shiftKeyPressedExtendsSelection() {
-    const { ctx, selection } = of(this)
+    const selection = this
+    const { ctx } = of(this)
     const { buffer, keyboard } = of(ctx)
     const { line, col } = of(buffer)
     const { shift } = when(keyboard)
@@ -137,7 +140,8 @@ export class Selection extends Comp {
   // }
   // updateTextareaTextDebounced = debounce(250, this.updateTextareaText)
   @fx update_text() {
-    const { ctx, selection } = of(this)
+    const selection = this
+    const { ctx } = of(this)
     const { start: { xy: sxy }, end: { xy: exy } } = selection
     const { buffer } = of(ctx)
     const { source, code } = of(buffer)
@@ -145,73 +149,7 @@ export class Selection extends Comp {
     const { top, bottom } = selection.sorted
     const a = buffer.getIndexFromLineCol(top)
     const b = buffer.getIndexFromLineCol(bottom)
-    this.text = code.slice(a, b)
+    this.selectionText = code.slice(a, b)
     // this.updateTextareaTextDebounced()
-  }
-  get renderable() {
-    $()
-    const it = this
-    const { ctx, selection } = of(it)
-    const { buffer, dims, scroll, skin } = of(ctx)
-    class SelectionRenderable extends Renderable {
-      viewRect = $(new Rect)
-      dirtyRect = $(new Rect)
-      isHidden = false
-      topPx = $(new Point)
-      bottomPx = $(new Point)
-      @fx triggerRender() {
-        const { viewRect: vr, topPx, bottomPx } = of(this)
-        const { selection: { start: { xy: sxy }, end: { xy: exy } } } = of(it)
-        const { charWidth } = of(dims)
-        $()
-        const top = buffer.getPointFromLineCol(selection.sorted.top, topPx)
-        const bottom = buffer.getPointFromLineCol(selection.sorted.bottom, bottomPx)
-        bottom.y += dims.lineHeight
-        vr.top = top.y
-        // TODO: top.x since its sorted?
-        vr.left = Math.min(top.x, bottom.x)
-        vr.w = Math.max(top.x, bottom.x) - vr.left
-        vr.h = bottom.y - top.y
-        this.need |= Renderable.Need.Render
-      }
-      @fx triggerRenderOnScroll() {
-        const { scroll: { xy }, charWidth } = of(dims)
-        $()
-        this.need |= Renderable.Need.Render
-      }
-      @fn render(c: CanvasRenderingContext2D, t: number, clear?: boolean) {
-        const { canvas, rect, dirtyRect: dr } = of(this)
-        const { selection, hasSelection, ctx } = of(it)
-        const { sorted } = selection
-        const { charWidth } = of(dims)
-
-        if (hasSelection) {
-          log('top', sorted.top.text, 'bottom', sorted.bottom.text)
-          if (clear) {
-            rect.clear(c)
-          }
-          c.save()
-          // TODO: maybe use viewRect for everything?
-          c.translate(scroll.x, scroll.y)
-          const br = buffer.fillTextRange(c, sorted, skin.colors.bgBright2, true)
-          if (br) dr.set(br)
-          c.restore()
-          this.need |= Renderable.Need.Draw
-        }
-
-        this.need &= ~Renderable.Need.Render
-      }
-      @fn draw(c: CanvasRenderingContext2D,t: number) {
-        const { pr, canvas, rect, dirtyRect: dr } = of(this)
-        const { hasSelection } = of(it)
-
-        if (hasSelection) {
-          dr.drawImage(canvas.el, c, pr, true)
-        }
-
-        this.need &= ~Renderable.Need.Draw
-      }
-    }
-    return $(new SelectionRenderable(this.ctx, this.ctx.renderable.rect))
   }
 }

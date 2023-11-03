@@ -1,4 +1,4 @@
-import { $, of } from 'signal'
+import { $ } from 'signal'
 import { Line } from 'std'
 import { Linecol } from './linecol.ts'
 

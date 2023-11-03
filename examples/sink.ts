@@ -65,8 +65,13 @@ function setup() {
 
       editor.buffer.source = source
       editor.buffer.coli = 3
-      editor.selection.start.set({ x: 3, y: 0 })
-      editor.selection.end.set({ x: 7, y: 0 })
+      editor.selection.start.set({ x: 3, y: 10 })
+      editor.selection.end.set({ x: 7, y: 20 })
+
+      setTimeout(() => {
+
+        console.log(editor.selection.selectionText)
+      }, 1000)
 
       world.render
         .add(editor)
