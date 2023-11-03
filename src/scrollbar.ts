@@ -91,6 +91,7 @@ export class Scrollbar extends Comp
         const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
         c.fillStyle =
+        // skin.colors.bgBright1 + alpha
           (isHovering || isDown
             ? skin.colors.bgBright2
             : skin.colors.bgBright1) + alpha
@@ -116,10 +117,12 @@ export class Scrollbar extends Comp
 
         this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
+        // console.log('YO')
       }
       @fn draw(c: CanvasRenderingContext2D) {
         const { pr, canvas, rect } = this
         rect.drawImage(canvas.el, c, pr, true)
+        // console.log(rect.text)
         this.need &= ~Renderable.Need.Draw
       }
     }
