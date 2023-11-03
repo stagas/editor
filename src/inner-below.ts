@@ -17,6 +17,7 @@ export class InnerBelow extends Comp
           ctx.activeLine,
           ctx.elevations,
           ctx.selection,
+          ...ctx.deco,
         ]
       }
     }

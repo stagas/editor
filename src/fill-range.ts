@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx, of } from 'signal'
 import { FixedArray, Point, Rect, Renderable } from 'std'
 import { poolArrayGet } from 'utils'
@@ -19,7 +19,7 @@ export class FillRange extends Range
 
   constructor(public ctx: Editor) { super() }
 
-  fillRects = $(new FixedArray<$<Rect>>)
+  fillRects = $(new FixedArray<$<Rect>>())
 
   get rects() {
     const { drawDirect, full, sorted: { top, bottom }, fillRects, padBottom, ctx } = of(this)
@@ -41,6 +41,13 @@ export class FillRange extends Range
     const { line: bl, col: bc } = bottom
 
     $()
+
+    if (top.equals(bottom)) {
+      fillRects.count = 0
+      fillRects.updated++
+
+      return fillRects
+    }
 
     let i = 0
     let r: Rect
@@ -111,18 +118,22 @@ class FillRangeRenderable extends Renderable {
     this.canDirectDraw = it.drawDirect
   }
   // canDirectDraw = true
-  // view = $(new Rect)
+  view = $(new Rect)
   @fx update_rect_dims() {
     const { rect, view } = this
     const { charWidth } = of(this.it.ctx.dims)
     const { rects, colors } = of(this.it)
-    const { updated } = rects
+    const { updated, count } = rects
     $()
-    view.combineRects(rects.array, rects.count)
+    view.combineRects(rects.array, rects.count).round()
     rect.w = Math.max(rect.w, view.w)
     rect.h = Math.max(rect.h, view.h)
     this.need |= Renderable.Need.Render
     log('rects', view.text, rect.text)
+  }
+  @fn init() {
+    this.need &= ~Renderable.Need.Init
+    this.need |= Renderable.Need.Render
   }
   @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
     const { rect, view } = this

@@ -3,6 +3,7 @@ import { Animable, Keyboard, Pointer, World } from 'std'
 import { dom, seedRand, timeout } from 'utils'
 import { Editor } from '../src/editor.ts'
 import { Source } from '../src/source.ts'
+import { Widget, Widgetable } from '../src/widget.ts'
 
 Math.random = seedRand(666)
 
@@ -68,10 +69,20 @@ function setup() {
       editor.selection.start.set({ x: 3, y: 10 })
       editor.selection.end.set({ x: 7, y: 20 })
 
-      setTimeout(() => {
-
-        console.log(editor.selection.selectionText)
-      }, 1000)
+      editor.deco = [
+        $(new Widget(editor), {
+          widgetable: {
+            kind: Widgetable.Kind.Deco,
+            dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
+          }
+        }),
+        $(new Widget(editor), {
+          widgetable: {
+            kind: Widgetable.Kind.Deco,
+            dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
+          }
+        }),
+      ]
 
       world.render
         .add(editor)
