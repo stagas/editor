@@ -1,21 +1,18 @@
 import { $, fn, fx, of } from 'signal'
-import { Rect } from 'std'
+import { Point, Rect, Renderable } from 'std'
 import { Comp } from './comp.ts'
-import { Renderable } from './renderable.ts'
 
-export class ActiveLine extends Comp {
+export class ActiveLine extends Comp
+  implements Renderable.It {
   get renderable() {
     $()
     const it = this
     const { ctx } = of(it)
     const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
-      canComposite = true
-      dirtyRects = [$(new Rect)]
-      position = Renderable.Position.Inner
-      viewRect = $(new Rect)
+      view = $(new Rect)
       @fx update_rect() {
-        const { rect: r, viewRect: vr } = this
+        const { rect: r, view: vr } = this
         const { line } = of(buffer)
         const { lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
         const { w } = innerSize
@@ -23,19 +20,19 @@ export class ActiveLine extends Comp {
         r.h = vr.h = lineHeight + 2
         r.w = vr.w = w + overscrollX
         vr.y = lineBaseTops[line]
-        this.needRender = true
+        this.need |= Renderable.Need.Render
       }
-      @fn render(t: number, c: CanvasRenderingContext2D) {
+      @fn render(c: CanvasRenderingContext2D) {
         const { rect } = this
         rect.fill(c, skin.colors.bgBright015)
-        this.needRender = false
-        this.needDraw = true
+        this.need &= ~Renderable.Need.Render
+        this.need |= Renderable.Need.Draw
       }
-      @fn draw(t: number, c: CanvasRenderingContext2D) {
-        const { pr, canvas, viewRect, dirtyRects: [dr] } = this
-        viewRect.drawImage(canvas.el, c, pr, true)
-        dr.set(viewRect)
-        this.needDraw = false
+      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
+        const { pr, canvas, view } = this
+        view.drawImageTranslated(
+          canvas.el, c, pr, true, scroll)
+        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new ActiveLineRenderable(this.ctx))

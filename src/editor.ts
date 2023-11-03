@@ -2,7 +2,7 @@
 import { $, fn, fx, init, of } from 'signal'
 import { Animable, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
-// import { ActiveLine } from './active-line.ts'
+import { ActiveLine } from './active-line.ts'
 // import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 // import { Caret } from './caret.ts'
@@ -41,7 +41,7 @@ export class Editor extends Scene
   clipboard = $(new Clipboard(this))
 
   // renderables
-  // activeLine = $(new ActiveLine(this))
+  activeLine = $(new ActiveLine(this))
   selection = $(new Selection(this))
   elevations = $(new Elevations(this))
   text = $(new Text(this))

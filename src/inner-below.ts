@@ -14,6 +14,7 @@ export class InnerBelow extends Comp
       get its() {
         const { ctx } = it
         return [
+          ctx.activeLine,
           ctx.elevations,
           ctx.selection,
         ]
