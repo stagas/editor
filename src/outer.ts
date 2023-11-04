@@ -35,6 +35,7 @@ export class Outer extends Comp
         const { ctx } = it
         return [
           ctx.scrollbars,
+          ctx.innerBelow,
           ctx.text,
         ]
       }

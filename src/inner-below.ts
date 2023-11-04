@@ -1,7 +1,8 @@
 // log.active
 import { $, of } from 'signal'
-import { Renderable } from 'std'
+import { Mouse, Mouseable, Renderable } from 'std'
 import { Comp } from './comp.ts'
+import { filterAs } from 'utils'
 
 export class InnerBelow extends Comp
   implements Renderable.It {
@@ -18,6 +19,7 @@ export class InnerBelow extends Comp
           ctx.elevations,
           ctx.selection,
           ...ctx.deco,
+          ...ctx.sub,
         ]
       }
     }
@@ -26,5 +28,20 @@ export class InnerBelow extends Comp
       canvas.rect,
       canvas,
     ))
+  }
+  get mouseable() {
+    $()
+    const it = this
+    class InnerBelowMouseable extends Mouseable {
+      get its() {
+        const { ctx } = it
+        return [
+          ...filterAs(ctx.deco)<Mouseable.It>(w => w.mouseable?.it),
+          ...filterAs(ctx.mark)<Mouseable.It>(w => w.mouseable?.it),
+          ...filterAs(ctx.sub)<Mouseable.It>(w => w.mouseable?.it),
+        ]
+      }
+    }
+    return $(new InnerBelowMouseable(it as Mouseable.It))
   }
 }

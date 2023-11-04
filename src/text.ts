@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, of, when } from 'signal'
 import { Keyboard, Keyboardable, Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons, prevent } from 'utils'
