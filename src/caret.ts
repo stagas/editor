@@ -1,4 +1,4 @@
-log.active
+// log.active
 import $, { fn, fx, of, when } from 'signal'
 import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'

@@ -30,6 +30,7 @@ export class Outer extends Comp
     $()
     const it = this
     class OuterMouseable extends Mouseable {
+      canHover = false
       get its() {
         const { ctx } = it
         return [

@@ -137,8 +137,9 @@ export class Scrollbar extends Comp
     const { Down, Move } = Mouse.EventKind
 
     class ScrollbarMouseable extends Mouseable {
-      onMouseEvent(kind: Mouse.EventKind) {
-        const { mouse: { pos, buttons }, isDown } = of(this)
+      @fn onMouseEvent(kind: Mouse.EventKind) {
+        const { mouse: { clampedPos: pos, buttons }, isDown } = of(this)
+
         switch (kind) {
           case Down:
             it.scrollBegin = scroll[axis]

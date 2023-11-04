@@ -14,11 +14,11 @@ export class ActiveLine extends Comp
       @fx update_rect() {
         const { rect: r, view: vr } = this
         const { line } = of(buffer)
-        const { lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
+        const { rect: { w: rw }, lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
         const { w } = innerSize
         $()
         r.h = vr.h = lineHeight + 2
-        r.w = vr.w = w + overscrollX
+        r.w = vr.w = Math.max(rw, w + overscrollX)
         vr.y = lineBaseTops[line]
         this.need |= Renderable.Need.Render
       }

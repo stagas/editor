@@ -1,6 +1,6 @@
-// log.active
+log.active
 import { $, fn, fx, of, when } from 'signal'
-import { Keyboard, Keyboardable, Mouse, Mouseable, Point, Renderable } from 'std'
+import { Keyboard, Keyboardable, Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons, prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Linecol } from './linecol.ts'
@@ -38,10 +38,12 @@ export class Text extends Comp
     $()
     const it = this
     const { ctx, linecol } = of(it)
+    const { dims } = of(ctx)
     const { misc, buffer, scroll, selection, keyboard } = of(ctx)
     const { Wheel, Down, Up, Move, Click } = Mouse.EventKind
 
     class TextMouseable extends Mouseable {
+      hitArea = dims.rect
       cursor = 'text'
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse, isDown } = this
@@ -126,6 +128,13 @@ export class Text extends Comp
     class TextRenderable extends Renderable {
       canDirectDraw = true
       didInitCanvas = false
+      @fx update_inner_size() {
+        const { rect } = this
+        const { w, h } = dims.innerSize
+        $()
+        rect.w = Math.max(100, rect.w, w || 0)
+        rect.h = Math.max(100, rect.h, h || 0)
+      }
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
@@ -187,6 +196,11 @@ export class Text extends Comp
         $()
         this.need |= Renderable.Need.Render
       }
+      @fx trigger_render_when_win_resize() {
+        const { charWidth, rect: { w, h } } = of(dims)
+        $()
+        this.need |= Renderable.Need.Render
+      }
       @fx trigger_render_when_misc() {
         const { pr, rect } = this
         const { size: { wh: size_wh } } = rect
@@ -199,8 +213,6 @@ export class Text extends Comp
         } = of(dims)
         const { source, tokens, Token } = of(buffer)
         $()
-        // this.viewRect.setSize(wh)
-        // console.log('TRIGGER RENDER')
         this.need |= Renderable.Need.Render
       }
       get font() {
@@ -219,7 +231,12 @@ export class Text extends Comp
         c.font = this.font
         c.lineWidth = this.lineWidth
         this.need &= ~Renderable.Need.Init
-        this.didInitCanvas = true
+        if (this.didInitCanvas) {
+          this.need |= Renderable.Need.Render
+        }
+        else {
+          this.didInitCanvas = true
+        }
       }
       @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
         const { rect, colors } = this
@@ -266,12 +283,8 @@ export class Text extends Comp
         view.round().drawImage(
           canvas.el, c, pr, true)
         this.need &= ~Renderable.Need.Draw
-        // console.log('WHAAAAAAAAAAAT', this, this.need)
       }
     }
-    return $(new TextRenderable(
-      it as Renderable.It,
-      it.ctx.renderable.rect
-    ))
+    return $(new TextRenderable(it as Renderable.It))
   }
 }

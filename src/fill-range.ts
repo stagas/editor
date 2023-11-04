@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, of } from 'signal'
 import { FixedArray, Point, Rect, Renderable } from 'std'
 import { poolArrayGet } from 'utils'
