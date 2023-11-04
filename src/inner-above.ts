@@ -20,10 +20,6 @@ export class InnerAbove extends Comp
         ]
       }
     }
-    return $(new InnerAboveRenderable(
-      it as Renderable.It,
-      canvas.rect,
-      canvas,
-    ))
+    return $(new InnerAboveRenderable(it as Renderable.It, false))
   }
 }

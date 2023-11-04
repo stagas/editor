@@ -101,11 +101,7 @@ export class ElevationFill extends Comp
       //   return [...it.ownElevations]
       // }
     }
-    return $(new ElevationFillRenderable(
-      it as Renderable.It,
-      it.ctx.renderable.rect,
-      it.ctx.renderable.canvas,
-    ))
+    return $(new ElevationFillRenderable(it as Renderable.It, false))
   }
 }
 
@@ -307,10 +303,6 @@ export class Elevations extends Comp
         return [...new Set([...its.flatMap(x => x.renderable.its)])]
       }
     }
-    return $(new ElevationsRenderable(
-      it as Renderable.It,
-      it.ctx.renderable.rect,
-      it.ctx.renderable.canvas,
-    ))
+    return $(new ElevationsRenderable(it as Renderable.It, false))
   }
 }

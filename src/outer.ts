@@ -8,7 +8,6 @@ export class Outer extends Comp
   get renderable() {
     $()
     const it = this
-    const { canvas } = of(it.ctx)
     class OuterRenderable extends Renderable {
       get its(): Renderable.It[] {
         const { ctx } = it
@@ -20,11 +19,7 @@ export class Outer extends Comp
         ]
       }
     }
-    return $(new OuterRenderable(
-      it as Renderable.It,
-      canvas.rect,
-      canvas,
-    ))
+    return $(new OuterRenderable(it as Renderable.It, false))
   }
   get mouseable() {
     $()

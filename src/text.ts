@@ -30,7 +30,7 @@ export class Text extends Comp
   get keyboardable() {
     $()
     const it = this
-    const { clipboard, selection } = it.ctx
+    const { misc, clipboard, selection } = it.ctx
     const { Down, Up, Copy, Cut, Paste } = Keyboard.EventKind
     const { Char, Special } = Keyboard.KeyKind
     class TextKeyboardable extends Keyboardable {
@@ -38,8 +38,13 @@ export class Text extends Comp
         const { key, char, special, alt, ctrl, shift } = this.kbd
         switch (kind) {
           case Down:
-            this.handleKey(this.kbd)
-            break
+            if (ctrl) {
+              if (special === 'Control' || ignoredKeys.includes(char)) {
+                break
+              }
+            }
+            misc.isTyping = true
+            return this.handleKey(this.kbd)
           case Up:
             break
           case Copy:

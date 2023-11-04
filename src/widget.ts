@@ -6,9 +6,9 @@ import { Range } from './range.ts'
 
 export class Widgetable {
   kind: Widgetable.Kind = Widgetable.Kind.Deco
-  dimWidthExclusive = false
   height = 25
   offsetX = 0
+  dimWidthExclusive = false
 
   constructor(public it: Widgetable.It) { }
 

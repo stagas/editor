@@ -43,7 +43,7 @@ export class Bracket extends Comp {
         this.need &= ~Renderable.Need.Draw
       }
     }
-    return $(new BracketRenderable(it as Renderable.It, it.rect))
+    return $(new BracketRenderable(it as Renderable.It, true, it.rect))
   }
 }
 export class Brackets extends Comp {
@@ -78,7 +78,7 @@ export class Brackets extends Comp {
         $()
         if (!hasBrackets) {
           b1.renderable.isHidden
-          = b2.renderable.isHidden = true
+            = b2.renderable.isHidden = true
         }
         else {
           buffer.getPointFromLineCol(open, r1)
@@ -86,7 +86,7 @@ export class Brackets extends Comp {
           r1.translate(-2).floor()
           r2.translate(-2).floor()
           b1.renderable.isHidden
-          = b2.renderable.isHidden = false
+            = b2.renderable.isHidden = false
         }
         b1.renderable.need |= Renderable.Need.Draw
         b2.renderable.need |= Renderable.Need.Draw
@@ -95,6 +95,6 @@ export class Brackets extends Comp {
         return [b1, b2]
       }
     }
-    return $(new BracketsRenderable(this.ctx))
+    return $(new BracketsRenderable(it as Renderable.It, false))
   }
 }

@@ -12,7 +12,6 @@ export class Scrollbars extends Comp
   get renderable() {
     $()
     const it = this
-    const { canvas } = of(it.ctx)
     class ScrollbarsRenderable extends Renderable {
       get its() {
         return [
@@ -21,11 +20,7 @@ export class Scrollbars extends Comp
         ]
       }
     }
-    return $(new ScrollbarsRenderable(
-      it as Renderable.It,
-      canvas.rect,
-      canvas
-    ))
+    return $(new ScrollbarsRenderable(it as Renderable.It, false))
   }
   get mouseable() {
     $()
