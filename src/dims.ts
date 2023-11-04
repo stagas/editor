@@ -72,14 +72,15 @@ export class Dims extends Comp {
     const { deco } = of(ctx)
 
     const decoHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
-    for (const { widgetable: item } of deco) {
-      if (item.line >= decoHeights.length) continue
+    for (const { widgetable: w } of deco) {
+      if (w.line >= decoHeights.length) continue
 
-      decoHeights[item.line] = Math.max(
-        decoHeights[item.line],
-        item.height
+      decoHeights[w.line] = Math.max(
+        decoHeights?.[w.line] ?? 0,
+        w.height
       )
     }
+    // console.log('DECO', [...decoHeights])
     return decoHeights
   }
   get subHeights() {
@@ -87,14 +88,15 @@ export class Dims extends Comp {
     const { sub } = of(ctx)
 
     const subHeights = Array.from<number>({ length: lastVisibleLine }).fill(0)
-    for (const { widgetable: item } of sub) {
-      if (item.line >= subHeights.length) continue
+    for (const { widgetable: w } of sub) {
+      if (w.line >= subHeights.length) continue
 
-      subHeights[item.line] = Math.max(
-        subHeights[item.line],
-        item.height + 4
+      subHeights[w.line] = Math.max(
+        subHeights?.[w.line] ?? 0,
+        w.height + 4
       )
     }
+    // console.log('SUB', [...subHeights])
     return subHeights
   }
   /** Stores deco extra height when there are empty lines above. */

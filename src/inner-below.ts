@@ -33,6 +33,7 @@ export class InnerBelow extends Comp
     $()
     const it = this
     class InnerBelowMouseable extends Mouseable {
+      canHover = false
       get its() {
         const { ctx } = it
         return [
