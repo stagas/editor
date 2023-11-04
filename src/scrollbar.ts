@@ -156,6 +156,7 @@ export class Scrollbar extends Comp
               scroll.targetScroll[<Axis>axis] =
                 it.scrollBegin
                 - (pos[axis] - it.pointerBegin) / co
+
               return true
             }
             break

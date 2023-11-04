@@ -47,7 +47,7 @@ export class History extends Comp {
       coli,
       lineCol: lineCol.json,
       scroll: scroll.json,
-      selection: selection.selection.json,
+      selection: selection.json,
     }
     const current = vs.history[vs.historyIndex]
     if (buffer.code === current?.code) {
@@ -104,7 +104,7 @@ export class History extends Comp {
     buffer.coli = copy.coli
     buffer.linecol.set(copy.lineCol)
     scroll.targetScroll.set(copy.scroll)
-    selection.selection.set(copy.selection)
+    selection.set(copy.selection)
   }
 
   undo = this.historic(() => {
