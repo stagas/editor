@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of } from 'signal'
-import { Mouseable, Point, Renderable } from 'std'
+import { Mouseable, Point, Renderable, Scene } from 'std'
 import { Comp } from './comp.ts'
 import { Range } from './range.ts'
 
