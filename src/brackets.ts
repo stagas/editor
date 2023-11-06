@@ -15,8 +15,6 @@ export class Bracket extends Comp {
       @fn init(c: CanvasRenderingContext2D) {
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
-        this.need &= ~Renderable.Need.Init
-        this.need |= Renderable.Need.Render
       }
       @fn render() {
         const { canvas, rect } = of(this)
@@ -31,8 +29,6 @@ export class Bracket extends Comp {
           rect.h - 6
         )
         c.restore()
-        this.need &= ~Renderable.Need.Render
-        this.need |= Renderable.Need.Draw
       }
       @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
         const { pr, canvas, rect, isHidden } = of(this)
@@ -40,7 +36,6 @@ export class Bracket extends Comp {
           rect.drawImageTranslated(
             canvas.el, c, pr, true, scroll)
         }
-        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new BracketRenderable(it as Renderable.It, true, it.rect))

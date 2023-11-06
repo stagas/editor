@@ -10,16 +10,19 @@ export class InnerBelow extends Comp
     $()
     const it = this
     class InnerBelowRenderable extends Renderable {
-      scroll = it.ctx.scroll.pos
       get its() {
         const { ctx } = it
-        return [
+        const its = [
           ctx.activeLine,
           ctx.elevations,
           ctx.selection,
           ...ctx.deco,
           ...ctx.sub,
         ]
+        const scroll = it.ctx.scroll.pos
+        $()
+        this.scroll = scroll
+        return its
       }
     }
     return $(new InnerBelowRenderable(it as Renderable.It, false))

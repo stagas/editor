@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, of } from 'signal'
-import { Animable, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
+import { Animable, Canvas, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
 import { Brackets } from './brackets.ts'
@@ -22,10 +22,11 @@ import { Widgetable } from './widget.ts'
 
 export class Editor extends Scene
   implements Renderable.It, Mouseable.It, Animable.It {
-  constructor(public world: World) { super({ world }) }
-  // core
+  constructor(
+    public world: World,
+    public canvas = $(new Canvas(world))
+  ) { super({ world }) }
   get skin() { return this.world.skin }
-  get canvas() { return this.world.canvas! }
   get keyboard() { return this.world.keyboard! }
   get mouse() { return this.world.mouse! }
 
@@ -61,62 +62,10 @@ export class Editor extends Scene
   innerAbove = $(new InnerAbove(this))
 
   // widgets
-  deco: Widgetable.It[] = [
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Deco,
-    //     dim: { p1: { line: 0, col: 1 }, p2: { line: 0, col: 4 } }
-    //   }
-    // }),
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Deco,
-    //     dim: { p1: { line: 4, col: 1 }, p2: { line: 4, col: 10 } }
-    //   }
-    // }),
-  ]
+  deco: Widgetable.It[] = []
   mark: Widgetable.It[] = []
-  sub: Widgetable.It[] = [
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Sub,
-    //     dim: { p1: { line: 8, col: 1 }, p2: { line: 8, col: 4 } }
-    //   }
-    // }),
-    // $(new Widget(this), {
-    //   widgetable: {
-    //     kind: Widget.Kind.Sub,
-    //     dim: { p1: { line: 16, col: 1 }, p2: { line: 16, col: 10 } }
-    //   }
-    // }),
-  ]
+  sub: Widgetable.It[] = []
 
-  // get renderables(): Renderable.It[] {
-  //   const t = of(this)
-  //   return [
-  //     // t.activeLine,
-  //     // t.selection,
-  //     // t.elevations,
-  //     // ...t.deco,
-  //     // ...t.mark,
-  //     // ...t.sub,
-  //     // t.text,
-  //     // t.brackets,
-  //     // t.dropCaret,
-  //     // t.caret,
-  //     // t.scrollbars,
-  //   ]
-  // }
-  // get mouseables(): Mouseable.It[] {
-  //   const t = of(this)
-  //   return [
-  //     // t.scrollbars,
-  //     // ...filterAs(t.deco)<Pointable.It>(w => w.pointable?.it),
-  //     // ...filterAs(t.mark)<Pointable.It>(w => w.pointable?.it),
-  //     // ...filterAs(t.sub)<Pointable.It>(w => w.pointable?.it),
-  //     // t.text,
-  //   ]
-  // }
   get mouseable() {
     $()
     const it = this
@@ -149,9 +98,6 @@ export class Editor extends Scene
     $()
     const it = this
     class EditorRenderable extends Renderable {
-      @init init_Editor() {
-        this.canvas.fullWindow = true
-      }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
         this.need &= ~Renderable.Need.Init
@@ -160,7 +106,12 @@ export class Editor extends Scene
         return [it.outer]
       }
     }
-    return $(new EditorRenderable(it as Renderable.It))
+    return $(new EditorRenderable(
+      it as Renderable.It,
+      true,
+      it.canvas.rect,
+      it.canvas
+    ))
   }
   get animable() {
     $()

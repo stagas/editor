@@ -30,14 +30,14 @@ export class Caret extends Comp {
 
     class CaretRenderable extends Renderable {
       @fx update_rect() {
-        const { rect: r } = of(this)
+        const { view: v } = of(this)
         const { charWidth, lineBaseTops } = of(dims)
         const { linecol } = of(it)
         const { line, col } = linecol
         const { [line]: y } = of(lineBaseTops)
         $()
-        r.x = Math.floor(col * charWidth) - 7
-        r.y = Math.floor(y + 1) - 5.5
+        v.x = Math.floor(col * charWidth) - 7
+        v.y = Math.floor(y + 1) - 5.5
       }
       @fx update_caret() {
         const { pr, rect: r } = of(this)
@@ -89,16 +89,12 @@ export class Caret extends Comp {
         }
       }
       @fx trigger_draw() {
-        const { rect: { x, y }, isHidden } = of(this)
+        const { view: { x, y }, isHidden } = of(this)
         const { linecol } = of(it)
         const { charWidth } = of(dims)
         $()
         this.need |= Renderable.Need.Draw
       }
-      // @fn init() {
-      //   this.need &= ~Renderable.Need.Init
-      //   this.need |= Renderable.Need.Render
-      // }
       @fn render(c: CanvasRenderingContext2D) {
         const { rect } = of(this)
         const { w, h } = rect
@@ -126,14 +122,11 @@ export class Caret extends Comp {
         c.fillStyle = c2
         c.fill()
         c.restore()
-        this.need &= ~Renderable.Need.Render
-        this.need |= Renderable.Need.Draw
       }
       @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, rect } = of(this)
-        rect.round().drawImageTranslated(
+        const { pr, canvas, view } = of(this)
+        view.round().drawImageTranslated(
           canvas.el, c, pr, true, scroll)
-        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new CaretRenderable(it as Renderable.It))

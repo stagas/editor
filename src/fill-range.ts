@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, of } from 'signal'
+import { $, fn, fx, nu, of } from 'signal'
 import { FixedArray, Point, Rect, Renderable } from 'std'
 import { poolArrayGet } from 'utils'
 import { Comp } from './comp.ts'
@@ -21,7 +21,7 @@ export class FillRange extends Range
 
   fillRects = $(new FixedArray<$<Rect>>())
 
-  get rects() {
+  @nu get rects() {
     const { drawDirect, full, sorted: { top, bottom }, fillRects, padBottom, ctx } = of(this)
     const { dims } = of(ctx)
     const {
@@ -76,7 +76,9 @@ export class FillRange extends Range
         ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
         : lineHeight + 0.5
 
-      if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
+      if (drawDirect) {
+        if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
+      }
 
       r = poolArrayGet(fillRects.array, i++, Rect.create)
 
@@ -131,22 +133,26 @@ class FillRangeRenderable extends Renderable {
     this.need |= Renderable.Need.Render
     log('rects', view.text, rect.text)
   }
-  @fn init() {
-    this.need &= ~Renderable.Need.Init
-    this.need |= Renderable.Need.Render
-  }
-  @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
+  // @fn init() {
+  //   this.need &= ~Renderable.Need.Init
+  //   this.need |= Renderable.Need.Render
+  // }
+  @fn render(c: CanvasRenderingContext2D, t: number) {
+    if (!this.it.rects) return
+
     const { rect, view } = this
     const {
       colors: { color, light, dark },
       rects
     } = of(this.it)
 
+    if (!rects.count) return
+
     c.save()
     view.pos.translateNegative(c)
-    if (clear) {
-      view.clear(c)
-    }
+    // if (clear) {
+    //   view.clear(c)
+    // }
 
     c.beginPath()
     Rect.pathAround(c, rects.array, rects.count)
@@ -175,13 +181,13 @@ class FillRangeRenderable extends Renderable {
 
     c.restore()
 
-    this.need &= ~Renderable.Need.Render
-    this.need |= Renderable.Need.Draw
+    // this.need &= ~Renderable.Need.Render
+    // this.need |= Renderable.Need.Draw
   }
   @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
     const { pr, canvas, rect, view } = of(this)
     view.round().drawImageTranslated(
       canvas.el, c, pr, true, scroll)
-    this.need &= ~Renderable.Need.Draw
+    // this.need &= ~Renderable.Need.Draw
   }
 }

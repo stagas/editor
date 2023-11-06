@@ -16,10 +16,10 @@ export class Widgetable {
   get dim() { return this._dim.sorted }
   get line() { return this.dim.top.line }
 
-  @fx update_rect() {
+  @fx update_view() {
     const { it } = of(this)
     const { ctx, renderable } = of(it)
-    const { rect: r } = of(renderable)
+    const { view: v, rect: r } = of(renderable)
     const { kind, dim, dimWidthExclusive, height, offsetX } = of(this)
     const { buffer, dims } = of(ctx)
     const { lines } = of(buffer)
@@ -34,35 +34,36 @@ export class Widgetable {
     // TODO: this can't be solved with a flush because dims can be late/async
     if (line >= lineTops.length) return
 
-    r.x = col * charWidth + offsetX
-    r.w = (right - col) * charWidth
+    v.x = col * charWidth + offsetX
+    v.w = (right - col) * charWidth
 
     switch (kind) {
       case Widgetable.Kind.Deco:
         const eh = extraDecoHeights?.[line] ?? 0
-        r.h = decoHeights[line] - 2 + eh
+        v.h = decoHeights[line] - 2 + eh
         let dex = dimWidthExclusive ? charWidth : 0
-        r.x -= .5
-        r.w += 2.5
-        r.x += dex
-        r.w -= dex * 2
-        r.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
+        v.x -= .5
+        v.w += 2.5
+        v.x += dex
+        v.w -= dex * 2
+        v.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
         break
       case Widgetable.Kind.Mark:
-        r.h = Math.round(lineHeight)
-        r.y = Math.round(lineBaseTops[line] + 2)
-        r.x -= .5
-        r.w += 4
+        v.h = Math.round(lineHeight)
+        v.y = Math.round(lineBaseTops[line] + 2)
+        v.x -= .5
+        v.w += 4
         break
       case Widgetable.Kind.Sub:
-        r.h = height - 2
-        r.y = lineBaseBottoms[line] + 2
-        r.x += 1.5
-        r.w -= 1
+        v.h = height - 2
+        v.y = lineBaseBottoms[line] + 2
+        v.x += 1.5
+        v.w -= 1
         break
     }
 
-    renderable.need |= Renderable.Need.Draw
+    r.w = v.w
+    r.h = v.h
   }
 }
 

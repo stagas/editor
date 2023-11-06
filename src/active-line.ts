@@ -22,9 +22,8 @@ export class ActiveLine extends Comp
         vr.y = lineBaseTops[line]
         this.need |= Renderable.Need.Render
       }
-      @fn render(c: CanvasRenderingContext2D, t: number, clear: boolean) {
+      @fn render(c: CanvasRenderingContext2D, t: number) {
         const { rect } = this
-        if (clear) rect.clear(c)
         rect.fill(c, skin.colors.bgBright015)
         this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
