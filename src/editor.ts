@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, init, of } from 'signal'
+import { $, fn, fx, init, of, when } from 'signal'
 import { Animable, Canvas, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
@@ -98,9 +98,16 @@ export class Editor extends Scene
     $()
     const it = this
     class EditorRenderable extends Renderable {
+      @fx measure_charWidth() {
+        const { didInit } = when(this)
+        const { canvas } = of(this)
+        const { c } = of(canvas)
+        const em = c.measureText('M')
+        it.dims.charWidth = em.width
+      }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
-        this.need &= ~Renderable.Need.Init
+        c.font = it.text.renderable.font
       }
       get its() {
         return [it.outer]

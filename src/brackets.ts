@@ -16,10 +16,8 @@ export class Bracket extends Comp {
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
       }
-      @fn render() {
-        const { canvas, rect } = of(this)
-        const { c } = of(canvas)
-        rect.clear(c)
+      @fn render(c: CanvasRenderingContext2D) {
+        const { rect } = of(this)
         c.save()
         c.translate(.5, .5)
         c.strokeRect(

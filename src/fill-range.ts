@@ -119,6 +119,7 @@ class FillRangeRenderable extends Renderable {
     super(it)
     this.canDirectDraw = it.drawDirect
   }
+  // preferDirectDraw = true
   // canDirectDraw = true
   view = $(new Rect)
   @fx update_rect_dims() {

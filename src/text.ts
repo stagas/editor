@@ -1,7 +1,7 @@
-log.active
+// log.active
 import { $, fn, fx, of, when } from 'signal'
-import { Keyboard, Keyboardable, Mouse, Mouseable, Renderable } from 'std'
-import { MouseButtons, colory, match, prevent } from 'utils'
+import { FixedArray, Keyboard, Keyboardable, Mouse, Mouseable, Point, Rect, Renderable } from 'std'
+import { MouseButtons, colory, match, poolArrayGet, prevent } from 'utils'
 import { Comp } from './comp.ts'
 import { Linecol } from './linecol.ts'
 import { Scroll } from './scroll.ts'
@@ -23,6 +23,92 @@ interface Keypress {
 
 const ignoredKeys = 'cvxJr=+-tn'
 const handledKeys = 'zyvxc=+-tnb'
+
+class TextToken extends Comp
+  implements Renderable.It {
+  token?: SourceToken
+  get renderable() {
+    $(); return $(new TextTokenRenderable(
+      this
+    ))
+  }
+}
+
+class TextTokenRenderable extends Renderable {
+  constructor(public it: TextToken) {
+    super(it, true,
+      it.ctx.canvas.rect,
+      it.ctx.canvas)
+  }
+  view = $(new Rect)
+  preferDirectDraw = true
+  @fx update_dims() {
+    const { it } = this
+    const { ctx, token: t } = of(it)
+    const { prRecip, rect, view } = of(this)
+    const { dims } = ctx
+    const { charWidth, lineHeight, lineBaseBottoms } = of(dims)
+    $()
+    view.x = t.col * charWidth
+    view.y = lineBaseBottoms[t.line] - lineHeight * prRecip
+    view.w = t.text.length * charWidth
+    view.h = lineHeight
+    this.need |= Renderable.Need.Render
+  }
+  @fx trigger_draw() {
+    const { ctx: { scroll: { x, y } } } = of(this.it)
+    $()
+    this.need |= Renderable.Need.Render
+  }
+  get color() {
+    const { it } = this
+    const { ctx, token: t } = of(it)
+    const { text, buffer } = of(ctx)
+    const { Token } = of(buffer)
+    const { renderable: { colors } } = of(text)
+    return (t.text.length <= 2
+        && colors?.[t.text]) // TODO: this is slow
+      ||
+      (colors?.[Token.Type[t.type]] ?? '#fff')
+  }
+  @fn init(c: CanvasRenderingContext2D) {
+    const { it } = this
+    const { ctx, token } = of(it)
+    const { text, buffer } = of(ctx)
+    const { Token } = of(buffer)
+    const { renderable: { colors } } = of(text)
+
+    const t = this.it.token!
+
+    c.imageSmoothingEnabled = false
+    c.miterLimit = 3
+    c.lineJoin = 'round'
+    c.lineCap = 'round'
+    c.textAlign = 'left'
+    c.textBaseline = 'top'
+    c.font = text.renderable.font
+    c.lineWidth = text.renderable.lineWidth
+  }
+  @fn render(c: CanvasRenderingContext2D, time: number, scroll: Point) {
+    const t = this.it.token!
+    c.save()
+    c.fillStyle = c.strokeStyle = this.color
+    // const { view } = this
+    // const { x: sx, y: sy } = scroll
+    // const vx = Math.round(view.x + sx + 1)
+    // const vy = Math.round(view.y + sy)
+    // c.translate(vx, vy)
+    c.translate(0, 2)
+    c.strokeText(t.text, 0, 0)
+    c.fillText(t.text, 0, 0)
+    c.restore()
+    // c.restore()
+  }
+  // @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
+  //   const { pr, view, canvas } = this
+  //   view.drawImageTranslated(canvas.el, c, pr, true, scroll)
+  // }
+}
 
 export class Text extends Comp
   implements Keyboardable.It, Mouseable.It, Renderable.It {
@@ -55,7 +141,7 @@ export class Text extends Comp
           )
         }
 
-        log('linecol', linecol.text)
+        // log('linecol', linecol.text)
         misc.isTyping = false
 
         switch (kind) {
@@ -126,15 +212,43 @@ export class Text extends Comp
     const { Token } = buffer
     const { max } = Math
     class TextRenderable extends Renderable {
-      canDirectDraw = true
-      @fx update_inner_size() {
-        const { rect } = this
-        // const { hasSize } = when(dims.innerSize)
-        const { w, h } = dims.innerSize
+      // canDirectDraw = true
+      scroll = scroll.pos
+      textTokens = $(new FixedArray<TextToken>)
+      get its() {
+        // return []
+
+        const { textTokens } = this
+        const { tokens } = of(buffer)
         $()
-        rect.w = max(1, rect.w, w || 0)
-        rect.h = max(1, rect.h, h || 0)
+
+        textTokens.count = 0
+        for (let i = 0, t: SourceToken; i < tokens.length; i++) {
+          t = tokens![i]
+          if (!t.type || !t.text) continue
+
+          const textToken = poolArrayGet(
+            textTokens.array,
+            textTokens.count++,
+            this.createTextToken
+          )
+          textToken.token = t
+        }
+
+        const its = textTokens.array.slice(0, textTokens.count)
+        colory('Its', its)
+        return its
       }
+      // @fx update_inner_size() {
+      //   const { rect } = this
+      //   const { w, h } = dims.innerSize
+      //   $()
+      //   rect.w = max(1, rect.w, w || 0)
+      //   rect.h = max(1, rect.h, h || 0)
+      //   this.its.forEach(it => {
+      //     it.renderable.need |= Renderable.Need.Draw
+      //   })
+      // }
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
@@ -184,23 +298,17 @@ export class Text extends Comp
           'to_audio': c.brightPurple,
         }
       }
-      @fx measure_charWidth() {
-        const { didInit } = when(this)
-        const { canvas } = of(this)
-        const { c } = of(canvas)
-        const em = c.measureText('M')
-        dims.charWidth = em.width
-      }
-      @fx trigger_render_when_scroll() {
-        const { charWidth, scroll: { x, y } } = of(dims)
-        $()
-        this.need |= Renderable.Need.Render
-      }
-      @fx trigger_render_when_win_resize() {
-        const { charWidth, rect: { w, h } } = of(dims)
-        $()
-        this.need |= Renderable.Need.Render
-      }
+
+      // @fx trigger_render_when_scroll() {
+      //   const { charWidth, scroll: { x, y } } = of(dims)
+      //   $()
+      //   this.need |= Renderable.Need.Render
+      // }
+      // @fx trigger_render_when_win_resize() {
+      //   const { charWidth, rect: { w, h } } = of(dims)
+      //   $()
+      //   this.need |= Renderable.Need.Render
+      // }
       @fx trigger_render_when_misc() {
         const { pr, rect } = this
         const { size: { wh: size_wh } } = rect
@@ -213,7 +321,9 @@ export class Text extends Comp
         } = of(dims)
         const { source, tokens, Token } = of(buffer)
         $()
-        this.need |= Renderable.Need.Render
+        this.its.forEach(it => {
+          it.renderable.need |= Renderable.Need.Render
+        })
       }
       get font() {
         return `100 ${dims.fontSize}px ${skin.fonts.mono}`
@@ -221,74 +331,87 @@ export class Text extends Comp
       get lineWidth() {
         return dims.fontSize / 100
       }
-      @fn init(c: CanvasRenderingContext2D) {
-        c.imageSmoothingEnabled = false
-        c.miterLimit = 3
-        c.lineJoin = 'round'
-        c.lineCap = 'round'
-        c.textAlign = 'left'
-        c.textBaseline = 'bottom'
-        c.font = this.font
-        c.lineWidth = this.lineWidth
-        // this.need &= ~Renderable.Need.Init
-        // if (this.didInitCanvas) {
-        //   this.need |= Renderable.Need.Render
-        // }
-        // else {
-        // }
+      // @fn init(c: CanvasRenderingContext2D) {
+      //   c.imageSmoothingEnabled = false
+      //   c.miterLimit = 3
+      //   c.lineJoin = 'round'
+      //   c.lineCap = 'round'
+      //   c.textAlign = 'left'
+      //   c.textBaseline = 'bottom'
+      //   c.font = this.font
+      //   c.lineWidth = this.lineWidth
+      //   // this.need &= ~Renderable.Need.Init
+      //   // if (this.didInitCanvas) {
+      //   //   this.need |= Renderable.Need.Render
+      //   // }
+      //   // else {
+      //   // }
+      // }
+      @fn createTextToken = () => {
+        return $(new TextToken(it.ctx))
       }
-      @fn render(c: CanvasRenderingContext2D, t: number) {
-        const { rect, colors } = this
-        if (!dims.charWidth) return
+      // @fn render(c: CanvasRenderingContext2D, t: number) {
+      //   const { rect, colors, textTokens } = this
+      //   if (!dims.charWidth) return
 
-        const { charWidth } = of(dims)
-        const { lineBaseBottoms } = dims
-        const { tokens } = buffer
+      //   const { charWidth } = of(dims)
+      //   const { lineBaseBottoms } = dims
+      //   const { tokens } = buffer
 
-        // log('tokens', tokens)
-        // if (clear) {
-        // rect.clear(c)
-        // }
+      //   // log('tokens', tokens)
+      //   // if (clear) {
+      //   // rect.clear(c)
+      //   // }
 
-        c.save()
-        c.translate(Math.round(scroll.x), Math.round(scroll.y))
+      //   c.save()
+      //   // c.translate(Math.round(scroll.x), Math.round(scroll.y))
 
-        log(rect.text)
-        for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
-          t = tokens![i]
+      //   textTokens.count = 0
 
-          if (!t.type || !t.text) continue
+      //   log(rect.text)
+      //   for (let i = 0, t: SourceToken, x: number, y: number; i < tokens!.length; i++) {
+      //     t = tokens![i]
 
-          y = lineBaseBottoms[t.line]
+      //     if (!t.type || !t.text) continue
 
-          if (y > visibleSpan.top && y < visibleSpan.bottom) {
-            x = t.col * charWidth + 1
+      //     const textToken = poolArrayGet(
+      //       textTokens.array,
+      //       textTokens.count++,
+      //       this.createTextToken
+      //     )
 
-            c.fillStyle
-              = c.strokeStyle
-              =
-              (t.text.length <= 2
-                && colors?.[t.text]) // TODO: this is slow
-              ||
-              (colors?.[Token.Type[t.type]] ?? '#fff')
+      //     textToken.token = t
 
-            c.strokeText(t.text, x, y)
-            c.fillText(t.text, x, y)
-          }
-        }
-        c.restore()
+      //     // y = lineBaseBottoms[t.line]
 
-        // this.need &= ~Renderable.Need.Render
-        // this.need |= Renderable.Need.Draw
-      }
-      @fn draw(c: CanvasRenderingContext2D) {
-        const { pr, canvas, view } = of(this)
-        view.round().drawImage(
-          canvas.el, c, pr, true)
-        // this.need &= ~Renderable.Need.Draw
-      }
+      //     // if (y > visibleSpan.top && y < visibleSpan.bottom) {
+      //     //   x = t.col * charWidth + 1
+
+      //     //   c.fillStyle
+      //     //     = c.strokeStyle
+      //     //     =
+      //     //     (t.text.length <= 2
+      //     //       && colors?.[t.text]) // TODO: this is slow
+      //     //     ||
+      //     //     (colors?.[Token.Type[t.type]] ?? '#fff')
+
+      //     //   c.strokeText(t.text, x, y)
+      //     //   c.fillText(t.text, x, y)
+      //     // }
+      //   }
+      //   c.restore()
+
+      //   // this.need &= ~Renderable.Need.Render
+      //   // this.need |= Renderable.Need.Draw
+      // }
+      // @fn draw(c: CanvasRenderingContext2D) {
+      //   const { pr, canvas, view } = of(this)
+      //   view.round().drawImage(
+      //     canvas.el, c, pr, true)
+      //   // this.need &= ~Renderable.Need.Draw
+      // }
     }
-    return $(new TextRenderable(it as Renderable.It))
+    return $(new TextRenderable(it as Renderable.It, false))
   }
 }
 
