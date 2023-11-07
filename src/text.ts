@@ -7,6 +7,7 @@ import { Linecol } from './linecol.ts'
 import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
+import { TextToken } from './text-token.ts'
 
 interface Keypress {
   key?: Keyboard.Key | undefined
@@ -24,91 +25,6 @@ interface Keypress {
 const ignoredKeys = 'cvxJr=+-tn'
 const handledKeys = 'zyvxc=+-tnb'
 
-class TextToken extends Comp
-  implements Renderable.It {
-  token?: SourceToken
-  get renderable() {
-    $(); return $(new TextTokenRenderable(
-      this
-    ))
-  }
-}
-
-class TextTokenRenderable extends Renderable {
-  constructor(public it: TextToken) {
-    super(it, true,
-      it.ctx.canvas.rect,
-      it.ctx.canvas)
-  }
-  view = $(new Rect)
-  preferDirectDraw = true
-  @fx update_dims() {
-    const { it } = this
-    const { ctx, token: t } = of(it)
-    const { prRecip, rect, view } = of(this)
-    const { dims } = ctx
-    const { charWidth, lineHeight, lineBaseBottoms } = of(dims)
-    $()
-    view.x = t.col * charWidth
-    view.y = lineBaseBottoms[t.line] - lineHeight * prRecip
-    view.w = t.text.length * charWidth
-    view.h = lineHeight
-    this.need |= Renderable.Need.Render
-  }
-  @fx trigger_draw() {
-    const { ctx: { scroll: { x, y } } } = of(this.it)
-    $()
-    this.need |= Renderable.Need.Render
-  }
-  get color() {
-    const { it } = this
-    const { ctx, token: t } = of(it)
-    const { text, buffer } = of(ctx)
-    const { Token } = of(buffer)
-    const { renderable: { colors } } = of(text)
-    return (t.text.length <= 2
-        && colors?.[t.text]) // TODO: this is slow
-      ||
-      (colors?.[Token.Type[t.type]] ?? '#fff')
-  }
-  @fn init(c: CanvasRenderingContext2D) {
-    const { it } = this
-    const { ctx, token } = of(it)
-    const { text, buffer } = of(ctx)
-    const { Token } = of(buffer)
-    const { renderable: { colors } } = of(text)
-
-    const t = this.it.token!
-
-    c.imageSmoothingEnabled = false
-    c.miterLimit = 3
-    c.lineJoin = 'round'
-    c.lineCap = 'round'
-    c.textAlign = 'left'
-    c.textBaseline = 'top'
-    c.font = text.renderable.font
-    c.lineWidth = text.renderable.lineWidth
-  }
-  @fn render(c: CanvasRenderingContext2D, time: number, scroll: Point) {
-    const t = this.it.token!
-    c.save()
-    c.fillStyle = c.strokeStyle = this.color
-    // const { view } = this
-    // const { x: sx, y: sy } = scroll
-    // const vx = Math.round(view.x + sx + 1)
-    // const vy = Math.round(view.y + sy)
-    // c.translate(vx, vy)
-    c.translate(0, 2)
-    c.strokeText(t.text, 0, 0)
-    c.fillText(t.text, 0, 0)
-    c.restore()
-    // c.restore()
-  }
-  // @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-  //   const { pr, view, canvas } = this
-  //   view.drawImageTranslated(canvas.el, c, pr, true, scroll)
-  // }
-}
 
 export class Text extends Comp
   implements Keyboardable.It, Mouseable.It, Renderable.It {
@@ -236,7 +152,7 @@ export class Text extends Comp
         }
 
         const its = textTokens.array.slice(0, textTokens.count)
-        colory('Its', its)
+        // colory('Its', its)
         return its
       }
       // @fx update_inner_size() {

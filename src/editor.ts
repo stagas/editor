@@ -104,6 +104,7 @@ export class Editor extends Scene
         const { c } = of(canvas)
         const em = c.measureText('M')
         it.dims.charWidth = em.width
+        it.dims.charHeight = em.fontBoundingBoxAscent
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
@@ -115,7 +116,7 @@ export class Editor extends Scene
     }
     return $(new EditorRenderable(
       it as Renderable.It,
-      true,
+      false,
       it.canvas.rect,
       it.canvas
     ))

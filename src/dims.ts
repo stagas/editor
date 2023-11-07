@@ -19,7 +19,13 @@ export class Dims extends Comp {
 
   // TODO: single point? char.width char.height ?
   charWidth?: number
-
+  charHeight?: number
+  get char() {
+    return $(new Point, {
+      x: $(this).$.charWidth!,
+      y: $(this).$.charHeight!
+    })
+  }
   get lineHeight() {
     return Math.round(this.fontSize * 1.5)
   }
@@ -161,6 +167,6 @@ export class Dims extends Comp {
       this.lineHeights = lineHeights
     }
 
-    innerSize.h = lineBottoms.at(-1) || 0
+    innerSize.h = (lineBottoms.at(-1) || 0)
   }
 }
