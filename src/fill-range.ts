@@ -55,6 +55,10 @@ export class FillRange extends Range
     const manyLines = top.line !== bottom.line
     const rightExtend = 4
 
+    const renderExtend = 300
+    const visibleTop = Math.max(0, visibleSpan.top - renderExtend)
+    const visibleBottom = visibleSpan.bottom + renderExtend
+
     // iterate each line and produce its fill rect
     for (let line = top.line; line <= bottom.line; line++) {
       const x = line === top.y
@@ -81,7 +85,7 @@ export class FillRange extends Range
       //   : lineHeight + 0.5
 
       if (drawDirect) {
-        if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
+        if (y + h < visibleTop || y > visibleBottom) continue
       }
 
       r = poolArrayGet(

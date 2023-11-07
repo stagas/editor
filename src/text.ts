@@ -603,7 +603,6 @@ class TextKeyboardable extends Keyboardable {
           selection.end.x += diff
         }
         else {
-          // await rest()
           $.flush()
           selection.start.set(selection.end)
         }
