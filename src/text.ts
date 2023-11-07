@@ -463,6 +463,7 @@ class TextKeyboardable extends Keyboardable {
           $.flush()
           this.handleKey({ special: 'ArrowLeft', ctrl: true, shift: true })
           $.flush()
+          selection.end.set({ x: b.col, y: b.line })
           this.handleKey({ special })
           return true
         }
@@ -526,9 +527,10 @@ class TextKeyboardable extends Keyboardable {
         if (ctrl) {
           history.saveHistoryMeta()
           selection.start.set({ x: b.col, y: b.line })
-          this.handleKey({ special: 'ArrowRight', ctrl: true, shift: true })
-          // await rest()
           $.flush()
+          this.handleKey({ special: 'ArrowRight', ctrl: true, shift: true })
+          $.flush()
+          selection.end.set({ x: b.col, y: b.line })
           this.handleKey({ special })
           return true
         }
