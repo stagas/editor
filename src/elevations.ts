@@ -1,9 +1,8 @@
 // log.active
 import { $, fn, fx, of } from 'signal'
 import { FixedArray, Point, Renderable } from 'std'
-import { partialSort, poolArrayGet } from 'utils'
+import { partialSort, poolArrayGet, unique } from 'utils'
 import { Comp } from './comp.ts'
-import { Editor } from './editor.ts'
 import { FillRange } from './fill-range.ts'
 import { SourceToken } from './source.ts'
 import { Open, byDepth, openers } from './util.ts'
@@ -38,9 +37,6 @@ export class ElevationFill extends Comp
         $()
 
         ownElevations.clear()
-
-        // ownElevations.clear()
-        // this.updated++
 
         let x = 0
 
@@ -89,17 +85,6 @@ export class ElevationFill extends Comp
 
         return [...ownElevations]
       }
-      // @fn before() {
-      //   const { colors } = of(it)
-      //   for (const it of this.its) {
-      //     it.colors = colors
-      //   }
-      // }
-      // get its() {
-      //   this.updated
-      //   $()
-      //   return [...it.ownElevations]
-      // }
     }
     return $(new ElevationFillRenderable(it as Renderable.It, false))
   }
@@ -109,7 +94,6 @@ export class Elevations extends Comp
   implements Renderable.It {
   elevations = $(new FixedArray<$<Elevation>>)
   elevationsStack: SourceToken[] = []
-  // elevations: $<Elevation>[] = []
   elevated: $<Point>[] = []
 
   get caretColors(): ElevationFill['colors'] {
@@ -119,7 +103,7 @@ export class Elevations extends Comp
     return {
       color: skin.colors.brand1 + '66',
       light: skin.colors.fg,
-      dark: skin.colors.bgDark015 + '33',
+      dark: skin.colors.bgDark15 + '66',
     }
   }
   get hoverColors(): ElevationFill['colors'] {
@@ -128,8 +112,8 @@ export class Elevations extends Comp
     const { skin } = of(ctx)
     return {
       color: skin.colors.bgBright05 + '66',
-      light: skin.colors.bgBright1,
-      dark: skin.colors.bgDark015 + '66',
+      light: skin.colors.bgBright2,
+      dark: skin.colors.bgDark15 + '66',
     }
   }
   createElevationTarget(colors: ElevationFill['colors']) {
@@ -172,10 +156,6 @@ export class Elevations extends Comp
 
         // Don't update elevation points while user is scrolling.
         if (isScrolling) {
-          // log('YES')
-          // this.need |= Renderable.Need.Render
-          // it.hover.fill.renderable.need |= Renderable.Need.Render
-          // it.caret.fill.renderable.need |= Renderable.Need.Render
           return
         }
 
@@ -195,8 +175,8 @@ export class Elevations extends Comp
         const { elevations, elevationsStack: stack } = of(it)
         const { tokens } = of(buffer)
         $()
+        elevations.count = 0
         let top: SourceToken | undefined
-        let count = 0
         // i = length, we use it to avoid poping the stack array
         // because it is slower.
         let i = 0
@@ -225,7 +205,7 @@ export class Elevations extends Comp
               const end = t
               const el = poolArrayGet(
                 elevations.array,
-                count++,
+                elevations.count++,
                 this.createElevation
               )
               el.start.col = start.col
@@ -237,59 +217,9 @@ export class Elevations extends Comp
           }
         }
 
-        partialSort(
-          elevations.array,
-          elevations.count = count,
-          byDepth
-        )
-
+        elevations.sort(elevations.count, byDepth)
         elevations.updated++
       }
-      // @fn render(c: CanvasRenderingContext2D, t: number, clear?: boolean) {
-      //   // log('RENDER ELEVATIONS')
-      //   // // TODO: i dont think this is correct
-      //   // if (this.need & Renderable.Need.Draw) return
-
-      //   // const { rect, colors, dirtyRects } = of(this)
-      //   // const { isTyping } = of(misc)
-      //   // const { mouseable: { isHovering } } = of(text)
-
-      //   // dirtyRects[0].zero()
-      //   // dirtyRects[1].zero()
-      //   // if (clear) {
-      //   //   rect.clear(c)
-      //   // }
-      //   // c.save()
-      //   // c.translate(scroll.x, scroll.y)
-      //   it.drawnElevations.clear()
-      //   // log('CLEAR ELEVATEIONS')
-      //   // if (it.caretElevationPoint) this.drawElevation(
-      //   //   c,
-      //   //   it.caretElevationPoint,
-      //   //   dirtyRects[0],
-      //   //   colors.caret
-      //   // )
-      //   // if (!isTyping && isHovering) this.drawElevation(
-      //   //   c,
-      //   //   it.hoverElevationPoint,
-      //   //   dirtyRects[1],
-      //   //   colors.hover
-      //   // )
-      //   // // dirtyRect.pos.add(scroll)
-      //   // c.restore()
-
-      //   // this.needRender = false
-      //   // this.needDraw = true
-      //   this.need &= ~Renderable.Need.Render
-      // }
-      // @fn draw(c: CanvasRenderingContext2D) {
-      //   const { canvas, rect, pr, dirtyRects } = of(this)
-      //   for (const dr of dirtyRects) {
-      //     dr.drawImage(canvas.el, c, pr)
-      //   }
-      //   this.needDraw = false
-      // }
-
       get its() {
         const { isTyping } = of(misc)
         const { mouseable: { isHovering } } = of(text)
@@ -300,7 +230,11 @@ export class Elevations extends Comp
           its.push(it.hover.fill)
         }
 
-        return [...new Set([...its.flatMap(x => x.renderable.its)])]
+        return unique(
+          its.flatMap(x =>
+            x.renderable.its
+          )
+        )
       }
     }
     return $(new ElevationsRenderable(it as Renderable.It, false))

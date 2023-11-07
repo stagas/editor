@@ -17,7 +17,7 @@ export class ActiveLine extends Comp
         const { rect: { w: rw }, lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
         const { w } = innerSize
         $()
-        r.h = vr.h = lineHeight + 2
+        r.h = vr.h = lineHeight
         r.w = vr.w = Math.max(rw, w + overscrollX)
         vr.y = lineBaseTops[line]
         this.need |= Renderable.Need.Render

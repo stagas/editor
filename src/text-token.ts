@@ -23,18 +23,18 @@ class TextTokenRenderable extends Renderable {
   }
   view = $(new Rect)
   preferDirectDraw = true
-  padding = $(new Point, { x: .5, y: .5 })
+  padding = $(new Point, { x: 1.5, y: .5 })
   @fx update_dims() {
-    const { it } = this
+    const { it, padding } = this
     const { ctx, token: t } = of(it)
     const { prRecip, rect, view } = of(this)
     const { dims } = ctx
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
-    view.x = t.col * charWidth + 1
-    view.y = lineBaseBottoms[t.line] - charHeight
-    view.w = t.text.length * charWidth
-    view.h = lineHeight
+    view.x = Math.round(t.col * charWidth) - .5
+    view.y = Math.round(lineBaseBottoms[t.line] - lineHeight - (lineHeight - charHeight) / 2)
+    view.w = t.text.length * charWidth + 2
+    view.h = lineHeight + padding.y * 2
     this.need |= Renderable.Need.Render
   }
   @fx trigger_draw() {
@@ -50,8 +50,7 @@ class TextTokenRenderable extends Renderable {
     const { renderable: { colors } } = of(text)
     return (t.text.length <= 2
       && colors?.[t.text]) // TODO: this is slow
-      ||
-      (colors?.[Token.Type[t.type]] ?? '#fff')
+      || (colors?.[Token.Type[t.type]] ?? '#fff')
   }
   @fn init(c: CanvasRenderingContext2D) {
     const { it } = this
@@ -63,15 +62,18 @@ class TextTokenRenderable extends Renderable {
     c.lineJoin = 'round'
     c.lineCap = 'round'
     c.textAlign = 'left'
-    c.textBaseline = 'top'
+    c.textBaseline = 'bottom'
     c.font = text.renderable.font
     c.lineWidth = text.renderable.lineWidth
   }
   @fn render(c: CanvasRenderingContext2D) {
-    const { token: t } = of(this.it)
-    const { color } = this
+    const { it, color } = this
+    const { ctx, token: t } = of(it)
+    const { view, padding } = of(this)
+    const { dims } = ctx
     c.fillStyle = c.strokeStyle = color
-    c.strokeText(t.text, 0, 0)
-    c.fillText(t.text, 0, 0)
+    const y = view.height - padding.y * 2
+    c.strokeText(t.text, 0, y)
+    c.fillText(t.text, 0, y)
   }
 }

@@ -56,9 +56,10 @@ export class Widgetable {
         break
       case Widgetable.Kind.Sub:
         v.h = height - 2
-        v.y = lineBaseBottoms[line] + 2
-        v.x += 1.5
-        v.w -= 1
+        v.y = Math.floor(lineBaseBottoms[line] - 2) - 1
+        // v.x += 1
+        v.x = Math.round(v.x) - 1
+        v.w = Math.round(v.w) + 2.5
         break
     }
 

@@ -55,7 +55,7 @@ export class Brackets extends Comp {
         const { lineHeight, charWidth } = of(dims)
         $()
         r1.w = r2.w = Math.floor(charWidth + 6)
-        r1.h = r2.h = Math.floor(lineHeight + 6)
+        r1.h = r2.h = Math.floor(lineHeight + 5)
       }
       @fx update_brackets() {
         const { lineBaseTops, charWidth } = of(dims)
@@ -76,8 +76,8 @@ export class Brackets extends Comp {
         else {
           buffer.getPointFromLineCol(open, r1)
           buffer.getPointFromLineCol(close, r2)
-          r1.translate(-2).floor()
-          r2.translate(-2).floor()
+          r1.translate(-2).round()
+          r2.translate(-2).round()
           b1.renderable.isHidden
             = b2.renderable.isHidden = false
         }

@@ -42,10 +42,10 @@ export class FillRange extends Range
 
     $()
 
-    if (top.equals(bottom)) {
-      fillRects.count = 0
-      fillRects.updated++
+    fillRects.count = 0
+    fillRects.updated++
 
+    if (top.equals(bottom)) {
       return fillRects
     }
 
@@ -53,6 +53,7 @@ export class FillRange extends Range
     let r: Rect
 
     const manyLines = top.line !== bottom.line
+    const rightExtend = 4
 
     // iterate each line and produce its fill rect
     for (let line = top.line; line <= bottom.line; line++) {
@@ -60,32 +61,40 @@ export class FillRange extends Range
         ? top.x * charWidth
         : 0
 
-      const y = full
-        ? lineTops[line] + 3
-        : lineBaseTops[line] + 2
+      const y = lineBaseTops[line]
+      // const y = full
+      //   ? lineTops[line] + 3
+      //   : lineBaseTops[line] + 2
 
       const w = (line === top.line ?
         line === bottom.line
           ? (bottom.col - top.col) * charWidth
-          : ((lines[line]?.length ?? 0) - top.col) * charWidth + 2
+          : ((lines[line]?.length ?? 0) - top.col) * charWidth + rightExtend
         : line === bottom.line
           ? bottom.col * charWidth
-          : ((lines[line]?.length ?? 0) * charWidth + 2))
+          : ((lines[line]?.length ?? 0) * charWidth + rightExtend))
 
-      const h = full
-        ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
-        : lineHeight + 0.5
+      const h = lineHeight
+        // lineHeights[line] - (line === bottom.line ? padBottom : 0)
+      // full
+      //   ?
+      //   : lineHeight + 0.5
 
       if (drawDirect) {
         if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
       }
 
-      r = poolArrayGet(fillRects.array, i++, Rect.create)
+      r = poolArrayGet(
+        fillRects.array,
+        fillRects.count++,
+        Rect.create
+      )
 
       r.x = x
       r.y = y
-      r.w = w  // + avoids flicker rounding
+      r.w = w + 2  // + avoids flicker rounding
       r.h = h
+      r.round()
       // r.floorCeil()
 
       // TODO: aesthetics
@@ -101,9 +110,6 @@ export class FillRange extends Range
         }
       }
     }
-
-    fillRects.count = i
-    fillRects.updated++
 
     return fillRects
   }
@@ -122,13 +128,16 @@ class FillRangeRenderable extends Renderable {
   // preferDirectDraw = true
   // canDirectDraw = true
   view = $(new Rect)
+  padding = $(new Point, { x: .5, y: .5 })
   @fx update_rect_dims() {
     const { rect, view } = this
     const { charWidth } = of(this.it.ctx.dims)
     const { rects, colors } = of(this.it)
     const { updated, count } = rects
     $()
-    view.combineRects(rects.array, rects.count).round()
+    view.combineRects(rects.array, rects.count).floor()
+    // view.w += 1
+    // view.h += 1
     rect.w = Math.max(rect.w, view.w)
     rect.h = Math.max(rect.h, view.h)
     this.need |= Renderable.Need.Render
@@ -150,7 +159,7 @@ class FillRangeRenderable extends Renderable {
     if (!rects.count) return
 
     c.save()
-    view.pos.translateNegative(c)
+    view.pos.round().translateNegative(c)
     // if (clear) {
     //   view.clear(c)
     // }
@@ -159,11 +168,13 @@ class FillRangeRenderable extends Renderable {
     Rect.pathAround(c, rects.array, rects.count)
     c.fillStyle = color
     c.fill()
+    c.clip()
 
     if (dark || light) {
-      c.save()
+      // c.save()
       c.lineCap = 'square'
-      c.translate(.5, .5)
+
+      c.translate(-.5, -.5)
       if (dark) {
         c.beginPath()
         Rect.pathAroundRight(c, rects.array, rects.count)
@@ -171,13 +182,14 @@ class FillRangeRenderable extends Renderable {
         c.stroke()
       }
 
+      c.translate(1, 1)
       if (light) {
         c.beginPath()
         Rect.pathAroundLeft(c, rects.array, rects.count)
         c.strokeStyle = light
         c.stroke()
       }
-      c.restore()
+      // c.restore()
     }
 
     c.restore()
@@ -186,9 +198,8 @@ class FillRangeRenderable extends Renderable {
     // this.need |= Renderable.Need.Draw
   }
   @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-    const { pr, canvas, rect, view } = of(this)
+    const { pr, canvas, view } = of(this)
     view.round().drawImageTranslated(
       canvas.el, c, pr, true, scroll)
-    // this.need &= ~Renderable.Need.Draw
   }
 }
