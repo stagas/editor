@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, of } from 'signal'
+import { $, fn, fx, of, when } from 'signal'
 import { Point, Rect, Renderable } from 'std'
 import { Comp } from './comp.ts'
 import { SourceToken } from './source.ts'
@@ -29,6 +29,7 @@ class TextTokenRenderable extends Renderable {
     const { ctx, token: t } = of(it)
     const { prRecip, rect, view } = of(this)
     const { dims } = ctx
+    const { hasSize } = when(dims.rect)
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
     view.x = Math.round(t.col * charWidth) - .5
@@ -70,9 +71,15 @@ class TextTokenRenderable extends Renderable {
     const { it, color } = this
     const { ctx, token: t } = of(it)
     const { view, padding } = of(this)
-    const { dims } = ctx
-    c.fillStyle = c.strokeStyle = color
+    const { dims, text } = ctx
+    if (!dims.charWidth) return
+
     const y = view.height - padding.y * 2
+    c.strokeStyle = '#000'
+    c.lineWidth = 2
+    c.strokeText(t.text, 0, y)
+    c.fillStyle = c.strokeStyle = color
+    c.lineWidth = text.renderable.lineWidth * 2
     c.strokeText(t.text, 0, y)
     c.fillText(t.text, 0, y)
   }

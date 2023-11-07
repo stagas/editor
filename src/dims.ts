@@ -5,13 +5,13 @@ import { arraysEqual } from 'utils'
 import { Comp } from './comp.ts'
 
 export class Dims extends Comp {
-  get rect() { return this.ctx.renderable.rect }
+  get rect() { return this.ctx.renderable.view }
 
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
   dimRect = $(new Rect, { w: 1, h: 1 })
 
-  fontSize = 12
+  fontSize = 14
   fontsReady = true //?: boolean
 
   blinkDelay = 270 // TODO: sync to beat
@@ -27,7 +27,7 @@ export class Dims extends Comp {
     })
   }
   get lineHeight() {
-    return Math.round(this.fontSize * 1.65)
+    return Math.round(this.fontSize * 1.25)
   }
   get lines() {
     return this.ctx.buffer?.source?.lines
@@ -99,7 +99,7 @@ export class Dims extends Comp {
 
       subHeights[w.line] = Math.max(
         subHeights?.[w.line] ?? 0,
-        w.height + 4
+        w.height
       )
     }
     // console.log('SUB', [...subHeights])

@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, init, of, when } from 'signal'
-import { Animable, Canvas, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
+import { Animable, Canvas, Mouse, Mouseable, Point, Rect, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
 import { Brackets } from './brackets.ts'
@@ -98,6 +98,7 @@ export class Editor extends Scene
     $()
     const it = this
     class EditorRenderable extends Renderable {
+      view = $(new Rect)
       @fx measure_charWidth() {
         const { didInit } = when(this)
         const { canvas } = of(this)

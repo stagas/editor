@@ -101,7 +101,7 @@ export class Elevations extends Comp
     const { ctx } = of(it)
     const { skin } = of(ctx)
     return {
-      color: skin.colors.brand1 + '66',
+      color: skin.colors.brand1Pale + '44',
       light: skin.colors.fg,
       dark: skin.colors.bgDark15 + '66',
     }

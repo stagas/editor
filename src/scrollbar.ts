@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of, when } from 'signal'
-import { Mouse, Mouseable, Renderable } from 'std'
+import { Point, Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons } from 'utils'
 import { Comp } from './comp.ts'
 import { Scroll } from './scroll.ts'
@@ -119,9 +119,9 @@ export class Scrollbar extends Comp
         this.need |= Renderable.Need.Draw
         // console.log('YO')
       }
-      @fn draw(c: CanvasRenderingContext2D) {
+      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
         const { pr, canvas, rect } = this
-        rect.drawImage(canvas.el, c, pr, true)
+        rect.drawImageTranslated(canvas.el, c, pr, true, scroll)
         // console.log(rect.text)
         this.need &= ~Renderable.Need.Draw
       }

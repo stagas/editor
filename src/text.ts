@@ -43,6 +43,7 @@ export class Text extends Comp
 
     class TextMouseable extends Mouseable {
       hitArea = dims.rect
+      hitAreaNormalize = true
       cursor = 'text'
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse, isDown } = this
