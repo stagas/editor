@@ -27,7 +27,7 @@ export class Dims extends Comp {
     })
   }
   get lineHeight() {
-    return Math.round(this.fontSize * 1.5)
+    return Math.round(this.fontSize * 1.65)
   }
   get lines() {
     return this.ctx.buffer?.source?.lines

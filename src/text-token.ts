@@ -21,9 +21,9 @@ class TextTokenRenderable extends Renderable {
       it.ctx.canvas.rect,
       it.ctx.canvas)
   }
-  view = $(new Rect)
   preferDirectDraw = true
-  padding = $(new Point, { x: 1.5, y: .5 })
+  view = $(new Rect)
+  padding = $(new Point(1.5, 1))
   @fx update_dims() {
     const { it, padding } = this
     const { ctx, token: t } = of(it)

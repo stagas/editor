@@ -54,7 +54,7 @@ export class Skeleton extends Comp
     const { Char, Special } = Keyboard.KeyKind
     class SkeletonKeyboardable extends Keyboardable {
       onKeyboardEvent(kind: Keyboard.EventKind): string | true | void | undefined {
-        const { key, char, special, alt, ctrl, shift } = this.kbd
+        const { key, char, special, alt, ctrl, shift } = this.keypress
         switch (kind) {
           case Down:
             break

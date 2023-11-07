@@ -125,15 +125,16 @@ export class Selection extends FillRange {
     }
     return false
   }
-  // @fx shiftKeyPressedExtendsSelection() {
-  //   const selection = this
-  //   const { ctx } = of(this)
-  //   const { buffer, keyboard } = of(ctx)
-  //   const { line, col } = of(buffer)
-  //   const { shift } = when(keyboard)
-  //   $()
-  //   selection.end.set({ x: col, y: line })
-  // }
+  @fx shiftKeyPressedExtendsSelection() {
+    const selection = this
+    const { ctx } = of(this)
+    const { buffer, text, keyboard } = of(ctx)
+    const { line, col } = of(buffer)
+    const { keypress } = of(text.keyboardable)
+    const { shift } = when(keypress)
+    $()
+    selection.end.set({ x: col, y: line })
+  }
   // @fn updateTextareaText = () => {
   //   const { ctx, text } = of(this)
   //   const { input } = of(ctx)

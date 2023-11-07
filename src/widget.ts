@@ -40,7 +40,7 @@ export class Widgetable {
     switch (kind) {
       case Widgetable.Kind.Deco:
         const eh = extraDecoHeights?.[line] ?? 0
-        v.h = decoHeights[line] - 2 + eh
+        v.h = decoHeights[line] - 3.5 + eh
         let dex = dimWidthExclusive ? charWidth : 0
         v.x -= .5
         v.w += 2.5

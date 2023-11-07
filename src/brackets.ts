@@ -21,7 +21,7 @@ export class Bracket extends Comp {
         c.save()
         c.translate(.5, .5)
         c.strokeRect(
-          3,
+          4,
           4,
           rect.w - 6,
           rect.h - 6
@@ -55,7 +55,7 @@ export class Brackets extends Comp {
         const { lineHeight, charWidth } = of(dims)
         $()
         r1.w = r2.w = Math.floor(charWidth + 6)
-        r1.h = r2.h = Math.floor(lineHeight + 5)
+        r1.h = r2.h = Math.floor(lineHeight + 4)
       }
       @fx update_brackets() {
         const { lineBaseTops, charWidth } = of(dims)
@@ -76,8 +76,8 @@ export class Brackets extends Comp {
         else {
           buffer.getPointFromLineCol(open, r1)
           buffer.getPointFromLineCol(close, r2)
-          r1.translate(-2).round()
-          r2.translate(-2).round()
+          r1.translate(-3).round()
+          r2.translate(-3).round()
           b1.renderable.isHidden
             = b2.renderable.isHidden = false
         }

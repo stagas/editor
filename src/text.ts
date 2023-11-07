@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, of } from 'signal'
+import { $, fn, of } from 'signal'
 import { FixedArray, Keyboard, Keyboardable, Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons, colory, match, poolArrayGet, prevent } from 'utils'
 import { Comp } from './comp.ts'
@@ -123,8 +123,8 @@ export class Text extends Comp
     const it = this
     const { ctx } = of(it)
     const { buffer, dims, skin, scroll } = of(ctx)
+
     class TextRenderable extends Renderable {
-      // canDirectDraw = true
       scroll = scroll.pos
       textTokens = $(new FixedArray<TextToken>)
       get colors(): Record<string, string> {
@@ -176,22 +176,6 @@ export class Text extends Comp
           'to_audio': c.brightPurple,
         }
       }
-      // @fx trigger_render_when_misc() {
-      //   const { pr, rect } = this
-      //   const { size: { wh: size_wh } } = rect
-      //   const {
-      //     fontSize,
-      //     lineBaseBottoms,
-      //     lineHeight,
-      //     charWidth,
-      //     innerSize: { wh },
-      //   } = of(dims)
-      //   const { source, tokens, Token } = of(buffer)
-      //   $()
-      //   this.its.forEach(it => {
-      //     it.renderable.need |= Renderable.Need.Render
-      //   })
-      // }
       get font() {
         return `100 ${dims.fontSize}px ${skin.fonts.mono}`
       }
@@ -235,10 +219,10 @@ class TextKeyboardable extends Keyboardable {
     const { Down, Up, Copy, Cut, Paste } = Keyboard.EventKind
     const { Char, Special } = Keyboard.KeyKind
 
-    const { key, char, special, alt, ctrl, shift } = this.kbd
+    const { key, char, special, alt, ctrl, shift } = this.keypress
 
     return match('Key', { kind }, [
-      [{ kind: Down }, (): Keyboard.Result => {
+      [[{ kind: Down }], (): Keyboard.Result => {
         if (ctrl) {
           if (special === 'Control'
             || (char != null
@@ -248,47 +232,29 @@ class TextKeyboardable extends Keyboardable {
           }
         }
         misc.isTyping = true
-        return this.handleKey(this.kbd)
+        return this.handleKey(this.keypress)
       }],
 
-      [{ kind: Copy }, () => {
+      [[{ kind: Copy }], () => {
         return selection.selectionText
+      }],
+
+      [[{ kind: Cut }], () => {
+        return selection.deleteSelection()
+      }],
+
+      [[{ kind: Paste }], () => {
+        clipboard.handlePaste(this.keypress.clip!)
       }],
     ], (category, matcher, result) => {
       colory(
         category,
-        Keyboard.EventKind[matcher.kind],
+        Keyboard.EventKind[matcher!.kind],
         { char, special, ctrl, shift, alt },
         result
       )
     })
-
-    // switch (kind) {
-    //   case Down:
-    //     log('Down', key)
-    //     if (ctrl) {
-    //       if (special === 'Control'
-    //         || (char != null
-    //           && char.length
-    //           && ignoredKeys.includes(char))) {
-    //         break
-    //       }
-    //     }
-    //     misc.isTyping = true
-    //     return this.handleKey(this.kbd)
-    //   case Up:
-    //     break
-    //   case Copy:
-    //     return selection.selectionText
-    //   case Cut:
-    //     return selection.deleteSelection()
-    //   case Paste:
-    //     clipboard.handlePaste(this.kbd.clip!)
-    //     break
-    // }
   }
-
-  // shiftKey = false
 
   specialKeys: any = {
     'Enter': '\n',
@@ -331,22 +297,17 @@ class TextKeyboardable extends Keyboardable {
         ? char
         : ''
 
-    switch (special) {
-      case 'Control':
-        return
+    return match('Keypress', keypress, [
+      [[{ special: 'Control' }], (): Keyboard.Result => { }],
 
-      //
-      case 'Shift':
-
+      [[{ special: 'Shift' }], () => {
         if (!hasSelection) {
           selection.end.set(selection.start.set({ x: b.col, y: b.line }))
         }
-        break
+      }],
 
-      //
-      case 'ArrowDown':
-
-        if (b.line === maxLine) break
+      [[{ special: 'ArrowDown' }], () => {
+        if (b.line === maxLine) return
 
         // move line(s)
         if (alt || (shift && ctrl)) {
@@ -357,11 +318,11 @@ class TextKeyboardable extends Keyboardable {
             b.code = lines.join('\n')
             $.flush()
             selection.start.set(selection.end)
-            break
+            return
           }
           else {
             const { top, bottom } = selection.sorted
-            if (bottom.y === maxLine) break
+            if (bottom.y === maxLine) return
 
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
             lines.splice(++top.y, 0, ...slice)
@@ -371,13 +332,10 @@ class TextKeyboardable extends Keyboardable {
         }
 
         ++b.line
+      }],
 
-        break
-
-      //
-      case 'ArrowUp':
-
-        if (b.line === 0) break
+      [[{ special: 'ArrowUp' }], (): Keyboard.Result => {
+        if (b.line === 0) return
 
         // move line(s)
         if (alt || (shift && ctrl)) {
@@ -388,11 +346,11 @@ class TextKeyboardable extends Keyboardable {
             b.code = lines.join('\n')
             $.flush()
             selection.start.set(selection.end)
-            break
+            return true
           }
           else {
             const { top, bottom } = selection.sorted
-            if (top.y === 0) break
+            if (top.y === 0) return
 
             const slice = lines.splice(top.y, bottom.y - top.y + 1)
             lines.splice(--top.y, 0, ...slice)
@@ -402,13 +360,10 @@ class TextKeyboardable extends Keyboardable {
         }
 
         --b.line
+      }],
 
-        break
-
-      //
-      case 'ArrowRight':
-
-        if (b.col === text.length && b.line === maxLine) break
+      [[{ special: 'ArrowRight' }], (): Keyboard.Result => {
+        if (b.col === text.length && b.line === maxLine) return
         if (b.col < text.length && ctrl) {
           const words = parseWords(WORD, text)
           let word
@@ -431,12 +386,10 @@ class TextKeyboardable extends Keyboardable {
           ++b.line
         }
         b.coli = b.col
-        break
+      }],
 
-      //
-      case 'ArrowLeft':
-
-        if (b.col === 0 && b.line === 0) break
+      [[{ special: 'ArrowLeft' }], (): Keyboard.Result => {
+        if (b.col === 0 && b.line === 0) return
         if (b.col > 0 && ctrl) {
           const words = parseWords(WORD, text)
           let word
@@ -460,12 +413,12 @@ class TextKeyboardable extends Keyboardable {
           b.col = text.length
         }
         b.coli = b.col
-        break
+      }],
 
-      //
-      case 'PageDown':
-      case 'PageUp':
-
+      [[
+        { special: 'PageUp' },
+        { special: 'PageDown' }
+      ], (): Keyboard.Result => {
         if (special === 'PageDown') {
           targetLine = b.line + page
           if (targetLine >= maxLine) {
@@ -484,30 +437,24 @@ class TextKeyboardable extends Keyboardable {
         b.line = targetLine
         scroll.targetScroll.top -= dy * dims.lineHeight
         scroll.animSettings = Scroll.AnimSettings.Slow
-        break
+      }],
 
-      //
-      case 'Home':
-
+      [[{ special: 'Home' }], (): Keyboard.Result => {
         NONSPACE.lastIndex = 0
         x = NONSPACE.exec(text)?.index ?? 0
         b.coli = b.col = x === b.col ? 0 : x
-        break
+      }],
 
-      //
-      case 'End':
-
+      [[{ special: 'End' }], (): Keyboard.Result => {
         b.coli = b.col = text.length
-        break
+      }],
 
-      //
-      case 'Backspace':
-
+      [[{ special: 'Backspace' }], (): Keyboard.Result => {
         history.saveHistoryDebounced()
 
         if (selection.hasSelection) {
           selection.deleteSelection.sansHistory()
-          break
+          return true
         }
 
         if (b.col > 0 && ctrl) {
@@ -517,8 +464,7 @@ class TextKeyboardable extends Keyboardable {
           this.handleKey({ special: 'ArrowLeft', ctrl: true, shift: true })
           $.flush()
           this.handleKey({ special })
-          log('YES1')
-          return
+          return true
         }
 
         if (b.col === 0) {
@@ -544,14 +490,16 @@ class TextKeyboardable extends Keyboardable {
         if (closers.has(currentChar) && text[b.col] === Close[currentChar]) {
           this.handleKey({ special: 'Delete' })
         }
-        break
 
-      case 'Delete':
+        return true
+      }],
+
+      [[{ special: 'Delete' }], (): Keyboard.Result => {
         history.saveHistoryDebounced()
 
         if (selection.hasSelection) {
           selection.deleteSelection.sansHistory()
-          break
+          return true
         }
 
         if (shift) {
@@ -561,7 +509,7 @@ class TextKeyboardable extends Keyboardable {
               selection.end.zero().x = text.length
               selection.deleteSelection()
             }
-            break
+            return true
           }
 
           selection.start.zero().y = b.line
@@ -572,7 +520,7 @@ class TextKeyboardable extends Keyboardable {
             selection.end.zero().y = b.line + 1
           }
           selection.deleteSelection()
-          break
+          return true
         }
 
         if (ctrl) {
@@ -582,8 +530,7 @@ class TextKeyboardable extends Keyboardable {
           // await rest()
           $.flush()
           this.handleKey({ special })
-          log('YES')
-          break
+          return true
         }
 
         if (b.col === text.length) {
@@ -602,351 +549,314 @@ class TextKeyboardable extends Keyboardable {
           b.code = lines.join('\n')
         }
 
-        break
+        return true
+      }],
 
-      case 'Tab':
-        if (selection.hasSelection || shift) {
-          history.saveHistoryDebounced()
+      [[{ special: 'Tab' }], (): Keyboard.Result => {
+        if (!selection.hasSelection && !shift) return
 
-          const { hasSelection } = selection
-          let index: number = Infinity
-          let lns: string[]
-          let y: number
-          if (hasSelection) {
-            const { top, bottom } = selection.sorted
-            for (let i = top.y; i <= bottom.y; i++) {
-              index = Math.min(index, lineBegin(lines[i]!))
-            }
-            y = top.y
-            lns = lines.slice(top.y, bottom.y + 1)
+        history.saveHistoryDebounced()
+
+        const { hasSelection } = selection
+        let index: number = Infinity
+        let lns: string[]
+        let y: number
+        if (hasSelection) {
+          const { top, bottom } = selection.sorted
+          for (let i = top.y; i <= bottom.y; i++) {
+            index = Math.min(index, lineBegin(lines[i]!))
+          }
+          y = top.y
+          lns = lines.slice(top.y, bottom.y + 1)
+        }
+        else {
+          index = lineBegin(text)
+          y = b.line
+          lns = [lines[y]!]
+        }
+
+        const dec = shift
+        if (dec && !index) return true
+
+        let diff!: number
+        const tabSize = 2
+        const tab = ' '.repeat(tabSize)
+        lns.forEach((text, i) => {
+          if (dec) {
+            diff = -tabSize
+            text = text.replace(new RegExp(`^(\t| {1,${tabSize}})`, 'gm'), '')
           }
           else {
-            index = lineBegin(text)
-            y = b.line
-            lns = [lines[y]!]
+            diff = +tabSize
+            text = text.length === 0 ? tab : text.replace(/^[^\n]/gm, `${tab}$&`)
           }
+          lines[y + i] = text
+        })
+        b.coli = Math.max(0, b.coli + diff)
+        b.col = b.coli
 
-          const dec = shift
-          if (dec && !index) return
+        b.code = lines.join('\n')
+        if (hasSelection) {
+          selection.start.x += diff
+          selection.end.x += diff
+        }
+        else {
+          // await rest()
+          $.flush()
+          selection.start.set(selection.end)
+        }
+        return true
+      }],
 
-          let diff!: number
-          const tabSize = 2
-          const tab = ' '.repeat(tabSize)
-          lns.forEach((text, i) => {
-            if (dec) {
-              diff = -tabSize
-              text = text.replace(new RegExp(`^(\t| {1,${tabSize}})`, 'gm'), '')
+      [[{ ctrl: true }], (): Keyboard.Result =>
+        match('ctrl', keypress, [
+          [[{ char: 'a' }], (): Keyboard.Result => {
+            // TODO: test that it does fill the textarea
+            b.getLineColFromIndex(0, selection.start)
+            b.getLineColFromIndex(code.length, selection.end)
+            return true
+          }],
+
+          [[{ char: 'D' }], (): Keyboard.Result => {
+            history.saveHistoryDebounced()
+            if (hasSelection) {
+              const { top, bottom } = selection.sorted
+              const p1 = b.getIndexFromLineCol(top)
+              const p2 = b.getIndexFromLineCol(bottom)
+              b.code = code.slice(0, p2)
+                + code.slice(p1, p2)
+                + code.slice(p2)
+              const p = b.getLineColFromIndex(p2 + (p2 - p1))
+              $.flush()
+              selection.start.set(bottom)
+              selection.end.set(p)
+              b.line = p.line
+              b.coli = b.col = p.col
             }
             else {
-              diff = +tabSize
-              text = text.length === 0 ? tab : text.replace(/^[^\n]/gm, `${tab}$&`)
+              lines.splice(b.line, 0, text)
+              b.code = lines.join('\n')
+              b.line++
+              $.flush()
+              selection.start.set(selection.end)
             }
-            lines[y + i] = text
-          })
-          b.coli = Math.max(0, b.coli + diff)
-          b.col = b.coli
+            return true
+          }],
 
-          b.code = lines.join('\n')
-          if (hasSelection) {
-            selection.start.x += diff
-            selection.end.x += diff
-          }
-          else {
-            // await rest()
-            $.flush()
+          [[{ char: 'b' }], (): Keyboard.Result => {
+            selection.selectMatchingBrackets(b.linecol)
+            return true
+          }],
+
+          [[{ char: 'B' }], (): Keyboard.Result => {
+            selection.selectMatchingBrackets(b.linecol, true)
+            return true
+          }],
+
+          [[{ char: 'z' }], (): Keyboard.Result => {
+            scroll.animSettings = Scroll.AnimSettings.Fast
+            history.undo()
+            return true
+          }],
+
+          [[{ char: 'y' }], (): Keyboard.Result => {
+            scroll.animSettings = Scroll.AnimSettings.Fast
+            history.redo()
+            return true
+          }],
+
+          [[{ char: ':' }, { char: '?' }], (): Keyboard.Result => {
+            history.saveHistoryDebounced()
+
+            if (hasSelection) {
+              const { top, bottom } = selection.sorted
+              const p1 = b.getIndexFromLineCol(top)
+              const p2 = b.getIndexFromLineCol(bottom)
+              const dx = 2 + (top.y === bottom.y ? 2 : 0)
+              if (code.slice(p1, p1 + 2) === '/;'
+                && code.slice(p2 - 2, p2) === ';/'
+              ) {
+                b.code = code.slice(0, p1)
+                  + code.slice(p1 + 2, p2 - 2)
+                  + code.slice(p2)
+                if (b.line === bottom.y && b.col === bottom.x) b.coli -= dx
+                bottom.x -= dx
+              }
+              else {
+                b.code = code.slice(0, p1)
+                  + '/;'
+                  + code.slice(p1, p2)
+                  + ';/'
+                  + code.slice(p2)
+                if (b.line === bottom.y && b.col === bottom.x) b.coli += dx
+                bottom.x += dx
+              }
+              b.col = b.coli
+            }
+            else {
+              const index = b.getIndexFromLineCol(b.linecol)
+              const match = findMatchingBrackets(code, index)
+              if (match) {
+                if (code[match[0] + 1] === ';') {
+                  b.code = code.slice(0, match[0] + 1) + code.slice(match[0] + 2)
+                  b.coli--
+                }
+                else {
+                  b.code = code.slice(0, match[0] + 1) + ';' + code.slice(match[0] + 1)
+                  b.coli++
+                }
+              }
+              $.flush()
+              selection.start.set(selection.end)
+            }
+
+            return true
+          }],
+
+          [[{ char: ';' }, { char: '/' }], (): Keyboard.Result => {
+            history.saveHistoryDebounced()
+
+            const c = misc.lineComment
+            const ce = escapeRegExp(c)
+            let index: number = Infinity
+            let lns: string[]
+            let y: number
+            if (selection.hasSelection) {
+              const { top, bottom } = selection.sorted
+              for (let i = top.y; i <= bottom.y; i++) {
+                index = Math.min(index, lineBegin(lines[i]!))
+              }
+              y = top.y
+              lns = lines.slice(top.y, bottom.y + 1)
+            }
+            else {
+              index = lineBegin(text)
+              y = b.line
+              lns = [lines[y]!]
+            }
+
+            let diff!: number
+            const dec = lns.every((text) => text.trimStart().slice(0, c.length) === c)
+            lns.forEach((text, i) => {
+              if (dec) {
+                const r = new RegExp(`^([^${ce}]*)${ce} ?`, 'gm')
+                diff = -(c.length + 1)
+                text = text.replace(r, '$1')
+              }
+              else {
+                const r = new RegExp(`^(?!$)([^${ce}]{0,${index}})`, 'gm')
+                diff = +(c.length + 1)
+                text = text.length === 0
+                  ? c + ' '
+                  : text.replace(r, `$1${c} `)
+              }
+              lines[y + i] = text
+            })
+            b.coli = Math.max(0, b.coli + diff)
+            b.col = b.coli
+            if (selection.hasSelection) {
+              selection.start.x += diff
+              selection.end.x += diff
+            }
+            b.code = lines.join('\n')
+            return true
+          }]
+        ])
+      ],
+
+      [[{ ctrl: true }, { alt: true }], (): Keyboard.Result => {
+        return true
+      }],
+
+      [[], (): Keyboard.Result => {
+        if (!char.length) {
+          if (!shift) {
             selection.start.set(selection.end)
           }
           return
         }
 
-      // eslint-disable-next-line no-fallthrough
-      default:
+        history.saveHistoryDebounced()
 
-        if (ctrl) {
-          switch (char) {
-            case 'a': {
-              // TODO: test that it does fill the textarea
-              b.getLineColFromIndex(0, selection.start)
-              b.getLineColFromIndex(code.length, selection.end)
-
-              // $.flush()
-              // selection.updateTextareaText()
-              return
-            }
-
-            case 'D':
-              history.saveHistoryDebounced()
-              if (hasSelection) {
-                const { top, bottom } = selection.sorted
-                const p1 = b.getIndexFromLineCol(top)
-                const p2 = b.getIndexFromLineCol(bottom)
-                b.code = code.slice(0, p2)
-                  + code.slice(p1, p2)
-                  + code.slice(p2)
-                const p = b.getLineColFromIndex(p2 + (p2 - p1))
-                $.flush()
-                selection.start.set(bottom)
-                selection.end.set(p)
-                b.line = p.line
-                b.coli = b.col = p.col
-              }
-              else {
-                lines.splice(b.line, 0, text)
-                b.code = lines.join('\n')
-                b.line++
-                $.flush()
-                selection.start.set(selection.end)
-              }
-              break
-
-            case 'b':
-              selection.selectMatchingBrackets(b.linecol)
-              break
-
-            case 'B':
-              selection.selectMatchingBrackets(b.linecol, true)
-              break
-
-            case 'z':
-              scroll.animSettings = Scroll.AnimSettings.Fast
-              history.undo()
-              break
-
-            case 'y':
-              scroll.animSettings = Scroll.AnimSettings.Fast
-              history.redo()
-              break
-
-            // toggle line comment
-
-            case ':':
-            case '?': {
-              history.saveHistoryDebounced()
-
-              if (hasSelection) {
-                const { top, bottom } = selection.sorted
-                const p1 = b.getIndexFromLineCol(top)
-                const p2 = b.getIndexFromLineCol(bottom)
-                const dx = 2 + (top.y === bottom.y ? 2 : 0)
-                if (code.slice(p1, p1 + 2) === '/;'
-                  && code.slice(p2 - 2, p2) === ';/'
-                ) {
-                  b.code = code.slice(0, p1)
-                    + code.slice(p1 + 2, p2 - 2)
-                    + code.slice(p2)
-                  if (b.line === bottom.y && b.col === bottom.x) b.coli -= dx
-                  bottom.x -= dx
-                }
-                else {
-                  b.code = code.slice(0, p1)
-                    + '/;'
-                    + code.slice(p1, p2)
-                    + ';/'
-                    + code.slice(p2)
-                  if (b.line === bottom.y && b.col === bottom.x) b.coli += dx
-                  bottom.x += dx
-                }
-                b.col = b.coli
-              }
-              else {
-                const index = b.getIndexFromLineCol(b.linecol)
-                const match = findMatchingBrackets(code, index)
-                if (match) {
-                  if (code[match[0] + 1] === ';') {
-                    b.code = code.slice(0, match[0] + 1) + code.slice(match[0] + 2)
-                    b.coli--
-                  }
-                  else {
-                    b.code = code.slice(0, match[0] + 1) + ';' + code.slice(match[0] + 1)
-                    b.coli++
-                  }
-                }
-                $.flush()
-                selection.start.set(selection.end)
-              }
-              break
-            }
-
-            case ';':
-            case '/': {
-              history.saveHistoryDebounced()
-
-              const c = misc.lineComment
-              const ce = escapeRegExp(c)
-              let index: number = Infinity
-              let lns: string[]
-              let y: number
-              if (selection.hasSelection) {
-                const { top, bottom } = selection.sorted
-                for (let i = top.y; i <= bottom.y; i++) {
-                  index = Math.min(index, lineBegin(lines[i]!))
-                }
-                y = top.y
-                lns = lines.slice(top.y, bottom.y + 1)
-              }
-              else {
-                index = lineBegin(text)
-                y = b.line
-                lns = [lines[y]!]
-              }
-
-              let diff!: number
-              const dec = lns.every((text) => text.trimStart().slice(0, c.length) === c)
-              lns.forEach((text, i) => {
-                if (dec) {
-                  const r = new RegExp(`^([^${ce}]*)${ce} ?`, 'gm')
-                  diff = -(c.length + 1)
-                  text = text.replace(r, '$1')
-                }
-                else {
-                  const r = new RegExp(`^(?!$)([^${ce}]{0,${index}})`, 'gm')
-                  diff = +(c.length + 1)
-                  text = text.length === 0
-                    ? c + ' '
-                    : text.replace(r, `$1${c} `)
-                }
-                lines[y + i] = text
-              })
-              b.coli = Math.max(0, b.coli + diff)
-              b.col = b.coli
-              if (selection.hasSelection) {
-                selection.start.x += diff
-                selection.end.x += diff
-              }
-              b.code = lines.join('\n')
-              return
-            }
+        if (selection.hasSelection) {
+          const { line, col } = b
+          const { left, right } = selection.getSelectionIndexes()
+          const deletedText = selection.deleteSelection.sansHistory()
+          // when it is a bracket opener or closer, reinsert the deleted
+          // text but wrapped in that bracket pair
+          if (openers.has(char) || closers.has(char)) {
+            const o = openers.has(char) ? char : Close[char]
+            const c = Open[o]
+            b.code = code.slice(0, left)
+              + o
+              + deletedText
+              + c
+              + code.slice(right)
+            b.linecol.line = line
+            b.linecol.col = col
+            const index = b.getIndexFromLineCol(b.linecol)
+            const p = b.getLineColFromIndex(index + 1)
+            b.line = p.line
+            b.col = b.coli = p.col
+            selection.start.set(selection.end.set(p))
+            return true
           }
+          lines = b.code.split('\n')
+          text = lines[b.line]!
         }
 
-        if (ctrl || alt) break
+        const hasBracketLeft = Open[text[b.col - 1]]
+        const hasBracketRight = Close[text[b.col]]
+        const hasSpaceRight = (b.col === text.length) || SPACE.test(text[b.col])
+        const isInBrackets = ((b.col === text.trimEnd().length - 1) && hasBracketRight && hasBracketLeft)
+        const beginOfLine = lineBegin(text) ?? 0
 
-        if (char?.length) {
-          history.saveHistoryDebounced()
+        const isEnter = char === '\n'
+        const indent = (isEnter
+          ? ' '.repeat(b.col === text.trimEnd().length || isInBrackets ? beginOfLine : b.col)
+          + ' '.repeat(hasBracketLeft ? 2 : 0)
+          : '')
 
-          if (selection.hasSelection) {
-            const { line, col } = b
-            const { left, right } = selection.getSelectionIndexes()
-            const deletedText = selection.deleteSelection.sansHistory()
-            // when it is a bracket opener or closer, reinsert the deleted
-            // text but wrapped in that bracket pair
-            if (openers.has(char) || closers.has(char)) {
-              const o = openers.has(char) ? char : Close[char]
-              const c = Open[o]
-              b.code = code.slice(0, left)
-                + o
-                + deletedText
-                + c
-                + code.slice(right)
-              b.linecol.line = line
-              b.linecol.col = col
-              const index = b.getIndexFromLineCol(b.linecol)
-              const p = b.getLineColFromIndex(index + 1)
-              b.line = p.line
-              b.col = b.coli = p.col
-              selection.start.set(selection.end.set(p))
-              break
-            }
-            lines = b.code.split('\n')
-            text = lines[b.line]!
-          }
+        const isCharSameAsBracketRight = closers.has(char) && char === text[b.col]
 
-          const hasBracketLeft = Open[text[b.col - 1]]
-          const hasBracketRight = Close[text[b.col]]
-          const hasSpaceRight = (b.col === text.length) || SPACE.test(text[b.col])
-          const isInBrackets = ((b.col === text.trimEnd().length - 1) && hasBracketRight && hasBracketLeft)
-          const beginOfLine = lineBegin(text) ?? 0
+        if (!isCharSameAsBracketRight) {
+          lines[b.line] =
+            text.slice(0, b.col)
+            + char
+            + indent + (isEnter && isInBrackets ? '\n' + ' '.repeat(beginOfLine) : '')
+            + text.slice(b.col)
 
-          const isEnter = char === '\n'
-          const indent = (isEnter
-            ? ' '.repeat(b.col === text.trimEnd().length || isInBrackets ? beginOfLine : b.col)
-            + ' '.repeat(hasBracketLeft ? 2 : 0)
-            : '')
+          b.code = lines.join('\n')
+        }
 
-          const isCharSameAsBracketRight = closers.has(char) && char === text[b.col]
+        if (isEnter) {
+          b.coli = indent.length
+          ++b.line
+        }
+        else {
+          b.coli = b.col + char.length
+        }
+        b.col = b.coli
 
-          if (!isCharSameAsBracketRight) {
-            lines[b.line] =
-              text.slice(0, b.col)
-              + char
-              + indent + (isEnter && isInBrackets ? '\n' + ' '.repeat(beginOfLine) : '')
-              + text.slice(b.col)
-
-            b.code = lines.join('\n')
-          }
-
-          if (isEnter) {
-            b.coli = indent.length
-            ++b.line
-          }
-          else {
-            b.coli = b.col + char.length
-          }
+        if (hasSpaceRight && openers.has(char)) {
+          this.handleKey({ char: Open[char] })
+          b.coli--
           b.col = b.coli
-
-          if (hasSpaceRight && openers.has(char)) {
-            this.handleKey({ char: Open[char] })
-            b.coli--
-            b.col = b.coli
-          }
-
-          selection.start.set(selection.end.set({ x: b.col, y: b.line }))
         }
-        break
-    }
 
-    // TODO: test this
+        selection.start.set(selection.end.set({ x: b.col, y: b.line }))
 
-    // if (
-    //   !shift
-    //   && !ctrl
-    //   && !alt
-    //   && selection.hasSelection
-    //   && !handledKeys.includes(char)
-    // ) {
-    //   selection.start.set(selection.end)
-    // }
-
-    return true
+        return true
+      }],
+    ], (category, matcher, result) => {
+      colory(
+        category,
+        matcher?.special ?? matcher?.char ?? '(catchall)',
+        { char, special, ctrl, shift, alt },
+        result
+      )
+    })
   }
-  // handleOnInput = (e: InputEvent) => {
-  //   const { input } = of(this.ctx)
-  //   const key = e.data!.at(-1)
-  //   if (key) {
-  //     this.handleKey({ key })
-  //     setTimeout(() => {
-  //       input.textarea.value = ''
-  //     }, 50)
-  //   }
-  //   e.preventDefault()
-  // }
-  // handleKeyDown = (e: KeyboardEvent) => {
-  //   if (e.ctrlKey || e.metaKey) {
-  //     if (e.key === 'Control' || ignoredKeys.includes(e.key)) {
-  //       return
-  //     }
-  //   }
-
-  //   const { misc } = of(this.ctx)
-  //   misc.isTyping = true
-
-  //   // if (this.handleKey(e)) return
-  //   this.handleKey(e)
-
-  //   e.preventDefault()
-  // }
-  // handleKeyUp = (e: KeyboardEvent) => {
-  //   const { scroll } = of(this.ctx)
-
-  //   if (!e.key.startsWith('Page')
-  //     && e.key !== 'v') {
-  //     requestAnimationFrame(() => {
-  //       scroll.animSettings = Scroll.AnimSettings.Fast
-  //     })
-  //   }
-
-  //   this.shiftKey = e.shiftKey
-  // }
 }
 
 export function test_text() {
