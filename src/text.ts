@@ -770,6 +770,7 @@ class TextKeyboardable extends Keyboardable {
         return true
       }],
 
+      // catchall
       [[], (): Keyboard.Result => {
         if (!char.length) {
           if (!shift) {

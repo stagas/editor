@@ -52,7 +52,8 @@ export class Selection extends FillRange {
       selection.end.set(res)
 
       // KEEP: needed for animation to work
-      $.flush()
+      // breaks selection and typing a letter
+      // $.flush()
 
       if (closers.has(charRight) && removing === Close[charRight]) {
         keyboard.handleKey(this._deleteKeyEvent)
