@@ -10,7 +10,7 @@ export class ActiveLine extends Comp
     const { ctx } = of(it)
     const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
-      view = $(new Rect)
+
       @fx update_rect() {
         const { rect: r, view: vr } = this
         const { line } = of(buffer)
@@ -20,19 +20,11 @@ export class ActiveLine extends Comp
         r.h = vr.h = lineHeight
         r.w = vr.w = Math.max(rw, w + overscrollX)
         vr.y = lineBaseTops[line]
-        this.need |= Renderable.Need.Render
-      }
-      @fn render(c: CanvasRenderingContext2D, t: number) {
-        const { rect } = this
-        rect.fill(c, skin.colors.bgBright015)
-        this.need &= ~Renderable.Need.Render
         this.need |= Renderable.Need.Draw
       }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, view } = this
-        view.drawImageTranslated(
-          canvas.el, c, pr, true, scroll)
-        this.need &= ~Renderable.Need.Draw
+      @fn draw(c: CanvasRenderingContext2D, offset: Point) {
+        const { view } = this
+        view.fillTranslated(c, offset, skin.colors.bgBright015)
       }
     }
     return $(new ActiveLineRenderable(it as Renderable.It))

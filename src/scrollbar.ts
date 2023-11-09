@@ -60,33 +60,24 @@ export class Scrollbar extends Comp
     const { skin } = of(ctx)
     class ScrollbarRenderable extends Renderable {
       @fx trigger_needRender() {
-        const { rect, pr } = of(this)
-        const { hasSize } = when(rect)
-        const { w, h } = of(rect)
+        const { world } = of(ctx)
+        const { mouse } = of(world)
         const { mouseable } = of(it)
         const { isHovering, isDown } = of(mouseable)
         $()
-        this.need |= Renderable.Need.Render
-      }
-      @fx trigger_needDraw() {
-        const { rect } = of(this)
-        const { hasSize } = when(rect)
-        const { x, y } = of(rect)
-        $()
-        this.need |= Renderable.Need.Draw
+        this.needRender = true
       }
       @fn init(c: CanvasRenderingContext2D) {
         c.lineWidth = 3
-        this.need &= ~Renderable.Need.Init
-        this.need |= Renderable.Need.Render
       }
-      @fn render() {
-        const { canvas, pr, rect } = of(this)
-        const { c } = of(canvas)
+      @fn draw(c: CanvasRenderingContext2D, point: Point) {
+        const { rect } = of(this)
         const { mouseable } = of(it)
         const { isHovering, isDown } = of(mouseable)
 
         c.save()
+
+        point.translate(c)
         //
         const alpha = '66'
         c.clearRect(0, 0, rect.w, rect.h)
@@ -114,16 +105,6 @@ export class Scrollbar extends Comp
         c.stroke()
         //
         c.restore()
-
-        this.need &= ~Renderable.Need.Render
-        this.need |= Renderable.Need.Draw
-        // console.log('YO')
-      }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, rect } = this
-        rect.drawImageTranslated(canvas.el, c, pr, true, scroll)
-        // console.log(rect.text)
-        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new ScrollbarRenderable(it as Renderable.It))

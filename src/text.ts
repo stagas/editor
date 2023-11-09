@@ -177,9 +177,6 @@ export class Text extends Comp
           'to_audio': c.brightPurple,
         }
       }
-      get font() {
-        return `100 ${dims.fontSize}px ${skin.fonts.mono}`
-      }
       get lineWidth() {
         return dims.fontSize / 100
       }

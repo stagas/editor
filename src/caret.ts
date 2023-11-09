@@ -54,7 +54,7 @@ export class Caret extends Comp {
           it.isBlinking = isFocused
         }
         this.isHidden = hideWhenAway ? !isHovering : false
-        this.need |= Renderable.Need.Render
+        this.needRender = true
       }
       @fx hide_when_typing() {
         const { hideWhenTyping } = when(it)
@@ -88,22 +88,20 @@ export class Caret extends Comp {
           clearInterval(iv)
         }
       }
-      @fx trigger_draw() {
-        const { view: { x, y }, isHidden } = of(this)
-        const { linecol } = of(it)
-        const { charWidth } = of(dims)
-        $()
-        this.need |= Renderable.Need.Draw
-      }
-      @fn render(c: CanvasRenderingContext2D) {
+      // @fx trigger_draw() {
+      //   const { view: { x, y }, isHidden } = of(this)
+      //   const { linecol } = of(it)
+      //   const { charWidth } = of(dims)
+      //   $()
+      //   this.need |= Renderable.Need.Draw
+      // }
+      @fn draw(c: CanvasRenderingContext2D, { x, y }: Point) {
         const { rect } = of(this)
         const { w, h } = rect
         const { mouseable: { isFocused } } = of(ctx)
         const { color1, color2, color1Focused, color2Focused } = of(it)
         const c1 = isFocused ? color1Focused : color1
         const c2 = isFocused ? color2Focused : color2
-        const x = 0
-        const y = 0
         c.save()
         c.translate(8.5, 5)
         c.fillStyle = c1
@@ -122,11 +120,6 @@ export class Caret extends Comp {
         c.fillStyle = c2
         c.fill()
         c.restore()
-      }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, view } = of(this)
-        view.round().drawImageTranslated(
-          canvas.el, c, pr, true, scroll)
       }
     }
     return $(new CaretRenderable(it as Renderable.It))

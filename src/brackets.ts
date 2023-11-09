@@ -9,17 +9,17 @@ export class Bracket extends Comp {
   get renderable() {
     $()
     const it = this
-    const { ctx } = of(it)
     class BracketRenderable extends Renderable {
       isHidden = true
+      offset = $(new Point(.5, .5))
       @fn init(c: CanvasRenderingContext2D) {
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
       }
-      @fn render(c: CanvasRenderingContext2D) {
+      @fn draw(c: CanvasRenderingContext2D, point: Point) {
         const { rect } = of(this)
         c.save()
-        c.translate(.5, .5)
+        point.translate(c)
         c.strokeRect(
           4,
           4,
@@ -27,13 +27,6 @@ export class Bracket extends Comp {
           rect.h - 6
         )
         c.restore()
-      }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, rect, isHidden } = of(this)
-        if (!isHidden) {
-          rect.drawImageTranslated(
-            canvas.el, c, pr, true, scroll)
-        }
       }
     }
     return $(new BracketRenderable(it as Renderable.It, true, it.rect))
@@ -81,8 +74,8 @@ export class Brackets extends Comp {
           b1.renderable.isHidden
             = b2.renderable.isHidden = false
         }
-        b1.renderable.need |= Renderable.Need.Draw
-        b2.renderable.need |= Renderable.Need.Draw
+        b1.renderable.needDraw = true
+        b2.renderable.needDraw = true
       }
       get its() {
         return [b1, b2]

@@ -1,4 +1,4 @@
-// log.active
+log.active
 import { $, fn, fx, init, of, when } from 'signal'
 import { Animable, Canvas, Mouse, Mouseable, Point, Rect, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
@@ -98,21 +98,26 @@ export class Editor extends Scene
     $()
     const it = this
     class EditorRenderable extends Renderable {
-      view = $(new Rect)
       @fx measure_charWidth() {
         const { didInit } = when(this)
         const { canvas } = of(this)
         const { c } = of(canvas)
+        this.init(c)
         const em = c.measureText('M')
         it.dims.charWidth = em.width
         it.dims.charHeight = em.fontBoundingBoxAscent
       }
+      get font() {
+        return `100 ${it.dims.fontSize}px ${it.skin.fonts.mono}`
+      }
       @fn init(c: CanvasRenderingContext2D) {
         c.imageSmoothingEnabled = false
-        c.font = it.text.renderable.font
+        c.font = this.font
       }
       get its() {
-        return [it.outer]
+        const { charWidth } = it.dims
+        const its = charWidth ? [it.outer] : []
+        return its
       }
     }
     return $(new EditorRenderable(

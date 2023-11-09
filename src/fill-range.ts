@@ -131,8 +131,7 @@ class FillRangeRenderable extends Renderable {
   }
   // preferDirectDraw = true
   // canDirectDraw = true
-  view = $(new Rect)
-  padding = $(new Point, { x: .5, y: .5 })
+  offset = $(new Point, { x: .5, y: .5 })
   @fx update_rect_dims() {
     const { rect, view } = this
     const { charWidth } = of(this.it.ctx.dims)
@@ -140,21 +139,14 @@ class FillRangeRenderable extends Renderable {
     const { updated, count } = rects
     $()
     view.combineRects(rects.array, rects.count).floor()
-    // view.w += 1
-    // view.h += 1
     rect.w = Math.max(rect.w, view.w)
     rect.h = Math.max(rect.h, view.h)
-    this.need |= Renderable.Need.Render
+    this.needRender = true
     log('rects', view.text, rect.text)
   }
-  // @fn init() {
-  //   this.need &= ~Renderable.Need.Init
-  //   this.need |= Renderable.Need.Render
-  // }
-  @fn render(c: CanvasRenderingContext2D, t: number) {
+  @fn draw(c: CanvasRenderingContext2D, point: Point) {
     if (!this.it.rects) return
 
-    const { rect, view } = this
     const {
       colors: { color, light, dark },
       rects
@@ -163,10 +155,8 @@ class FillRangeRenderable extends Renderable {
     if (!rects.count) return
 
     c.save()
-    view.pos.round().translateNegative(c)
-    // if (clear) {
-    //   view.clear(c)
-    // }
+
+    point.translate(c)
 
     c.beginPath()
     Rect.pathAround(c, rects.array, rects.count)
@@ -197,13 +187,5 @@ class FillRangeRenderable extends Renderable {
     }
 
     c.restore()
-
-    // this.need &= ~Renderable.Need.Render
-    // this.need |= Renderable.Need.Draw
-  }
-  @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-    const { pr, canvas, view } = of(this)
-    view.round().drawImageTranslated(
-      canvas.el, c, pr, true, scroll)
   }
 }

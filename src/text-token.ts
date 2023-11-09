@@ -15,34 +15,38 @@ export class TextToken extends Comp
 }
 
 class TextTokenRenderable extends Renderable {
-  constructor(public it: TextToken) {
-    super(it,
-      true,
-      it.ctx.canvas.rect,
-      it.ctx.canvas)
-  }
-  preferDirectDraw = true
-  view = $(new Rect)
-  padding = $(new Point(1.5, 1))
+  constructor(public it: TextToken) { super(it) }
+  // preferDirectDraw = true
+  text = ''
+  offset = $(new Point(1.5, 1))
   @fx update_dims() {
-    const { it, padding } = this
+    const { it, offset } = this
     const { ctx, token: t } = of(it)
-    const { prRecip, rect, view } = of(this)
+    const { view } = of(this)
     const { dims } = ctx
     const { hasSize } = when(dims.rect)
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
+    this.text = t.text
     view.x = Math.round(t.col * charWidth) - .5
     view.y = Math.round(lineBaseBottoms[t.line] - lineHeight - (lineHeight - charHeight) / 2)
     view.w = t.text.length * charWidth + 2
-    view.h = lineHeight + padding.y * 2
-    this.need |= Renderable.Need.Render
+    view.h = lineHeight + offset.y * 2
+    // rect.w = Math.max(rect.w, view.w)
+    // rect.h = Math.max(rect.h, view.h)
   }
-  @fx trigger_draw() {
-    const { ctx: { scroll: { x, y } } } = of(this.it)
+  @fx trigger_render() {
+    const { text } = of(this)
     $()
-    this.need |= Renderable.Need.Render
+    this.needDraw = true
+    this.needRender = true
   }
+  // @fx trigger_draw() {
+  //   const { ctx: { scroll: { x, y } } } = of(this.it)
+  //   const { didRender } = when(this)
+  //   $()
+  //   this.need |= Renderable.Need.Draw
+  // }
   get color() {
     const { it } = this
     const { ctx, token: t } = of(it)
@@ -64,23 +68,23 @@ class TextTokenRenderable extends Renderable {
     c.lineCap = 'round'
     c.textAlign = 'left'
     c.textBaseline = 'bottom'
-    c.font = text.renderable.font
+    c.font = ctx.renderable.font
     c.lineWidth = text.renderable.lineWidth
   }
-  @fn render(c: CanvasRenderingContext2D) {
+  @fn draw(c: CanvasRenderingContext2D, { x, y }: Point) {
     const { it, color } = this
     const { ctx, token: t } = of(it)
-    const { view, padding } = of(this)
+    const { view, offset } = of(this)
     const { dims, text } = ctx
     if (!dims.charWidth) return
 
-    const y = view.height - padding.y * 2
+    y += view.height - offset.y * 2
     c.strokeStyle = '#000'
     c.lineWidth = 2
-    c.strokeText(t.text, 0, y)
+    c.strokeText(t.text, x, y)
     c.fillStyle = c.strokeStyle = color
     c.lineWidth = text.renderable.lineWidth * 2
-    c.strokeText(t.text, 0, y)
-    c.fillText(t.text, 0, y)
+    c.strokeText(t.text, x, y)
+    c.fillText(t.text, x, y)
   }
 }

@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of } from 'signal'
-import { Mouseable, Point, Renderable, Scene } from 'std'
+import { Mouseable, Point, Renderable } from 'std'
 import { Comp } from './comp.ts'
 import { Range } from './range.ts'
 
@@ -46,7 +46,8 @@ export class Widgetable {
         v.w += 2.5
         v.x += dex
         v.w -= dex * 2
-        v.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
+        v.y = lineBaseTops[line] - decoHeights[line] - eh
+        // v.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
         break
       case Widgetable.Kind.Mark:
         v.h = Math.round(lineHeight)
@@ -79,24 +80,12 @@ export class Widget extends Comp
     $()
     const it = this
     class WidgetRenderable extends Renderable {
-      @fn init() {
-        this.need &= ~Renderable.Need.Init
-        this.need |= Renderable.Need.Render
-      }
-      @fn render(c: CanvasRenderingContext2D, t: number) {
+      @fn draw(c: CanvasRenderingContext2D, point: Point) {
         const { rect } = of(this)
         c.save()
-        rect.pos.translateNegative(c)
+        point.translate(c)
         rect.fill(c, '#666')
         c.restore()
-        this.need &= ~Renderable.Need.Render
-        this.need |= Renderable.Need.Draw
-      }
-      @fn draw(c: CanvasRenderingContext2D, t: number, scroll: Point) {
-        const { pr, canvas, rect } = of(this)
-        rect.round().drawImageTranslated(
-          canvas.el, c, pr, true, scroll)
-        this.need &= ~Renderable.Need.Draw
       }
     }
     return $(new WidgetRenderable(it as Renderable.It))
