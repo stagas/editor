@@ -8,6 +8,7 @@ import { Scroll } from './scroll.ts'
 import { SourceToken } from './source.ts'
 import { TextToken } from './text-token.ts'
 import { Close, NONSPACE, Open, SPACE, WORD, closers, escapeRegExp, findMatchingBrackets, lineBegin, openers, parseWords } from './util.ts'
+import { TextLine } from './text-line.ts'
 
 interface Keypress {
   key?: Keyboard.Key | undefined
@@ -127,7 +128,8 @@ export class Text extends Comp
 
     class TextRenderable extends Renderable {
       scroll = scroll.pos
-      textTokens = $(new FixedArray<TextToken>)
+      textLines = $(new FixedArray<TextLine>)
+      // textTokens = $(new FixedArray<TextToken>)
       get colors(): Record<string, string> {
         const op = 'red'
         const brace = 'yellow'
@@ -183,27 +185,57 @@ export class Text extends Comp
       @fn createTextToken = () => {
         return $(new TextToken(it.ctx))
       }
+      @fn createTextLine = () => {
+        return $(new TextLine(it.ctx))
+      }
       get its() {
-        const { textTokens } = this
+        const { textLines } = this
         const { tokens } = of(buffer)
         $()
 
-        textTokens.count = 0
+        textLines.count = 0
+        const tokensByLine: Record<number, SourceToken[]> = {}
         for (let i = 0, t: SourceToken; i < tokens.length; i++) {
           t = tokens![i]
           if (!t.type || !t.text) continue
 
-          const textToken = poolArrayGet(
-            textTokens.array,
-            textTokens.count++,
-            this.createTextToken
-          )
-          textToken.token = t
+          if (t.line in tokensByLine) tokensByLine[t.line].push(t)
+          else tokensByLine[t.line] = [t]
         }
 
-        const its = textTokens.array.slice(0, textTokens.count)
+        for (let line in tokensByLine) {
+          const textLine = poolArrayGet(
+            textLines.array,
+            textLines.count++,
+            this.createTextLine
+          )
+          textLine.tokens = tokensByLine[line]
+        }
+
+        const its = textLines.array.slice(0, textLines.count)
         return its
       }
+      // get its() {
+      //   const { textTokens } = this
+      //   const { tokens } = of(buffer)
+      //   $()
+
+      //   textTokens.count = 0
+      //   for (let i = 0, t: SourceToken; i < tokens.length; i++) {
+      //     t = tokens![i]
+      //     if (!t.type || !t.text) continue
+
+      //     const textToken = poolArrayGet(
+      //       textTokens.array,
+      //       textTokens.count++,
+      //       this.createTextToken
+      //     )
+      //     textToken.token = t
+      //   }
+
+      //   const its = textTokens.array.slice(0, textTokens.count)
+      //   return its
+      // }
     }
     return $(new TextRenderable(it as Renderable.It, false))
   }

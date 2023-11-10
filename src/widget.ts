@@ -34,38 +34,42 @@ export class Widgetable {
     // TODO: this can't be solved with a flush because dims can be late/async
     if (line >= lineTops.length) return
 
-    v.x = col * charWidth + offsetX
-    v.w = (right - col) * charWidth
+    let vx = col * charWidth + offsetX
+    let vy = v.y
+    let vw = (right - col) * charWidth
+    let vh = v.h
 
     switch (kind) {
       case Widgetable.Kind.Deco:
         const eh = extraDecoHeights?.[line] ?? 0
-        v.h = decoHeights[line] - 3.5 + eh
+        vh = decoHeights[line] - 3.5 + eh
         let dex = dimWidthExclusive ? charWidth : 0
-        v.x -= .5
-        v.w += 2.5
-        v.x += dex
-        v.w -= dex * 2
-        v.y = lineBaseTops[line] - decoHeights[line] - eh
+        vx -= .5
+        vw += 2.5
+        vx += dex
+        vw -= dex * 2
+        vy = lineBaseTops[line] - decoHeights[line] - eh
         // v.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
         break
       case Widgetable.Kind.Mark:
-        v.h = Math.round(lineHeight)
-        v.y = Math.round(lineBaseTops[line] + 2)
-        v.x -= .5
-        v.w += 4
+        vh = Math.round(lineHeight)
+        vy = Math.round(lineBaseTops[line] + 2)
+        vx -= .5
+        vw += 4
         break
       case Widgetable.Kind.Sub:
-        v.h = height - 2
-        v.y = Math.floor(lineBaseBottoms[line] - 2) - 1
+        vh = height - 2
+        vy = Math.floor(lineBaseBottoms[line] - 2) - 1
         // v.x += 1
-        v.x = Math.round(v.x) - 1
-        v.w = Math.round(v.w) + 2.5
+        vx = Math.round(vx) - 1
+        vw = Math.round(vw) + 2.5
         break
     }
 
-    r.w = v.w
-    r.h = v.h
+    v.x = Math.floor(vx)
+    v.y = Math.floor(vy)
+    r.w = v.w = Math.ceil(vw)
+    r.h = v.h = Math.ceil(vh)
   }
 }
 

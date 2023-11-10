@@ -81,8 +81,10 @@ export class ElevationFill extends Comp
 
         ownElevations.forEach(el => {
           el.colors = colors
+          el.renderable.needDraw = true
         })
 
+        // console.log('YEAH', ownElevations)
         return [...ownElevations]
       }
     }
