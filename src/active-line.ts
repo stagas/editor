@@ -10,7 +10,6 @@ export class ActiveLine extends Comp
     const { ctx } = of(it)
     const { skin, buffer, dims } = of(ctx)
     class ActiveLineRenderable extends Renderable {
-
       @fx update_rect() {
         const { rect: r, view: vr } = this
         const { line } = of(buffer)

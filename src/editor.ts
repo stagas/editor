@@ -1,4 +1,4 @@
-log.active
+// log.active
 import { $, fn, fx, init, of, when } from 'signal'
 import { Animable, Canvas, Mouse, Mouseable, Point, Rect, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
@@ -102,7 +102,7 @@ export class Editor extends Scene
         const { didInit } = when(this)
         const { canvas } = of(this)
         const { c } = of(canvas)
-        this.init(c)
+        // this.init(c)
         const em = c.measureText('M')
         it.dims.charWidth = em.width
         it.dims.charHeight = em.fontBoundingBoxAscent
@@ -189,11 +189,12 @@ export class Editor extends Scene
         if (isScrolling) {
           this.need = Animable.Need.Tick | Animable.Need.Draw
           // TODO: better way to request direct?
-          it.world.render.needDirect = true
+          it.world.render.animable.need |= Animable.Need.Draw
+          // it.world.render.needDirect = true
         }
         else {
           this.need = Animable.Need.Draw
-          it.world.render.needDirect = false
+          // it.world.render.needDirect = false
         }
       }
     }

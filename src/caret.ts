@@ -21,7 +21,6 @@ export class Caret extends Comp {
   color1Focused = '#f0f'
   color2Focused = '#fff'
   caretColor = '#fff'
-
   get renderable() {
     $()
     const it = this
@@ -29,7 +28,7 @@ export class Caret extends Comp {
     const { misc, dims, text } = of(ctx)
 
     class CaretRenderable extends Renderable {
-      @fx update_rect() {
+      @fx update_view_pos() {
         const { view: v } = of(this)
         const { charWidth, lineBaseTops } = of(dims)
         const { linecol } = of(it)
@@ -39,16 +38,16 @@ export class Caret extends Comp {
         v.x = Math.floor(col * charWidth) - 7
         v.y = Math.floor(y + 1) - 8.5
       }
-      @fx update_caret() {
-        const { pr, rect: r } = of(this)
+      @fx update_view_size() {
+        const { pr, view: v } = of(this)
         const { blink } = of(it)
         const { mouseable: { isFocused } } = of(ctx)
         const { lineHeight, charWidth } = when(dims)
         $()
         const { hideWhenAway } = it
         const { mouseable: { isHovering } } = of(text)
-        r.w = charWidth + 10
-        r.h = lineHeight + 6.5
+        v.w = charWidth + 10
+        v.h = lineHeight + 6.5
         $.flush()
         if (blink) {
           it.isBlinking = isFocused
@@ -96,14 +95,16 @@ export class Caret extends Comp {
       //   this.need |= Renderable.Need.Draw
       // }
       @fn draw(c: CanvasRenderingContext2D, { x, y }: Point) {
-        const { rect } = of(this)
-        const { w, h } = rect
+        const { view } = of(this)
+        const { w, h } = view
         const { mouseable: { isFocused } } = of(ctx)
         const { color1, color2, color1Focused, color2Focused } = of(it)
         const c1 = isFocused ? color1Focused : color1
         const c2 = isFocused ? color2Focused : color2
         c.save()
-        c.translate(8.5, 5)
+        x += 8.5
+        y += 5
+        // c.translate(8.5, 5)
         c.fillStyle = c1
         c.beginPath()
         const a = 2.5

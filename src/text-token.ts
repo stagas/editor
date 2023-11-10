@@ -28,7 +28,7 @@ class TextTokenRenderable extends Renderable {
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
     this.text = t.text
-    view.x = Math.round(t.col * charWidth) - .5
+    view.x = Math.round(t.col * charWidth) //- .5
     view.y = Math.round(lineBaseBottoms[t.line] - lineHeight - (lineHeight - charHeight) / 2)
     view.w = t.text.length * charWidth + 2
     view.h = lineHeight + offset.y * 2
@@ -78,7 +78,7 @@ class TextTokenRenderable extends Renderable {
     const { dims, text } = ctx
     if (!dims.charWidth) return
 
-    y += view.height - offset.y * 2
+    y += view.height - offset.y
     c.strokeStyle = '#000'
     c.lineWidth = 2
     c.strokeText(t.text, x, y)

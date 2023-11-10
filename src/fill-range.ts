@@ -139,10 +139,10 @@ class FillRangeRenderable extends Renderable {
     const { updated, count } = rects
     $()
     view.combineRects(rects.array, rects.count).floor()
-    rect.w = Math.max(rect.w, view.w)
-    rect.h = Math.max(rect.h, view.h)
-    this.needRender = true
-    log('rects', view.text, rect.text)
+    // rect.w = Math.max(rect.w, view.w)
+    // rect.h = Math.max(rect.h, view.h)
+    // this.needRender = true
+    // log('rects', view.text, rect.text)
   }
   @fn draw(c: CanvasRenderingContext2D, point: Point) {
     if (!this.it.rects) return
@@ -156,13 +156,13 @@ class FillRangeRenderable extends Renderable {
 
     c.save()
 
-    point.translate(c)
+    point.sub(this.view.pos).translate(c)
 
     c.beginPath()
     Rect.pathAround(c, rects.array, rects.count)
     c.fillStyle = color
     c.fill()
-    c.clip()
+    // c.clip()
 
     if (dark || light) {
       // c.save()
