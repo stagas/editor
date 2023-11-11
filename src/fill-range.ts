@@ -27,7 +27,7 @@ export class FillRange extends Range
     const {
       lineHeight,
       charWidth,
-      lines,
+      // lines,
       lineTops,
       lineBaseTops,
       lineHeights,
@@ -41,6 +41,9 @@ export class FillRange extends Range
     const { line: bl, col: bc } = bottom
 
     $()
+
+    const { lines } = dims
+    if (!lines) return
 
     fillRects.count = 0
     fillRects.updated++

@@ -1,30 +1,25 @@
 // log.active
 import { $, fn, fx, nu, of, when } from 'signal'
 import { Point, Rect, Renderable } from 'std'
+import type { UI } from 'ravescript-vm'
 import { Comp } from './comp.ts'
 import { SourceToken } from './source.ts'
+import { assign } from 'utils'
 
-export function bounds(tokens: SourceToken[]) {
+export function bounds(tokens: SourceToken[]): UI.Dim {
   let line: number = Infinity
   let col: number = Infinity
   let right: number = 0
-  let index: number = Infinity
   let bottom: number = 0
-  let end: number = 0
-
-  let t: { line: number, col: number, right: number, index: number, length: number }
-
   for (const t of tokens) {
     let t_right = t.col + t.text.length
-    // if (t.index < index) index = t.index
-    // if (t.index + t.length > end) end = t.index + t.length
     if (t.line < line) line = t.line
     if (t.line > bottom) bottom = t.line
     if (t.col < col && t.line === line) col = t.col
     if (t_right > right) right = t_right
   }
 
-  return { line, col, right, bottom, index, length: end - index }
+  return { line, col, right, bottom }
 }
 
 export class TextLine extends Comp
@@ -40,11 +35,27 @@ class TextLineRenderable extends Renderable {
   // preferDirectDraw = true
   text = ''
   offset = $(new Point(1.5, 1))
+  _tokensBounds: UI.Dim = {
+    line: 0,
+    col: 0,
+    right: 0,
+    bottom: 0,
+  }
   @nu get tokensBounds() {
     const { it } = this
     const { tokens } = of(it)
     $()
-    return bounds(tokens)
+    const b = bounds(tokens)
+    const curr = this._tokensBounds
+    if (
+      b.line !== curr.line
+      || b.col !== curr.col
+      || b.right !== curr.right
+      || b.bottom !== curr.bottom) {
+      this._tokensBounds = b
+      return b
+    }
+    return curr
   }
   get tokensByColor() {
     const { it } = this
@@ -52,7 +63,6 @@ class TextLineRenderable extends Renderable {
     const { text, buffer } = of(ctx)
     const { Token } = of(buffer)
     const { renderable: { colors } } = of(text)
-
     $()
     const obj: Record<string, SourceToken[]> = {}
     for (const t of tokens) {

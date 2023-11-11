@@ -1,4 +1,4 @@
-// log.active
+// log.active = true
 import { $, fn, of } from 'signal'
 import { FixedArray, Keyboard, Keyboardable, Mouse, Mouseable, Renderable } from 'std'
 import { MouseButtons, colory, match, poolArrayGet, prevent } from 'utils'
@@ -276,14 +276,14 @@ class TextKeyboardable extends Keyboardable {
       [[{ kind: Paste }], () => {
         clipboard.handlePaste(this.keypress.clip!)
       }],
-    ], (category, matcher, result) => {
+    ], log.active ? ((category, matcher, result) => {
       colory(
         category,
         Keyboard.EventKind[matcher!.kind],
         { char, special, ctrl, shift, alt },
         result
       )
-    })
+    }) : () => {})
   }
 
   specialKeys: any = {
@@ -880,14 +880,14 @@ class TextKeyboardable extends Keyboardable {
 
         return true
       }],
-    ], (category, matcher, result) => {
+    ], log.active ? ((category, matcher, result) => {
       colory(
         category,
         matcher?.special ?? matcher?.char ?? '(catchall)',
         { char, special, ctrl, shift, alt },
         result
       )
-    })
+    }) : () => {})
   }
 }
 

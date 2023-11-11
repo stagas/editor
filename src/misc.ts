@@ -8,4 +8,5 @@ export class Misc {
   isPanning = false
   isScrolling = false
   wasScrolling = false
+  isHandlingSlider = false
 }
