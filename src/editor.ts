@@ -186,15 +186,16 @@ export class Editor extends Scene
         misc.wasScrolling = misc.isScrolling
         misc.isScrolling = isScrolling
 
+        it.world.render.animable.need |= Animable.Need.Draw
+
         if (isScrolling) {
           this.need = Animable.Need.Tick | Animable.Need.Draw
           // TODO: better way to request direct?
-          it.world.render.animable.need |= Animable.Need.Draw
-          // it.world.render.needDirect = true
+          it.world.render.needDirect = true
         }
         else {
           this.need = Animable.Need.Draw
-          // it.world.render.needDirect = false
+          it.world.render.needDirect = false
         }
       }
     }

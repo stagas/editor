@@ -28,6 +28,7 @@ export class ElevationFill extends Comp
     const it = this
     class ElevationFillRenderable extends Renderable {
       eligible: $<Elevation>[] = []
+      ownElevationsHash = ''
       get its() {
         const { eligible } = this
         const { point: p, ownElevations, colors } = of(it)
@@ -50,7 +51,10 @@ export class ElevationFill extends Comp
         }
 
         // return early
-        if (!x) return []
+        if (!x) {
+          this.ownElevationsHash = ''
+          return []
+        }
 
         partialSort(eligible, x, (a, b) =>
           a.start.y === b.start.y
@@ -81,9 +85,16 @@ export class ElevationFill extends Comp
 
         ownElevations.forEach(el => {
           el.colors = colors
-          el.renderable.needDraw = true
         })
 
+        const ownElevationsArray = [...ownElevations]
+        const ownElevationsHash = ownElevationsArray.map(el => `${el.text}`).join(' ')
+        if (this.ownElevationsHash !== ownElevationsHash) {
+          this.ownElevationsHash = ownElevationsHash
+          ownElevations.forEach(el => {
+            el.renderable.needDraw = true
+          })
+        }
         // console.log('YEAH', ownElevations)
         return [...ownElevations]
       }
@@ -228,7 +239,7 @@ export class Elevations extends Comp
 
         const its = [it.caret.fill]
 
-        if (!isTyping && isHovering) {
+        if (!isTyping) {
           its.push(it.hover.fill)
         }
 
