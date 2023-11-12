@@ -26,7 +26,7 @@ const SidesOpp = {
 } as const
 
 export class Scrollbar extends Comp
-  implements Renderable.It {
+  implements Renderable.It, Mouseable.It {
   axis?: Axis
   scrollBegin = 0
   pointerBegin = 0
@@ -35,7 +35,7 @@ export class Scrollbar extends Comp
     const { dims, scroll } = of(ctx)
     const { scrollSize, targetScroll } = of(scroll)
     const { hasSize } = when(scrollSize)
-    const { rect: r } = of(renderable)
+    const { view: v, rect: r } = of(renderable)
     const { rect, scrollbarSize } = of(dims)
 
     const s = Sides[axis]
@@ -47,11 +47,11 @@ export class Scrollbar extends Comp
     $()
     renderable.isHidden = co >= 1
     if (!renderable.isHidden) {
-      r[axis] = x
-      r[AxisOpp[axis]] = y
+      v[axis] = x
+      v[AxisOpp[axis]] = y
     }
-    r[s] = w
-    r[so] = scrollbarSize[so]
+    r[s] = v[s] = w
+    r[so] = v[so] = scrollbarSize[so]
   }
   get renderable() {
     $()
@@ -59,6 +59,7 @@ export class Scrollbar extends Comp
     const { ctx } = of(it)
     const { skin } = of(ctx)
     class ScrollbarRenderable extends Renderable {
+      // canDirectDraw = true
       @fx trigger_needRender() {
         const { world } = of(ctx)
         const { mouse } = of(world)
@@ -75,36 +76,37 @@ export class Scrollbar extends Comp
         const { mouseable } = of(it)
         const { isHovering, isDown } = of(mouseable)
 
-        c.save()
+        // console.log('DRAW', rect.w, rect.h)
+        // c.save()
 
-        point.translate(c)
+        const { x, y } = point
         //
         const alpha = '66'
-        c.clearRect(0, 0, rect.w, rect.h)
+        c.clearRect(x, y, rect.w, rect.h)
         c.fillStyle =
         // skin.colors.bgBright1 + alpha
           (isHovering || isDown
             ? skin.colors.bgBright2
             : skin.colors.bgBright1) + alpha
-        c.fillRect(0, 0, rect.w, rect.h)
+        c.fillRect(x, y, rect.w, rect.h)
 
         c.beginPath()
-        c.moveTo(0, rect.h)
-        c.lineTo(rect.w, rect.h)
-        c.lineTo(rect.w, 0)
+        c.moveTo(x, y + rect.h)
+        c.lineTo(x + rect.w, y + rect.h)
+        c.lineTo(x + rect.w, y)
 
         c.strokeStyle = skin.colors.bgBright015 //+ alpha
         c.stroke()
 
         c.beginPath()
-        c.moveTo(0, rect.h)
-        c.lineTo(0, 0)
-        c.lineTo(rect.w, 0)
+        c.moveTo(x, y + rect.h)
+        c.lineTo(x, y)
+        c.lineTo(x + rect.w, y)
 
         c.strokeStyle = skin.colors.bgBright25 + alpha
         c.stroke()
         //
-        c.restore()
+        // c.restore()
       }
     }
     return $(new ScrollbarRenderable(it as Renderable.It))

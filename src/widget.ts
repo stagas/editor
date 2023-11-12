@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of } from 'signal'
-import { Mouseable, Point, Renderable } from 'std'
+import { Animable, Mouseable, Point, Renderable } from 'std'
 import { Comp } from './comp.ts'
 import { Range } from './range.ts'
 
@@ -106,5 +106,6 @@ export namespace Widgetable {
   export type It = Comp
     & { widgetable: Widgetable }
     & Renderable.It
+    & Partial<Animable.It>
     & Partial<Mouseable.It>
 }

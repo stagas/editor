@@ -1,5 +1,5 @@
 // log.active
-import { $, fn, fx, of } from 'signal'
+import { $, fn, fx, of, whenNot } from 'signal'
 import { FixedArray, Point, Renderable } from 'std'
 import { partialSort, poolArrayGet, unique } from 'utils'
 import { Comp } from './comp.ts'
@@ -114,9 +114,9 @@ export class Elevations extends Comp
     const { ctx } = of(it)
     const { skin } = of(ctx)
     return {
-      color: skin.colors.brand1Pale + '44',
+      color: skin.colors.black,
       light: skin.colors.fg,
-      dark: skin.colors.bgDark15 + '66',
+      dark: skin.colors.bgDark15,
     }
   }
   get hoverColors(): ElevationFill['colors'] {
@@ -124,9 +124,9 @@ export class Elevations extends Comp
     const { ctx } = of(it)
     const { skin } = of(ctx)
     return {
-      color: skin.colors.bgBright05 + '66',
+      color: skin.colors.black,
       light: skin.colors.bgBright2,
-      dark: skin.colors.bgDark15 + '66',
+      dark: skin.colors.bgDark15,
     }
   }
   createElevationTarget(colors: ElevationFill['colors']) {
@@ -184,10 +184,12 @@ export class Elevations extends Comp
       }
 
       @fx update_elevations() {
+        const { isHandlingSlider } = whenNot(misc)
         const { charWidth } = of(dims)
         const { elevations, elevationsStack: stack } = of(it)
         const { tokens } = of(buffer)
         $()
+
         elevations.count = 0
         let top: SourceToken | undefined
         // i = length, we use it to avoid poping the stack array

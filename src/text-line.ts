@@ -33,6 +33,7 @@ export class TextLine extends Comp
 class TextLineRenderable extends Renderable {
   constructor(public it: TextLine) { super(it) }
   // preferDirectDraw = true
+  // canDirectDraw = true
   text = ''
   offset = $(new Point(1.5, 1))
   _tokensBounds: UI.Dim = {
@@ -84,7 +85,6 @@ class TextLineRenderable extends Renderable {
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
     this.text = tokens.map(t => t.text).join(' ')
-    // const t = bounds(tokens)
     view.x = Math.round(t.col * charWidth) //- .5
     view.y = Math.round(lineBaseBottoms[t.line] - lineHeight - (lineHeight - charHeight) / 2)
     view.w = (t.right - t.col) * charWidth + 2
@@ -96,16 +96,6 @@ class TextLineRenderable extends Renderable {
     this.needDraw = true
     this.needRender = true
   }
-  // get color() {
-  //   const { it } = this
-  //   const { ctx, token: t } = of(it)
-  //   const { text, buffer } = of(ctx)
-  //   const { Token } = of(buffer)
-  //   const { renderable: { colors } } = of(text)
-  //   return (t.text.length <= 2
-  //     && colors?.[t.text]) // TODO: this is slow
-  //     || (colors?.[Token.Type[t.type]] ?? '#fff')
-  // }
   @fn init(c: CanvasRenderingContext2D) {
     const { it } = this
     const { ctx, tokens } = of(it)

@@ -5,7 +5,7 @@ import { Comp } from './comp.ts'
 import { Editor } from './editor.ts'
 
 export class Bracket extends Comp {
-  constructor(public rect: $<Rect>, public ctx: Editor) { super(ctx) }
+  constructor(public view: $<Rect>, public ctx: Editor) { super(ctx) }
   get renderable() {
     $()
     const it = this
@@ -16,39 +16,59 @@ export class Bracket extends Comp {
         c.strokeStyle = '#f2a'
         c.lineWidth = 1
       }
+      @fx trigger_draw_on_isHidden__() {
+        const { isHidden } = this
+        $()
+        this.needDraw = true
+      }
+      @fx update_rect() {
+        const { view: v } = this
+        const { w, h } = it.view
+        $()
+        v.w = w
+        v.h = h
+      }
+      @fx update_view() {
+        const { view: v } = this
+        const { x, y } = it.view
+        $()
+        v.x = x
+        v.y = y
+      }
       @fn draw(c: CanvasRenderingContext2D, point: Point) {
-        const { rect } = of(this)
+        const { view } = of(this)
         c.save()
-        point.translate(c)
+        let { x, y } = point
+        x += this.offset.x
+        y += this.offset.y
         c.strokeRect(
-          4,
-          4,
-          rect.w - 6,
-          rect.h - 6
+          x + 4,
+          y + 4,
+          view.w - 6,
+          view.h - 6
         )
         c.restore()
       }
     }
-    return $(new BracketRenderable(it as Renderable.It, true, it.rect))
+    return $(new BracketRenderable(it as Renderable.It))
   }
 }
 export class Brackets extends Comp {
-  r1 = $(new Rect)
-  r2 = $(new Rect)
-  b1 = $(new Bracket(this.r1, this.ctx))
-  b2 = $(new Bracket(this.r2, this.ctx))
+  v1 = $(new Rect)
+  v2 = $(new Rect)
+  b1 = $(new Bracket(this.v1, this.ctx))
+  b2 = $(new Bracket(this.v2, this.ctx))
   get renderable() {
     $()
     const it = this
-    const { ctx, r1, r2, b1, b2 } = of(it)
+    const { ctx, v1, v2, b1, b2 } = of(it)
     const { buffer, dims } = of(ctx)
     class BracketsRenderable extends Renderable {
       @fx update_rects() {
-        const { pr, rect } = of(this)
         const { lineHeight, charWidth } = of(dims)
         $()
-        r1.w = r2.w = Math.floor(charWidth + 6)
-        r1.h = r2.h = Math.floor(lineHeight + 4)
+        v1.w = v2.w = Math.floor(charWidth + 5)
+        v1.h = v2.h = Math.floor(lineHeight + 4)
       }
       @fx update_brackets() {
         const { lineBaseTops, charWidth } = of(dims)
@@ -67,10 +87,11 @@ export class Brackets extends Comp {
             = b2.renderable.isHidden = true
         }
         else {
-          buffer.getPointFromLineCol(open, r1)
-          buffer.getPointFromLineCol(close, r2)
-          r1.translate(-3).round()
-          r2.translate(-3).round()
+          buffer.getPointFromLineCol(open, v1)
+          buffer.getPointFromLineCol(close, v2)
+          v1.translate(-3).round()
+          v2.translate(-3).round()
+          v2.x -= 1
           b1.renderable.isHidden
             = b2.renderable.isHidden = false
         }

@@ -1,8 +1,9 @@
 // log.active
-import { $, fn, fx, init, of, when } from 'signal'
-import { Animable, Canvas, Mouse, Mouseable, Point, Rect, Renderable, Scene, World } from 'std'
+import { $, fn, fx, of, when } from 'signal'
+import { Animable, Canvas, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
+import { Back } from './back.ts'
 import { Brackets } from './brackets.ts'
 import { Buffer } from './buffer.ts'
 import { Caret } from './caret.ts'
@@ -31,6 +32,23 @@ export class Editor extends Scene
   get mouse() { return this.world.mouse! }
 
   misc = $(new Misc)
+  back = $(new Back(this))
+  // @nu get back() {
+  //   const { canvas } = of(this.world)
+  //   $()
+  //   const backCanvas = $(new Canvas(this.world, canvas.rect))
+  //   backCanvas.fullWindow = true
+  //   // backCanvas.appendTo(document.body)
+  //   // backCanvas.style!.position = 'absolute'
+  //   // backCanvas.style!.left = '0'
+  //   // backCanvas.style!.top = '0'
+  //   // backCanvas.style!.zIndex = '0'
+  //   // backCanvas.style!.right = '0'
+  //   // backCanvas.style!.bottom = '0'
+  //   // backCanvas.style!.imageRendering = 'pixelated'
+  //   // backCanvas.style!.pointerEvents = 'none'
+  //   return backCanvas
+  // }
   history = $(new History(this))
   buffer = $(new Buffer(this, { Type: { text: 'Id', number: 'Number' } }))
   scroll = $(new Scroll(this))
@@ -111,6 +129,10 @@ export class Editor extends Scene
         return `100 ${it.dims.fontSize}px ${it.skin.fonts.mono}`
       }
       @fn init(c: CanvasRenderingContext2D) {
+        // c.canvas.style.position = 'absolute'
+        // c.canvas.style.left = '0'
+        // c.canvas.style.top = '0'
+        // c.canvas.style.zIndex = '10'
         c.imageSmoothingEnabled = false
         c.font = this.font
       }

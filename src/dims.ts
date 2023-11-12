@@ -64,11 +64,15 @@ export class Dims extends Comp {
   get visibleSpan() {
     return $(new Point, { y: $(this).$.visibleSpanTop, x: $(this).$.visibleSpanBottom })
   }
+  get linesLength() {
+    const { lines } = of(this)
+    return lines.length
+  }
   get lastVisibleLine() {
-    const { lines, ctx } = of(this)
+    const { linesLength, ctx } = of(this)
     const { deco, sub } = of(ctx)
     return Math.max(
-      lines.length,
+      linesLength,
       ...deco.map(({ widgetable: wi }) => wi.line),
       ...sub.map(({ widgetable: wi }) => wi.line),
     ) + 1
