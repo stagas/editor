@@ -8,6 +8,7 @@ export class Widgetable {
   kind: Widgetable.Kind = Widgetable.Kind.Deco
   height = 20
   offsetX = 0
+  maxWidth = Infinity
   dimWidthExclusive = false
 
   constructor(public it: Widgetable.It) { }
@@ -68,7 +69,7 @@ export class Widgetable {
 
     v.x = Math.floor(vx)
     v.y = Math.floor(vy)
-    r.w = v.w = Math.ceil(vw)
+    r.w = v.w = Math.min(this.maxWidth, Math.ceil(vw))
     r.h = v.h = Math.ceil(vh)
   }
 }
