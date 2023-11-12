@@ -36,7 +36,7 @@ export class Caret extends Comp {
         const { [line]: y } = of(lineBaseTops)
         $()
         v.x = Math.floor(col * charWidth) - 7
-        v.y = Math.floor(y + 1) - 8.5
+        v.y = Math.floor(y + 1) - 8
       }
       @fx update_view_size() {
         const { pr, view: v } = of(this)
@@ -47,7 +47,7 @@ export class Caret extends Comp {
         const { hideWhenAway } = it
         const { mouseable: { isHovering } } = of(text)
         v.w = charWidth + 10
-        v.h = lineHeight + 6.5
+        v.h = lineHeight + 7
         $.flush()
         if (blink) {
           it.isBlinking = isFocused
@@ -103,7 +103,7 @@ export class Caret extends Comp {
         const c2 = isFocused ? color2Focused : color2
         c.save()
         x += 8.5
-        y += 5
+        y += 4.5
         // c.translate(8.5, 5)
         c.fillStyle = c1
         c.beginPath()
