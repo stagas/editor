@@ -36,14 +36,14 @@ export class Scrollbar extends Comp
     const { scrollSize, targetScroll } = of(scroll)
     const { hasSize } = when(scrollSize)
     const { view: v, rect: r } = of(renderable)
-    const { rect, scrollbarSize } = of(dims)
+    const { view, scrollbarSize } = of(dims)
 
     const s = Sides[axis]
     const so = SidesOpp[axis]
-    const co = rect[s] / scrollSize[s]
+    const co = view[s] / scrollSize[s]
     const x = -targetScroll[axis] * co
-    const w = rect[s] * co
-    const y = rect[so] - scrollbarSize[so]
+    const w = view[s] * co
+    const y = view[so] - scrollbarSize[so]
     $()
     renderable.isHidden = co >= 1
     if (!renderable.isHidden) {
@@ -116,7 +116,7 @@ export class Scrollbar extends Comp
     const it = this
     const { axis, ctx } = of(it)
     const { dims, scroll } = of(ctx)
-    const { rect, innerSize } = of(dims)
+    const { view, innerSize } = of(dims)
     const { Down, Move } = Mouse.EventKind
 
     class ScrollbarMouseable extends Mouseable {
@@ -132,7 +132,7 @@ export class Scrollbar extends Comp
           case Move:
             if (isDown && (buttons & MouseButtons.Left)) {
               const side = Sides[axis]
-              const co = rect[side] / innerSize[side]
+              const co = view[side] / innerSize[side]
 
               scroll.animSettings = Scroll.AnimSettings.Fast
 

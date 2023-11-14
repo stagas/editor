@@ -5,7 +5,8 @@ import { arraysEqual } from 'utils'
 import { Comp } from './comp.ts'
 
 export class Dims extends Comp {
-  get rect() { return this.ctx.renderable.view }
+  get view() { return this.ctx.renderable.view }
+  get rect() { return this.ctx.renderable.rect }
 
   // this is a temporary rect for dims
   // TODO: we shouldn't need this, handled in the deco/widget instead
@@ -58,8 +59,8 @@ export class Dims extends Comp {
     return -this.scroll.y
   }
   get visibleSpanBottom() {
-    const { rect, lineHeight, visibleSpanTop } = this
-    return visibleSpanTop + rect.h + lineHeight
+    const { view, lineHeight, visibleSpanTop } = this
+    return visibleSpanTop + view.h + lineHeight
   }
   get visibleSpan() {
     return $(new Point, { y: $(this).$.visibleSpanTop, x: $(this).$.visibleSpanBottom })

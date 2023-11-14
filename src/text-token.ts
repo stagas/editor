@@ -24,7 +24,7 @@ class TextTokenRenderable extends Renderable {
     const { ctx, token: t } = of(it)
     const { view } = of(this)
     const { dims } = ctx
-    const { hasSize } = when(dims.rect)
+    const { hasSize } = when(dims.view)
     const { charWidth, charHeight, lineHeight, lineBaseBottoms } = of(dims)
     $()
     this.text = t.text

@@ -13,7 +13,7 @@ export class ActiveLine extends Comp
       @fx update_rect() {
         const { rect: r, view: vr } = this
         const { line } = of(buffer)
-        const { rect: { w: rw }, lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
+        const { view: { w: rw }, lineHeight, lineBaseTops, innerSize, overscrollX } = of(dims)
         const { w } = innerSize
         $()
         r.h = vr.h = lineHeight

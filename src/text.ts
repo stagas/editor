@@ -43,8 +43,6 @@ export class Text extends Comp
     const { Wheel, Down, Up, Move, Click } = Mouse.EventKind
 
     class TextMouseable extends Mouseable {
-      hitArea = dims.rect
-      hitAreaNormalize = true
       cursor = 'text'
       @fn onMouseEvent(kind: Mouse.EventKind) {
         const { mouse, isDown } = this
@@ -237,7 +235,10 @@ export class Text extends Comp
       //   return its
       // }
     }
-    return $(new TextRenderable(it as Renderable.It, false))
+    return $(new TextRenderable(
+      it as Renderable.It,
+      false
+    ), { view: dims.$.view })
   }
 }
 
@@ -283,7 +284,7 @@ class TextKeyboardable extends Keyboardable {
         { char, special, ctrl, shift, alt },
         result
       )
-    }) : () => {})
+    }) : () => { })
   }
 
   specialKeys: any = {
@@ -299,7 +300,7 @@ class TextKeyboardable extends Keyboardable {
     const { Down, Up, Copy, Cut, Paste } = Keyboard.EventKind
     const { Char, Special } = Keyboard.KeyKind
     const { specialKeys } = this
-    const { rect } = of(dims)
+    const { view } = of(dims)
     const { hasSelection } = of(selection)
 
     let { code, lines } = of(b)
@@ -313,7 +314,7 @@ class TextKeyboardable extends Keyboardable {
     let text = lines[b.line]
     const currentChar = text[b.col]
     const maxLine = lines.length - 1
-    const page = Math.floor(rect.h / dims.lineHeight)
+    const page = Math.floor(view.h / dims.lineHeight)
 
     let x: number
     let dy: number
@@ -887,7 +888,7 @@ class TextKeyboardable extends Keyboardable {
         { char, special, ctrl, shift, alt },
         result
       )
-    }) : () => {})
+    }) : () => { })
   }
 }
 

@@ -26,7 +26,7 @@ export class Scroll extends Comp {
 
   @fx update_targetScroll_top() {
     const { history, buffer, dims } = of(this.ctx)
-    const { rect } = of(dims)
+    const { view } = of(dims)
     const { line } = of(buffer)
     const { viewState } = of(history)
     $()
@@ -36,7 +36,7 @@ export class Scroll extends Comp {
     const { targetScroll } = of(this)
 
     const viewTop = -targetScroll.top
-    const viewBottom = viewTop + rect.h + lineHeight
+    const viewBottom = viewTop + view.h + lineHeight
 
     let y = lineTops[line]!
 
@@ -62,7 +62,7 @@ export class Scroll extends Comp {
 
   @fx update_targetScroll_left() {
     const { history, buffer, dims } = of(this.ctx)
-    const { rect, charWidth } = of(dims)
+    const { view, charWidth } = of(dims)
     const { col } = of(buffer)
     const { viewState } = of(history)
     $()
@@ -72,7 +72,7 @@ export class Scroll extends Comp {
     const { targetScroll } = of(this)
 
     const viewLeft = -targetScroll.left
-    const viewRight = viewLeft + rect.w
+    const viewRight = viewLeft + view.w
 
     let x = col * charWidth
 
@@ -95,15 +95,15 @@ export class Scroll extends Comp {
   @fx update_minScroll() {
     const { ctx, minScroll } = of(this)
     const { dims } = of(ctx)
-    const { rect, innerSize, lineBottoms, lineHeight, overscrollX } = of(dims)
+    const { view, innerSize, lineBottoms, lineHeight, overscrollX } = of(dims)
     const { w, h } = of(innerSize)
 
     const top = -h
       + Math.min(
         lineBottoms.at(-1) || 0,
-        rect.h
+        view.h
       )
-    const left = -Math.max(0, (w - rect.w) + overscrollX)
+    const left = -Math.max(0, (w - view.w) + overscrollX)
 
     $()
 

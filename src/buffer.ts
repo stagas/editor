@@ -73,10 +73,10 @@ export class Buffer {
     p: Point, clampPos = true, tp?: Linecol): Linecol {
     const { lines, ctx } = of(this)
     const { dims } = of(ctx)
-    const { lineTops, scroll, rect, charWidth } = of(dims)
+    const { lineTops, scroll, view, charWidth } = of(dims)
 
-    const py = p.y - scroll.y - rect.y
-    const px = p.x - scroll.x - rect.x
+    const py = p.y - scroll.y - view.y
+    const px = p.x - scroll.x - view.x
 
     let y = 0
     for (; y < lineTops.length; y++) {
