@@ -1,10 +1,9 @@
 // log.active
 import { $, fn, fx, nu, of } from 'signal'
 import { Point, PointLike, Rect } from 'std'
-import { clamp, poolArrayGet } from 'utils'
+import { clamp } from 'utils'
 import { Editor } from './editor.ts'
 import { Linecol } from './linecol.ts'
-import { Range } from './range.ts'
 import { Source } from './source.ts'
 import { findMatchingBrackets } from './util.ts'
 
@@ -38,10 +37,10 @@ export class Buffer {
   @fx clamp_lineCol() {
     const { lines, line, coli } = of(this)
     $()
-    this.col = Math.min(coli, lines[line]?.length ?? 0)
-    this.line = Math.min(line, lines.length)
+    this.line = Math.min(line, lines.length - 1)
+    this.col = Math.min(coli, lines[this.line]?.length ?? 0)
   }
-  @fx trim_lines() {
+  @fx trim_line_endings() {
     const { lines, line } = of(this)
     for (let i = 0; i < lines.length; i++) {
       if (i === line) continue
@@ -130,106 +129,106 @@ export class Buffer {
       this.hasBrackets = false
     }
   }
-  @fn fillTextRange(
-    c: CanvasRenderingContext2D,
-    range: Range,
-    color: string,
-    full: boolean = false,
-    padBottom: number = 0,
-    strokeLight?: string,
-    strokeDark?: string,
-  ) {
-    const { fillRects, dirtyRect, ctx } = of(this)
-    const { dims } = of(ctx)
-    const {
-      lineHeight,
-      charWidth,
-      lines,
-      lineTops,
-      lineBaseTops,
-      lineHeights,
-      visibleSpan,
-    } = of(dims)
+  // @fn fillTextRange(
+  //   c: CanvasRenderingContext2D,
+  //   range: Range,
+  //   color: string,
+  //   full: boolean = false,
+  //   padBottom: number = 0,
+  //   strokeLight?: string,
+  //   strokeDark?: string,
+  // ) {
+  //   const { fillRects, dirtyRect, ctx } = of(this)
+  //   const { dims } = of(ctx)
+  //   const {
+  //     lineHeight,
+  //     charWidth,
+  //     lines,
+  //     lineTops,
+  //     lineBaseTops,
+  //     lineHeights,
+  //     visibleSpan,
+  //   } = of(dims)
 
-    const { top, bottom } = range
-    let i = 0
-    let r: Rect
+  //   const { top, bottom } = range
+  //   let i = 0
+  //   let r: Rect
 
-    const manyLines = top.line !== bottom.line
+  //   const manyLines = top.line !== bottom.line
 
-    // iterate each line and produce its fill rect
-    for (let line = top.line; line <= bottom.line; line++) {
-      const x = line === top.y
-        ? top.x * charWidth
-        : 0
+  //   // iterate each line and produce its fill rect
+  //   for (let line = top.line; line <= bottom.line; line++) {
+  //     const x = line === top.y
+  //       ? top.x * charWidth
+  //       : 0
 
-      const y = full
-        ? lineTops[line] + 3
-        : lineBaseTops[line] + 2
+  //     const y = full
+  //       ? lineTops[line] + 3
+  //       : lineBaseTops[line] + 2
 
-      const w = (line === top.line ?
-        line === bottom.line
-          ? (bottom.col - top.col) * charWidth
-          : ((lines[line]?.length ?? 0) - top.col) * charWidth + 2
-        : line === bottom.line
-          ? bottom.col * charWidth
-          : ((lines[line]?.length ?? 0) * charWidth + 2))
+  //     const w = (line === top.line ?
+  //       line === bottom.line
+  //         ? (bottom.col - top.col) * charWidth
+  //         : ((lines[line]?.length ?? 0) - top.col) * charWidth + 2
+  //       : line === bottom.line
+  //         ? bottom.col * charWidth
+  //         : ((lines[line]?.length ?? 0) * charWidth + 2))
 
-      const h = full
-        ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
-        : lineHeight + 0.5
+  //     const h = full
+  //       ? lineHeights[line] - (line === bottom.line ? padBottom : 0)
+  //       : lineHeight + 0.5
 
-      if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
+  //     if (y + h < visibleSpan.top || y > visibleSpan.bottom) continue
 
-      r = poolArrayGet(fillRects, i++, Rect.create)
+  //     r = poolArrayGet(fillRects, i++, Rect.create)
 
-      r.x = x
-      r.y = y
-      r.w = w  // + avoids flicker rounding
-      r.h = h
-      // r.floorCeil()
+  //     r.x = x
+  //     r.y = y
+  //     r.w = w  // + avoids flicker rounding
+  //     r.h = h
+  //     // r.floorCeil()
 
-      // TODO: aesthetics
-      if (top.line !== bottom.line) {
-        if (line === bottom.y) {
-          // r.w += 2
-          // r.h += 1
-        }
-        else if (line === top.y) {
-          // r.h += 1
-          // r.w += 2
-          // r.x -= 2
-        }
-      }
-    }
+  //     // TODO: aesthetics
+  //     if (top.line !== bottom.line) {
+  //       if (line === bottom.y) {
+  //         // r.w += 2
+  //         // r.h += 1
+  //       }
+  //       else if (line === top.y) {
+  //         // r.h += 1
+  //         // r.w += 2
+  //         // r.x -= 2
+  //       }
+  //     }
+  //   }
 
-    if (!i) return
+  //   if (!i) return
 
-    dirtyRect.zero()
+  //   dirtyRect.zero()
 
-    c.beginPath()
-    Rect.pathAround(c, fillRects, i)
-    c.fillStyle = color
-    c.fill()
+  //   c.beginPath()
+  //   Rect.pathAround(c, fillRects, i)
+  //   c.fillStyle = color
+  //   c.fill()
 
-    c.save()
-    c.lineCap = 'square'
-    c.translate(.5, .5)
-    if (strokeDark) {
-      c.beginPath()
-      Rect.pathAroundRight(c, fillRects, i)
-      c.strokeStyle = strokeDark
-      c.stroke()
-    }
+  //   c.save()
+  //   c.lineCap = 'square'
+  //   c.translate(.5, .5)
+  //   if (strokeDark) {
+  //     c.beginPath()
+  //     Rect.pathAroundRight(c, fillRects, i)
+  //     c.strokeStyle = strokeDark
+  //     c.stroke()
+  //   }
 
-    if (strokeLight) {
-      c.beginPath()
-      Rect.pathAroundLeft(c, fillRects, i)
-      c.strokeStyle = strokeLight
-      c.stroke()
-    }
-    c.restore()
+  //   if (strokeLight) {
+  //     c.beginPath()
+  //     Rect.pathAroundLeft(c, fillRects, i)
+  //     c.strokeStyle = strokeLight
+  //     c.stroke()
+  //   }
+  //   c.restore()
 
-    return dirtyRect.combineRects(fillRects, i)
-  }
+  //   return dirtyRect.combineRects(fillRects, i)
+  // }
 }
