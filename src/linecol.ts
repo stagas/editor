@@ -1,10 +1,13 @@
-import { alias, of } from 'signal'
+import { alias } from 'signal'
 import { Point } from 'std'
 
 export class Linecol extends Point {
-  col = alias(this, 'x')
   line = alias(this, 'y')
+  col = alias(this, 'x')
   get lineCol() {
     return this
+  }
+  get lineColText() {
+    return `${this.line}:${this.col}`
   }
 }
