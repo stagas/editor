@@ -178,7 +178,7 @@ export class Text extends Comp
         }
       }
       get lineWidth() {
-        return dims.fontSize / 100
+        return dims.fontSize / 50
       }
       @fn createTextToken = () => {
         return $(new TextToken(it.ctx))

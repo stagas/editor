@@ -1,10 +1,9 @@
 // log.active
-import { $, fn, fx, nu, of, when } from 'signal'
-import { Point, Rect, Renderable } from 'std'
 import type { UI } from 'ravescript-vm'
+import { $, fn, fx, nu, of, when } from 'signal'
+import { Point, Renderable } from 'std'
 import { Comp } from './comp.ts'
 import { SourceToken } from './source.ts'
-import { assign } from 'utils'
 
 export function bounds(tokens: SourceToken[]): UI.Dim {
   let line: number = Infinity
@@ -35,7 +34,7 @@ class TextLineRenderable extends Renderable {
   // preferDirectDraw = true
   // canDirectDraw = true
   text = ''
-  offset = $(new Point(1.5, 1))
+  offset = $(new Point(1.5, 0))
   _tokensBounds: UI.Dim = {
     line: 0,
     col: 0,
@@ -118,7 +117,7 @@ class TextLineRenderable extends Renderable {
     const { charWidth } = dims
     if (!charWidth) return
 
-    y += view.height - offset.y
+    y += view.height - offset.y - 3
 
     const startCol = tokensBounds.col
     c.strokeStyle = '#000'

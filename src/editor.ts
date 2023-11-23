@@ -123,10 +123,10 @@ export class Editor extends Scene
         // this.init(c)
         const em = c.measureText('M')
         it.dims.charWidth = em.width
-        it.dims.charHeight = em.fontBoundingBoxAscent
+        it.dims.charHeight = Math.ceil(em.fontBoundingBoxAscent + 5)
       }
       get font() {
-        return `100 ${it.dims.fontSize}px ${it.skin.fonts.mono}`
+        return `${it.dims.fontSize}px ${it.skin.fonts.mono}`
       }
       @fn init(c: CanvasRenderingContext2D) {
         // c.canvas.style.position = 'absolute'
