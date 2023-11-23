@@ -18,6 +18,7 @@ export class InnerBelow extends Comp
           ctx.selection,
           ...ctx.deco,
           ...ctx.sub,
+          ...ctx.mark,
         ]
         const scroll = it.ctx.scroll.pos
         $()

@@ -50,20 +50,18 @@ export class Widgetable {
         vx += dex
         vw -= dex * 2
         vy = lineBaseTops[line] - decoHeights[line] - eh
-        // v.y = lineBaseTops[line] - decoHeights[line] + 4 - eh
         break
       case Widgetable.Kind.Mark:
-        vh = Math.round(lineHeight)
-        vy = Math.round(lineBaseTops[line] + 2)
-        vx -= .5
-        vw += 4
+        vh = lineHeight - .5
+        vy = lineBaseTops[line]
+        vx -= 1.5
+        vw += 3.5
         break
       case Widgetable.Kind.Sub:
         vh = height - 2
-        vy = Math.floor(lineBaseBottoms[line] - 2) - 1
-        // v.x += 1
-        vx = Math.round(vx) - 1
-        vw = Math.round(vw) + 2.5
+        vy = lineBaseBottoms[line] - 3
+        vx = vx - 1
+        vw = vw + 2.5
         break
     }
 
