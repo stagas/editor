@@ -52,7 +52,7 @@ export class Widgetable {
         vy = lineBaseTops[line] - decoHeights[line] - eh
         break
       case Widgetable.Kind.Mark:
-        vh = lineHeight - .5
+        vh = lineHeight - 1.5
         vy = lineBaseTops[line]
         vx -= 1.5
         vw += 3.5
