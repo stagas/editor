@@ -102,6 +102,8 @@ export class Brackets extends Comp {
         return [b1, b2]
       }
     }
-    return $(new BracketsRenderable(it as Renderable.It, false))
+    return $(new BracketsRenderable(it as Renderable.It, false), {
+      copyView: it.ctx.world.render.view
+    })
   }
 }

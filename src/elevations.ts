@@ -260,9 +260,8 @@ export class Elevations extends Comp
         return its
       }
     }
-    return $(new ElevationsRenderable(it as Renderable.It, false))
-    // , {
-    //   copyView: it.ctx.world.render.view
-    // })
+    return $(new ElevationsRenderable(it as Renderable.It, false), {
+      copyView: it.ctx.world.render.view
+    })
   }
 }
