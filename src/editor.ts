@@ -1,6 +1,6 @@
 // log.active
 import { $, fn, fx, of, when } from 'signal'
-import { Animable, Canvas, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
+import { Animable, Canvas, Context, Mouse, Mouseable, Point, Renderable, Scene, World } from 'std'
 import { clamp, prevent } from 'utils'
 import { ActiveLine } from './active-line.ts'
 import { Back } from './back.ts'
@@ -91,12 +91,12 @@ export class Editor extends Scene
     class EditorMouseable extends Mouseable {
       canHover = false
       @fx update_isFocused_from_its() {
-        this.isFocused = Mouseable.some(this.its, it =>
+        this.isFocused = this.flatIts.some(([,it]) =>
           it.mouseable.isFocused
         )
       }
       @fx update_isHovering_from_its() {
-        this.isHovering = Mouseable.some(this.its, it =>
+        this.isHovering = this.flatIts.some(([,it]) =>
           it.mouseable.isHovering
         )
       }
@@ -208,6 +208,7 @@ export class Editor extends Scene
         misc.wasScrolling = misc.isScrolling
         misc.isScrolling = isScrolling
 
+//////////////
         it.world.render.animable.need |= Animable.Need.Draw
 
         if (isScrolling) {

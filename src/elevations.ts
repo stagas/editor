@@ -245,13 +245,24 @@ export class Elevations extends Comp
           its.push(it.hover.fill)
         }
 
-        return unique(
+        const uits = unique(
           its.flatMap(x =>
             x.renderable.its
           )
         )
+
+        $()
+        for (const it of uits) {
+          it.renderable.didDraw = false
+          it.renderable.needDraw = true
+        }
+
+        return its
       }
     }
     return $(new ElevationsRenderable(it as Renderable.It, false))
+    // , {
+    //   copyView: it.ctx.world.render.view
+    // })
   }
 }

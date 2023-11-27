@@ -20,7 +20,9 @@ export class Scrollbars extends Comp
         ]
       }
     }
-    return $(new ScrollbarsRenderable(it as Renderable.It, false))
+    return $(new ScrollbarsRenderable(it as Renderable.It, false), {
+      copyView: it.ctx.world.render.view
+    })
   }
   get mouseable() {
     $()

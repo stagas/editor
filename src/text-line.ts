@@ -17,7 +17,6 @@ export function bounds(tokens: SourceToken[]): UI.Dim {
     if (t.col < col && t.line === line) col = t.col
     if (t_right > right) right = t_right
   }
-
   return { line, col, right, bottom }
 }
 
@@ -108,6 +107,7 @@ class TextLineRenderable extends Renderable {
     c.textBaseline = 'bottom'
     c.font = ctx.renderable.font
     c.lineWidth = text.renderable.lineWidth
+    console.log('INIT', c.font)
   }
   @fn draw(c: CanvasRenderingContext2D, { x, y }: Point) {
     const { it, tokensByColor, tokensBounds } = this
@@ -119,6 +119,8 @@ class TextLineRenderable extends Renderable {
 
     y += view.height - offset.y - 3
 
+// console.log('DRAW TEXTLINE')
+// // this.init(c)
     const startCol = tokensBounds.col
     c.strokeStyle = '#000'
     c.lineWidth = text.renderable.lineWidth

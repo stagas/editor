@@ -128,13 +128,11 @@ export class FillRange extends Range
 }
 
 class FillRangeRenderable extends Renderable {
+  offset = $(new Point, { x: .5, y: .5 })
   constructor(public it: FillRange) {
     super(it)
     this.canDirectDraw = it.drawDirect
   }
-  // preferDirectDraw = true
-  // canDirectDraw = true
-  offset = $(new Point, { x: .5, y: .5 })
   @fx update_rect_dims() {
     const { rect, view } = this
     const { charWidth } = of(this.it.ctx.dims)
@@ -142,11 +140,6 @@ class FillRangeRenderable extends Renderable {
     const { updated, count } = rects
     $()
     view.combineRects(rects.array, rects.count).floor()
-    // console.log('YO', view.text)
-    // rect.w = Math.max(rect.w, view.w)
-    // rect.h = Math.max(rect.h, view.h)
-    // this.needRender = true
-    // log('rects', view.text, rect.text)
   }
   @fn draw(c: CanvasRenderingContext2D, point: Point) {
     if (!this.it.rects) return
