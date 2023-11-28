@@ -96,9 +96,8 @@ class TextLineRenderable extends Renderable {
   }
   @fn init(c: CanvasRenderingContext2D) {
     const { it } = this
-    const { ctx, tokens } = of(it)
-    const { text, buffer } = of(ctx)
-    const { Token } = of(buffer)
+    const { ctx } = of(it)
+    const { text } = of(ctx)
     c.imageSmoothingEnabled = false
     c.miterLimit = 3
     c.lineJoin = 'round'
@@ -107,7 +106,6 @@ class TextLineRenderable extends Renderable {
     c.textBaseline = 'bottom'
     c.font = ctx.renderable.font
     c.lineWidth = text.renderable.lineWidth
-    console.log('INIT', c.font)
   }
   @fn draw(c: CanvasRenderingContext2D, { x, y }: Point) {
     const { it, tokensByColor, tokensBounds } = this
@@ -119,8 +117,8 @@ class TextLineRenderable extends Renderable {
 
     y += view.height - offset.y - 3
 
-// console.log('DRAW TEXTLINE')
-// // this.init(c)
+    // console.log('DRAW TEXTLINE')
+    // // this.init(c)
     const startCol = tokensBounds.col
     c.strokeStyle = '#000'
     c.lineWidth = text.renderable.lineWidth
