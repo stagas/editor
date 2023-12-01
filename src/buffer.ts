@@ -13,7 +13,7 @@ export class Buffer {
   constructor(public ctx: Editor, public Token: { Type: Record<string | number, string | number> }) { }
 
   source?: $<Source>
-  @nu get code() { return of(this).source.code }
+  @nu get code(): string | undefined { return of(this).source.code }
   set code(v: string) { of(this).source.code = v }
   @nu get tokens() { return of(this).source.tokens }
   @nu get lines() { return of(this).source.lines }
@@ -34,6 +34,12 @@ export class Buffer {
   fillRects: Rect[] = []
   dirtyRect = $(new Rect)
 
+  @fx update_editor_viewState() {
+    const { ctx, source } = of(this)
+    const { viewState } = of(source)
+    $()
+    ctx.history.viewState = viewState
+  }
   @fx clamp_lineCol() {
     const { lines, line, coli } = of(this)
     $()
@@ -49,7 +55,7 @@ export class Buffer {
     // $.code = lines.join('\n')
   }
   getIndexFromLineCol({ line, col }: Linecol): number {
-    const { code } = this
+    const { code } = of(this)
     const lines = code
       .split('\n')
       .slice(0, line)
@@ -59,7 +65,7 @@ export class Buffer {
       + (lines.length ? 1 : 0)
   }
   @fn getLineColFromIndex(index: number, tp: Linecol = tempLinecol): Linecol {
-    const { code } = this
+    const { code } = of(this)
     const slice = code.slice(0, index)
     const lines = slice.split('\n')
     const line = lines.length - 1

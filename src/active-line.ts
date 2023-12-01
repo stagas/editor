@@ -19,11 +19,10 @@ export class ActiveLine extends Comp
         r.h = vr.h = lineHeight
         r.w = vr.w = Math.max(rw, w + overscrollX)
         vr.y = lineBaseTops[line]
-        // this.need |= Renderable.Need.Draw
       }
-      @fn draw(c: CanvasRenderingContext2D, offset: Point) {
+      @fn draw(c: CanvasRenderingContext2D, point: Point) {
         const { view } = this
-        view.fillTranslated(c, offset, skin.colors.bgBright015)
+        view.fillTranslated(c, point.sub(view.pos), skin.colors.bgBright015)
       }
     }
     return $(new ActiveLineRenderable(it as Renderable.It))

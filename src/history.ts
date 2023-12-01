@@ -6,51 +6,58 @@ import { Comp } from './comp.ts'
 export interface Snapshot {
   code: string
   coli: number
-  lineCol: Point['json']
+  linecol: Point['json']
   scroll: Point['json']
   selection: Line['json']
 }
 
 export interface EditorViewState {
   coli: number
-  lineCol: Point
+  linecol: Point
   scroll: Point
   historyIndex: number
   history: Snapshot[]
 }
 
 export class History extends Comp {
-  viewState: EditorViewState = {
-    coli: 0,
-    lineCol: $(new Point),
-    scroll: $(new Point),
-    historyIndex: 0,
-    history: []
+  static createViewState(): EditorViewState {
+    return {
+      coli: 0,
+      linecol: $(new Point),
+      scroll: $(new Point),
+      historyIndex: 0,
+      history: []
+    }
   }
+  viewState: EditorViewState = History.createViewState()
   prevViewState?: EditorViewState
 
   @fx update_prevViewState() {
     const { viewState } = this
     $()
-    this.prevViewState ??= viewState
-    return () => {
+    queueMicrotask(() => {
       this.prevViewState = viewState
-    }
+    })
   }
   @fn saveHistoryMeta() {
     const { ctx, viewState: vs } = this
+    if (this.prevViewState !== vs) return
     const { buffer, dims, selection } = of(ctx)
-    const { coli, linecol: lineCol } = of(buffer)
+    const { coli, linecol } = of(buffer)
     const { scroll } = of(dims)
 
-    const snapshot: Partial<Snapshot> = {
+    const snapshot: Omit<Snapshot, 'code'> = {
       coli,
-      lineCol: lineCol.json,
+      linecol: linecol.json,
       scroll: scroll.json,
       selection: selection.json,
     }
+
     const current = vs.history[vs.historyIndex]
-    if (buffer.code === current?.code) {
+
+    if (linecol.line === (current?.linecol.y ?? -1)
+      && Math.abs(linecol.col - (current?.linecol.x ?? 0)) < 2
+      && buffer.code === current?.code) {
       deepMerge(current, snapshot)
       return
     }
@@ -62,13 +69,17 @@ export class History extends Comp {
     const { buffer } = of(ctx)
     const { code } = of(buffer)
 
-    const snapshot = this.saveHistoryMeta()
-    if (!snapshot) return
-    snapshot.code = code
+    if (vs.historyIndex < vs.history.length - 1 && code === vs.history[vs.historyIndex].code) return
+
+    let partialSnapshot = this.saveHistoryMeta()
+    if (!partialSnapshot) return
+
+    const snapshot: Snapshot = Object.assign(partialSnapshot, { code })
+
     if (vs.historyIndex < vs.history.length - 1) {
       vs.history = vs.history.slice(0, vs.historyIndex + 1)
     }
-    vs.historyIndex = vs.history.push(snapshot as Snapshot) - 1
+    vs.historyIndex = vs.history.push(snapshot) - 1
   }
 
   saveHistoryDebounced = debounce(300, () => this.saveHistory(), { first: true, last: true })
@@ -96,13 +107,13 @@ export class History extends Comp {
     const { ctx, viewState: vs } = this
     const { buffer, scroll, selection } = of(ctx)
 
-    const copy = JSON.parse(JSON.stringify(snap)) as any
+    const copy = JSON.parse(JSON.stringify(snap)) as Snapshot
     buffer.code = snap.code
     // KEEP: flush code effects (split lines etc.)
     // before applying rest of snap.
     $.flush()
     buffer.coli = copy.coli
-    buffer.linecol.set(copy.lineCol)
+    buffer.linecol.set(copy.linecol)
     scroll.targetScroll.set(copy.scroll)
     selection.set(copy.selection)
   }
