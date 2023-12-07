@@ -834,7 +834,7 @@ class TextKeyboardable extends Keyboardable {
             selection.start.set(selection.end.set(p))
             return true
           }
-          lines = b.code.split('\n')
+          lines = b.code!.split('\n')
           text = lines[b.line]!
         }
 

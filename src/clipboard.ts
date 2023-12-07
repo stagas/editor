@@ -25,9 +25,9 @@ export class Clipboard extends Comp {
     // we use $.code here instead of using fn deps, because the
     // deleteSelection call above is potentially modifying it and we need the fresh one.
     buffer.code =
-      buffer.code.slice(0, index)
+      buffer.code!.slice(0, index)
       + textToPaste
-      + buffer.code.slice(index)
+      + buffer.code!.slice(index)
 
     $.flush()
 
@@ -57,9 +57,9 @@ export class Clipboard extends Comp {
     e.preventDefault()
 
     // we check for hover to ensure our intention to paste is in the editor
-    if (!this.ctx.mouseable.isHovering) {
-      return false
-    }
+    // if (!this.ctx.mouseable.isHovering) {
+    //   return false
+    // }
 
     // this fixes glitching while holding ctrl+v
     if (lockPaste) return
