@@ -4,7 +4,8 @@
   "description": "A canvas-based text editor with widgets.",
   "main": "src/index.ts",
   "type": "module",
-  "author": "",
+  "author": "stagas",
+  "license": "MIT",
   "keywords": [],
   "devDependencies": {
     "@total-typescript/ts-reset": "*",
