@@ -14,8 +14,8 @@
     "test": "utr src/index.ts"
   },
   "dependencies": {
-    "signal": "github.com:stagas/signal",
-    "std": "github.com:stagas/std",
-    "utils": "github.com:stagas/utils"
+    "signal": "github:stagas/signal",
+    "std": "github:stagas/std",
+    "utils": "github:stagas/utils"
   }
 }
