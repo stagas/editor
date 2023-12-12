@@ -1,18 +1,16 @@
 {
   "name": "editor",
+  "author": "stagas",
   "version": "1.0.0",
   "description": "A canvas-based text editor with widgets.",
-  "main": "src/index.ts",
+  "license": "AGPLv3",
   "type": "module",
-  "author": "stagas",
-  "license": "MIT",
-  "keywords": [],
-  "devDependencies": {
-    "@total-typescript/ts-reset": "*",
-    "@types/jest": "*"
-  },
+  "main": "src/index.ts",
   "scripts": {
     "test": "utr src/index.ts"
+  },
+  "devDependencies": {
+    "ambient-dts": "github:stagas/ambient-dts"
   },
   "dependencies": {
     "signal": "github:stagas/signal",
